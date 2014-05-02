@@ -12,13 +12,15 @@
   <script src="js/controllers.js"></script>
   <script src="js/filters.js"></script>
   <script src="js/directives.js"></script>
+  <script src="../test/lib/angular/angular-mocks.js"></script>
+  <script src="../test/unit/httpBackendStub.js"></script>
 </head>
 <body ng-controller="AllInstancesCtrl">
 
 
   <ul>
     <li ng-repeat="instance in instances">
-		{{instance.name}}
+		<h3>Nom : </h3>{{instance.name}}
 		<p>{{instance.hostname}}</p>
 	</li>
   </ul>

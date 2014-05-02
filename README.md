@@ -1,6 +1,20 @@
 GUI pour Hesperides
 
-Utiliser bower pour charger les dépendances
+Il faut installer npm sur son poste pour disposer de tous l'environnement de développement
+Puis simplement "npm install"
+
+ATTENTION, chez vsct le protocol "git" est refusé depuis l'extérieur.
+Il faut avoir executé la commande suivante au préalable :
+git config --global url.https://github.com/.insteadOf git:://github.com
+
+Pour lancer le serveur de développement :
+npm start
+
+Pour lancer les tests :
+npm test
+
+Cela a pour effet de lancer un serveur karma, qui va se baser sur jasmine pour effectuer les tests JS et va scruter les modifications faites sur les fichiers js
+
 
 Organisation du code :
 

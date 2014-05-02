@@ -3,18 +3,19 @@
 /* jasmine specs for controllers go here */
 
 describe('controllers', function(){
-  beforeEach(module('myApp.controllers'));
+  beforeEach(module('Hesperides.controllers'));
 
 
-  it('should ....', inject(function($controller) {
-    //spec body
-    var myCtrl1 = $controller('MyCtrl1');
-    expect(myCtrl1).toBeDefined();
+  it('should return all instances from elastic search', inject(function($controller) {
+    
+	var scope = {},
+		ctrl = $controller('AllInstancesCtrl', {$scope:scope});
+		
+	expect(scope.instances.length).toBe(3);	
+	
+    expect(scope.name).toBeDefined();
   }));
 
-  it('should ....', inject(function($controller) {
-    //spec body
-    var myCtrl2 = $controller('MyCtrl2');
-    expect(myCtrl2).toBeDefined();
-  }));
+  
+  
 });

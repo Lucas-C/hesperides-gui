@@ -1,23 +1,10 @@
 <!doctype html>
-<html lang="en" ng-app="myApp">
+<html lang="en" ng-app="Hesperides">
 <head>
   <meta charset="utf-8">
-  <title>My AngularJS App</title>
-  <link rel="stylesheet" href="css/app.css"/>
-</head>
-<body>
-  <ul class="menu">
-    <li><a href="#/view1">view1</a></li>
-    <li><a href="#/view2">view2</a></li>
-  </ul>
-
-  <div ng-view></div>
-
-  <div>Angular seed app: v<span app-version></span></div>
-
-  <!-- In production use:
-  <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
-  -->
+  <title>Hesperides</title>
+  <link rel="stylesheet" href="css/hesperides.css"/>
+  
   <script src="../bower_components/angular/angular.js"></script>
   <script src="../bower_components/angular-route/angular-route.js"></script>
   <script src="js/app.js"></script>
@@ -25,5 +12,19 @@
   <script src="js/controllers.js"></script>
   <script src="js/filters.js"></script>
   <script src="js/directives.js"></script>
+</head>
+<body ng-controller="AllInstancesCtrl">
+
+
+  <ul>
+    <li ng-repeat="instance in instances">
+		{{instance.name}}
+		<p>{{instance.hostname}}</p>
+	</li>
+  </ul>
+   <!-- In production use:
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
+  -->
+  
 </body>
 </html>

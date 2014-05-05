@@ -2,31 +2,29 @@
 
 describe('controllers', function(){
 
-  describe('AllInstancesCtrl' , function(){
+  describe('InstancesCtrl' , function(){
 	
 	  var scope, ctrl, $http;
 	
 	//Matcher pour ne comparer que les champs d'un objet	
 	beforeEach(function(){
-		this.addMatchers({
-			toEqualData: function(expected) {
-			return angular.equals(this.actual, expected);
-		}
+			this.addMatchers({
+				toEqualData: function(expected) {
+				return angular.equals(this.actual, expected);
+			}
 		});
 	});
 	
-	  beforeEach(module('Hesperides.controllers'));
-	  beforeEach(module('Hesperides.services'));
-
-	  beforeEach(inject(function(_$httpBackend_, $rootScope, $controller) {
+	beforeEach(module('Hesperides.controllers'));
+	beforeEach(module('Hesperides.services'));
 		
-		$http = Test.prepareHttpBackendStub(_$httpBackend_);
-		
-		scope = $rootScope.$new();
-		ctrl = $controller('AllInstancesCtrl', {$scope:scope});
-	  }));
-
-	  it('should return all instances from elastic search', inject(function($controller) {
+	beforeEach(inject(function(_$httpBackend_, $rootScope, $controller) {
+			$http = Test.prepareHttpBackendStub(_$httpBackend_);
+			scope = $rootScope.$new();
+			ctrl = $controller('InstancesCtrl', {$scope:scope});
+	}));
+	
+	it('should return all instances from elastic search', inject(function($controller) {
 		$http.flush();
 		
 		expect(scope.instances).toBeDefined();

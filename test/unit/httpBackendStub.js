@@ -1,6 +1,13 @@
 var Test = {};
 Test.prepareHttpBackendStub = function($httpBackend) {
-				$httpBackend.whenGET('/instances').
+								
+				var whenGet = $httpBackend.whenGET(/partials\/.*/);
+				
+				if(!(typeof whenGet.passThrough == 'undefined')){
+					whenGet.passThrough();
+				}
+								
+				$httpBackend.whenGET('/rest/instances').
 					respond([
 						{
 							"id": 1,

@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" ng-app="Hesperides">
+<html lang="fr" ng-app="Hesperides">
 <head>
   <meta charset="utf-8">
   <title>Hesperides</title>
@@ -7,7 +7,7 @@
   
   <script src="../bower_components/angular/angular.js"></script>
   <script src="../bower_components/angular-route/angular-route.js"></script>
-  <script src="../bower_components/angular-route/angular-resource.js"></script>
+  <script src="../bower_components/angular-resource/angular-resource.js"></script>
   <script src="js/app.js"></script>
   <script src="js/services.js"></script>
   <script src="js/controllers.js"></script>
@@ -16,18 +16,10 @@
   <script src="../test/lib/angular/angular-mocks.js"></script>
   <script src="../test/unit/httpBackendStub.js"></script>
 </head>
-<body ng-controller="AllInstancesCtrl">
+<body>
 
-
-  <ul>
-    <li ng-repeat="instance in instances">
-		<h3>Nom : </h3>{{instance.name}}
-		<p>{{instance.hostname}}</p>
-	</li>
-  </ul>
-   <!-- In production use:
-  <script src="//ajax.googleapis.com/ajax/libs/angularjs/x.x.x/angular.min.js"></script>
-  -->
-  
+	<h3>Hesperides</h3>
+	<div ng-view></div>
+   
 </body>
 </html>

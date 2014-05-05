@@ -3,11 +3,11 @@
 /* Controllers */
 
 angular.module('Hesperides.controllers', [])
-  .controller('AllInstancesCtrl', ['$scope', 'Instance', function($scope, Instance) {
+  .controller('InstancesCtrl', ['$scope', 'Instance', function($scope, Instance) {
     
 	$scope.instances = Instance.all();		
 			
   }])
-  .controller('SomeOtherCtrl', [function() {
+  .controller('InstanceCtrl', [function() {
 
   }]);

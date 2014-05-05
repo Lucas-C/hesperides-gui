@@ -10,7 +10,16 @@ angular.module('Hesperides', [
   'Hesperides.controllers'
 ]).
 config(['$routeProvider', function($routeProvider) {
-  $routeProvider.when('/view1', {templateUrl: 'partials/partial1.html', controller: 'MyCtrl1'});
-  $routeProvider.when('/view2', {templateUrl: 'partials/partial2.html', controller: 'MyCtrl2'});
-  $routeProvider.otherwise({redirectTo: '/view1'});
+  $routeProvider.
+		when('/instances', {
+				templateUrl: 'partials/instance-list.html', 
+				controller: 'InstancesCtrl'
+		}).
+		when('/instance/:id', {
+				templateUrl: 'partials/instance.html', 
+				controller: 'InstanceCtrl'
+		}).
+		otherwise({
+			redirectTo: '/instances'
+		});
 }]);

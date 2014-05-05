@@ -5,7 +5,7 @@ var hesperidesServices = angular.module('Hesperides.services', ['ngResource']).
   
 hesperidesServices.factory('Instance', ['$resource', function($resource){
 
-		return $resource('/instances/:id', {}, {
+		return $resource('/rest/instances/:id', {}, {
 			all: {method:'GET', params:{id:''}, isArray:true}
 		});
 

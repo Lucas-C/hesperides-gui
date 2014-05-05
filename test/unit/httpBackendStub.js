@@ -3,6 +3,8 @@ Test.prepareHttpBackendStub = function($httpBackend) {
 								
 				var whenGet = $httpBackend.whenGET(/partials\/.*/);
 				
+				//En TU, il n'y a pas le decorateur angular.mock.e2e.$httpBackendDecorator
+				//donc utiliser cette methode provoquerait une erreur
 				if(!(typeof whenGet.passThrough == 'undefined')){
 					whenGet.passThrough();
 				}

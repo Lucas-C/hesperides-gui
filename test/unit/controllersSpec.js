@@ -6,7 +6,17 @@ describe('controllers', function(){
 	
 	  var scope, ctrl, $http;
 	
+	//Matcher pour ne comparer que les champs d'un objet	
+	beforeEach(function(){
+		this.addMatchers({
+			toEqualData: function(expected) {
+			return angular.equals(this.actual, expected);
+		}
+		});
+	});
+	
 	  beforeEach(module('Hesperides.controllers'));
+	  beforeEach(module('Hesperides.services'));
 
 	  beforeEach(inject(function(_$httpBackend_, $rootScope, $controller) {
 		
@@ -21,7 +31,7 @@ describe('controllers', function(){
 		
 		expect(scope.instances).toBeDefined();
 		expect(scope.instances.length).toBe(3);
-		expect(scope.instances).toEqual(
+		expect(scope.instances).toEqualData(
 			[
 				{
 					"application": "WDI",

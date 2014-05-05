@@ -1,9 +1,13 @@
 'use strict';
 
-/* Services */
-
-
-// Demonstrate how to register services
-// In this case it is a simple value service.
-angular.module('Hesperides.services', []).
+var hesperidesServices = angular.module('Hesperides.services', ['ngResource']).
   value('version', '0.1');
+  
+hesperidesServices.factory('Instance', ['$resource', function($resource){
+
+		return $resource('/instances/:id', {}, {
+			all: {method:'GET', params:{id:''}, isArray:true}
+		});
+
+}]);
+

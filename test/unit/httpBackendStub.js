@@ -20,7 +20,7 @@ Test.prepareHttpBackendStub = function($httpBackend) {
 							"application_url": "usl.wsmobile.voyages-sncf.com",
 							"platform": "INT1",
 							"client": "SAB",
-							"composant": "WDI",
+							"component": "WDI",
 							"user": "vmomiwu5",
 							"home": "/appl/vmomiwu5/GST",
 							"puppet_template_path": "miw/miw/v1",
@@ -72,13 +72,12 @@ Test.prepareHttpBackendStub = function($httpBackend) {
 								],
 								"jolt": [
 									{
-										"hosts": "TUX1",
+										"host": "TUX1",
 										"gateway": "joltpoolSN",
 										"pool": {
 											"min": 1,
 											"max": 5
-										},
-										"instance_id": "6"
+										}
 									}
 								],
 								"was": [
@@ -112,7 +111,7 @@ Test.prepareHttpBackendStub = function($httpBackend) {
 							"application_url": "usl.wsmobile.voyages-sncf.com",
 							"platform": "INT1",
 							"client": "SAB",
-							"composant": "WDI",
+							"component": "WDI",
 							"user": "vmomiwu5",
 							"home": "/appl/vmomiwu5/GST",
 							"puppet_template_path": "miw/miw/v1",
@@ -164,13 +163,12 @@ Test.prepareHttpBackendStub = function($httpBackend) {
 								],
 								"jolt": [
 									{
-										"hosts": "TUX1",
+										"host": "TUX1",
 										"gateway": "joltpoolSN",
 										"pool": {
 											"min": 1,
 											"max": 5
-										},
-										"instance_id": "6"
+										}
 									}
 								],
 								"was": [
@@ -204,7 +202,7 @@ Test.prepareHttpBackendStub = function($httpBackend) {
 							"application_url": "usl.wsmobile.voyages-sncf.com",
 							"platform": "INT1",
 							"client": "SAB",
-							"composant": "WDI",
+							"component": "WDI",
 							"user": "vmomiwu5",
 							"home": "/appl/vmomiwu5/GST",
 							"puppet_template_path": "miw/miw/v1",
@@ -256,13 +254,12 @@ Test.prepareHttpBackendStub = function($httpBackend) {
 								],
 								"jolt": [
 									{
-										"hosts": "TUX1",
+										"host": "TUX1",
 										"gateway": "joltpoolSN",
 										"pool": {
 											"min": 1,
 											"max": 5
-										},
-										"instance_id": "6"
+										}
 									}
 								],
 								"was": [

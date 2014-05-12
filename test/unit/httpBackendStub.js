@@ -1,17 +1,5 @@
 var Test = {};
-Test.prepareHttpBackendStub = function($httpBackend) {
-								
-				var whenGet = $httpBackend.whenGET(/partials\/.*/);
-				
-				//En TU, il n'y a pas le decorateur angular.mock.e2e.$httpBackendDecorator
-				//donc utiliser cette methode provoquerait une erreur
-				if(!(typeof whenGet.passThrough == 'undefined')){
-					whenGet.passThrough();
-				}
-				
-				$httpBackend.whenGET('/rest/instances/1').
-					respond(
-						{
+Test.singleInstance = {
 
 							"id": 1,
 							"type": "WAS",
@@ -84,12 +72,12 @@ Test.prepareHttpBackendStub = function($httpBackend) {
 								"was": [
 									{
 										"name": "ESB",
-										"instances": ["VMODENU51MIW"]
+										"instances": ["VMODENU51MIW", "VMODENU52MIW"]
 									},
 								]
 							},
 							"jvm_opts": {
-								"tuning": ["-Xmsx=1024"],
+								"tuning": ["-Xms=1024", "-Xmx=1024"],
 								"system": ["-Dsyslog=localhost:3128"]
 							},
 							"ports": [
@@ -103,7 +91,19 @@ Test.prepareHttpBackendStub = function($httpBackend) {
 								}
 							]
 						}
-					);
+
+Test.prepareHttpBackendStub = function($httpBackend) {
+
+				var whenGet = $httpBackend.whenGET(/partials\/.*/);
+				
+				//En TU, il n'y a pas le decorateur angular.mock.e2e.$httpBackendDecorator
+				//donc utiliser cette methode provoquerait une erreur
+				if(!(typeof whenGet.passThrough == 'undefined')){
+					whenGet.passThrough();
+				}
+				
+				$httpBackend.whenGET('/rest/instances/1').
+					respond(function(){ return [200, Test.singleInstance, {}]});
 								
 				$httpBackend.whenGET('/rest/instances').
 					respond([
@@ -381,6 +381,17 @@ Test.prepareHttpBackendStub = function($httpBackend) {
 							]
 						}
 					]);
+					
+				$httpBackend.whenPOST('/rest/instances/1', Test.singleInstance).
+					respond(function(){ return [200, Test.singleInstance, {}]});
+					
+				$httpBackend.whenPUT('/rest/instances', Test.singleInstance).
+					respond(function(){ 
+						var newInstance = Test.singleInstance;
+						newInstance.id = 999;
+						return [200, newInstance, {}]
+					});	
+				
 				return $httpBackend;
 			};
 

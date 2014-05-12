@@ -2,7 +2,7 @@
 
 var scope, ctrl, $http;
 
-var setupGlobal = function(ctrlName){
+var setupGlobal = function(ctrlId, routeParams){
 	//Matcher pour ne comparer que les champs d'un objet	
 	beforeEach(function(){
 			this.addMatchers({
@@ -15,13 +15,18 @@ var setupGlobal = function(ctrlName){
 	beforeEach(module('ngRoute'));
 	beforeEach(module('Hesperides.controllers'));
 	beforeEach(module('Hesperides.services'));
+	beforeEach(module('Hesperides.filters'));
+	beforeEach(module('Hesperides.directives'));
 	
 	
     var ctrl;	
-	beforeEach(inject(function(_$httpBackend_, $rootScope, $controller) {
+	beforeEach(inject(function(_$httpBackend_, $rootScope, $routeParams, $controller) {
 			$http = Test.prepareHttpBackendStub(_$httpBackend_);
 			scope = $rootScope.$new();
-			ctrl = $controller(ctrlName, {$scope:scope});
+			
+			for (var attrname in routeParams) { $routeParams[attrname] = routeParams[attrname]; }
+						
+			ctrl = $controller(ctrlId, {$scope:scope});
 	}));
 	
 	return ctrl;
@@ -31,7 +36,7 @@ describe('controllers', function(){
 
   describe('InstancesCtrl' , function(){
 	
-	setupGlobal('InstancesCtrl');
+	setupGlobal('InstancesCtrl', {});
 	
 	it('should return all instances from elastic search', inject(function($controller) {
 		$http.flush();
@@ -322,11 +327,7 @@ describe('controllers', function(){
   
   describe('InstanceCtrl', function(){
 	
-	setupGlobal('InstanceCtrl');
-	
-	beforeEach(inject(function($routeParams){
-		$routeParams.id = '1';
-	}));
+	setupGlobal('InstanceCtrl', {id: '1'});
 	
 	it('should return the instance matching the id', inject(function($controller) {
 		$http.flush();	

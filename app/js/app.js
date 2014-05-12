@@ -4,10 +4,10 @@
 // Declare app level module which depends on filters, and services
 angular.module('Hesperides', [
   'ngRoute',
+  'Hesperides.controllers',
   'Hesperides.filters',
   'Hesperides.services',
-  'Hesperides.directives',
-  'Hesperides.controllers'
+  'Hesperides.directives'
 ]).
 config(['$routeProvider', function($routeProvider) {
   $routeProvider.

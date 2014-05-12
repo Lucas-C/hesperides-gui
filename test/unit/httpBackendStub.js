@@ -9,8 +9,10 @@ Test.prepareHttpBackendStub = function($httpBackend) {
 					whenGet.passThrough();
 				}
 				
-				$httpBackend.whenGET('/rest/instance/1').
-					respond({
+				$httpBackend.whenGET('/rest/instances/1').
+					respond(
+						{
+
 							"id": 1,
 							"type": "WAS",
 							"application": "WDI",
@@ -100,7 +102,8 @@ Test.prepareHttpBackendStub = function($httpBackend) {
 									"number": 55011
 								}
 							]
-						});
+						}
+					);
 								
 				$httpBackend.whenGET('/rest/instances').
 					respond([

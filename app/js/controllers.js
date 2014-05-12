@@ -9,7 +9,7 @@ angular.module('Hesperides.controllers', [])
 			
   }])
   .controller('InstanceCtrl', ['$scope', '$routeParams', 'Instance', function($scope, $routeParams, Instance) {
-	
+
 	$scope.instance = Instance.get({id: $routeParams.id});
-	
+
   }]);

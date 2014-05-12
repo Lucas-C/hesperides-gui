@@ -80,5 +80,24 @@ angular.module('Hesperides.controllers', [])
 	$scope.Del_was = function(index) {
 		$scope.instance.external_links.was.splice(index, 1);		
 	};
+	
+	
+	//Data watching (essentially to guess some form values
+	$scope.$watch('instance.user', function(){
+		$scope.instance.home = InstanceUtils.guessHome($scope.instance);
+	},true);
+	
+	$scope.$watch('instance.component', function(){
+		$scope.instance.home = InstanceUtils.guessHome($scope.instance);
+	},true);
 			
   }]);
+  
+var InstanceUtils = {};
+InstanceUtils.guessHome = function(instance) {
+	var home = "/appl/"+instance.user;
+	if(instance.component){
+		home += "/"+instance.component;
+	}
+	return home;
+};

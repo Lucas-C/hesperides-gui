@@ -1,6 +1,4 @@
 <form class="simple-form">
-
-</form>
 		<input type="text" ng-model="instance.name" /> <input type="text" ng-model="instance.type" /> <br />
 		<input type="text" ng-model="instance.application" /> <input type="text" ng-model="instance.platform" /> <input type="text" ng-model="instance.client" /> <input type="text" ng-model="instance.application_version" /> <input type="text" ng-model="instance.application_url" /><br />
 		Composant: <input type="text" ng-model="instance.component"/> sur la machine <input type="text" ng-model="instance.hostname"/> <input type="text" ng-model="instance.ip" /> <br />
@@ -46,5 +44,7 @@
 			<li ng-repeat="was in instance.external_links.was">Nom: <input type="text" ng-model="was.name" /> <input type="text" ng-model="was.instances" /> <button ng-click="Del_was($index)" class="btn btn-default">Del</button></li></li>
 			<button ng-click="Add_was()" class="btn btn-default">Add</button>
 		</ul>
+		<button ng-click="Save()" class="btn btn-default">Sauver</button>
+</form>
 
  

@@ -1,7 +1,7 @@
 <form class="simple-form">
-		<input type="text" ng-model="instance.name" /> <input type="text" ng-model="instance.type" /> <br />
-		<input type="text" ng-model="instance.application" /> <input type="text" ng-model="instance.platform" /> <input type="text" ng-model="instance.client" /> <input type="text" ng-model="instance.application_version" /> <input type="text" ng-model="instance.application_url" /><br />
-		Composant: <input type="text" ng-model="instance.component"/> sur la machine <input type="text" ng-model="instance.hostname"/> <input type="text" ng-model="instance.ip" /> <br />
+		<input type="text" ng-model="instance.name" required /> <input type="text" ng-model="instance.type" required /> <br />
+		<input type="text" ng-model="instance.application" required /> <input type="text" ng-model="instance.platform" required /> <input type="text" ng-model="instance.client" /> <input type="text" ng-model="instance.application_version" /> <input type="text" ng-model="instance.application_url" /><br />
+		Composant: <input type="text" ng-model="instance.component"/> sur la machine <input type="text" ng-model="instance.hostname" required /> <input type="text" ng-model="instance.ip" required  /> <br />
 		User: <input type="text" ng-model="instance.user" /> <input type="text" ng-model="instance.home" /> <br />
 		Template puppet: <input type="text" ng-model="instance.puppet_template_path" />
 		<p>Options JVM Specifiques:</p>

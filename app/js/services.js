@@ -12,3 +12,14 @@ hesperidesServices.factory('Instance', ['$resource', function($resource){
 
 }]);
 
+
+hesperidesServices.factory('Search', ['$http', function($http){
+
+		return {
+			instances: function(application, component) {
+				return $http.get('/search?application='+application+'&component='+component);
+			}
+		};
+
+}]);
+

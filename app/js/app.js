@@ -11,6 +11,10 @@ angular.module('Hesperides', [
 ]).
 config(['$routeProvider', function($routeProvider) {
   $routeProvider.
+		when('/application/:application/:platform', {
+			templateUrl: 'application.html',
+			controller: 'ApplicationCtrl',
+		}).
 		when('/instances', {
 				templateUrl: 'partials/instance-list.html', 
 				controller: 'InstancesCtrl'
@@ -20,6 +24,6 @@ config(['$routeProvider', function($routeProvider) {
 				controller: 'InstanceCtrl'
 		}).
 		otherwise({
-			redirectTo: '/instances'
+			redirectTo: '/search'
 		});
 }]);

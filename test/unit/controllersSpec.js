@@ -30,6 +30,7 @@ var setupGlobal = function(ctrlId, routeParams){
 			
 	}));
 	
+	
 	return ctrl;
 }
 

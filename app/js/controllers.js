@@ -8,6 +8,15 @@ angular.module('Hesperides.controllers', [])
 	$scope.instances = Instance.all();		
 			
   }])
+  .controller('ApplicationCtrl', ['$scope', '$routeParams', 'Search', function($scope, $routeParams, Search) {
+    
+	Search.instances($routeParams.application, $routeParams.component).then(function(response){
+		$scope.instances = response.data;
+	}, function(response) {
+		//failed
+	});		
+			
+  }])
   .controller('InstanceCtrl', ['$scope', '$routeParams', 'Instance', function($scope, $routeParams, Instance) {
 
 	$scope.instance = {};
@@ -83,18 +92,20 @@ angular.module('Hesperides.controllers', [])
 	
 	
 	//Data watching (essentially to guess some form values
+	$scope.$watch
+	
 	$scope.$watch('instance.user', function(){
-		$scope.instance.home = InstanceUtils.guessHome($scope.instance);
+		$scope.instance.home = InstanceUtils.guessInstanceHome($scope.instance);
 	},true);
 	
 	$scope.$watch('instance.component', function(){
-		$scope.instance.home = InstanceUtils.guessHome($scope.instance);
+		$scope.instance.home = InstanceUtils.guessInstanceHome($scope.instance);
 	},true);
 			
   }]);
   
 var InstanceUtils = {};
-InstanceUtils.guessHome = function(instance) {
+InstanceUtils.guessInstanceHome = function(instance) {
 	var home = "/appl/"+instance.user;
 	if(instance.component){
 		home += "/"+instance.component;

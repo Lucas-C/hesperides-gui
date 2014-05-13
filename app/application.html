@@ -7,10 +7,18 @@
 		</tr>
 		<tr>
 			<td>
-				<p ng-repeat="instance in instances | filter : {type: 'WAS'}" /><button ng-click="EditInstance(instance.id)" class="btn btn-default">{{instance.name}}</button></p>
+				<p ng-repeat="instance in instances | filter : {type: 'WAS'}" /><button ng-click="EditInstance(instance)" class="btn btn-default">{{instance.name}}</button><button ng-click="DeleteInstance(instance)" class="btn btn-default">Del</button></p>
 			</td>
 			<td>
-				<p ng-repeat="instance in instances | filter : {type: 'SGDB'}" /><button ng-click="EditInstance(instance.id)" class="btn btn-default">{{instance.name}}</button></p>
+				<p ng-repeat="instance in instances | filter : {type: 'SGDB'}" /><button ng-click="EditInstance(instance)" class="btn btn-default">{{instance.name}}</button><button ng-click="DeleteInstance(instance)" class="btn btn-default">Del</button></p>
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<button ng-click="AddInstance('WAS')" class="btn btn-default">Add</button>
+			</td>
+			<td>
+				<button ng-click="AddInstance('SGBD')" class="btn btn-default">Add</button>
 			</td>
 		</tr>
 	</table>

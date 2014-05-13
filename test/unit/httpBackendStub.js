@@ -397,12 +397,19 @@ Test.prepareHttpBackendStub = function($httpBackend) {
 				$httpBackend.whenPOST('/rest/instances/1', Test.singleInstance).
 					respond(function(){ return [200, Test.singleInstance, {}]});
 					
-				$httpBackend.whenPUT('/rest/instances', Test.singleInstance).
+				var postData = null;	
+				$httpBackend.whenPOST(/\/rest\/instances\/*/, function(data){postData = data; return true;}).
+					respond(function(){ return [200, postData, {}]});
+				
+				var putData = null;
+				$httpBackend.whenPUT('/rest/instances', function(data){putData = data; return true;}).
 					respond(function(){ 
-						var newInstance = Test.singleInstance;
+						var newInstance = putData;
 						newInstance.id = 999;
 						return [200, newInstance, {}]
 					});	
+					
+				$httpBackend.whenDELETE(/\/rest\/instances\/*/).respond(function(){ return [200, '', {}]});
 				
 				return $httpBackend;
 			};

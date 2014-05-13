@@ -8,7 +8,7 @@ angular.module('Hesperides.controllers', [])
 	$scope.instances = Instance.all();		
 			
   }])
-  .controller('ApplicationCtrl', ['$scope', '$routeParams', 'Search', 'Instance', function($scope, $routeParams, Search, Instance) {
+  .controller('ApplicationCtrl', ['$scope', '$routeParams', '$timeout', 'Search', 'Instance', function($scope, $routeParams, $timeout, Search, Instance) {
     
 	//Initial Params
 	$scope.application = $routeParams.application;
@@ -18,21 +18,70 @@ angular.module('Hesperides.controllers', [])
 	//Define functions for App menu
 	$scope.Edit =  function(bool) {
 		$scope.editing = bool;
-	}
+	};
 	
-	$scope.EditInstance = function(id){
-		$scope.instance = $scope.instances.filter(function(instance){ return instance.id == id })[0];
+	$scope.EditInstance = function(instance){
+		$scope.instance = instance;
 		$scope.Edit(true);
-	}
+	};
+	
+	 var findInstance = function(id){
+		return $scope.instances.filter(function(instance){ return instance.id == id })[0];
+	};
 	
 	//Define functions for current instance
+	//Use save in progress to avoid double saves (when model is updated by server response for instance)
+	var saveInProgress = false;
 	$scope.SaveCurrentInstance = function() {
-		if($scope.instance.id){
-			Instance.save($scope.instance);
+		//if($scope.$instanceForm.$valid && !saveInProgress){
+		if($scope.instance && !saveInProgress){
+			saveInProgress = true;
+			//alert('saving');
+			if($scope.instance.id){
+				Instance.save($scope.instance);
+			} else {
+				Instance.put($scope.instance);
+			}
+			saveInProgress = false;
+		}
+	};
+	
+	var removeInstanceFromView = function(instance) {
+		if($scope.instance && $scope.instance.id == instance.id){
+			$scope.instance = null;
+			$scope.Edit(false);
+		}
+		$scope.instances.splice($scope.instances.indexOf(instance), 1);
+	}
+	
+	$scope.DeleteInstance = function(instance) {
+		//If the instance was saved, it must have an id
+		if(instance.id){
+			Instance.delete({id: instance.id}, function(){
+				removeInstanceFromView(instance);
+		});
 		} else {
-			Instance.put($scope.instance);
+			//just refresh view without server call
+			removeInstanceFromView(instance);
+		}
+	};
+	
+	$scope.AddInstance = function(type) {
+		var newInstance = {
+			'type': type,
+			'application': $scope.application,
+			'plateforme': $scope.plateforme
+		};
+		
+		//Try to add more elements if there are instances already existing
+		if($scope.instances.length > 0){
+			newInstance.client = $scope.instances[0].client;
+			newInstance.application_version = $scope.instances[0].application_version;
+			newInstance.application_url = $scope.instances[0].application_url;
 		}
 		
+		$scope.instances.push(newInstance);
+		$scope.EditInstance(newInstance);
 	};
 	
 	$scope.Add_bin = function() {
@@ -92,16 +141,35 @@ angular.module('Hesperides.controllers', [])
 	};
 	
 	//Define functions for form edition
+	
+	//Save instance when it changes, with a 1 second timeout to avoid multiple save
+	var save_timeout = null;
+	$scope.$watch('instance', function(oldVal, newVal){
+		//We want to save only when the same instance has changed, not when user chooses another instance to modify
+		if(oldVal && newVal && oldVal.id == newVal.id){
+			if(save_timeout){
+				$timeout.cancel(save_timeout);
+			}
+			
+			save_timeout = $timeout($scope.SaveCurrentInstance, 1000);
+		}
+	}, true);
+	
 	$scope.$watch('instance.user', function(){
-		$scope.instance.home = InstanceUtils.guessInstanceHome($scope.instance);
+		if($scope.instance){
+			$scope.instance.home = InstanceUtils.guessInstanceHome($scope.instance);
+		}
 	},true);
 	
 	$scope.$watch('instance.component', function(){
-		$scope.instance.home = InstanceUtils.guessInstanceHome($scope.instance);
+		if($scope.instance){
+			$scope.instance.home = InstanceUtils.guessInstanceHome($scope.instance);
+		}
 	},true);
 	
 	
 	//Load data for app/platform
+	$scope.instances = {}
 	Search.instances($routeParams.application, $routeParams.platform).then(function(response){
 		$scope.instances = response.data;
 	}, function(response) {

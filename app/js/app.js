@@ -19,10 +19,6 @@ config(['$routeProvider', function($routeProvider) {
 				templateUrl: 'partials/instance-list.html', 
 				controller: 'InstancesCtrl'
 		}).
-		when('/instance/:id', {
-				templateUrl: 'partials/instance.html', 
-				controller: 'InstanceCtrl'
-		}).
 		otherwise({
 			redirectTo: '/search'
 		});

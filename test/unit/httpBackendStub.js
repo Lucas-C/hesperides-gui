@@ -388,7 +388,7 @@ Test.prepareHttpBackendStub = function($httpBackend) {
 				$httpBackend.whenGET('/rest/instances/1').
 					respond(function(){ return [200, Test.singleInstance, {}]});
 					
-				$httpBackend.whenGET('/search?application=WDI&component=INT1').
+				$httpBackend.whenGET('/search?application=WDI&platform=INT1').
 					respond(function(){ return [200, Test.wdiInstances, {}]});
 								
 				$httpBackend.whenGET('/rest/instances').

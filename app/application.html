@@ -1,0 +1,22 @@
+	<h3>Hesperides - Application</h3>
+	
+	<table>
+		<tr>
+			<td>Tomcat</td>
+			<td>SGBD</td>
+		</tr>
+		<tr>
+			<td>
+				<p ng-repeat="instance in instances | filter : {type: 'WAS'}" /><button ng-click="EditInstance(instance.id)" class="btn btn-default">{{instance.name}}</button></p>
+			</td>
+			<td>
+				<p ng-repeat="instance in instances | filter : {type: 'SGDB'}" /><button ng-click="EditInstance(instance.id)" class="btn btn-default">{{instance.name}}</button></p>
+			</td>
+		</tr>
+	</table>
+	
+	<div ng-show="editing" ng-include="'partials/instance.html'"></div>
+		
+	
+	<!--<div ng-view></div>-->
+

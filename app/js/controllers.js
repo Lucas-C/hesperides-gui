@@ -8,24 +8,25 @@ angular.module('Hesperides.controllers', [])
 	$scope.instances = Instance.all();		
 			
   }])
-  .controller('ApplicationCtrl', ['$scope', '$routeParams', 'Search', function($scope, $routeParams, Search) {
+  .controller('ApplicationCtrl', ['$scope', '$routeParams', 'Search', 'Instance', function($scope, $routeParams, Search, Instance) {
     
-	Search.instances($routeParams.application, $routeParams.component).then(function(response){
-		$scope.instances = response.data;
-	}, function(response) {
-		//failed
-	});		
-			
-  }])
-  .controller('InstanceCtrl', ['$scope', '$routeParams', 'Instance', function($scope, $routeParams, Instance) {
-
-	$scope.instance = {};
-  
-	if($routeParams.id){
-		$scope.instance = Instance.get({id: $routeParams.id});
+	//Initial Params
+	$scope.application = $routeParams.application;
+	$scope.platform = $routeParams.platform;
+	$scope.editing = false;
+	
+	//Define functions for App menu
+	$scope.Edit =  function(bool) {
+		$scope.editing = bool;
 	}
-		
-	$scope.Save = function() {
+	
+	$scope.EditInstance = function(id){
+		$scope.instance = $scope.instances.filter(function(instance){ return instance.id == id })[0];
+		$scope.Edit(true);
+	}
+	
+	//Define functions for current instance
+	$scope.SaveCurrentInstance = function() {
 		if($scope.instance.id){
 			Instance.save($scope.instance);
 		} else {
@@ -90,10 +91,7 @@ angular.module('Hesperides.controllers', [])
 		$scope.instance.external_links.was.splice(index, 1);		
 	};
 	
-	
-	//Data watching (essentially to guess some form values
-	$scope.$watch
-	
+	//Define functions for form edition
 	$scope.$watch('instance.user', function(){
 		$scope.instance.home = InstanceUtils.guessInstanceHome($scope.instance);
 	},true);
@@ -101,6 +99,14 @@ angular.module('Hesperides.controllers', [])
 	$scope.$watch('instance.component', function(){
 		$scope.instance.home = InstanceUtils.guessInstanceHome($scope.instance);
 	},true);
+	
+	
+	//Load data for app/platform
+	Search.instances($routeParams.application, $routeParams.platform).then(function(response){
+		$scope.instances = response.data;
+	}, function(response) {
+		//failed
+	});		
 			
   }]);
   

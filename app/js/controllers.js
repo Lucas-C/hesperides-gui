@@ -176,7 +176,110 @@ angular.module('Hesperides.controllers', [])
 		//failed
 	});		
 			
-  }]);
+  }])
+  .directive('guessZone', function() {
+		return {
+			restrict: 'E',
+			scope: {},
+			controller: function($scope) {
+				this.hideTooltip = function() {
+					$scope.tooltipElement.addClass("ng-hide");	
+				};
+				this.showTooltip = function() {
+					$scope.tooltipElement.removeClass("ng-hide");
+				};
+								
+				this.hasMatch = function() {
+					return $scope.match && $scope.match.length > 0
+				}
+				this.setMatch = function(match){
+					$scope.match = match;
+				}
+				this.getMatch = function() {
+					return $scope.match;
+				}
+				this.setChunck = function(chunck){
+					$scope.chunck = chunck;
+				}
+				this.getChunck = function() {
+					return $scope.chunck;
+				}
+				
+				this.registerTooltip = function(element) {
+					$scope.tooltipElement = element;
+				}
+				
+			}
+		};
+	})
+  .directive('guessTooltip', function(){
+		return {
+			restrict: 'E',
+			require: '^guessZone',
+			templateUrl : 'partials/tooltip.html',
+			link: function(scope, element, attr, guessZoneCtrl) {
+				
+				guessZoneCtrl.registerTooltip(element);
+				
+				guessZoneCtrl.hideTooltip();
+				
+				scope.getChunck = function() {
+					return guessZoneCtrl.getChunck()
+				}
+				
+				scope.getGuessedPart = function() {
+					if(guessZoneCtrl.hasMatch()) return guessZoneCtrl.getMatch().replace(guessZoneCtrl.getChunck(), '');
+					else return '';
+				}
+				
+			}
+		};
+  })
+  .directive('guessMain', function() {
+		var app = angular.module('Hesperides', []);
+		
+		return {
+			require: '^guessZone',
+			scope: {
+				prop: '=',
+				instances: '=',
+				instance: '='
+			},
+			link : function(scope, element, attr, guessZoneCtrl) {
+				
+				element.on('keyup', function(event) {
+					if(event.keyCode != 32){ //Not space key
+						scope.tryToGetMatch(this.value);
+					} else {
+						if(guessZoneCtrl.hasMatch()){
+							this.value = guessZoneCtrl.getMatch();
+							scope.instance[scope.prop] = guessZoneCtrl.getMatch();
+							guessZoneCtrl.hideTooltip();
+						}
+					}
+				});
+				
+				element.on('blur', function(event) {
+					guessZoneCtrl.hideTooltip();
+				});
+				
+				element.on('focus', function(event) {
+					scope.tryToGetMatch(this.value);
+				});
+				
+				scope.tryToGetMatch = function(chunck) {
+					guessZoneCtrl.setChunck(chunck);
+					guessZoneCtrl.setMatch(InstanceUtils.findMatchingProp(scope.prop, chunck, scope.instances, scope.instance));				
+					if(guessZoneCtrl.hasMatch()){
+						guessZoneCtrl.showTooltip();
+					} else {
+						guessZoneCtrl.hideTooltip();
+					}
+				};
+			
+			}
+		};
+  });
   
 var InstanceUtils = {};
 InstanceUtils.guessInstanceHome = function(instance) {
@@ -185,4 +288,16 @@ InstanceUtils.guessInstanceHome = function(instance) {
 		home += "/"+instance.component;
 	}
 	return home;
+};
+if ( typeof String.prototype.startsWith != 'function' ) {
+  String.prototype.startsWith = function( str ) {
+    return str.length > 0 && this.substring( 0, str.length ) === str;
+  }
+};
+InstanceUtils.findMatchingProp = function(prop, chunk, instances, currentInstance) {
+	var matchingInstances = instances.filter(function(instance){ 
+		return instance != currentInstance && instance[prop].startsWith(chunk); 
+	});
+	if(matchingInstances.length > 0) return matchingInstances[0].user;
+	else return '';
 };

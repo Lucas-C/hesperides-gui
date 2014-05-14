@@ -1,8 +1,8 @@
 <form name="instanceForm" class="simple-form">
 		Nom: <input type="text" ng-model="instance.name" required /> Type: {{instance.type}} <br />
-		Application: {{instance.application}} Plateforme: {{instance.platform}} Client: <input type="text" ng-model="instance.client" /> Version: <input type="text" ng-model="instance.application_version" /> URL: <input type="text" ng-model="instance.application_url" /><br />
-		Composant: <input type="text" ng-model="instance.component"/> sur la machine <input type="text" ng-model="instance.hostname" required /> <input type="text" ng-model="instance.ip" required  /> <br />
-		User: <input type="text" ng-model="instance.user" /> <input type="text" ng-model="instance.home" /> <br />
+		Client: <input type="text" ng-model="instance.client" /> Version: <input type="text" ng-model="instance.application_version" /> URL: <input type="text" ng-model="instance.application_url" /><br />
+		Composant: <input type="text" ng-model="instance.component"/> sur la machine <input type="text" ng-model="instance.hostname" required /> -> <input type="text" ng-model="instance.ip" required  /> <br />
+		User: <guess-zone><guess-tooltip></guess-tooltip> <input type="text" ng-model="instance.user" guess-main prop="'user'" instances="instances" instance ="instance"/> -> <input type="text" ng-model="instance.home" /> </guess-zone><br />
 		Template puppet: <input type="text" ng-model="instance.puppet_template_path" />
 		<p>Options JVM Specifiques:</p>
 		<ul>
@@ -11,37 +11,37 @@
 		</ul>
 		<p>Binaires requis:</p>
 		<ul>
-			<li ng-repeat="bin in instance.bins">Nom: <input type="text" ng-model="bin.name" /> Version: <input type="text" ng-model="bin.version" /> Home: <input type="text" ng-model="bin.home" /> <button ng-click="Del_bin($index)" class="btn btn-default">Del</button></li>
+			<li ng-repeat="bin in instance.bins">Nom: <input type="text" ng-model="bin.name" /> -> Version: <input type="text" ng-model="bin.version" /> -> Home: <input type="text" ng-model="bin.home" /> <button ng-click="Del_bin($index)" class="btn btn-default">Del</button></li>
 			<button ng-click="Add_bin()" class="btn btn-default">Add</button>
 		</ul>
 		<p>Modules:</p>
 		<ul>
-			<li ng-repeat="module in instance.modules">Nom: <input type="text" ng-model="module.name" /> War: <input type="text" ng-model="module.war" /> Context: <input type="text" ng-model="module.context" /> <button ng-click="Del_module($index)" class="btn btn-default">Del</button></li></li>
+			<li ng-repeat="module in instance.modules">Nom: <input type="text" ng-model="module.name" /> -> War: <input type="text" ng-model="module.war" /> -> Context: <input type="text" ng-model="module.context" /> <button ng-click="Del_module($index)" class="btn btn-default">Del</button></li></li>
 			<button ng-click="Add_module()" class="btn btn-default">Add</button>
 		</ul>
 		<p>Ports:</p>
 		<ul>
-			<li ng-repeat="port in instance.ports">Nom: <input type="text" ng-model="port.name" /> Num: <input type="text" ng-model="port.number" /> <button ng-click="Del_port($index)" class="btn btn-default">Del</button></li></li>
+			<li ng-repeat="port in instance.ports">Nom: <input type="text" ng-model="port.name" /> -> Num: <input type="text" ng-model="port.number" /> <button ng-click="Del_port($index)" class="btn btn-default">Del</button></li></li>
 			<button ng-click="Add_port()" class="btn btn-default">Add</button>
 		</ul>
 		<p>JDBC:</p>
 		<ul>
-			<li ng-repeat="jdbc in instance.external_links.jdbc">Nom: <input type="text" ng-model="jdbc.name" /> Schema: <input type="text" ng-model="jdbc.schema" /> Pool(min -max): <input type="text" ng-model="jdbc.pool.min"/>-<input type="text" ng-model="jdbc.pool.max"/> <button ng-click="Del_jdbc($index)" class="btn btn-default">Del</button></li></li>
+			<li ng-repeat="jdbc in instance.external_links.jdbc">Nom: <input type="text" ng-model="jdbc.name" /> -> Schema: <input type="text" ng-model="jdbc.schema" /> -> Pool(min -max): <input type="text" ng-model="jdbc.pool.min"/>-<input type="text" ng-model="jdbc.pool.max"/> <button ng-click="Del_jdbc($index)" class="btn btn-default">Del</button></li></li>
 			<button ng-click="Add_jdbc()" class="btn btn-default">Add</button>
 		</ul>
 		<p>JMS:</p>
 		<ul>
-			<li ng-repeat="jms in instance.external_links.jms">Nom: <input type="text" ng-model="jms.name" /> Type: <input type="text" ng-model="jms.type" /> Trigramme: <input type="text" ng-model="jms.shortName" /> Instance: <input type="text" ng-model="jms.instance" /> <button ng-click="Del_jms($index)" class="btn btn-default">Del</button></li></li>
+			<li ng-repeat="jms in instance.external_links.jms">Nom: <input type="text" ng-model="jms.name" /> Type: <input type="text" ng-model="jms.type" /> -> Trigramme: <input type="text" ng-model="jms.shortName" /> -> Instance: <input type="text" ng-model="jms.instance" /> <button ng-click="Del_jms($index)" class="btn btn-default">Del</button></li></li>
 			<button ng-click="Add_jms()" class="btn btn-default">Add</button>
 		</ul>
 		<p>JOLT:</p>
 		<ul>
-			<li ng-repeat="jolt in instance.external_links.jolt">Hote: <input type="text" ng-model="jolt.host" /> Gateway: <input type="text" ng-model="jolt.gateway" /> Pool(min-max): <input type="text" ng-model="jolt.pool.min" />-<input type="text" ng-model="jolt.pool.max" /> <button ng-click="Del_jolt($index)" class="btn btn-default">Del</button></li></li>
+			<li ng-repeat="jolt in instance.external_links.jolt">Hote: <input type="text" ng-model="jolt.host" /> -> Gateway: <input type="text" ng-model="jolt.gateway" /> -> Pool(min-max): <input type="text" ng-model="jolt.pool.min" />-<input type="text" ng-model="jolt.pool.max" /> <button ng-click="Del_jolt($index)" class="btn btn-default">Del</button></li></li>
 			<button ng-click="Add_jolt()" class="btn btn-default">Add</button>
 		</ul>
 		<p>WAS:</p>
 		<ul>
-			<li ng-repeat="was in instance.external_links.was">Nom: <input type="text" ng-model="was.name" /> <input type="text" ng-model="was.instances" /> <button ng-click="Del_was($index)" class="btn btn-default">Del</button></li></li>
+			<li ng-repeat="was in instance.external_links.was">Nom: <input type="text" ng-model="was.name" /> -> Instance: <input type="text" ng-model="was.instances" /> <button ng-click="Del_was($index)" class="btn btn-default">Del</button></li></li>
 			<button ng-click="Add_was()" class="btn btn-default">Add</button>
 		</ul>
 </form>

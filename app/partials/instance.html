@@ -2,7 +2,7 @@
 		Nom: <input type="text" ng-model="instance.name" required /> Type: {{instance.type}} <br />
 		Client: <input type="text" ng-model="instance.client" /> Version: <input type="text" ng-model="instance.application_version" /> URL: <input type="text" ng-model="instance.application_url" /><br />
 		Composant: <input type="text" ng-model="instance.component"/> sur la machine <input type="text" ng-model="instance.hostname" required /> -> <input type="text" ng-model="instance.ip" required  /> <br />
-		User: <guess-zone><guess-tooltip></guess-tooltip> <input type="text" ng-model="instance.user" guess-main prop="'user'" /> -> <input type="text" ng-model="instance.home" /> </guess-zone><br />
+		User: <guess-zone instances="instances" instance="instance" object="instance"><guess-tooltip></guess-tooltip> <input type="text" ng-model="instance.user" guess-main path="'user'" prop="'user'" /> -> <input type="text" ng-model="instance.home" /> </guess-zone><br />
 		Template puppet: <input type="text" ng-model="instance.puppet_template_path" />
 		<p>Options JVM Specifiques:</p>
 		<ul>
@@ -11,7 +11,7 @@
 		</ul>
 		<p>Binaires requis:</p>
 		<ul>
-			<li ng-repeat="bin in instance.bins">Nom: <input type="text" ng-model="bin.name" /> -> Version: <input type="text" ng-model="bin.version" /> -> Home: <input type="text" ng-model="bin.home" /> <button ng-click="Del_bin($index)" class="btn btn-default">Del</button></li>
+			<li ng-repeat="bin in instance.bins">Nom: <guess-zone instances="instances" instance="instance" object="bin"><guess-tooltip></guess-tooltip><input type="text" ng-model="bin.name" guess-main path="'bins.name'" prop="'name'"/> -> Version: <input type="text" ng-model="bin.version" guess-child prop="'version'"/> -> Home: <input type="text" ng-model="bin.home" guess-child prop="'home'"/></guess-zone> <button ng-click="Del_bin($index)" class="btn btn-default">Del</button></li>
 			<button ng-click="Add_bin()" class="btn btn-default">Add</button>
 		</ul>
 		<p>Modules:</p>

@@ -70,7 +70,7 @@ angular.module('Hesperides.controllers', [])
 		var newInstance = {
 			'type': type,
 			'application': $scope.application,
-			'plateforme': $scope.plateforme
+			'platform': $scope.platform
 		};
 		
 		//Try to add more elements if there are instances already existing

@@ -2,7 +2,7 @@
 		Nom: <input type="text" ng-model="instance.name" required /> Type: {{instance.type}} <br />
 		Client: <input type="text" ng-model="instance.client" /> Version: <input type="text" ng-model="instance.application_version" /> URL: <input type="text" ng-model="instance.application_url" /><br />
 		Composant: <input type="text" ng-model="instance.component"/> sur la machine <input type="text" ng-model="instance.hostname" required /> -> <input type="text" ng-model="instance.ip" required  /> <br />
-		User: <guess-zone><guess-tooltip></guess-tooltip> <input type="text" ng-model="instance.user" guess-main prop="'user'" instances="instances" instance ="instance"/> -> <input type="text" ng-model="instance.home" /> </guess-zone><br />
+		User: <guess-zone><guess-tooltip></guess-tooltip> <input type="text" ng-model="instance.user" guess-main prop="'user'" /> -> <input type="text" ng-model="instance.home" /> </guess-zone><br />
 		Template puppet: <input type="text" ng-model="instance.puppet_template_path" />
 		<p>Options JVM Specifiques:</p>
 		<ul>

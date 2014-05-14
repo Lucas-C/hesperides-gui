@@ -181,6 +181,7 @@ angular.module('Hesperides.controllers', [])
 		return {
 			restrict: 'E',
 			controller: function($scope) {
+
 				this.hideTooltip = function() {
 					$scope.tooltipElement.addClass("ng-hide");	
 				};
@@ -206,11 +207,30 @@ angular.module('Hesperides.controllers', [])
 				
 				this.registerTooltip = function(element) {
 					$scope.tooltipElement = element;
+					this.hideTooltip();
 				}
 				
 				this.setProp = function(prop, value) {
 					$scope.instance[prop] = value;
 					$scope.$apply();
+				}
+				
+				this.findMatch = function(prop, chunk) {
+					var matchingInstances = $scope.instances.filter(function(item){ 
+						return item != $scope.instance && item[prop].startsWith(chunk); 
+					});
+					if(matchingInstances.length > 0) return matchingInstances[0].user;
+					else return '';
+				};
+				
+				this.showMatch = function(prop, chunck) {
+					$scope.chunck = chunck;
+					$scope.match = this.findMatch(prop, chunck);
+					if(this.hasMatch()){
+						this.showTooltip();
+					} else {
+						this.hideTooltip();
+					}
 				}
 				
 			}
@@ -224,8 +244,6 @@ angular.module('Hesperides.controllers', [])
 			link: function(scope, element, attr, guessZoneCtrl) {
 				
 				guessZoneCtrl.registerTooltip(element);
-				
-				guessZoneCtrl.hideTooltip();
 				
 				scope.getChunck = function() {
 					return guessZoneCtrl.getChunck()
@@ -253,7 +271,7 @@ angular.module('Hesperides.controllers', [])
 				
 				element.on('keyup', function(event) {
 					if(event.keyCode != 32){ //Not space key
-						scope.tryToGetMatch(this.value);
+						guessZoneCtrl.showMatch(scope.prop, this.value);
 					} else {
 						if(guessZoneCtrl.hasMatch()){
 							this.value = guessZoneCtrl.getMatch();
@@ -268,18 +286,8 @@ angular.module('Hesperides.controllers', [])
 				});
 				
 				element.on('focus', function(event) {
-					scope.tryToGetMatch(this.value);
+					guessZoneCtrl.showMatch(scope.prop, this.value);
 				});
-				
-				scope.tryToGetMatch = function(chunck) {
-					guessZoneCtrl.setChunck(chunck);
-					guessZoneCtrl.setMatch(InstanceUtils.findMatchingProp(scope.prop, chunck, scope.instances, scope.instance));				
-					if(guessZoneCtrl.hasMatch()){
-						guessZoneCtrl.showTooltip();
-					} else {
-						guessZoneCtrl.hideTooltip();
-					}
-				};
 			
 			}
 		};
@@ -297,11 +305,4 @@ if ( typeof String.prototype.startsWith != 'function' ) {
   String.prototype.startsWith = function( str ) {
     return str.length > 0 && this.substring( 0, str.length ) === str;
   }
-};
-InstanceUtils.findMatchingProp = function(prop, chunk, instances, currentInstance) {
-	var matchingInstances = instances.filter(function(instance){ 
-		return instance != currentInstance && instance[prop].startsWith(chunk); 
-	});
-	if(matchingInstances.length > 0) return matchingInstances[0].user;
-	else return '';
 };

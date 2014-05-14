@@ -180,7 +180,6 @@ angular.module('Hesperides.controllers', [])
   .directive('guessZone', function() {
 		return {
 			restrict: 'E',
-			scope: {},
 			controller: function($scope) {
 				this.hideTooltip = function() {
 					$scope.tooltipElement.addClass("ng-hide");	
@@ -190,7 +189,7 @@ angular.module('Hesperides.controllers', [])
 				};
 								
 				this.hasMatch = function() {
-					return $scope.match && $scope.match.length > 0
+					return $scope.match && $scope.match.length > 0 && $scope.match != $scope.chunck
 				}
 				this.setMatch = function(match){
 					$scope.match = match;
@@ -207,6 +206,11 @@ angular.module('Hesperides.controllers', [])
 				
 				this.registerTooltip = function(element) {
 					$scope.tooltipElement = element;
+				}
+				
+				this.setProp = function(prop, value) {
+					$scope.instance[prop] = value;
+					$scope.$apply();
 				}
 				
 			}
@@ -253,7 +257,7 @@ angular.module('Hesperides.controllers', [])
 					} else {
 						if(guessZoneCtrl.hasMatch()){
 							this.value = guessZoneCtrl.getMatch();
-							scope.instance[scope.prop] = guessZoneCtrl.getMatch();
+							guessZoneCtrl.setProp(scope.prop, guessZoneCtrl.getMatch());
 							guessZoneCtrl.hideTooltip();
 						}
 					}

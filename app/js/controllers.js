@@ -15,6 +15,14 @@ angular.module('Hesperides.controllers', [])
 	$scope.platform = $routeParams.platform;
 	$scope.editing = false;
 	
+	//Load data for app/platform
+	$scope.instances = []
+	Search.instances($routeParams.application, $routeParams.platform).then(function(instances){
+		$scope.instances = instances;
+	}, function(response) {
+		//failed
+	});
+	
 	//Define functions for App menu
 	$scope.Edit =  function(bool) {
 		$scope.editing = bool;
@@ -173,162 +181,9 @@ angular.module('Hesperides.controllers', [])
 		if($scope.instance){
 			$scope.instance.home = InstanceUtils.guessInstanceHome($scope.instance);
 		}
-	},true);
-	
-	
-	//Load data for app/platform
-	$scope.instances = []
-	Search.instances($routeParams.application, $routeParams.platform).then(function(instances){
-		$scope.instances = instances;
-	}, function(response) {
-		//failed
-	});		
+	},true);		
 			
-  }])
-  .directive('guessZone', function() {
-		return {
-			restrict: 'E',
-			scope: {
-				instances: '=',
-				instance: '=',
-				object: '='
-			},
-			controller: function($scope) {
-
-				this.hideTooltip = function() {
-					$scope.tooltipElement.addClass("ng-hide");	
-				};
-				
-				this.showTooltip = function() {
-					$scope.tooltipElement.removeClass("ng-hide");
-				};
-								
-				this.hasMatch = function() {
-					return this.getMatch().length > 0 && this.getMatch() != $scope.chunck
-				};
-				
-				this.getMatch = function() {
-					if($scope.match){
-						return $scope.match[$scope.main.prop];
-					} else return '';
-				};
-				
-				this.getChunck = function() {
-					return $scope.chunck;
-				};
-				
-				this.registerTooltip = function(element) {
-					$scope.tooltipElement = element;
-					this.hideTooltip();
-				};
-				
-				this.registerMain = function(element, prop) {
-					$scope.main = {
-						el: element,
-						prop: prop
-					}
-				};
-				
-				$scope.children = [];
-				this.registerChild = function(element, prop) {
-					var child = {
-						el: element,
-						prop: prop
-					}
-					$scope.children.push(child);
-				};
-				
-				this.updateObject = function() {
-					$scope.object[$scope.main.prop] = $scope.match[$scope.main.prop];
-					for(var i=0; i < $scope.children.length; i++){
-						$scope.object[$scope.children[i].prop] = $scope.match[$scope.children[i].prop];
-						$scope.children[i].el.value = $scope.match[$scope.children[i].prop];
-					}
-					$scope.$apply();
-				};
-				
-				this.showMatch = function(prop, chunck) {
-					$scope.chunck = chunck;
-					$scope.match = InstanceUtils.findMatch(prop, chunck, $scope.instances, $scope.instance);
-					if(this.hasMatch()){
-						this.showTooltip();
-					} else {
-						this.hideTooltip();
-					}
-				}
-				
-			}
-		};
-	})
-  .directive('guessTooltip', function(){
-		return {
-			restrict: 'E',
-			scope: {},
-			require: '^guessZone',
-			templateUrl : 'partials/tooltip.html',
-			link: function(scope, element, attr, guessZoneCtrl) {
-				
-				guessZoneCtrl.registerTooltip(element);
-				
-				scope.getChunck = function() {
-					return guessZoneCtrl.getChunck();
-				}
-				
-				scope.getGuessedPart = function() {
-					if(guessZoneCtrl.hasMatch()) return guessZoneCtrl.getMatch().replace(guessZoneCtrl.getChunck(), '');
-					else return '';
-				}
-				
-			}
-		};
-  })
-  .directive('guessChild', function() {
-		return {
-			require: '^guessZone',
-			scope: {
-				prop: '='
-			},
-			link: function(scope, element, attr, guessZoneCtrl) {
-				
-				guessZoneCtrl.registerChild(element, scope.prop);
-				
-			}
-		};
-  })
-  .directive('guessMain', function() {
-		return {
-			require: '^guessZone',
-			scope: {
-				prop: '=',
-				path: '='
-			},
-			link : function(scope, element, attr, guessZoneCtrl) {
-				
-				guessZoneCtrl.registerMain(element, scope.prop);
-				
-				element.on('keyup', function(event) {
-					if(event.keyCode != 32){ //Not space key
-						guessZoneCtrl.showMatch(scope.path, this.value);
-					} else {
-						if(guessZoneCtrl.hasMatch()){
-							this.value = guessZoneCtrl.getMatch();
-							guessZoneCtrl.updateObject();
-							guessZoneCtrl.hideTooltip();
-						}
-					}
-				});
-				
-				element.on('blur', function(event) {
-					guessZoneCtrl.hideTooltip();
-				});
-				
-				element.on('focus', function(event) {
-					guessZoneCtrl.showMatch(scope.path, this.value);
-				});
-			
-			}
-		};
-  });
+  }]);
   
 var InstanceUtils = {};
 InstanceUtils.guessInstanceHome = function(instance) {
@@ -337,49 +192,6 @@ InstanceUtils.guessInstanceHome = function(instance) {
 		home += "/"+instance.component;
 	}
 	return home;
-};
-
-
-InstanceUtils.lookIn = function(item, props, level, chunck) {
-	var itemProp = item[props[level]];
-	if(level == props.length - 1){ //dernier niveau d'objet
-		if(Object.prototype.toString.call( itemProp ) == '[object Array]'){
-			return null;
-		} else {
-			if(itemProp.startsWith(chunck)){
-				return item;
-			} else {
-				return null;
-			}
-		}
-	} else {
-		if(Object.prototype.toString.call( itemProp ) == '[object Array]'){//Is an array
-			var matchingObject;
-			for(var i=0; i < itemProp.length; i++){
-				matchingObject = InstanceUtils.lookIn(itemProp[i], props, level+1, chunck);
-				if(matchingObject != null) return matchingObject;
-			}
-			return null;
-		} else { //Is an object
-			return InstanceUtils.lookIn(itemProp, props, level+1, chunck);
-		}
-	}
-}
-				
-InstanceUtils.findMatch = function(prop, chunck, instances, instance) {
-	var props = prop.split(".");
-	var matchingObjects=[];
-	var matchingObject;
-	for(var i=0; i < instances.length; i++){
-		if(instances[i] != instance){
-			matchingObject = InstanceUtils.lookIn(instances[i], props, 0, chunck);
-			if(matchingObject != null){
-				matchingObjects.push(matchingObject);
-			}
-		}
-	}
-	if(matchingObjects.length > 0) return matchingObjects[0];
-	else return '';
 };
 
 if ( typeof String.prototype.startsWith != 'function' ) {

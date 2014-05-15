@@ -37,9 +37,9 @@ angular.module('Hesperides.controllers', [])
 		if($scope.instance && !saveInProgress){
 			saveInProgress = true;
 			if($scope.instance.id){
-				$scope.instance = Instance.save($scope.instance);
+				$scope.instance.$save();
 			} else {
-				$scope.instance = Instance.put($scope.instance);
+				$scope.instance.$put();
 			}
 			saveInProgress = false;
 		}
@@ -66,25 +66,21 @@ angular.module('Hesperides.controllers', [])
 	};
 	
 	$scope.AddInstance = function(type) {
-		var newInstance = {
-			'type': type,
-			'application': $scope.application,
-			'platform': $scope.platform,
-			'bins': [],
-			'modules': [],
-			'external_links': {
-				'jdbc': [],
-				'jms': [],
-				'jolt': [],
-				'was': []
-			},
-			'jvm_opts': {
-				'tuning': [],
-				'system': []
-			},
-			'ports': []
+		var newInstance = new Instance();
+		newInstance.type = type;
+		newInstance.application = $scope.application;
+		newInstance.platform = $scope.platform;
+		newInstance.bins = [];
+		newInstance.modules = [];
+		newInstance.jvm_optjs = { 'tuning': [],	'system': []};
+		newInstance.ports = [];
+		newInstance.external_links = {
+			'jdbc': [],
+			'jms': [],
+			'jolt': [],
+			'was': []
 		};
-		
+				
 		//Try to add more elements if there are instances already existing
 		if($scope.instances.length > 0){
 			newInstance.client = $scope.instances[0].client;

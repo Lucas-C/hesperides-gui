@@ -17,7 +17,9 @@ hesperidesServices.factory('Search', ['$http', function($http){
 
 		return {
 			instances: function(application, component) {
-				return $http.get('/search?application='+application+'&platform='+component);
+				return $http.get('/search?application='+application+'&platform='+component).then(function(result) {
+					return result.data;
+				});
 			}
 		};
 

@@ -404,9 +404,9 @@ Test.prepareHttpBackendStub = function($httpBackend) {
 				var putData = null;
 				$httpBackend.whenPUT('/rest/instances', function(data){putData = data; return true;}).
 					respond(function(){ 
-						var newInstance = putData;
+						var newInstance = JSON.parse(putData);
 						newInstance.id = 999;
-						return [200, newInstance, {}]
+						return [200, JSON.stringify(newInstance), {}]
 					});	
 					
 				$httpBackend.whenDELETE(/\/rest\/instances\/*/).respond(function(){ return [200, '', {}]});

@@ -13,12 +13,17 @@ hesperidesServices.factory('Instance', ['$resource', function($resource){
 }]);
 
 
-hesperidesServices.factory('Search', ['$http', function($http){
+hesperidesServices.factory('Search', ['$http', 'Instance', function($http, Instance){
 
 		return {
 			instances: function(application, component) {
-				return $http.get('/search?application='+application+'&platform='+component).then(function(result) {
-					return result.data;
+				return $http.get('/search?application='+application+'&platform='+component).then(function(response) {
+					var instances = [];
+					for(var i=0; i<response.data.length; i++){
+						var instance = new Instance(response.data[i]);
+						instances.push(instance);
+					}
+					return instances;
 				});
 			}
 		};

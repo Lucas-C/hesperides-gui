@@ -178,12 +178,8 @@ angular.module('Hesperides.controllers', [])
 	
 	//Load data for app/platform
 	$scope.instances = []
-	Search.instances($routeParams.application, $routeParams.platform).then(function(raw_instances){
-		//To be easily handled by Instance $resource
-		for(var i=0; i<raw_instances.length; i++){
-			var instance = new Instance(raw_instances[i]);
-			$scope.instances.push(instance);
-		}
+	Search.instances($routeParams.application, $routeParams.platform).then(function(instances){
+		$scope.instances = instances;
 	}, function(response) {
 		//failed
 	});		

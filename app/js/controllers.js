@@ -36,11 +36,10 @@ angular.module('Hesperides.controllers', [])
 		//if($scope.$instanceForm.$valid && !saveInProgress){
 		if($scope.instance && !saveInProgress){
 			saveInProgress = true;
-			//alert('saving');
 			if($scope.instance.id){
-				Instance.save($scope.instance);
+				$scope.instance = Instance.save($scope.instance);
 			} else {
-				Instance.put($scope.instance);
+				$scope.instance = Instance.put($scope.instance);
 			}
 			saveInProgress = false;
 		}

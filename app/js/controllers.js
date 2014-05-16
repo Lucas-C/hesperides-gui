@@ -30,6 +30,7 @@ angular.module('Hesperides.controllers', [])
 	
 	$scope.EditInstance = function(instance){
 		$scope.instance = instance;
+		$scope.instanceTemplate = 'partials/instance.html';
 		$scope.Edit(true);
 	};
 	
@@ -88,6 +89,7 @@ angular.module('Hesperides.controllers', [])
 			'jolt': [],
 			'was': []
 		};
+		newInstance.schemas = [];
 				
 		//Try to add more elements if there are instances already existing
 		if($scope.instances.length > 0){
@@ -128,6 +130,10 @@ angular.module('Hesperides.controllers', [])
 		$scope.instance.external_links.was.push({});		
 	};
 	
+	$scope.Add_schema = function() {
+		$scope.instance.schemas.push({});		
+	};
+	
 	$scope.Del_bin = function(index) {
 		$scope.instance.bins.splice(index, 1);		
 	};
@@ -154,6 +160,10 @@ angular.module('Hesperides.controllers', [])
 	
 	$scope.Del_was = function(index) {
 		$scope.instance.external_links.was.splice(index, 1);		
+	};
+	
+	$scope.Del_schema = function(index) {
+		$scope.instance.schemas.splice(index, 1);		
 	};
 	
 	//Define functions for form edition

@@ -1,0 +1,12 @@
+<form name="instanceForm" class="simple-form">
+		Nom: <input type="text" ng-model="instance.name" /> Type: {{instance.type}} <br />
+		Client: <input type="text" ng-model="instance.client" /> Version: <input type="text" ng-model="instance.application_version" /> URL: <input type="text" ng-model="instance.application_url" /><br />
+		Composant: <input type="text" ng-model="instance.component"/> sur la machine <guess-zone><guess-instancebucket instances="instances" instance="instance" field="'hostname'"></guess-instancebucket><guess-tooltip></guess-tooltip><input type="text" ng-model="instance.hostname" guess-input /> -> <input type="text" ng-model="instance.ip" /></guess-zone><br />
+		<p>Schemas:</p>
+		<ul>
+			<li ng-repeat="schema in instance.schemas track by $index">Nom: <guess-zone><guess-instancebucket instances="instances" instance="instance" object="schema" field="'schemas.name'"></guess-instancebucket><guess-tooltip></guess-tooltip><input type="text" ng-model="schema.name" guess-input /> -> Login: <input type="text" ng-model="schema.login" /> -> Password: <input type="text" ng-model="schema.password" /></guess-zone> <button ng-click="Del_schema($index)" class="btn btn-default">Del</button></li></li>
+			<button ng-click="Add_schema()" class="btn btn-default">Add</button>
+		</ul>
+</form>
+
+ 

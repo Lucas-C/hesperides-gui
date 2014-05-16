@@ -10,7 +10,7 @@
 				<p ng-repeat="instance in instances | filter : {type: 'WAS'}" /><button ng-click="EditInstance(instance)" class="btn btn-default">{{instance.name}}</button><button ng-click="DeleteInstance(instance)" class="btn btn-default">Del</button></p>
 			</td>
 			<td>
-				<p ng-repeat="instance in instances | filter : {type: 'SGDB'}" /><button ng-click="EditInstance(instance)" class="btn btn-default">{{instance.name}}</button><button ng-click="DeleteInstance(instance)" class="btn btn-default">Del</button></p>
+				<p ng-repeat="instance in instances | filter : {type: 'SGBD'}" /><button ng-click="EditInstance(instance)" class="btn btn-default">{{instance.name}}</button><button ng-click="DeleteInstance(instance)" class="btn btn-default">Del</button></p>
 			</td>
 		</tr>
 		<tr>
@@ -23,8 +23,10 @@
 		</tr>
 	</table>
 	
-	<div ng-show="editing" ng-include="'partials/instance.html'"></div>
-		
+	<span ng-switch="instance.type" ng-show="editing">
+		<div ng-switch-when="WAS"><div ng-include="'partials/instance-was.html'"></div></div>
+		<div ng-switch-when="SGBD"><div ng-include="'partials/instance-sgbd.html'"></div></div>
+	</span>
 	
 	<!--<div ng-view></div>-->
 

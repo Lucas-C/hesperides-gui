@@ -272,6 +272,26 @@ Test.wdiInstances = [
 									"number": 55011
 								}
 							]
+						},
+						{
+							"id": 4,
+							"type": "SGBD",
+							"application": "WDI",
+							"application_fullname": "Application WDI",
+							"application_version": "2013-04",
+							"application_url": "usl.wsmobile.voyages-sncf.com",
+							"platform": "INT1",
+							"client": "SAB",
+							"component": "WDI",
+							"name": "BIWDI09",
+							"schemas": [ {
+									"name": "UIWIVMO1",
+									"login": "uiwivmo1",
+									"password": "uiwivmo1"
+								}
+							], 
+							"hostname": "GRIANTE",
+							"ip": "10.98.208.68",
 						}
 					];
 Test.singleInstance = {

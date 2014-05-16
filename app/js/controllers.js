@@ -184,13 +184,7 @@ angular.module('Hesperides.controllers', [])
 	},true);
 			
   }]);
-  
-function InstanceBucketMatcher(instances, instance, objectToUpdate, field) {
-	
-	
-	
-};
-  
+ 
 var InstanceUtils = {};
 InstanceUtils.guessInstanceHome = function(instance) {
 	var home = "/appl/"+instance.user;

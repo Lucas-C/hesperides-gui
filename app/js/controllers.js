@@ -83,12 +83,7 @@ angular.module('Hesperides.controllers', [])
 		newInstance.modules = [];
 		newInstance.jvm_optjs = { 'tuning': [],	'system': []};
 		newInstance.ports = [];
-		newInstance.external_links = {
-			'jdbc': [],
-			'jms': [],
-			'jolt': [],
-			'was': []
-		};
+		newInstance.links = [];
 		newInstance.schemas = [];
 				
 		//Try to add more elements if there are instances already existing
@@ -114,24 +109,8 @@ angular.module('Hesperides.controllers', [])
 		$scope.instance.ports.push({});		
 	};
 	
-	$scope.Add_jdbc = function() {
-		$scope.instance.external_links.jdbc.push({});		
-	};
-	
-	$scope.Add_jms = function() {
-		$scope.instance.external_links.jms.push({});		
-	};
-	
-	$scope.Add_jolt = function() {
-		$scope.instance.external_links.jolt.push({});		
-	};
-	
-	$scope.Add_was = function() {
-		$scope.instance.external_links.was.push({});		
-	};
-	
-	$scope.Add_schema = function() {
-		$scope.instance.schemas.push({});		
+	$scope.Add_link = function(type) {
+		$scope.instance.links.push({"type": type});		
 	};
 	
 	$scope.Del_bin = function(index) {
@@ -146,25 +125,10 @@ angular.module('Hesperides.controllers', [])
 		$scope.instance.ports.splice(index, 1);	
 	};
 	
-	$scope.Del_jdbc = function(index) {
-		$scope.instance.external_links.jdbc.splice(index, 1);		
+	$scope.Del_link = function(link) {
+		$scope.instance.links.splice($scope.instance.links.indexOf(link), 1);		
 	};
-	
-	$scope.Del_jms = function(index) {
-		$scope.instance.external_links.jms.splice(index, 1);		
-	};
-	
-	$scope.Del_jolt = function(index) {
-		$scope.instance.external_links.jolt.splice(index, 1);		
-	};
-	
-	$scope.Del_was = function(index) {
-		$scope.instance.external_links.was.splice(index, 1);		
-	};
-	
-	$scope.Del_schema = function(index) {
-		$scope.instance.schemas.splice(index, 1);		
-	};
+
 	
 	//Define functions for form edition
 	

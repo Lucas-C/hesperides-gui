@@ -79,8 +79,8 @@ angular.module('Hesperides.directives', []).
 				};
 				
 				scope.getGuessedPart = function() {
-					scope.match = guessZoneCtrl.getMatch();
-					if(scope.match) return scope.match.replace(guessZoneCtrl.getChunck(), '');
+					var match = guessZoneCtrl.getMatch();
+					if(match) return match.replace(guessZoneCtrl.getChunck(), '');
 					else return '';
 				};
 				
@@ -95,7 +95,8 @@ angular.module('Hesperides.directives', []).
 			instances: '=',
 			instance: '=',
 			object: '=',
-			field: '='
+			field: '=',
+			bucket: '='
 		},
 		link: function(scope, element, attr, guessZoneCtrl) {
 			
@@ -108,12 +109,19 @@ angular.module('Hesperides.directives', []).
 				var fields = scope.field.split(".");
 				var matchingObjects=[];
 				var matchingObject;
-				for(var i=0; i < scope.instances.length; i++){
-					if(scope.instances[i].type == scope.instance.type){
-						matchingObject = scope.findMatchInObject(scope.instances[i], fields, 0, chunck);
-						if(matchingObject != null){
-							matchingObjects.push(matchingObject);
+				var bucket = [];
+				if(scope.bucket){
+					for(var i=0; i < scope.instances.length; i++){
+						if(scope.instances[i].type == scope.instance.type){
+							bucket = bucket.concat(scope.instances[i][scope.bucket]);
 						}
+					}
+				} else {
+					bucket = scope.instances.filter(function(instance){ return instance.type == scope.instance.type });
+				}
+				for(var i=0; i < bucket.length; i++){
+					if(scope.findMatchInObject(bucket[i], fields, 0, chunck)){
+						matchingObjects.push(bucket[i]);
 					}
 				}
 				if(matchingObjects.length > 0) scope.matchingObject = matchingObjects[0];
@@ -125,12 +133,20 @@ angular.module('Hesperides.directives', []).
 			};
 			
 			scope.getMatch = function() {
-				if(scope.matchingObject) return scope.matchingObject[scope.prop];
+				var fields = scope.field.split(".");
+				if(scope.matchingObject){
+					var value = scope.matchingObject[fields[0]];
+					for(var i = 1; i<fields.length; i++){
+						value = value[fields[i]];
+					}
+					return value;
+				}
+				
 			};
 			
 			scope.update = function() {
 				//If an object to update was defined, we update the full object
-				//Otherwise, we update a single propertie on instance
+				//Otherwise, we update a single property on instance
 				if(scope.object != null){
 					for(var prop in scope.matchingObject){
 						scope.object[prop] = scope.matchingObject[prop];
@@ -144,29 +160,30 @@ angular.module('Hesperides.directives', []).
 			/* Private method */
 			scope.findMatchInObject = function(item, fields, level, chunck) {
 				if(scope.object){
-					if(item == scope.object) return null;
+					if(item == scope.object) return false;
 				} else {
-					if(item == scope.instance) return null;
+					if(item == scope.instance) return false;
 				}
 				var itemProp = item[fields[level]];
 				if(level == fields.length - 1){ //dernier niveau d'objet
 					if(Object.prototype.toString.call( itemProp ) == '[object Array]'){
-						return null;
+						return false;
 					} else {
-						if(itemProp.startsWith(chunck) && itemProp != chunck){
-							return item;
+						if(itemProp != null && itemProp.startsWith(chunck) && itemProp != chunck){
+							return true;
 						} else {
-							return null;
+							return false;
 						}
 					}
 				} else {
 					if(Object.prototype.toString.call( itemProp ) == '[object Array]'){//Is an array
 						var matchingObject;
 						for(var i=0; i < itemProp.length; i++){
-							matchingObject = scope.findMatchInObject(itemProp[i], fields, level+1, chunck);
-							if(matchingObject != null) return matchingObject;
+							if(scope.findMatchInObject(itemProp[i], fields, level+1, chunck)){
+								return true;
+							}
 						}
-						return null;
+						return false;
 					} else { //Is an object
 						return scope.findMatchInObject(itemProp, fields, level+1, chunck);
 					}
@@ -205,3 +222,4 @@ angular.module('Hesperides.directives', []).
 			}
 		};
   });
+  

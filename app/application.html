@@ -1,24 +1,16 @@
 	<h3>Application {{application}} {{platform}}</h3>
 	
 	<table>
-		<tr>
-			<td>Tomcat</td>
-			<td>SGBD</td>
+		<tr  style="padding: 0px 0px 10px 0px; ">
+			<td style=" border-bottom-style: solid; border-width:2px; padding-left: 10px; font-weight:bold; ">TOMCAT <button ng-click="AddInstance('WAS')" class="btn btn-default">+</button></td>
+			<td style=" border-bottom-style: solid; border-width:2px; padding-left: 10px; font-weight:bold;">SGBD <button ng-click="AddInstance('SGBD')" class="btn btn-default">+</button></td>
 		</tr>
 		<tr>
 			<td>
-				<p ng-repeat="instance in instances | filter : {type: 'WAS'}" /><button ng-click="EditInstance(instance)" class="btn btn-default">{{instance.name}}</button><button ng-click="DeleteInstance(instance)" class="btn btn-default">Del</button></p>
+				<p ng-repeat="instance in instances | filter : {type: 'WAS'}" /><button ng-click="EditInstance(instance)" class="btn btn-default">{{instance.name}}</button><button ng-click="DeleteInstance(instance)" class="btn btn-default">-</button></p>
 			</td>
-			<td>
-				<p ng-repeat="instance in instances | filter : {type: 'SGBD'}" /><button ng-click="EditInstance(instance)" class="btn btn-default">{{instance.name}}</button><button ng-click="DeleteInstance(instance)" class="btn btn-default">Del</button></p>
-			</td>
-		</tr>
-		<tr>
-			<td>
-				<button ng-click="AddInstance('WAS')" class="btn btn-default">Add</button>
-			</td>
-			<td>
-				<button ng-click="AddInstance('SGBD')" class="btn btn-default">Add</button>
+			<td valign="top">
+				<p ng-repeat="instance in instances | filter : {type: 'SGBD'}" /><button ng-click="EditInstance(instance)" class="btn btn-default">{{instance.name}}/{{instance.schema}}</button><button ng-click="DeleteInstance(instance)" class="btn btn-default">-</button></p>
 			</td>
 		</tr>
 	</table>

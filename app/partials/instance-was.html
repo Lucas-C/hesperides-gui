@@ -11,38 +11,38 @@
 		</ul>
 		<p>Binaires requis:</p>
 		<ul>
-			<li ng-repeat="bin in instance.bins track by $index">Nom: <guess-zone><guess-instancebucket instances="instances" instance="instance" object="bin" field="'bins.name'"></guess-instancebucket><guess-tooltip></guess-tooltip><input type="text" ng-model="bin.name" guess-input /> -> Version: <input type="text" ng-model="bin.version" /> -> Home: <input type="text" ng-model="bin.home" /></guess-zone> <button ng-click="Del_bin($index)" class="btn btn-default">Del</button></li>
+			<li ng-repeat="bin in instance.bins track by $index">Nom: <guess-zone><guess-instancebucket instances="instances" instance="instance" bucket="'bins'" object="bin" field="'name'"></guess-instancebucket><guess-tooltip></guess-tooltip><input type="text" ng-model="bin.name" guess-input /> -> Version: <input type="text" ng-model="bin.version" /> -> Home: <input type="text" ng-model="bin.home" /></guess-zone> <button ng-click="Del_bin($index)" class="btn btn-default">Del</button></li>
 			<button ng-click="Add_bin()" class="btn btn-default">Add</button>
 		</ul>
 		<p>Modules:</p>
 		<ul>
-			<li ng-repeat="module in instance.modules track by $index">Nom: <guess-zone><guess-instancebucket instances="instances" instance="instance" object="module" field="'modules.name'"></guess-instancebucket><guess-tooltip></guess-tooltip><input type="text" ng-model="module.name" guess-input /> -> War: <input type="text" ng-model="module.war" /> -> Context: <input type="text" ng-model="module.context" /></guess-zone> <button ng-click="Del_module($index)" class="btn btn-default">Del</button></li></li>
+			<li ng-repeat="module in instance.modules track by $index">Nom: <guess-zone><guess-instancebucket instances="instances" instance="instance" bucket="'modules'" object="module" field="'name'"></guess-instancebucket><guess-tooltip></guess-tooltip><input type="text" ng-model="module.name" guess-input /> -> War: <input type="text" ng-model="module.war" /> -> Context: <input type="text" ng-model="module.context" /></guess-zone> <button ng-click="Del_module($index)" class="btn btn-default">Del</button></li>
 			<button ng-click="Add_module()" class="btn btn-default">Add</button>
 		</ul>
 		<p>Ports:</p>
 		<ul>
-			<li ng-repeat="port in instance.ports track by $index">Nom: <guess-zone><guess-instancebucket instances="instances" instance="instance" object="port" field="'ports.name'"></guess-instancebucket><guess-tooltip></guess-tooltip><input type="text" ng-model="port.name" guess-input /> -> Num: <input type="text" ng-model="port.number" /></guess-zone> <button ng-click="Del_port($index)" class="btn btn-default">Del</button></li></li>
+			<li ng-repeat="port in instance.ports track by $index">Nom: <guess-zone><guess-instancebucket instances="instances" instance="instance" bucket="'ports'" object="port" field="'name'"></guess-instancebucket><guess-tooltip></guess-tooltip><input type="text" ng-model="port.name" guess-input /> -> Num: <input type="text" ng-model="port.number" /></guess-zone> <button ng-click="Del_port($index)" class="btn btn-default">Del</button></li></li>
 			<button ng-click="Add_port()" class="btn btn-default">Add</button>
 		</ul>
 		<p>JDBC:</p>
 		<ul>
-			<li ng-repeat="jdbc in instance.external_links.jdbc track by $index">Nom: <guess-zone><guess-instancebucket instances="instances" instance="instance" object="jdbc" field="'external_links.jdbc.name'"></guess-instancebucket><guess-tooltip></guess-tooltip><input type="text" ng-model="jdbc.name" guess-input /> -> Schema: <input type="text" ng-model="jdbc.schema" /> -> Pool(min -max): <input type="text" ng-model="jdbc.pool.min" />-<input type="text" ng-model="jdbc.pool.max"/></guess-zone> <button ng-click="Del_jdbc($index)" class="btn btn-default">Del</button></li></li>
-			<button ng-click="Add_jdbc()" class="btn btn-default">Add</button>
+			<li ng-repeat="link in instance.links | filter : {type: 'JDBC'} track by $index ">Nom: <guess-zone><guess-instancebucket instances="instances" instance="instance" bucket="'links'" object="link" field="'key.name'"></guess-instancebucket><guess-tooltip></guess-tooltip><input type="text" ng-model="link.key.name" guess-input /> -> Schema: <input type="text" ng-model="link.key.schema" /> -> Pool(min -max): <input type="text" ng-model="link.configuration.pool_min" />-<input type="text" ng-model="link.configuration.pool_max"/></guess-zone> <button ng-click="Del_link(link)" class="btn btn-default">Del</button></li>
+			<button ng-click="Add_link('JDBC')" class="btn btn-default">Add</button>
 		</ul>
 		<p>JMS:</p>
 		<ul>
-			<li ng-repeat="jms in instance.external_links.jms track by $index">Nom: <guess-zone><guess-instancebucket instances="instances" instance="instance" object="jms" field="'external_links.jms.name'"></guess-instancebucket><guess-tooltip></guess-tooltip><input type="text" ng-model="jms.name" guess-input /> Type: <input type="text" ng-model="jms.type" /> -> Trigramme: <input type="text" ng-model="jms.shortName" /> -> Instance: <input type="text" ng-model="jms.instance" /></guess-zone> <button ng-click="Del_jms($index)" class="btn btn-default">Del</button></li></li>
-			<button ng-click="Add_jms()" class="btn btn-default">Add</button>
+			<li ng-repeat="link in instance.links | filter : {type: 'JMS'} track by $index ">Nom: <guess-zone><guess-instancebucket instances="instances" instance="instance" bucket="'links'" object="link" field="'key.name'"></guess-instancebucket><guess-tooltip></guess-tooltip><input type="text" ng-model="link.key.name" guess-input /> Type: <input type="text" ng-model="link.configuration.type" /> -> Trigramme: <input type="text" ng-model="link.configuration.amq_type" /> -> Instance: <input type="text" ng-model="link.key.instance" /></guess-zone> <button ng-click="Del_link(link)" class="btn btn-default">Del</button></li>
+			<button ng-click="Add_link('JMS')" class="btn btn-default">Add</button>
 		</ul>
 		<p>JOLT:</p>
 		<ul>
-			<li ng-repeat="jolt in instance.external_links.jolt track by $index">Hote: <guess-zone><guess-instancebucket instances="instances" instance="instance" object="jolt" field="'external_links.jolt.name'"></guess-instancebucket><guess-tooltip></guess-tooltip><input type="text" ng-model="jolt.host" guess-input /> -> Gateway: <input type="text" ng-model="jolt.gateway" /> -> Pool(min-max): <input type="text" ng-model="jolt.pool.min" />-<input type="text" ng-model="jolt.pool.max" /></guess-zone> <button ng-click="Del_jolt($index)" class="btn btn-default">Del</button></li></li>
-			<button ng-click="Add_jolt()" class="btn btn-default">Add</button>
+			<li ng-repeat="link in instance.links | filter : {type: 'JOLT'} track by $index ">Hote: <guess-zone><guess-instancebucket instances="instances" instance="instance" bucket="'links'" object="link" field="'key.host'"></guess-instancebucket><guess-tooltip></guess-tooltip><input type="text" ng-model="link.key.host" guess-input /> -> Gateway: <input type="text" ng-model="link.key.gateway" /> -> Pool(min-max): <input type="text" ng-model="link.configuration.pool_min" />-<input type="text" ng-model="link.configuration.pool_max" /></guess-zone> <button ng-click="Del_link(link)" class="btn btn-default">Del</button></li>
+			<button ng-click="Add_link('JOLT')" class="btn btn-default">Add</button>
 		</ul>
 		<p>WAS:</p>
 		<ul>
-			<li ng-repeat="was in instance.external_links.was track by $index">Nom: <guess-zone><guess-instancebucket instances="instances" instance="instance" object="was" field="'external_links.was.name'"></guess-instancebucket><guess-tooltip></guess-tooltip><input type="text" ng-model="was.name" guess-input /> -> Instance: <input type="text" ng-model="was.instances" /></guess-zone> <button ng-click="Del_was($index)" class="btn btn-default">Del</button></li></li>
-			<button ng-click="Add_was()" class="btn btn-default">Add</button>
+			<li ng-repeat="link in instance.links | filter : {type: 'WAS'} track by $index ">Nom: <guess-zone><guess-instancebucket instances="instances" instance="instance" bucket="'links'" object="link" field="'key.name'"></guess-instancebucket><guess-tooltip></guess-tooltip><input type="text" ng-model="link.key.name" guess-input /> -> Instance: <input type="text" ng-model="link.key.instance" /></guess-zone> <button ng-click="Del_link(link)" class="btn btn-default">Del</button></li>
+			<button ng-click="Add_link('WAS')" class="btn btn-default">Add</button>
 		</ul>
 </form>
 

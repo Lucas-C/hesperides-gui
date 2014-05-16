@@ -40,42 +40,50 @@ Test.wdiInstances = [
 									"context": "miwIolog"
 								}
 							],
-							"external_links": {
-								"jdbc": [
-									{
+							"links": [
+								{
+									"type": "JDBC",
+									"key": {
+										"name": "biwdi09",
+										"schema": "uiwivmo1"
+									},
+									"configuration": {
 										"name": "wdi/ds",
 										"schema": "uiwivmo1",
-										"pool": {
-											"min": 1,
-											"max": 5
-										}
+										"pool_min": 1,
+										"pool_max": 5
 									}
-								],
-								"jms": [
-									{
+								},
+								{
+									"type": "JMS",
+									"key": {
 										"name": "ConnectionFactoryMetrix",
-										"type": "AMQ",
 										"shortName": "MTX",
-										"instance": "VMOCLOU51AMQMTX",
-									}
-								],
-								"jolt": [
-									{
-										"host": "TUX1",
-										"gateway": "joltpoolSN",
-										"pool": {
-											"min": 1,
-											"max": 5
-										}
-									}
-								],
-								"was": [
-									{
-										"name": "ESB",
-										"instances": ["VMODENU51MIW"]
+										"instance": "VMOCLOU51AMQMTX"
 									},
-								]
-							},
+									"configuration": {
+										"type": "AMQ"
+									}
+								},
+								{
+									"type": "JOLT",
+									"key": {
+										"host": "TUX1",
+										"gateway": "joltpoolSN"
+									},
+									"configuration": {
+										"pool_min": 1,
+										"pool_max": 2
+									}
+								},
+								{
+									"type": "WAS",
+									"key": {
+										"name": "ESB",
+										"instance": "VMODENU51MIW"
+									}
+								}
+							],
 							"jvm_opts": {
 								"tuning": ["-Xmsx=1024"],
 								"system": ["-Dsyslog=localhost:3128"]
@@ -131,42 +139,50 @@ Test.wdiInstances = [
 									"context": "miwIolog"
 								}
 							],
-							"external_links": {
-								"jdbc": [
-									{
+							"links": [
+								{
+									"type": "JDBC",
+									"key": {
+										"name": "biwdi09",
+										"schema": "uiwivmo1"
+									},
+									"configuration": {
 										"name": "wdi/ds",
 										"schema": "uiwivmo1",
-										"pool": {
-											"min": 1,
-											"max": 5
-										}
+										"pool_min": 1,
+										"pool_max": 5
 									}
-								],
-								"jms": [
-									{
+								},
+								{
+									"type": "JMS",
+									"key": {
 										"name": "ConnectionFactoryMetrix",
-										"type": "AMQ",
 										"shortName": "MTX",
-										"instance": "VMOCLOU51AMQMTX",
-									}
-								],
-								"jolt": [
-									{
-										"host": "TUX1",
-										"gateway": "joltpoolSN",
-										"pool": {
-											"min": 1,
-											"max": 5
-										}
-									}
-								],
-								"was": [
-									{
-										"name": "ESB",
-										"instances": ["VMODENU51MIW"]
+										"instance": "VMOCLOU51AMQMTX"
 									},
-								]
-							},
+									"configuration": {
+										"type": "AMQ"
+									}
+								},
+								{
+									"type": "JOLT",
+									"key": {
+										"host": "TUX1",
+										"gateway": "joltpoolSN"
+									},
+									"configuration": {
+										"pool_min": 1,
+										"pool_max": 2
+									}
+								},
+								{
+									"type": "WAS",
+									"key": {
+										"name": "ESB",
+										"instance": "VMODENU51MIW"
+									}
+								}
+							],
 							"jvm_opts": {
 								"tuning": ["-Xmsx=1024"],
 								"system": ["-Dsyslog=localhost:3128"]
@@ -222,42 +238,50 @@ Test.wdiInstances = [
 									"context": "miwIolog"
 								}
 							],
-							"external_links": {
-								"jdbc": [
-									{
+							"links": [
+								{
+									"type": "JDBC",
+									"key": {
+										"name": "biwdi09",
+										"schema": "uiwivmo1"
+									},
+									"configuration": {
 										"name": "wdi/ds",
 										"schema": "uiwivmo1",
-										"pool": {
-											"min": 1,
-											"max": 5
-										}
+										"pool_min": 1,
+										"pool_max": 5
 									}
-								],
-								"jms": [
-									{
+								},
+								{
+									"type": "JMS",
+									"key": {
 										"name": "ConnectionFactoryMetrix",
-										"type": "AMQ",
 										"shortName": "MTX",
-										"instance": "VMOCLOU51AMQMTX",
-									}
-								],
-								"jolt": [
-									{
-										"host": "TUX1",
-										"gateway": "joltpoolSN",
-										"pool": {
-											"min": 1,
-											"max": 5
-										}
-									}
-								],
-								"was": [
-									{
-										"name": "ESB",
-										"instances": ["VMODENU51MIW"]
+										"instance": "VMOCLOU51AMQMTX"
 									},
-								]
-							},
+									"configuration": {
+										"type": "AMQ"
+									}
+								},
+								{
+									"type": "JOLT",
+									"key": {
+										"host": "TUX1",
+										"gateway": "joltpoolSN"
+									},
+									"configuration": {
+										"pool_min": 1,
+										"pool_max": 2
+									}
+								},
+								{
+									"type": "WAS",
+									"key": {
+										"name": "ESB",
+										"instance": "VMODENU51MIW"
+									}
+								}
+							],
 							"jvm_opts": {
 								"tuning": ["-Xmsx=1024"],
 								"system": ["-Dsyslog=localhost:3128"]
@@ -284,12 +308,26 @@ Test.wdiInstances = [
 							"client": "SAB",
 							"component": "WDI",
 							"name": "BIWDI09",
-							"schemas": [ {
-									"name": "UIWIVMO1",
-									"login": "uiwivmo1",
-									"password": "uiwivmo1"
-								}
-							], 
+							"schema": "UIWIVMO1",
+							"login": "uiwivmo1",
+							"password": "uiwivmo1",
+							"hostname": "GRIANTE",
+							"ip": "10.98.208.68",
+						},
+						{
+							"id": 5,
+							"type": "SGBD",
+							"application": "WDI",
+							"application_fullname": "Application WDI",
+							"application_version": "2013-04",
+							"application_url": "usl.wsmobile.voyages-sncf.com",
+							"platform": "INT1",
+							"client": "SAB",
+							"component": "WDI",
+							"name": "BIWDI09",
+							"schema": "UIWIVMO2",
+							"login": "uiwivmo2",
+							"password": "uiwivmo2",
 							"hostname": "GRIANTE",
 							"ip": "10.98.208.68",
 						}

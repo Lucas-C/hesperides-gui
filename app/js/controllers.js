@@ -181,9 +181,15 @@ angular.module('Hesperides.controllers', [])
 		if($scope.instance){
 			$scope.instance.home = InstanceUtils.guessInstanceHome($scope.instance);
 		}
-	},true);		
+	},true);
 			
   }]);
+  
+function InstanceBucketMatcher(instances, instance, objectToUpdate, field) {
+	
+	
+	
+};
   
 var InstanceUtils = {};
 InstanceUtils.guessInstanceHome = function(instance) {

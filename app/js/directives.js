@@ -109,7 +109,7 @@ angular.module('Hesperides.directives', []).
 				var matchingObjects=[];
 				var matchingObject;
 				for(var i=0; i < scope.instances.length; i++){
-					if(scope.instances[i] != scope.instance){
+					if(scope.instances[i].type == scope.instance.type){
 						matchingObject = scope.findMatchInObject(scope.instances[i], fields, 0, chunck);
 						if(matchingObject != null){
 							matchingObjects.push(matchingObject);
@@ -143,6 +143,11 @@ angular.module('Hesperides.directives', []).
 			
 			/* Private method */
 			scope.findMatchInObject = function(item, fields, level, chunck) {
+				if(scope.object){
+					if(item == scope.object) return null;
+				} else {
+					if(item == scope.instance) return null;
+				}
 				var itemProp = item[fields[level]];
 				if(level == fields.length - 1){ //dernier niveau d'objet
 					if(Object.prototype.toString.call( itemProp ) == '[object Array]'){

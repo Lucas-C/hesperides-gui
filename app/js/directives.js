@@ -121,7 +121,7 @@ angular.module('Hesperides.directives', []).
 			};
 			
 			scope.hasMatch = function() {
-				return git statuscope.matchingObject != null;
+				return scope.matchingObject != null;
 			};
 			
 			scope.getMatch = function() {

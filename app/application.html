@@ -2,15 +2,39 @@
 	
 	<table>
 		<tr  style="padding: 0px 0px 10px 0px; ">
-			<td style=" border-bottom-style: solid; border-width:2px; padding-left: 10px; font-weight:bold; ">TOMCAT <button ng-click="AddInstance('WAS')" class="btn btn-default">+</button></td>
-			<td style=" border-bottom-style: solid; border-width:2px; padding-left: 10px; font-weight:bold;">SGBD <button ng-click="AddInstance('SGBD')" class="btn btn-default">+</button></td>
+			<td style=" border-bottom-style: solid; border-width:2px; padding-left: 10px; font-weight:bold; ">AMQ <button ng-click="AddInstance('AMQ')" class="btn btn-default">+</button></td>
+			<td style=" border-bottom-style: solid; border-width:2px; padding-left: 10px; font-weight:bold; ">ATO <button ng-click="AddInstance('ATO')" class="btn btn-default">+</button></td>
+			<td style=" border-bottom-style: solid; border-width:2px; padding-left: 10px; font-weight:bold; ">ESB <button ng-click="AddInstance('ESB')" class="btn btn-default">+</button></td>
+			<td style=" border-bottom-style: solid; border-width:2px; padding-left: 10px; font-weight:bold; ">HAP <button ng-click="AddInstance('HAP')" class="btn btn-default">+</button></td>
+			<td style=" border-bottom-style: solid; border-width:2px; padding-left: 10px; font-weight:bold; ">HTTP <button ng-click="AddInstance('HTTP')" class="btn btn-default">+</button></td>
+			<td style=" border-bottom-style: solid; border-width:2px; padding-left: 10px; font-weight:bold; ">SGBD <button ng-click="AddInstance('SGBD')" class="btn btn-default">+</button></td>
+			<td style=" border-bottom-style: solid; border-width:2px; padding-left: 10px; font-weight:bold; ">TUX <button ng-click="AddInstance('TUX')" class="btn btn-default">+</button></td>
+			<td style=" border-bottom-style: solid; border-width:2px; padding-left: 10px; font-weight:bold; ">WAS <button ng-click="AddInstance('WAS')" class="btn btn-default">+</button></td>
 		</tr>
 		<tr>
-			<td>
-				<p ng-repeat="instance in instances | filter : {type: 'WAS'}" /><button ng-click="EditInstance(instance)" class="btn btn-default">{{instance.name}}</button><button ng-click="DeleteInstance(instance)" class="btn btn-default">-</button></p>
+			<td valign="top">
+				<p ng-repeat="instance in instances | filter : {type: 'AMQ'}" /><button ng-click="EditInstance(instance)" class="btn btn-default">{{instance.name}}/{{instance.schema}}</button><button ng-click="DeleteInstance(instance)" class="btn btn-default">-</button></p>
+			</td>
+			<td valign="top">
+				<p ng-repeat="instance in instances | filter : {type: 'ATO'}" /><button ng-click="EditInstance(instance)" class="btn btn-default">{{instance.name}}</button><button ng-click="DeleteInstance(instance)" class="btn btn-default">-</button></p>
+			</td>
+			<td valign="top">
+				<p ng-repeat="instance in instances | filter : {type: 'ESB'}" /><button ng-click="EditInstance(instance)" class="btn btn-default">{{instance.name}}/{{instance.schema}}</button><button ng-click="DeleteInstance(instance)" class="btn btn-default">-</button></p>
+			</td>
+			<td valign="top">
+				<p ng-repeat="instance in instances | filter : {type: 'HAP'}" /><button ng-click="EditInstance(instance)" class="btn btn-default">{{instance.name}}/{{instance.schema}}</button><button ng-click="DeleteInstance(instance)" class="btn btn-default">-</button></p>
+			</td>
+			<td valign="top">
+				<p ng-repeat="instance in instances | filter : {type: 'HTTP'}" /><button ng-click="EditInstance(instance)" class="btn btn-default">{{instance.name}}/{{instance.schema}}</button><button ng-click="DeleteInstance(instance)" class="btn btn-default">-</button></p>
 			</td>
 			<td valign="top">
 				<p ng-repeat="instance in instances | filter : {type: 'SGBD'}" /><button ng-click="EditInstance(instance)" class="btn btn-default">{{instance.name}}/{{instance.schema}}</button><button ng-click="DeleteInstance(instance)" class="btn btn-default">-</button></p>
+			</td>
+			<td valign="top">
+				<p ng-repeat="instance in instances | filter : {type: 'TUX'}" /><button ng-click="EditInstance(instance)" class="btn btn-default">{{instance.name}}/{{instance.schema}}</button><button ng-click="DeleteInstance(instance)" class="btn btn-default">-</button></p>
+			</td>
+			<td valign="top">
+				<p ng-repeat="instance in instances | filter : {type: 'WAS'}" /><button ng-click="EditInstance(instance)" class="btn btn-default">{{instance.name}}/{{instance.schema}}</button><button ng-click="DeleteInstance(instance)" class="btn btn-default">-</button></p>
 			</td>
 		</tr>
 	</table>

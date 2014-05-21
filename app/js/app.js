@@ -9,15 +9,19 @@ angular.module('Hesperides', [
   'Hesperides.services',
   'Hesperides.directives'
 ]).
-config(['$routeProvider', function($routeProvider) {
+    config(['$routeProvider', function ($routeProvider) {
   $routeProvider.
 		when('/application/:application/:platform', {
 			templateUrl: 'application.html',
-			controller: 'ApplicationCtrl',
+                controller: 'ApplicationCtrl'
 		}).
 		when('/instances', {
 				templateUrl: 'partials/instance-list.html', 
 				controller: 'InstancesCtrl'
+            }).
+            when('/search', {
+                templateUrl: 'partials/search.html',
+                controller: 'FulltextCtrl'
 		}).
 		otherwise({
 			redirectTo: '/search'

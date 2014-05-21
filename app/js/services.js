@@ -30,3 +30,19 @@ hesperidesServices.factory('Search', ['$http', 'Instance', function($http, Insta
 
 }]);
 
+
+hesperidesServices.factory('searchFulltext', ['$http', 'Instance', function ($http, Instance) {
+
+    return function (keywords) {
+        return $http.get('http://localhost:8080/rest/search/fulltext/' + keywords).then(function (response) {
+
+            var instances = [];
+            for (var i = 0; i < response.data.length; i++) {
+                var instance = new Instance(response.data[i]);
+                instances.push(instance);
+            }
+            return instances;
+        });
+    };
+
+}]);

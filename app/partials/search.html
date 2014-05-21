@@ -1,0 +1,5 @@
+<div ng-controller="FulltextCtrl">
+    <input type="text" ng-change="search(keywords)" ng-model="keywords">
+    <p ng-repeat="searchKey in searchKeys"><a href="/app/index.html#/application/{{searchKey.application}}/{{searchKey.platform}}">{{searchKey.application}}/{{searchKey.platform}}</a></p>
+
+</div>

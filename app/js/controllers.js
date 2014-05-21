@@ -8,6 +8,15 @@ angular.module('Hesperides.controllers', [])
 	$scope.instances = Instance.all();		
 			
   }])
+    .controller('FulltextCtrl', ['$scope', 'searchFulltext', function ($scope, searchFulltext) {
+        $scope.search = function (keywords) {
+            searchFulltext(keywords).then(function (searchKeys){
+                    $scope.searchKeys = searchKeys;
+                }
+
+            ) ;
+        }
+    }])
   .controller('ApplicationCtrl', ['$scope', '$routeParams', '$timeout', 'Search', 'Instance', function($scope, $routeParams, $timeout, Search, Instance) {
     
 	//Initial Params

@@ -128,6 +128,18 @@ angular.module('Hesperides.controllers', [])
 	$scope.Del_link = function(link) {
 		$scope.instance.links.splice($scope.instance.links.indexOf(link), 1);		
 	};
+	
+	$scope.instanceTypeIs = function(types) {
+		if($scope.instance == null) return false;
+		if(Object.prototype.toString.call( types ) == '[object Array]'){
+			for(var i = 0; i<types.length; i++){
+				if($scope.instance.type == types[i]) return true;
+			}
+			return false;
+		} else {
+			return $scope.instance.type == types;
+		}
+	}	
 
 	
 	//Define functions for form edition

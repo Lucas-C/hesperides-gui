@@ -1,29 +1,67 @@
 <form name="instanceForm" class="simple-form">
+
 		Nom: <input type="text" ng-model="instance.name" /> Type: {{instance.type}} <br />
 		Client: <input type="text" ng-model="instance.client" /> Version: <input type="text" ng-model="instance.application_version" /> URL: <input type="text" ng-model="instance.application_url" /><br />
 		Composant: <input type="text" ng-model="instance.component"/> sur la machine <guess-zone><guess-instancebucket instances="instances" instance="instance" field="'hostname'"></guess-instancebucket><guess-tooltip></guess-tooltip><input type="text" ng-model="instance.hostname" guess-input /> -> <input type="text" ng-model="instance.ip" /></guess-zone><br />
+		
+		
 		User: <guess-zone><guess-instancebucket instances="instances" instance="instance" field="'user'"></guess-instancebucket><guess-tooltip></guess-tooltip> <input type="text" ng-model="instance.user" guess-input /> -> <input type="text" ng-model="instance.home" /> </guess-zone><br />
+		
+		<span ng-if="instanceTypeIs(['WAS','ESB'])">
 		Template puppet: <guess-zone><guess-instancebucket instances="instances" instance="instance" field="'puppet_template_path'"></guess-instancebucket><guess-tooltip></guess-tooltip><input type="text" ng-model="instance.puppet_template_path" guess-input /></guess-zone>
+		</span>
+		
+		<span ng-if="instanceTypeIs('WAS','ESB')">
 		<p>Options JVM Specifiques:</p>
 		<ul>
-			<li>Tuning : <input type="text" ng-model="instance.jvm_opts.tuning" /></li>
-			<li>System : <input type="text" ng-model="instance.jvm_opts.system" /></li>
+			<li>Tuning : <input ng-list type="text" ng-model="instance.jvm_opts.tuning" /></li>
+			<li>System : <input ng-list type="text" ng-model="instance.jvm_opts.system" /></li>
 		</ul>
-		<p>Binaires requis:</p>
-		<ul>
-			<li ng-repeat="bin in instance.bins track by $index">Nom: <guess-zone><guess-instancebucket instances="instances" instance="instance" bucket="'bins'" object="bin" field="'name'"></guess-instancebucket><guess-tooltip></guess-tooltip><input type="text" ng-model="bin.name" guess-input /> -> Version: <input type="text" ng-model="bin.version" /> -> Home: <input type="text" ng-model="bin.home" /></guess-zone> <button ng-click="Del_bin($index)" class="btn btn-default">Del</button></li>
-			<button ng-click="Add_bin()" class="btn btn-default">Add</button>
-		</ul>
+		</span>
+		
+		<span ng-if="instanceTypeIs('AMQ')">
+		AMQ_TYPE: <input type="text" ng-model="instance.amq_type"/> - NOM LOGIQUE: <input type="text" ng-model="instance.logical_name"/> - DOSSIER DATA: <input type="text" ng-model="instance.target_dir"/><br />
+		QUEUE: <input type="text" ng-model="instance.queue"/> - DISCOVERY URL: <input type="text" ng-model="instance.discovery_url"/>
+		MASTER: <input type="text" ng-model="instance.master"/>
+		</span>
+		
+		<span ng-if="instanceTypeIs('SGBD')">
+			Schema: <guess-zone><guess-instancebucket instances="instances" instance="instance" field="'schema'"></guess-instancebucket><guess-tooltip></guess-tooltip><input type="text" ng-model="instance.schema" guess-input /> Login: <input type="text" ng-model="instance.login" /> Password: <input type="text" ng-model="instance.password" /></guess-zone>
+			FQDN: <input type="text" ng-model="instance.fqdn" /> TYPE_TECHNO: Login: <input type="text" ng-model="instance.type_techno" />
+		</span>
+		
+		<span ng-if="instanceTypeIs('HTTP')">
+			Method_test <input type="text" ng-model="instance.method_test"/> - nb_echec: <input type="text" ng-model="instance.nb_echec"/>
+		</span>
+		
+		<span ng-if="instanceTypeIs(['HAP','HTTP','ESB', 'WAS'])">
+			Target_dir: <input type="text" ng-model="instance.target_dir"/>
+		</span>
+		
+		<span ng-if="instanceTypeIs(['WAS','ESB'])">
 		<p>Modules:</p>
 		<ul>
 			<li ng-repeat="module in instance.modules track by $index">Nom: <guess-zone><guess-instancebucket instances="instances" instance="instance" bucket="'modules'" object="module" field="'name'"></guess-instancebucket><guess-tooltip></guess-tooltip><input type="text" ng-model="module.name" guess-input /> -> War: <input type="text" ng-model="module.war" /> -> Context: <input type="text" ng-model="module.context" /></guess-zone> <button ng-click="Del_module($index)" class="btn btn-default">Del</button></li>
 			<button ng-click="Add_module()" class="btn btn-default">Add</button>
 		</ul>
+		</span>
+		
+		<span ng-if="instanceTypeIs(['AMQ','ATO','ESB','TUX','WAS'])">
 		<p>Ports:</p>
 		<ul>
 			<li ng-repeat="port in instance.ports track by $index">Nom: <guess-zone><guess-instancebucket instances="instances" instance="instance" bucket="'ports'" object="port" field="'name'"></guess-instancebucket><guess-tooltip></guess-tooltip><input type="text" ng-model="port.name" guess-input /> -> Num: <input type="text" ng-model="port.number" /></guess-zone> <button ng-click="Del_port($index)" class="btn btn-default">Del</button></li></li>
 			<button ng-click="Add_port()" class="btn btn-default">Add</button>
 		</ul>
+		</span>
+		
+		<span ng-if="instanceTypeIs(['AMQ','ATO','ESB','TUX','WAS'])">
+		<p>Binaires:</p>
+		<ul>
+			<li ng-repeat="bin in instance.bins track by $index">Nom: <guess-zone><guess-instancebucket instances="instances" instance="instance" bucket="'bins'" object="bin" field="'name'"></guess-instancebucket><guess-tooltip></guess-tooltip><input type="text" ng-model="bin.name" guess-input /> -> Version: <input type="text" ng-model="bin.version" /> -> Home: <input type="text" ng-model="bin.home" /></guess-zone> <button ng-click="Del_bin($index)" class="btn btn-default">Del</button></li>
+			<button ng-click="Add_bin()" class="btn btn-default">Add</button>
+		</ul>
+		</span>
+		
 		<p>JDBC:</p>
 		<ul>
 			<li ng-repeat="link in instance.links | filter : {type: 'JDBC'} track by $index ">Nom: <guess-zone><guess-instancebucket instances="instances" instance="instance" bucket="'links'" object="link" field="'key.name'"></guess-instancebucket><guess-tooltip></guess-tooltip><input type="text" ng-model="link.key.name" guess-input /> -> Schema: <input type="text" ng-model="link.key.schema" /> -> Pool(min -max): <input type="text" ng-model="link.configuration.pool_min" />-<input type="text" ng-model="link.configuration.pool_max"/></guess-zone> <button ng-click="Del_link(link)" class="btn btn-default">Del</button></li>

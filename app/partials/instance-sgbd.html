@@ -1,8 +1,0 @@
-<form name="instanceForm" class="simple-form">
-		Nom: <input type="text" ng-model="instance.name" /> Type: {{instance.type}} <br />
-		Client: <input type="text" ng-model="instance.client" /> Version: <input type="text" ng-model="instance.application_version" /> URL: <input type="text" ng-model="instance.application_url" /><br />
-		Composant: <input type="text" ng-model="instance.component"/> sur la machine <guess-zone><guess-instancebucket instances="instances" instance="instance" field="'hostname'"></guess-instancebucket><guess-tooltip></guess-tooltip><input type="text" ng-model="instance.hostname" guess-input /> -> <input type="text" ng-model="instance.ip" /></guess-zone><br />
-		Schema: <guess-zone><guess-instancebucket instances="instances" instance="instance" field="'schema'"></guess-instancebucket><guess-tooltip></guess-tooltip><input type="text" ng-model="instance.schema" guess-input /> Login: <input type="text" ng-model="instance.login" /> Password: <input type="text" ng-model="instance.password" /></guess-zone>
-</form>
-
- 

@@ -356,7 +356,7 @@ Test.wdiInstances = [
 									"type": "WAS",
 									"key": {
 										"name": "WDI",
-										"schema": "VMODENU51WDI"
+										"instance": "VMODENU51WDI"
 									}
 								}
 							],

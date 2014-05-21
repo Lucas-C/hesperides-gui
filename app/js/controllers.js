@@ -118,8 +118,8 @@ angular.module('Hesperides.controllers', [])
 		$scope.instance.ports.push({});		
 	};
 	
-	$scope.Add_link = function(type) {
-		$scope.instance.links.push({"type": type});		
+	$scope.Add_link = function() {
+		$scope.instance.links.push({});		
 	};
 	
 	$scope.Del_bin = function(index) {

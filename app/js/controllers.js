@@ -108,18 +108,22 @@ angular.module('Hesperides.controllers', [])
 	};
 	
 	$scope.Add_bin = function() {
+		if($scope.instance.bins == null) $scope.instance.bins = [];
 		$scope.instance.bins.push({});		
 	};
 	
 	$scope.Add_module = function() {
+		if($scope.instance.modules == null) $scope.instance.modules = [];
 		$scope.instance.modules.push({});		
 	};
 	
 	$scope.Add_port = function() {
+		if($scope.instance.ports == null) $scope.instance.ports = [];
 		$scope.instance.ports.push({});		
 	};
 	
 	$scope.Add_link = function() {
+		if($scope.instance.links == null) $scope.instance.links = [];
 		$scope.instance.links.push({});		
 	};
 	

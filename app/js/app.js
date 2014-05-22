@@ -21,7 +21,7 @@ angular.module('Hesperides', [
             }).
         when('/search', {
                 templateUrl: 'partials/search.html',
-                controller: 'FulltextCtrl'
+                controller: 'SearchCtrl'
 		}).
 		otherwise({
 			redirectTo: '/search',

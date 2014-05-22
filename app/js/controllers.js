@@ -155,7 +155,7 @@ angular.module('Hesperides.controllers', [])
 	
 	//Save instance when it changes, with a 1 second timeout to avoid multiple save
 	var save_timeout = null;
-	$scope.$watch('instance', function(oldVal, newVal){
+	$scope.$watch('instance', function(oldVal, newVal){	
 		//We want to save only when the same instance has changed, not when user chooses another instance to modify
 		if(oldVal && newVal && oldVal.id == newVal.id){
 			if(save_timeout){
@@ -164,6 +164,11 @@ angular.module('Hesperides.controllers', [])
 			
 			save_timeout = $timeout($scope.SaveCurrentInstance, 1000);
 		}
+	}, true);
+	
+	$scope.$watch('instances', function(oldVal, newVal) {
+		//Update components
+		$scope.components = InstanceUtils.getComponents($scope.instances);
 	}, true);
 	
 	$scope.$watch('instance.user', function(){
@@ -177,6 +182,8 @@ angular.module('Hesperides.controllers', [])
 			$scope.instance.home = InstanceUtils.guessInstanceHome($scope.instance);
 		}
 	},true);
+	
+	$scope.identity = function(object) { return object; };
 			
   }]);
  
@@ -187,6 +194,15 @@ InstanceUtils.guessInstanceHome = function(instance) {
 		home += "/"+instance.component;
 	}
 	return home;
+};
+InstanceUtils.getComponents = function(instances){
+	var flags = [], components = [];
+	for(var i = 0; i<instances.length; i++){
+		if(flags[instances[i].component]) continue;
+		flags[instances[i].component] = true;
+		components.push(instances[i].component);
+	}
+	return components;
 };
 
 if ( typeof String.prototype.startsWith != 'function' ) {

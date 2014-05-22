@@ -88,6 +88,7 @@ angular.module('Hesperides.controllers', [])
 		newInstance.type = type;
 		newInstance.application = $scope.application;
 		newInstance.platform = $scope.platform;
+		newInstance.component = $scope.application;
 		newInstance.bins = [];
 		newInstance.modules = [];
 		newInstance.jvm_optjs = { 'tuning': [],	'system': []};

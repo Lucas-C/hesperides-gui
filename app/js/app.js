@@ -19,11 +19,11 @@ angular.module('Hesperides', [
 				templateUrl: 'partials/instance-list.html', 
 				controller: 'InstancesCtrl'
             }).
-            when('/search', {
+        when('/search', {
                 templateUrl: 'partials/search.html',
                 controller: 'FulltextCtrl'
 		}).
 		otherwise({
-			redirectTo: '/search'
+			redirectTo: '/search',
 		});
 }]);

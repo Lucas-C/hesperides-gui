@@ -90,6 +90,12 @@ angular.module('Hesperides.controllers').controller('ApplicationCtrl', ['$scope'
 		$scope.EditInstance(newInstance);
 	};
 	
+	$scope.DupInstance = function(instance) {
+		var newInstance = new Instance(instance);
+		$scope.instances.push(newInstance);
+		$scope.EditInstance(newInstance);
+	}
+	
 	$scope.Add_bin = function() {
 		if($scope.instance.bins == null) $scope.instance.bins = [];
 		$scope.instance.bins.push({});		

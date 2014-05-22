@@ -15,28 +15,28 @@
 		<tr ng-repeat="component in components | orderBy:identity:false">
 			<td>{{component}}</td>
 			<td valign="top">
-				<p ng-repeat="instance in instances | filter : {type: 'AMQ', component:component}" /><button ng-click="EditInstance(instance)" class="btn btn-default">{{instance.name}}</button><button ng-click="DeleteInstance(instance)" class="btn btn-default">-</button></p>
+				<p ng-repeat="instance in instances | filter : {type: 'AMQ', component:component}" /><button ng-click="EditInstance(instance)" class="btn btn-default">{{instance.name}}</button><button ng-click="DeleteInstance(instance)" class="btn btn-default">-</button><button ng-click="DupInstance(instance)" class="btn btn-default">+</button></p>
 			</td>
 			<td valign="top">
-				<p ng-repeat="instance in instances | filter : {type: 'ATO', component:component}" /><button ng-click="EditInstance(instance)" class="btn btn-default">{{instance.name}}</button><button ng-click="DeleteInstance(instance)" class="btn btn-default">-</button></p>
+				<p ng-repeat="instance in instances | filter : {type: 'ATO', component:component}" /><button ng-click="EditInstance(instance)" class="btn btn-default">{{instance.name}}</button><button ng-click="DeleteInstance(instance)" class="btn btn-default">-</button><button ng-click="DupInstance(instance)" class="btn btn-default">+</button></p>
 			</td>
 			<td valign="top">
-				<p ng-repeat="instance in instances | filter : {type: 'ESB', component:component}" /><button ng-click="EditInstance(instance)" class="btn btn-default">{{instance.name}}</button><button ng-click="DeleteInstance(instance)" class="btn btn-default">-</button></p>
+				<p ng-repeat="instance in instances | filter : {type: 'ESB', component:component}" /><button ng-click="EditInstance(instance)" class="btn btn-default">{{instance.name}}</button><button ng-click="DeleteInstance(instance)" class="btn btn-default">-</button><button ng-click="DupInstance(instance)" class="btn btn-default">+</button></p>
 			</td>
 			<td valign="top">
-				<p ng-repeat="instance in instances | filter : {type: 'HAP', component:component}" /><button ng-click="EditInstance(instance)" class="btn btn-default">{{instance.name}}</button><button ng-click="DeleteInstance(instance)" class="btn btn-default">-</button></p>
+				<p ng-repeat="instance in instances | filter : {type: 'HAP', component:component}" /><button ng-click="EditInstance(instance)" class="btn btn-default">{{instance.name}}</button><button ng-click="DeleteInstance(instance)" class="btn btn-default">-</button><button ng-click="DupInstance(instance)" class="btn btn-default">+</button></p>
 			</td>
 			<td valign="top">
-				<p ng-repeat="instance in instances | filter : {type: 'HTTP', component:component}" /><button ng-click="EditInstance(instance)" class="btn btn-default">{{instance.name}}</button><button ng-click="DeleteInstance(instance)" class="btn btn-default">-</button></p>
+				<p ng-repeat="instance in instances | filter : {type: 'HTTP', component:component}" /><button ng-click="EditInstance(instance)" class="btn btn-default">{{instance.name}}</button><button ng-click="DeleteInstance(instance)" class="btn btn-default">-</button><button ng-click="DupInstance(instance)" class="btn btn-default">+</button></p>
 			</td>
 			<td valign="top">
-				<p ng-repeat="instance in instances | filter : {type: 'SGBD', component:component}" /><button ng-click="EditInstance(instance)" class="btn btn-default">{{instance.name}}/{{instance.schema}}</button><button ng-click="DeleteInstance(instance)" class="btn btn-default">-</button></p>
+				<p ng-repeat="instance in instances | filter : {type: 'SGBD', component:component}" /><button ng-click="EditInstance(instance)" class="btn btn-default">{{instance.name}}/{{instance.schema}}</button><button ng-click="DeleteInstance(instance)" class="btn btn-default">-</button><button ng-click="DupInstance(instance)" class="btn btn-default">+</button></p>
 			</td>
 			<td valign="top">
-				<p ng-repeat="instance in instances | filter : {type: 'TUX', component:component}" /><button ng-click="EditInstance(instance)" class="btn btn-default">{{instance.name}}</button><button ng-click="DeleteInstance(instance)" class="btn btn-default">-</button></p>
+				<p ng-repeat="instance in instances | filter : {type: 'TUX', component:component}" /><button ng-click="EditInstance(instance)" class="btn btn-default">{{instance.name}}</button><button ng-click="DeleteInstance(instance)" class="btn btn-default">-</button><button ng-click="DupInstance(instance)" class="btn btn-default">+</button></p>
 			</td>
 			<td valign="top">
-				<p ng-repeat="instance in instances | filter : {type: 'WAS', component:component}" /><button ng-click="EditInstance(instance)" class="btn btn-default">{{instance.name}}</button><button ng-click="DeleteInstance(instance)" class="btn btn-default">-</button></p>
+				<p ng-repeat="instance in instances | filter : {type: 'WAS', component:component}" /><button ng-click="EditInstance(instance)" class="btn btn-default">{{instance.name}}</button><button ng-click="DeleteInstance(instance)" class="btn btn-default">-</button><button ng-click="DupInstance(instance)" class="btn btn-default">+</button></p>
 			</td>
 		</tr>
 	</table>

@@ -1,3 +1,16 @@
-    <input type="text" ng-change="search(keywords)" ng-model="keywords">
-    <p ng-repeat="searchKey in searchKeys"><a href="/app/index.html#/application/{{searchKey.application}}/{{searchKey.platform}}">{{searchKey.application}}/{{searchKey.platform}}</a></p>
+<table width="500px">
+    <tr>
+        <td>application/plateforme</td>
+        <td>hostname</td>
+    </tr>
+    <tr>
+        <td><input type="text" ng-change="search(keywords)" ng-model="keywords"></td>
+        <td><input type="text" ng-change="searchHostname(hostname)" ng-model="hostname"></td>
+    </tr>
+    <tr>
+        <td><p ng-repeat="searchKey in searchKeys"><a href="/app/index.html#/application/{{searchKey.application}}/{{searchKey.platform}}">{{searchKey.application}}/{{searchKey.platform}}</a></p></td>
+        <td><p ng-repeat="hostname in hostnames"><a href="/app/index.html#/application/{{hostname}}">{{hostname}}</a></p></td>
+    </tr>
+</table>
+
 	

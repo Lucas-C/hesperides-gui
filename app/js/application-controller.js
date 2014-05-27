@@ -21,9 +21,8 @@ angular.module('Hesperides.controllers').controller('ApplicationCtrl', ['$scope'
 	};
 	
 	$scope.EditInstance = function(instance){
-		$scope.instance = instance;
-		$scope.instanceTemplate = 'partials/instance.html';
-		$scope.Edit(true);
+		$scope.instance = instance;		
+		$('#instance-edit-modal').modal('show');
 	};
 	
 	 var findInstance = function(id){
@@ -136,11 +135,11 @@ angular.module('Hesperides.controllers').controller('ApplicationCtrl', ['$scope'
 		if($scope.instance == null) return false;
 		if(Object.prototype.toString.call( types ) == '[object Array]'){
 			for(var i = 0; i<types.length; i++){
-				if($scope.instance.type == types[i]) return true;
+				if($scope.instance.type === types[i]) return true;
 			}
 			return false;
 		} else {
-			return $scope.instance.type == types;
+			return $scope.instance.type === types;
 		}
 	}	
 
@@ -160,8 +159,7 @@ angular.module('Hesperides.controllers').controller('ApplicationCtrl', ['$scope'
 		}
 	}, true);
 	
-	$scope.$watch('instances', function(oldVal, newVal) {
-		//Update components
+	$scope.$watch('instances', function(){
 		$scope.components = InstanceUtils.getComponents($scope.instances);
 	}, true);
 	

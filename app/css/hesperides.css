@@ -1,30 +1,190 @@
-/* app css stylesheet */
+/*
+ * Matrice des instances pour une application 
+ */
+ 
+#instances-matrix-container {
+	margin: 0 auto;
+	padding: 0;
+	width: 95%;
+} 
 
-.menu {
-  list-style: none;
-  border-bottom: 0.1em solid black;
-  margin-bottom: 2em;
-  padding: 0 0 0.5em;
+.instances-matrix  th {
+  margin: 0;
+  font-weight: bold;
+  font-size: 14px;
+  vertical-align: baseline;
 }
 
-.menu:before {
-  content: "[";
+.instances-matrix  th.techno-type {
+  text-align: left;
 }
 
-.menu:after {
-  content: "]";
+.instances-matrix  th.techno-type button{
+  text-align: left;
+  margin-right: 0.3em;
+  padding: 0 2px 0 2px;
 }
 
-.menu > li {
-  display: inline;
+.instances-matrix  th.techno-type .box{
+	display: table;
+	width: 95%;
+	margin: 0 0 0 0.65em;
 }
 
-.menu > li:before {
-  content: "|";
+.instances-matrix  th.techno-type .left{
+	display: table-cell;
+	vertical-align: middle;
+	padding-left: 0.7em;
+}
+
+.instances-matrix  th.techno-type .right{
+	display: table-cell;
+	vertical-align: middle;
+	text-align: right;
+	padding-bottom: 3px;
+}
+
+.instances-matrix {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+.instances-matrix  td {
+  vertical-align: top;
+  font-size: 10px;
+}
+
+.instances-matrix td.component-title {
+	vertical-align: middle;
+	text-align: center;
+	padding: 0 0.5em 0 0.5em;
+}
+
+.instances-matrix  button {
+  font-size: 10px;
+}
+
+.instances-matrix  button.btn-info {
+  padding-left: 0.3em;
   padding-right: 0.3em;
+  padding-top: 0.3em;
+  padding-bottom: 0.3em;
+  background-color: #FFF0E2;
+  border-color: #CACDD6;
+  color: #324270;
+  margin-right: 0.1em;
 }
 
-.menu > li:nth-child(1):before {
-  content: "";
-  padding: 0;
+.instances-matrix  button.btn-success {
+  padding-left: 0.3em;
+  padding-right: 0.3em;
+  padding-top: 0.1em;
+  padding-bottom: 0.1em;
+  margin-right: 0.1em;
+  background-color: #ADC3B1;
+  border-color: #ADC3B1;
+  color: #387F45;
+  font-weight: bold;
+}
+
+.instances-matrix  button.btn-danger {
+  padding-left: 0.3em;
+  padding-right: 0.3em;
+  padding-top: 0.1em;
+  padding-bottom: 0.1em;
+  margin-right: 0.1em;
+  font-weight: bold;
+}
+
+.instances-matrix  p {
+	display: block;
+	margin: 0 0 0 0;
+}
+
+.instances-matrix td > p {
+	margin-bottom: 0.2em;
+}
+
+.instances-matrix tr > td{
+	margin-bottom: 1em;
+}
+
+.instances-matrix tr.head {
+	background-color: #ADC3B1;
+	color: #387F45;
+}
+
+.instances-matrix tr {
+	background-color: rgb(255, 240, 226);
+}
+
+.instances-matrix tr.spacer td{
+	padding: 0 0 1em 0;
+	background-color: #FFFFFF;
+}
+
+/*
+ * Edition d'une instance
+ */
+
+#edit-instance-container {
+	margin: 0 auto;
+	padding: 0 2em 1em 2em;
+	width: 1000px;
+	background-color: #F0F0F0;
+}
+
+.instance-form {
+	font-size: 12px;
+}
+
+.instance-form h2 {
+	color: #455172;
+	font-size: 16px;
+	font-weight: bold;
+}
+
+.instance-form span {
+	font-weight: bold;
+	color: #4C4E52;
+}
+
+.instance-form input {
+	font-weight: bold;
+	color: #777A81;
+}
+
+.instance-form p {
+	padding: 0 0 0 3em;
+}
+.instance-form li {
+	padding: 0.2em 0 0 0;
+}
+
+.instance-form input{
+	font-size: 12px;
+	margin-left: 0.1em;
+	margin-right: 0.2em;
+
+}
+
+.instance-form  button.btn-success {
+  padding-left: 0.5em;
+  padding-right: 0.5em;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-right: 0;
+  margin-bottom: 2px;
+  background-color: #ADC3B1;
+  border-color: #ADC3B1;
+  color: #387F45;
+}
+
+.instance-form  button.btn-danger {
+  padding-left: 0.3em;
+  padding-right: 0.3em;
+  padding-top: 0;
+  padding-bottom: 0;
+  margin-right: 0;
+  margin-bottom: 2px;
 }

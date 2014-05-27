@@ -7,7 +7,8 @@ angular.module('Hesperides', [
   'Hesperides.controllers',
   'Hesperides.filters',
   'Hesperides.services',
-  'Hesperides.directives'
+  'Hesperides.directives',
+  'ui.bootstrap'
 ]).
     config(['$routeProvider', function ($routeProvider) {
   $routeProvider.

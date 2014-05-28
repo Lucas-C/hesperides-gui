@@ -1,8 +1,8 @@
 <!doctype html>
-<html lang="fr" ng-app="Hesperides">
+<html lang="fr" ng-app="Hesperides" ng-controller="TitleCtrl">
 <head>
   <meta charset="utf-8">
-  <title>Hesperides</title>
+  <title>{{ Page.title() }}</title>
   <link rel="stylesheet" href="../bower_components/bootstrap/dist/css/bootstrap.css" />
   <link rel="stylesheet" href="css/hesperides.css"/>
   <link rel="stylesheet" href="css/codemirror.css"/>
@@ -36,7 +36,7 @@
 
 <div id="headerWrapper">
     <div id="header">
-        <h2>Hesperides</h2>
+        <h2>{{ Page.title() }}</h2>
     </div>
 </div>
 

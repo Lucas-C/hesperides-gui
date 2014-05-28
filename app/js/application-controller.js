@@ -1,12 +1,14 @@
 'use strict';
 
-angular.module('Hesperides.controllers').controller('ApplicationCtrl', ['$scope', '$routeParams', '$timeout', 'Search', 'Instance', function($scope, $routeParams, $timeout, Search, Instance) {
+angular.module('Hesperides.controllers').controller('ApplicationCtrl', ['$scope', '$routeParams', '$timeout', 'Search', 'Instance', 'Page', function($scope, $routeParams, $timeout, Search, Instance, Page) {
     
+	Page.setTitle("edition "+$routeParams.application+" "+$routeParams.platform);
+	
 	//Initial Params
 	$scope.application = $routeParams.application;
 	$scope.platform = $routeParams.platform;
 	$scope.editing = false;
-	$scope.title = "toto";
+	
 	//Load data for app/platform
 	$scope.instances = [];
 	Search.instances($routeParams.application, $routeParams.platform).then(function(instances){

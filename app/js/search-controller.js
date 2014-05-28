@@ -1,7 +1,7 @@
 'use strict';
 
-angular.module('Hesperides.controllers').controller('SearchCtrl', ['$scope', 'Search', function ($scope, Search) {
-    $scope.title = "Recherche";
+angular.module('Hesperides.controllers').controller('SearchCtrl', ['$scope', 'Search', 'Page',  function ($scope, Search, Page) {
+    Page.setTitle("recherche");
 	
 	$scope.search = function (keywords) {
         Search.fulltext(keywords).then(function (searchKeys) {

@@ -8,7 +8,7 @@ angular.module('Hesperides.controllers').controller('ApplicationCtrl', ['$scope'
 	$scope.editing = false;
 	
 	//Load data for app/platform
-	$scope.instances = []
+	$scope.instances = [];
 	Search.instances($routeParams.application, $routeParams.platform).then(function(instances){
 		$scope.instances = instances;
 	}, function(response) {

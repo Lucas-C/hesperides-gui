@@ -39,3 +39,17 @@ hesperidesServices.factory('Search', ['$http', 'Instance', function ($http, Inst
     };
 
 }]);
+
+hesperidesServices.factory('ENC', ['$http', '$resource', function ($http, $resource) {
+    return {
+        get: function (hostname) {
+            return $http.get('http://localhost:8080/rest/enc/' + hostname).then(function (enc) {
+                return enc;
+            })
+        },
+        save: function (hostname, enc) {
+            return $http({method: 'POST', url: 'http://localhost:8080/rest/enc/' + hostname, data: enc});
+        }
+    }
+
+}]);

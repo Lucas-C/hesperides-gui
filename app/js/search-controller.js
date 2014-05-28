@@ -6,7 +6,7 @@ angular.module('Hesperides.controllers').controller('SearchCtrl', ['$scope', 'Se
                 $scope.searchKeys = searchKeys;
             }
         );
-    }
+    };
     $scope.searchHostname = function (keywords) {
         Search.fulltextHostname(keywords).then(function (hostname) {
                 $scope.hostnames = hostname;

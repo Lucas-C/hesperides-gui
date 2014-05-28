@@ -1,4 +1,61 @@
 /*
+ * Header
+ */
+ 
+#headerWrapper {
+	width:100%;
+	background-color: #000;
+	position:fixed;
+	top:0;left:0;
+
+	height: 70px;
+  padding:0;
+  opacity:0.8;
+  color: #EEEEEE;
+}
+
+#header {
+	margin-top:0;
+  height:44px;
+  font-size:13px;
+	margin-left:auto;
+	margin-right:auto;    
+  padding-right: 50px;
+  padding-left: 50px;
+}
+
+/*
+ * Search
+ */
+
+ #search-inputs {
+	width: 100%;
+ }
+ 
+ #search-inputs input{
+	width: 100%;
+ }
+ 
+#search-left {
+	float: left;
+	width: 50%;
+	text-align: left;
+}
+
+#search-right {
+	float: right;
+	width: 40%;
+} 
+
+#search-results {
+	text-align: left;
+	padding-left: 30px;
+	padding-top: 95px;
+	width: 100%;
+}
+
+
+/*
  * Matrice des instances pour une application 
  */
  

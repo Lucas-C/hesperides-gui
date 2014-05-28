@@ -7,7 +7,8 @@
   <link rel="stylesheet" href="css/hesperides.css"/>
   <link rel="stylesheet" href="css/codemirror.css"/>
   <link rel="stylesheet" href="css/codemirror.default.css"/>
-
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet"/>
+  
   <script src="../bower_components/angular/angular.js"></script>
   <script src="../bower_components/angular-route/angular-route.js"></script>
   <script src="../bower_components/angular-resource/angular-resource.js"></script>
@@ -33,9 +34,14 @@
 </head>
 <body>
 
-<h3>Hesperides</h3>
+<div id="headerWrapper">
+    <div id="header">
+        <h2>Hesperides</h2>
+    </div>
+</div>
 
-<div ng-view></div>
+
+<div ng-view style="padding-top:60px;padding-left: 20px;padding-right: 20px;"></div>
 
 </body>
 </html>

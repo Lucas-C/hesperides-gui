@@ -1,4 +1,4 @@
-<form name="instanceForm" class="instance-form" role="form">
+<form name="instanceForm" class="instance-form" role="form" style="padding-top:10px;padding-left: 20px;padding-right: 20px;">
 		<h2>Propri&#233;t&#233;s:</h2>
 		<p>
 			<span>Nom: <input type="text" ng-model="instance.name" size="30"/></span>
@@ -79,7 +79,7 @@
 					<span>Nom: <guess-zone><guess-instancebucket instances="instances" instance="instance" bucket="'modules'" object="module" field="'name'"></guess-instancebucket><guess-tooltip></guess-tooltip><input type="text" ng-model="module.name" guess-input /></span>
 					<span>War: <input type="text" ng-model="module.war" /></span>
 					<span>Context: <input type="text" ng-model="module.context" /></guess-zone></span>
-					<button ng-click="Del_module($index)" class="btn btn-default">-</button>
+					<button ng-click="Del_module($index)" class="btn btn-danger">-</button>
 				</li>
 			</ul>
 		</p>

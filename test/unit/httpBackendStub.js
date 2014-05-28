@@ -829,7 +829,19 @@ Test.singleInstance = {
 								}
 							]
 }
-
+Test.searchResultAI = [
+	{application: "WDI",platform: "INT1"},
+	{application: "WDI",platform: "INT1"},
+	{application: "WDI",platform: "INT1"},
+	{application: "WDI",platform: "INT1"},
+	{application: "WDI",platform: "INT1"},
+	{application: "WDI",platform: "INT1"},
+	{application: "WDI",platform: "INT1"},
+	{application: "WDI",platform: "INT1"}
+];
+Test.searchResultHostname = [
+	"slayer", "anthrax", "opeth", "gojira", "meshuggah", "dagoba"
+]
 Test.prepareHttpBackendStub = function($httpBackend) {
 
 				var whenGetPartials = $httpBackend.whenGET(/partials\/.*/);
@@ -856,6 +868,12 @@ Test.prepareHttpBackendStub = function($httpBackend) {
 								
 				$httpBackend.whenGET('/rest/instances').
 					respond(Test.wdiInstances);
+				
+				$httpBackend.whenGET(/\/rest\/search\/fulltext\/appinst\/*/).
+					respond(Test.searchResultAI);
+					
+				$httpBackend.whenGET(/\/rest\/search\/fulltext\/hostname\/*/).
+					respond(Test.searchResultHostname);
 					
 				$httpBackend.whenPOST('/rest/instances/1', Test.singleInstance).
 					respond(function(){ return [200, Test.singleInstance, {}]});

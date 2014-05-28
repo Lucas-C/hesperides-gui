@@ -6,7 +6,7 @@ angular.module('Hesperides.controllers').controller('ApplicationCtrl', ['$scope'
 	$scope.application = $routeParams.application;
 	$scope.platform = $routeParams.platform;
 	$scope.editing = false;
-	
+	$scope.title = "toto";
 	//Load data for app/platform
 	$scope.instances = [];
 	Search.instances($routeParams.application, $routeParams.platform).then(function(instances){

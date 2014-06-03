@@ -1,16 +1,25 @@
-<table width="500px">
-    <tr>
-        <td>application/plateforme</td>
-        <td>hostname</td>
-    </tr>
-    <tr>
-        <td><input type="text" ng-change="search(keywords)" ng-model="keywords"></td>
-        <td><input type="text" ng-change="searchHostname(hostname)" ng-model="hostname"></td>
-    </tr>
-    <tr>
-        <td><p ng-repeat="searchKey in searchKeys"><a href="/app/index.html#/application/{{searchKey.application}}/{{searchKey.platform}}">{{searchKey.application}}/{{searchKey.platform}}</a></p></td>
-        <td><p ng-repeat="hostname in hostnames"><a href="/app/index.html#/application/{{hostname}}">{{hostname}}</a></p></td>
-    </tr>
-</table>
-
-	
+<div style="margin-left:auto;margin-right:auto;display:block;width:300px">
+<img src="img/evolution-ordinateur.png" width="300px">
+</div>
+<div style="margin-left:auto;margin-right:auto;display:block;width:500px">
+    <div id="search-inputs">
+        <div id="search-left">
+            <h4>APPLICATION/PLATEFORME</h4>
+            <p><input type="text" ng-change="search(keywords)" ng-model="keywords"></p>
+        </div>
+        <div id="search-right">
+            <h4>HOSTNAME</h4>
+            <p><input type="text" ng-change="searchHostname(hostname)" ng-model="hostname"></p>
+        </div>
+    </div>
+    <div id="search-results">
+			<span ng-switch="searchType">
+				<span ng-switch-when="AI">
+					<p ng-repeat="searchKey in searchKeys"><a href="/app/index.html#/application/{{searchKey.application}}/{{searchKey.platform}}">{{searchKey.application}}/{{searchKey.platform}}</a></p>
+				</span>
+				<span ng-switch-when="hostname">
+					<p ng-repeat="hostname in hostnames"><a href="/app/index.html#/application/{{hostname}}">{{hostname}}</a></p>
+				</span>
+			</span>
+    </div>
+</div>

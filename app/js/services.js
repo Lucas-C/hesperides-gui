@@ -5,7 +5,7 @@ var hesperidesServices = angular.module('Hesperides.services', ['ngResource']).
 
 hesperidesServices.factory('Instance', ['$resource', function ($resource) {
 
-    return $resource('/rest/instances/:id', {id: '@id'}, {
+    return $resource('http://localhost:8080/rest/instances/:id', {id: '@id'}, {
         all: {method: 'GET', params: {id: ''}, isArray: true},
         put: {method: 'PUT'}
     });
@@ -17,7 +17,7 @@ hesperidesServices.factory('Search', ['$http', 'Instance', function ($http, Inst
 
     return {
         instances: function (application, component) {
-            return $http.get('/rest/search?application=' + application + '&platform=' + component).then(function (response) {
+            return $http.get('http://localhost:8080/rest/search?application=' + application + '&platform=' + component).then(function (response) {
                 var instances = [];
                 for (var i = 0; i < response.data.length; i++) {
                     var instance = new Instance(response.data[i]);
@@ -27,12 +27,12 @@ hesperidesServices.factory('Search', ['$http', 'Instance', function ($http, Inst
             });
         },
         fulltext: function (keywords) {
-            return $http.get('/rest/search/fulltext/' + keywords).then(function (response) {
+            return $http.get('http://localhost:8080/rest/search/fulltext/' + keywords).then(function (response) {
                 return response.data;
             });
         },
         fulltextHostname: function (hostname) {
-            return $http.get('/rest/search/fulltext/hostname/' + hostname).then(function (response) {
+            return $http.get('http://localhost:8080/rest/search/fulltext/hostname/' + hostname).then(function (response) {
                 return response.data;
             });
         }

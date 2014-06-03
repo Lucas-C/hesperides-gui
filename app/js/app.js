@@ -33,7 +33,7 @@ angular.module('Hesperides', [
                 templateUrl: 'partials/search.html',
                 controller: 'SearchCtrl'
             }).
-            when('/enc', {
+            when('/enc/:hostname', {
                 templateUrl: 'partials/enc.html',
                 controller: 'ENCCtrl'
             }).

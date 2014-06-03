@@ -18,7 +18,7 @@
 					<p ng-repeat="searchKey in searchKeys"><a href="/app/index.html#/application/{{searchKey.application}}/{{searchKey.platform}}">{{searchKey.application}}/{{searchKey.platform}}</a></p>
 				</span>
 				<span ng-switch-when="hostname">
-					<p ng-repeat="hostname in hostnames"><a href="/app/index.html#/application/{{hostname}}">{{hostname}}</a></p>
+					<p ng-repeat="hostname in hostnames"><a href="/app/index.html#/enc/{{hostname}}">{{hostname}}</a></p>
 				</span>
 			</span>
     </div>

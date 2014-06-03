@@ -48,6 +48,7 @@ angular.module('Hesperides.controllers').controller('ENCCtrl', ['$scope', '$rout
     ENC.get($scope.hostname).then(function (enc) {
         $scope.enc = enc.data;
         sourceArea.setValue($scope.enc);
+        resultArea.setValue($scope.enc);
     }, function (reason) {
         // on fait l'hypothèse que l'enc n'a pas été encore créé
         ENC.save($scope.hostname).then(function (newEnc) {

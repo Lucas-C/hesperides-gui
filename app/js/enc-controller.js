@@ -4,9 +4,15 @@ angular.module('Hesperides.controllers').controller('ENCCtrl', ['$scope', '$rout
 
     $scope.hostname = $routeParams.hostname;
 
-    var myCodeMirror = CodeMirror.fromTextArea(document.getElementById('source'), {
+    var resultArea = CodeMirror.fromTextArea(document.getElementById('result'), {
+        mode: "yaml",
+        readOnly: true
+
+    });
+    var sourceArea = CodeMirror.fromTextArea(document.getElementById('source'), {
         mode: "yaml",
         onKeyEvent: function (_, evt) {
+
 
             switch (evt.keyCode) {
                 case 37:
@@ -17,18 +23,39 @@ angular.module('Hesperides.controllers').controller('ENCCtrl', ['$scope', '$rout
             }
 
             if (evt.type === 'keyup') {
-                var objYaml = jsyaml.load(myCodeMirror.getValue());
-                $scope.enc = ENC.save($scope.hostname,objYaml);
-                console.log(objYaml);
+                try {
+                    // permet de valider le format yaml
+                    var objYaml = jsyaml.load(sourceArea.getValue());
+                    // sauvegarde vraiment l'ENC sur ElasticSearch/Hesperides
+                    $scope.enc = ENC.save($scope.hostname, sourceArea.getValue())
+                        .then(function (storeEnc) {
+                            resultArea.setValue(storeEnc.data);
+                        }).then(function () {
+                            ENC.get($scope.hostname).then(function (enc) {
+                                $scope.enc = enc.data;
+                                resultArea.setValue($scope.enc);
+                            });
+                        });
+                    console.log("le yaml a été enregistré");
 
-                // TODO envoie au backend
+                } catch (exception) {
+                    console.log("le yaml de l'enc n'est pas valide " + objYaml);
+                }
             }
         }
     });
 
     ENC.get($scope.hostname).then(function (enc) {
         $scope.enc = enc.data;
-        myCodeMirror.setValue(jsyaml.dump($scope.enc));
+        sourceArea.setValue($scope.enc);
+    }, function (reason) {
+        // on fait l'hypothèse que l'enc n'a pas été encore créé
+        ENC.save($scope.hostname).then(function (newEnc) {
+                $scope.enc = newEnc.data;
+                sourceArea.setValue($scope.enc);
+            }
+        );
+
     });
 
 }]);

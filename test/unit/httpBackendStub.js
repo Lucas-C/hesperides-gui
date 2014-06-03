@@ -842,6 +842,12 @@ Test.searchResultAI = [
 Test.searchResultHostname = [
 	"slayer", "anthrax", "opeth", "gojira", "meshuggah", "dagoba"
 ]
+
+Test.enc = {
+	'custom': '',
+	'generated': 'text: value'
+}
+
 Test.prepareHttpBackendStub = function($httpBackend) {
 
 				var whenGetPartials = $httpBackend.whenGET(/partials\/.*/);
@@ -859,6 +865,14 @@ Test.prepareHttpBackendStub = function($httpBackend) {
 				if(!(typeof whenGetHTML.passThrough == 'undefined')){
 					whenGetHTML.passThrough();
 				}
+				
+				var postData = null;
+				
+				$httpBackend.whenGET(/rest\/enc\/*/).
+					respond(function(){ return [200, Test.enc, {}]});
+					
+				$httpBackend.whenPOST(/rest\/enc\/*/, function(data){postData = data; return true;}).
+					respond(function(){ return [200, { 'custom': JSON.parse(postData).custom, 'generated': Test.enc.generated} , {}]});
 								
 				$httpBackend.whenGET('/rest/instances/1').
 					respond(function(){ return [200, Test.singleInstance, {}]});
@@ -878,7 +892,6 @@ Test.prepareHttpBackendStub = function($httpBackend) {
 				$httpBackend.whenPOST('/rest/instances/1', Test.singleInstance).
 					respond(function(){ return [200, Test.singleInstance, {}]});
 					
-				var postData = null;	
 				$httpBackend.whenPOST(/\/rest\/instances\/*/, function(data){postData = data; return true;}).
 					respond(function(){ return [200, postData, {}]});
 				

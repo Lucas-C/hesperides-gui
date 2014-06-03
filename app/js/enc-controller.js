@@ -1,16 +1,20 @@
 'use strict';
 
-angular.module('Hesperides.controllers').controller('ENCCtrl', ['$scope', '$routeParams', 'ENC', function ($scope, $routeParams, ENC) {
+angular.module('Hesperides.controllers').controller('ENCCtrl', ['$scope', '$routeParams', 'ENC', 'Page', function ($scope, $routeParams, ENC, Page) {
+
+	Page.setTitle("Edition ENC "+$routeParams.hostname);
 
     $scope.hostname = $routeParams.hostname;
+	
+	$scope.environments = ["usine", "assemblage", "integration", "preproduction", "production"];
+	$scope.environment = $scope.environments[1];
 
-    var resultArea = CodeMirror.fromTextArea(document.getElementById('result'), {
-        mode: "yaml",
-        readOnly: true
-
-    });
-    var sourceArea = CodeMirror.fromTextArea(document.getElementById('source'), {
-        mode: "yaml",
+	$scope.$watch('environment', function() {
+		saveENC();
+	}, true);
+	
+    var myCodeMirror = CodeMirror.fromTextArea(document.getElementById('source'), {
+        mode: "text/x-yaml",
         onKeyEvent: function (_, evt) {
 
 
@@ -23,40 +27,43 @@ angular.module('Hesperides.controllers').controller('ENCCtrl', ['$scope', '$rout
             }
 
             if (evt.type === 'keyup') {
-                try {
-                    // permet de valider le format yaml
-                    var objYaml = jsyaml.load(sourceArea.getValue());
-                    // sauvegarde vraiment l'ENC sur ElasticSearch/Hesperides
-                    $scope.enc = ENC.save($scope.hostname, sourceArea.getValue())
-                        .then(function (storeEnc) {
-                            resultArea.setValue(storeEnc.data);
-                        }).then(function () {
-                            ENC.get($scope.hostname).then(function (enc) {
-                                $scope.enc = enc.data;
-                                resultArea.setValue($scope.enc);
-                            });
-                        });
-                    console.log("le yaml a été enregistré");
-
-                } catch (exception) {
-                    console.log("le yaml de l'enc n'est pas valide " + objYaml);
-                }
+                saveENC();
             }
         }
     });
+	
+	var saveENC = function () {
+		var objYaml = {
+			'environment': $scope.environment,
+			//Normalisation du code et verification Yaml
+			'custom': jsyaml.dump(jsyaml.load(myCodeMirror.getValue()))
+		};
+        ENC.save($scope.hostname, objYaml).then(function(enc){
+				updatePreview(enc);
+			}
+		);
+	}
+	
+	var previewYAML = CodeMirror.fromTextArea(document.getElementById('preview'), {
+        mode: "yaml",
+		readOnly: true
+    });
+	
+	var updatePreview = function(enc) {
+		previewYAML.setValue(enc.custom+enc.generated)
+	}
+	
+	var updateCustom = function(enc) {
+		if(enc.custom) {
+			myCodeMirror.setValue(enc.custom)
+		} else {
+			myCodeMirror.setValue("Entrez votre complement ENC ici au format YAML");
+		}
+	}
 
     ENC.get($scope.hostname).then(function (enc) {
-        $scope.enc = enc.data;
-        sourceArea.setValue($scope.enc);
-        resultArea.setValue($scope.enc);
-    }, function (reason) {
-        // on fait l'hypothèse que l'enc n'a pas été encore créé
-        ENC.save($scope.hostname).then(function (newEnc) {
-                $scope.enc = newEnc.data;
-                sourceArea.setValue($scope.enc);
-            }
-        );
-
+		updatePreview(enc);
+		updateCustom(enc);
     });
 
 }]);

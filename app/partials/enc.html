@@ -1,18 +1,14 @@
-<p>{{enc.hostname}}</p>
-<div>
-    <div style="display: inline-block;width: 400px;">
-        <h3>Modification</h3>
-        <form>
-            <textarea id="source">---
-            </textarea>
-        </form>
-    </div>
+	<div style="width: 90%">Environnement: <select ng-model="environment" ng-options="env for env in environments"></select></div>
+	<div style="float: left; width: 45%;">
+		<h3>Infos compl&#233;mentaires (format YAML):</h3>
+		<div class="enc-border">
+		<textarea id="source"  ></textarea>
+		</div>
+	</div>
+	<div style="float: right; width: 45%;">
+		<h3>Preview de l'ENC final:</h3>
+		<div id="enc-border">
+		<textarea id="preview" style="float: right; width: 45%;"></textarea>
+		</div>
+	</div>
 
-    <div style="display: inline-block; margin-left: 200px;">
-        <h3>Résultat</h3>
-        <form>
-            <textarea id="result">
-            </textarea>
-        </form>
-    </div>
-</div>

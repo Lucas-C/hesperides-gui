@@ -10,7 +10,10 @@ angular.module('Hesperides.controllers').controller('ENCCtrl', ['$scope', '$rout
 	$scope.environment = $scope.environments[1];
 
 	$scope.$watch('environment', function() {
-		saveENC();
+		if($scope.enc){
+			$scope.enc.environment = $scope.environment;
+			saveENC();
+		}
 	}, true);
 	
     var myCodeMirror = CodeMirror.fromTextArea(document.getElementById('source'), {
@@ -33,15 +36,16 @@ angular.module('Hesperides.controllers').controller('ENCCtrl', ['$scope', '$rout
     });
 	
 	var saveENC = function () {
-		var objYaml = {
-			'environment': $scope.environment,
-			//Normalisation du code et verification Yaml
-			'custom': jsyaml.dump(jsyaml.load(myCodeMirror.getValue()))
-		};
-        ENC.save($scope.hostname, objYaml).then(function(enc){
-				updatePreview(enc);
-			}
-		);
+		if($scope.enc){
+			$scope.enc.hostname = $scope.hostname;
+			$scope.enc.environment = $scope.environment;
+			$scope.enc.custom = jsyaml.dump(jsyaml.load(myCodeMirror.getValue()));
+			ENC.save($scope.hostname, $scope.enc).then(function(enc){
+					$scope.enc = enc;
+					updatePreview(enc);
+				}
+			);
+		}
 	}
 	
 	var previewYAML = CodeMirror.fromTextArea(document.getElementById('preview'), {
@@ -62,8 +66,10 @@ angular.module('Hesperides.controllers').controller('ENCCtrl', ['$scope', '$rout
 	}
 
     ENC.get($scope.hostname).then(function (enc) {
-		updatePreview(enc);
-		updateCustom(enc);
+		$scope.enc = enc;
+		updatePreview($scope.enc);
+		updateCustom($scope.enc);
+		$scope.environment = enc.environment;
     });
 
 }]);

@@ -27,7 +27,7 @@ hesperidesServices.factory('Search', ['$http', 'Instance', function ($http, Inst
             });
         },
         fulltext: function (keywords) {
-            return $http.get('http://localhost:8080/rest/search/fulltext/' + keywords).then(function (response) {
+            return $http.get('http://localhost:8080/rest/search/fulltext/appinst/' + keywords).then(function (response) {
                 return response.data;
             });
         },

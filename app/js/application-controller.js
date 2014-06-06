@@ -163,6 +163,7 @@ angular.module('Hesperides.controllers').controller('ApplicationCtrl', ['$scope'
 	
 	$scope.$watch('instances', function(){
 		$scope.components = InstanceUtils.getComponents($scope.instances);
+		$scope.hostnames = InstanceUtils.getHostnames($scope.instances);
 	}, true);
 	
 	$scope.$watch('instance.user', function(){

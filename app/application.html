@@ -40,7 +40,11 @@
 		</tr>
 		<tr class="spacer" ng-repeat-end><td colspan="9"></td></tr>
 	</table>
+	<div id="hostnames" class="instances-matrix">
+		<ul style="list-style-type: none"><li style="display: inline;padding-left: 10px;" ng-repeat="hostname in hostnames | orderBy:identity:false"><a href="/app/index.html#/enc/{{hostname}}" >{{hostname}}</a></li></ul>
 	</div>
+	</div>
+	
 	
 	<div class="modal fade" tabindex="-1" role="dialog"  id="instance-edit-modal" aria-hidden="true">
 	<div ng-include="'partials/instance.html'" id="edit-instance-container" class="modal-dialog modal-lg modal-content" ></div>

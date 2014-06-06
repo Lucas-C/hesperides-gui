@@ -16,6 +16,16 @@ var InstanceUtils = {
 			components.push(instances[i].component);
 		}
 		return components;
+	},
+	
+	getHostnames: function(instances) {
+		var flags = [], hostnames = [];
+		for(var i = 0; i<instances.length; i++){
+			if(flags[instances[i].hostname]) continue;
+			flags[instances[i].hostname] = true;
+			hostnames.push(instances[i].hostname);
+		}
+		return hostnames;
 	}
 }
 

@@ -14,33 +14,34 @@
 		<tr ng-repeat-start="component in components | orderBy:identity:false"  ng-class="$index%2==0&&'bright'||'dark'">
 			<td class="component-title">{{component}}</td>
 			<td>
-				<p ng-repeat="instance in instances | filter : {type: 'AMQ', component:component}" /><button ng-click="EditInstance(instance)" class="btn btn-info">{{instance.name}}</button><button ng-click="DeleteInstance(instance)" class="btn btn-danger">-</button><button ng-click="DupInstance(instance)" class="btn btn-success">+</button></p>
+				<p ng-repeat="instance in instances | filter : {type: 'AMQ', component:component}" /><button ng-click="DeleteInstance(instance)" class="btn btn-danger">x</button><button ng-click="EditInstance(instance)" class="btn btn-info">{{instance.name}}</button><button ng-click="DupInstance(instance)" class="btn btn-success">+</button></p>
 			</td>
 			<td>
-				<p ng-repeat="instance in instances | filter : {type: 'ATO', component:component}" /><button ng-click="EditInstance(instance)" class="btn btn-info">{{instance.name}}</button><button ng-click="DeleteInstance(instance)" class="btn btn-danger">-</button><button ng-click="DupInstance(instance)" class="btn btn-success">+</button></p>
+				<p ng-repeat="instance in instances | filter : {type: 'ATO', component:component}" /><button ng-click="DeleteInstance(instance)" class="btn btn-danger">x</button><button ng-click="EditInstance(instance)" class="btn btn-info">{{instance.name}}</button><button ng-click="DupInstance(instance)" class="btn btn-success">+</button></p>
 			</td>
 			<td>
-				<p ng-repeat="instance in instances | filter : {type: 'ESB', component:component}" /><button ng-click="EditInstance(instance)" class="btn btn-info">{{instance.name}}</button><button ng-click="DeleteInstance(instance)" class="btn btn-danger">-</button><button ng-click="DupInstance(instance)" class="btn btn-success">+</button></p>
+				<p ng-repeat="instance in instances | filter : {type: 'ESB', component:component}" /><button ng-click="DeleteInstance(instance)" class="btn btn-danger">x</button><button ng-click="EditInstance(instance)" class="btn btn-info">{{instance.name}}</button><button ng-click="DupInstance(instance)" class="btn btn-success">+</button></p>
 			</td>
 			<td>
-				<p ng-repeat="instance in instances | filter : {type: 'HAP', component:component}" /><button ng-click="EditInstance(instance)" class="btn btn-info">{{instance.name}}</button><button ng-click="DeleteInstance(instance)" class="btn btn-danger">-</button><button ng-click="DupInstance(instance)" class="btn btn-success">+</button></p>
+				<p ng-repeat="instance in instances | filter : {type: 'HAP', component:component}" /><button ng-click="DeleteInstance(instance)" class="btn btn-danger">x</button><button ng-click="EditInstance(instance)" class="btn btn-info">{{instance.name}}</button><button ng-click="DupInstance(instance)" class="btn btn-success">+</button></p>
 			</td>
 			<td>
-				<p ng-repeat="instance in instances | filter : {type: 'HTTP', component:component}" /><button ng-click="EditInstance(instance)" class="btn btn-info">{{instance.name}}</button><button ng-click="DeleteInstance(instance)" class="btn btn-danger">-</button><button ng-click="DupInstance(instance)" class="btn btn-success">+</button></p>
+				<p ng-repeat="instance in instances | filter : {type: 'HTTP', component:component}" /><button ng-click="DeleteInstance(instance)" class="btn btn-danger">x</button><button ng-click="EditInstance(instance)" class="btn btn-info">{{instance.name}}</button><button ng-click="DupInstance(instance)" class="btn btn-success">+</button></p>
 			</td>
 			<td>
-				<p ng-repeat="instance in instances | filter : {type: 'SGBD', component:component}" /><button ng-click="EditInstance(instance)" class="btn btn-info">{{instance.name}}/{{instance.schema}}</button><button ng-click="DeleteInstance(instance)" class="btn btn-danger">-</button><button ng-click="DupInstance(instance)" class="btn btn-success">+</button></p>
+				<p ng-repeat="instance in instances | filter : {type: 'SGBD', component:component}" /><button ng-click="DeleteInstance(instance)" class="btn btn-danger">x</button><button ng-click="EditInstance(instance)" class="btn btn-info">{{instance.name}}/{{instance.schema}}</button><button ng-click="DupInstance(instance)" class="btn btn-success">+</button></p>
 			</td>
 			<td>
-				<p ng-repeat="instance in instances | filter : {type: 'TUX', component:component}" /><button ng-click="EditInstance(instance)" class="btn btn-info">{{instance.name}}</button><button ng-click="DeleteInstance(instance)" class="btn btn-danger">-</button><button ng-click="DupInstance(instance)" class="btn btn-success">+</button></p>
+				<p ng-repeat="instance in instances | filter : {type: 'TUX', component:component}" /><button ng-click="DeleteInstance(instance)" class="btn btn-danger">x</button><button ng-click="EditInstance(instance)" class="btn btn-info">{{instance.name}}</button><button ng-click="DupInstance(instance)" class="btn btn-success">+</button></p>
 			</td>
 			<td>
-				<p ng-repeat="instance in instances | filter : {type: 'WAS', component:component}" /><button ng-click="EditInstance(instance)" class="btn btn-info">{{instance.name}}</button><button ng-click="DeleteInstance(instance)" class="btn btn-danger">-</button><button ng-click="DupInstance(instance)" class="btn btn-success">+</button></p>
+				<p ng-repeat="instance in instances | filter : {type: 'WAS', component:component}" /><button ng-click="DeleteInstance(instance)" class="btn btn-danger">x</button><button ng-click="EditInstance(instance)" class="btn btn-info">{{instance.name}}</button><button ng-click="DupInstance(instance)" class="btn btn-success">+</button></p>
 			</td>
 		</tr>
 		<tr class="spacer" ng-repeat-end><td colspan="9"></td></tr>
 	</table>
 	<div id="hostnames" class="instances-matrix">
+		<h4>Consulter les ENC :</h4>
 		<ul style="list-style-type: none"><li style="display: inline;padding-left: 10px;" ng-repeat="hostname in hostnames | orderBy:identity:false"><a href="/app/index.html#/enc/{{hostname}}" >{{hostname}}</a></li></ul>
 	</div>
 	</div>

@@ -56,14 +56,18 @@ angular.module('Hesperides.controllers').controller('ApplicationCtrl', ['$scope'
 	}
 	
 	$scope.DeleteInstance = function(instance) {
-		//If the instance was saved, it must have an id
-		if(instance.id){
-			Instance.delete({id: instance.id}, function(){
+		if(confirm("Suppression de l'instance "+instance.name+" ?")){
+		
+			//If the instance was saved, it must have an id
+			if(instance.id){
+				Instance.delete({id: instance.id}, function(){
+					removeInstanceFromView(instance);
+			});
+			} else {
+				//just refresh view without server call
 				removeInstanceFromView(instance);
-		});
-		} else {
-			//just refresh view without server call
-			removeInstanceFromView(instance);
+			}
+
 		}
 	};
 	

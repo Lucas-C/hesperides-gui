@@ -58,7 +58,7 @@ angular.module('Hesperides.controllers').controller('ENCCtrl', ['$scope', '$rout
 	}
 	
 	var updateCustom = function(enc) {
-		if(enc.custom) {
+		if(enc.custom && enc.custom != "null") {
 			myCodeMirror.setValue(enc.custom)
 		} else {
 			myCodeMirror.setValue("Entrez votre complement ENC ici au format YAML");

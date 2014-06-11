@@ -40,6 +40,7 @@ angular.module('Hesperides.controllers').controller('ENCCtrl', ['$scope', '$rout
 			$scope.enc.hostname = $scope.hostname;
 			$scope.enc.environment = $scope.environment;
 			$scope.enc.custom = jsyaml.dump(jsyaml.load(myCodeMirror.getValue()));
+			if($scope.enc.custom == "null\n") $scope.enc.custom = "";
 			ENC.save($scope.hostname, $scope.enc).then(function(enc){
 					$scope.enc = enc;
 					updatePreview(enc);
@@ -54,14 +55,19 @@ angular.module('Hesperides.controllers').controller('ENCCtrl', ['$scope', '$rout
     });
 	
 	var updatePreview = function(enc) {
-		previewYAML.setValue(enc.custom+enc.generated)
+		var preview = enc.generated;
+		if(enc.custom){
+			/* On fait le decalage de 2 espaces pour avoir un format yaml correct */
+			var custom = "  ";
+			custom += enc.custom.replace(/\n/g, "\n  ");
+			preview += custom;
+		}
+		previewYAML.setValue(preview);
 	}
 	
 	var updateCustom = function(enc) {
-		if(enc.custom && enc.custom != "null") {
-			myCodeMirror.setValue(enc.custom)
-		} else {
-			myCodeMirror.setValue("Entrez votre complement ENC ici au format YAML");
+		if(enc.custom) {
+			myCodeMirror.setValue(enc.custom);
 		}
 	}
 

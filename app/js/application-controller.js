@@ -13,8 +13,6 @@ angular.module('Hesperides.controllers').controller('ApplicationCtrl', ['$scope'
 	$scope.instances = [];
 	Search.instances($routeParams.application, $routeParams.platform).then(function(instances){
 		$scope.instances = instances;
-	}, function(response) {
-		//failed
 	});
 	
 	//Define functions for App menu
@@ -27,7 +25,7 @@ angular.module('Hesperides.controllers').controller('ApplicationCtrl', ['$scope'
 		$('#instance-edit-modal').modal('show');
 	};
 	
-	 var findInstance = function(id){
+	var findInstance = function(id){
 		return $scope.instances.filter(function(instance){ return instance.id == id })[0];
 	};
 	
@@ -97,6 +95,7 @@ angular.module('Hesperides.controllers').controller('ApplicationCtrl', ['$scope'
 	
 	$scope.DupInstance = function(instance) {
 		var newInstance = new Instance(instance);
+		newInstance.id = null;
 		$scope.instances.push(newInstance);
 		$scope.EditInstance(newInstance);
 	}
@@ -165,23 +164,27 @@ angular.module('Hesperides.controllers').controller('ApplicationCtrl', ['$scope'
 		}
 	}, true);
 	
+	/* refresh components and hostnames */
 	$scope.$watch('instances', function(){
 		$scope.components = InstanceUtils.getComponents($scope.instances);
 		$scope.hostnames = InstanceUtils.getHostnames($scope.instances);
 	}, true);
 	
+	/* refresh home value when user changes */
 	$scope.$watch('instance.user', function(){
 		if($scope.instance){
 			$scope.instance.home = InstanceUtils.guessInstanceHome($scope.instance);
 		}
 	},true);
 	
+	/* refresh home value when component changes */
 	$scope.$watch('instance.component', function(){
 		if($scope.instance){
 			$scope.instance.home = InstanceUtils.guessInstanceHome($scope.instance);
 		}
 	},true);
 	
+	/* used by templates */
 	$scope.identity = function(object) { return object; };
 			
   }]);

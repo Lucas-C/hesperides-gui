@@ -78,8 +78,9 @@
 
 .instances-matrix  th.techno-type button{
   text-align: left;
-  background-color: #FAFAFA;
-   border-color: #DDD;
+  background-color: #EEEEEE;
+  border-color: #DDD;
+  border-radius: 0px;
   margin-right: 0.3em;
   padding: 0 2px 0 2px;
 }
@@ -264,7 +265,11 @@
  * Edition des ENC
  */ 
 
-.enc-border {
-	border-style: inset;
-	border-width: 2px;
+.CodeMirror {
+  border: 1px solid #ddd;
+  height: auto;
+}
+.CodeMirror-scroll {
+  overflow-y: hidden;
+  overflow-x: auto;
 } 

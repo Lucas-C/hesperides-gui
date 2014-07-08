@@ -1,5 +1,5 @@
 	<div id="instances-matrix-container">
-	<table class="table table-condensed instances-matrix" >
+	<table class="table table-condensed table-hover instances-matrix">
 		<tr class="head">
 			<th></th>
 			<th class="techno-type"><div class="box"><div class="left"><span>AMQ</span></div><div class="right"><button ng-click="AddInstance('AMQ')" class="btn btn-add">Ajouter</button></div></div></th>
@@ -11,6 +11,7 @@
 			<th class="techno-type"><div class="box"><div class="left">TUX</div><div class="right"><button ng-click="AddInstance('TUX')" class="btn btn-add">Ajouter</button></div></div></th>
 			<th class="techno-type"><div class="box"><div class="left">WAS</div><div class="right"><button ng-click="AddInstance('WAS')" class="btn btn-add">Ajouter</button></div></div></th>
 		</tr>
+		<tr class="spacer" ng-repeat-end><td colspan="9"></td></tr>
 		<tr ng-repeat-start="component in components | orderBy:identity:false"  ng-class="$index%2==0&&'bright'||'dark'">
 			<td class="component-title">{{component}}</td>
 			<td>

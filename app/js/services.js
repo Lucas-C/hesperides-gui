@@ -24,17 +24,23 @@ hesperidesServices.factory('Search', ['$http', 'Instance', function ($http, Inst
                     instances.push(instance);
                 }
                 return instances;
-            });
+            }, function(response) {
+				alert('Impossible de recuperer les instances\nStatus Code : '+response.status+" "+response.statusText);
+			});
         },
         fulltext: function (keywords) {
             return $http.get('http://localhost:8080/rest/search/fulltext/appinst/' + keywords).then(function (response) {
                 return response.data;
-            });
+            }, function(response) {
+				alert('Probleme du serveur\nStatus Code : '+response.status+" "+response.statusText);
+			});
         },
         fulltextHostname: function (hostname) {
             return $http.get('http://localhost:8080/rest/search/fulltext/hostname/' + hostname).then(function (response) {
                 return response.data;
-            });
+            }, function(response) {
+				alert('Probleme du serveur\nStatus Code : '+response.status+" "+response.statusText);
+			});
         }
     };
 

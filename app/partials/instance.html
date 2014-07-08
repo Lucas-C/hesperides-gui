@@ -7,6 +7,7 @@
 		<p>
 			<span>Client: <input type="text" ng-model="instance.client" size="8" /></span>
 			<span>Version: <input type="text" ng-model="instance.application_version" size="8"/></span>
+			<span>Nom complet de l'appli: <input type="text" ng-model="instance.application_fullname" size="60"/></span>
 			<span>URL: <input type="text" ng-model="instance.application_url" size="60"/></span>
 		</p>
 		<p>
@@ -17,19 +18,30 @@
 		<p>
 			<span>User: <guess-zone><guess-instancebucket instances="instances" instance="instance" field="'user'"></guess-instancebucket><guess-tooltip></guess-tooltip> <input type="text" ng-model="instance.user" guess-input size="10" /></span>
 			<span>Home: <input type="text" ng-model="instance.home" size="30" /> </guess-zone></span>
+			<span>Log Level: <input type="text" ng-model="instance.log_level" size="30" /> </guess-zone></span>
 		</p>
 		
 		<p ng-if="instanceTypeIs(['WAS','ESB'])">
-			<span>Template puppet: <guess-zone><guess-instancebucket instances="instances" instance="instance" field="'puppet_template_path'"></guess-instancebucket><guess-tooltip></guess-tooltip><input type="text" ng-model="instance.puppet_template_path" guess-input /></guess-zone></span>
+			<span>Template puppet path: <guess-zone><guess-instancebucket instances="instances" instance="instance" field="'puppet_template_path'"></guess-instancebucket><guess-tooltip></guess-tooltip><input type="text" ng-model="instance.puppet_template_path" guess-input /></guess-zone></span>
+			<span>Template puppet version: <input type="text" ng-model="instance.puppet_template_version" /></span>
 		</p>
 		
 		<span ng-if="instanceTypeIs(['WAS','ESB'])">
 		<p>
 			<h2>Options JVM Specifiques:</h2>
 			<ul>
-				<li>Tuning : <input ng-list type="text" ng-model="instance.jvm_opts.tuning" size="120" /></li>
-				<li>System : <input ng-list type="text" ng-model="instance.jvm_opts.system" size="120" /></li>
+				<li>Tuning : <input ng-list type="text" ng-model="instance.jvm_options.tuning" size="120" /></li>
+				<li>System : <input ng-list type="text" ng-model="instance.jvm_options.system" size="120" /></li>
 			</ul>
+		</p>
+		</span>
+		
+		<span ng-if="instanceTypeIs(['WAS'])">
+		<p>
+			<p>
+				<span>Multicast : <input ng-list type="text" ng-model="instance.multicast" size="20" /></span>
+				<span>Consamq : <input ng-list type="text" ng-model="instance.consamq" size="20" /></span>
+			</p>
 		</p>
 		</span>
 		
@@ -38,12 +50,12 @@
 			<p>
 				<span>AMQ_TYPE: <input type="text" ng-model="instance.amq_type" size="5"/></span>
 				<span>NOM LOGIQUE: <input type="text" ng-model="instance.logical_name" size="20"/></span>
-				<span>DOSSIER DATA: <input type="text" ng-model="instance.target_dir" size="40"/></span>
 			</p>
 			<p>
 				<span>QUEUE: <input type="text" ng-model="instance.queue" size="40"/></span>
 				<span>DISCOVERY URL: <input type="text" ng-model="instance.discovery_url" size="80"/></span>
 				<span>MASTER: <input type="text" ng-model="instance.master" size="20" /></span>
+				<span>LOGICAL_NAME: <input type="text" ng-model="instance.logical_name" size="20" /></span>
 			</p>
 		</p>
 		</span>
@@ -54,7 +66,7 @@
 			<span>Login: <input type="text" ng-model="instance.login" /></span>
 			<span>Password: <input type="text" ng-model="instance.password" /></guess-zone></span>
 			<span>FQDN: <input type="text" ng-model="instance.fqdn" /></span>
-			<span>TYPE_TECHNO: <input type="text" ng-model="instance.type_techno" /></span>
+			<span>TYPE_TECHNO: <input type="text" ng-model="instance.techno_type" /></span>
 		</p>
 		</span>
 		
@@ -65,7 +77,7 @@
 		</p>
 		</span>
 		
-		<span ng-if="instanceTypeIs(['HAP','HTTP','ESB', 'WAS'])">
+		<span ng-if="instanceTypeIs(['AMQ','HAP','HTTP','ESB', 'WAS'])">
 		<p>
 			<span>Target_dir: <input type="text" ng-model="instance.target_dir" size="40"/></span>
 		</p>
@@ -119,7 +131,8 @@
 					<span>Type: <input type="text" ng-model="link.type" size="8"/></span>
 					<span ng-switch="link.type">
 						<span ng-switch-when="JDBC">
-							<span>Nom: <guess-zone><guess-instancebucket instances="instances" instance="instance" bucket="'links'" object="link" field="'key.name'"></guess-instancebucket><guess-tooltip></guess-tooltip><input type="text" ng-model="link.key.name" guess-input size="10"/></span>
+							<span>Instance: <guess-zone><guess-instancebucket instances="instances" instance="instance" bucket="'links'" object="link" field="'key.name'"></guess-instancebucket><guess-tooltip></guess-tooltip><input type="text" ng-model="link.key.name" guess-input size="10"/></span>
+							<span>JNDI: <input type="text" ng-model="link.configuration.name" /></span>
 							<span>Schema: <input type="text" ng-model="link.key.schema" /></span>
 							<span>Pool(min -max): <input type="text" ng-model="link.configuration.pool_min" size="2"/>-<input type="text" ng-model="link.configuration.pool_max" size="3"/></guess-zone></span> 
 						</span>

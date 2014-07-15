@@ -1,0 +1,25 @@
+<div style="float: left; width: 45%;">
+	<h3>Champs :</h3>
+	<div ng-repeat="keyValueProperty in properties.scope.keyValueProperties track by $index">
+		{{ keyValueProperty.name }} <input type="text" ng-model="keyValueProperty.value" /> {{ keyValueProperty.comment }}
+	</div>
+	<div ng-repeat="iterableProperty in properties.scope.iterableProperties track by $index">
+		{{ iterableProperty.name }}
+		<ul><button ng-click="addEvaluatedField(iterableProperty)" class="btn btn-success">+</button>
+			<li ng-repeat="(name, fields) in iterableProperty.evaluatedFields track by $index"><input type="text" ng-model="name" />
+			<ul>
+			<li ng-repeat="field in fields track by $index">
+				{{ field.name }} <input type="text" ng-model="field.value" /> {{ field.comment }}
+			</li>
+			</ul>
+			</li>
+		</ul>
+	</div>
+	<button ng-click="SaveCurrentProperties()" class="btn btn-success">Sauver les properties</button>
+</div>
+<div style="float: right; width: 45%;">
+	<h3>Preview du fichier final <button ng-click="generatePreview()" class="btn btn-success">GO!</button></h3>
+	<div id="enc-border">
+	<textarea id="preview" style="float: right; width: 45%;"></textarea>
+	</div>
+</div>

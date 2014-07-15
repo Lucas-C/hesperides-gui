@@ -12,6 +12,40 @@ hesperidesServices.factory('Instance', ['$resource', function ($resource) {
 
 }]);
 
+hesperidesServices.factory('Properties', ['$resource', function ($resource) {
+
+    return $resource('http://localhost:8080/rest/properties/:version/:application/:platform/:filename', {version: '@version', application: '@application', platform: '@platform', filename: '@filename'}, {
+        put: {method: 'PUT'},
+		all: {method: 'GET', isArray: true}
+    });
+
+}]);
+
+hesperidesServices.factory('Template', ['$resource', function ($resource) {
+
+    return $resource('http://localhost:8080/rest/templates/:version/:application/:filename', {version: '@version', application: '@application', filename: '@filename'}, {
+        put: {method: 'PUT'},
+		all: {method: 'GET', isArray: true}
+    });
+
+}]);
+
+hesperidesServices.factory('FileGenerator', ['$http', function ($http) {
+
+	return {
+		generate: function (application, version, platform, filename) {
+			return $http.get('http://localhost:8080/rest/properties/generated/'+version+'/'+application+'/'+platform+'/'+filename).then(function(response) {
+				return response.data;
+			}, function(error) {
+				alert('Impossible de générer le template\nStatus Code : '+response.status+" "+response.statusText);
+			});
+		}
+	
+	
+	}
+	
+}]);
+
 
 hesperidesServices.factory('Search', ['$http', 'Instance', function ($http, Instance) {
 

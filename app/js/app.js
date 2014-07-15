@@ -37,6 +37,14 @@ angular.module('Hesperides', [
                 templateUrl: 'partials/enc.html',
                 controller: 'ENCCtrl'
             }).
+			when('/properties/:application/:version/:platform/:filename', {
+				templateUrl: 'partials/properties.html',
+				controller: 'PropertiesCtrl'
+			}).
+			when('/templates/:application/:version/:filename', {
+				templateUrl: 'partials/template.html',
+				controller: 'TemplateCtrl'
+			}).
             otherwise({
                 redirectTo: '/search'
             });

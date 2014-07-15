@@ -1,0 +1,26 @@
+<div style="float: left; width: 45%;">
+	<h3>Template :</h3>
+	<div class="enc-border">
+	<textarea id="template"  ></textarea>
+	</div>
+	<button ng-click="SaveCurrentTemplate()" class="btn btn-danger">Sauver le template</button>
+</div>
+
+<div style="float: right; width: 45%;">
+	<h3>Champs simples :</h3>
+	<div ng-repeat="keyValueProperty in template.scope.keyValueProperties track by $index">
+		{{ keyValueProperty.name }} - {{ keyValueProperty.comment }}
+	</div>
+	<h3>Champs iterables :</h3>
+	<div ng-repeat="iterableProperty in template.scope.iterableProperties track by $index">
+		{{ iterableProperty.name }}
+		<ul>
+			<li ng-repeat="field in iterableProperty.fields track by $index">
+				{{ field.name }} - {{ field.comment }}
+			</li>
+		</ul>
+	</div>
+	
+	
+</div>
+

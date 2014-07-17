@@ -15,6 +15,11 @@ var Scope = function() {
 			this.iterableProperties.push(iterableProps);
 		};
 		
+};
+
+var EvaluatedField = function(title, fields){
+	this.title = title;
+	this.fields = fields;
 };	
 
 hesperidesServices.factory('Instance', ['$resource', function ($resource) {

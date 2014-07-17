@@ -5,7 +5,9 @@ angular.module('Hesperides.controllers').controller('PropertiesCtrl', ['$scope',
 	
 	var preview = CodeMirror.fromTextArea(document.getElementById('preview'), {
         mode: "text",
-		readOnly: true
+		readOnly: true,
+		lineNumbers: true,
+		viewportMargin: Infinity
     });
 	
 	/* Chargement des properties */
@@ -50,8 +52,8 @@ angular.module('Hesperides.controllers').controller('PropertiesCtrl', ['$scope',
 		});
 	};
 	
-	$scope.addEvaluatedField = function(iterableProperty) {
-		var propsSet = _.reduce(iterableProperty.fields, function(array, field){
+	$scope.addEvaluatedField = function(iterableProperties) {
+		var fields = _.reduce(iterableProperties.fields, function(array, field){
 			array.push({
 				name: field.name,
 				value: '',
@@ -59,8 +61,12 @@ angular.module('Hesperides.controllers').controller('PropertiesCtrl', ['$scope',
 			});
 			return array;
 		}, []);
-		iterableProperty.evaluatedFields['newname']=propsSet;
+		iterableProperties.evaluatedFields.push(new EvaluatedField('newname', fields));
 	};
+	
+	$scope.removeEvaluatedField = function(iterableProperties, field) {
+		iterableProperties.evaluatedFields.splice(iterableProperties.evaluatedFields.indexOf(field),1);
+	}
 	
 	
 	//Save properties when it changes, with a 1 second timeout to avoid multiple save

@@ -8,7 +8,8 @@ angular.module('Hesperides', [
         'Hesperides.filters',
         'Hesperides.services',
         'Hesperides.directives',
-		'ui.bootstrap'
+		'ui.bootstrap',
+		'xeditable'
     ]).factory('Page', function() {
 		var title = 'Hesperides';
 		return {

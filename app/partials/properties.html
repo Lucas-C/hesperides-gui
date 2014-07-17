@@ -1,25 +1,44 @@
-<div style="float: left; width: 45%;">
-	<h3>Champs :</h3>
-	<div ng-repeat="keyValueProperty in properties.scope.keyValueProperties track by $index">
-		{{ keyValueProperty.name }} <input type="text" ng-model="keyValueProperty.value" /> {{ keyValueProperty.comment }}
+<div style="float: left; width: 50%">
+	<form class="form-horizontal">
+	<h3>Champs simples :</h3>
+	<div class="form-group" ng-repeat="keyValueProperty in properties.scope.keyValueProperties track by $index">
+		<label for="keyValueProp-{{$index}}" class="col-sm-2 control-label">{{ keyValueProperty.name }}</label>
+		<div class="col-sm-10">
+			<input id="keyValueProp-{{$index}}" type="text" ng-model="keyValueProperty.value" style="width: 80%" class="form-control" tooltip="{{keyValueProperty.comment}}" tooltip-trigger="focus" tooltip-placement="right" />
+		</div>
 	</div>
+	<h3>Listes :</h3>
 	<div ng-repeat="iterableProperty in properties.scope.iterableProperties track by $index">
-		{{ iterableProperty.name }}
-		<ul><button ng-click="addEvaluatedField(iterableProperty)" class="btn btn-success">+</button>
-			<li ng-repeat="(name, fields) in iterableProperty.evaluatedFields track by $index"><input type="text" ng-model="name" />
-			<ul>
-			<li ng-repeat="field in fields track by $index">
-				{{ field.name }} <input type="text" ng-model="field.value" /> {{ field.comment }}
-			</li>
-			</ul>
-			</li>
-		</ul>
+		<div class="col-sm-10" style="display:inline-block; vertical-align: middle">
+			<h4 class="col-sm-3">{{ iterableProperty.name }}</h4>
+			<button ng-click="addEvaluatedField(iterableProperty)" style="padding: 0 2px 0 2px; margin-top: 8px; margin-bottom: 10px;" class="btn btn-success">+</button>
+		</div>
+		<div class="col-sm-10">
+			<accordion close-others="false">
+				<accordion-group is-open="status.open" ng-repeat="evaluatedField in iterableProperty.evaluatedFields track by $index">
+					<accordion-heading>
+							<span ng-click="$event.stopPropagation()"><span editable-text="evaluatedField.title" buttons="no">{{evaluatedField.title}}</span></span>
+							<button ng-click="$event.stopPropagation();removeEvaluatedField(iterableProperty, evaluatedField)" style="padding: 0 2px 0 2px;"  class="btn btn-danger" >-</button>
+							<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+					</accordion-heading>
+					<div class="form-group" style="margin-bottom: 5px;" ng-repeat="field in evaluatedField.fields track by $index">
+						<label for="{{evaluatedField.title}}-field-{{$index}}" class="col-sm-2 control-label">{{ field.name }}</label>
+						<div class="col-sm-10">
+							<input id="{{evaluatedField.title}}-field-{{$index}}" type="text" ng-model="field.value" style="width: 80%" class="form-control" tooltip="{{field.comment}}" tooltip-trigger="focus" tooltip-placement="right"/>
+						</div>
+					</div>
+				</accordion-group>
+			</accordion>
+		</div>
 	</div>
-	<button ng-click="SaveCurrentProperties()" class="btn btn-success">Sauver les properties</button>
+	<div class="form-group">
+		<button ng-click="SaveCurrentProperties()" class="btn btn-success">Sauver les properties</button>
+	</div>
+	</form>
 </div>
-<div style="float: right; width: 45%;">
+<div style="float: right; width: 50%">
 	<h3>Preview du fichier final <button ng-click="generatePreview()" class="btn btn-success">GO!</button></h3>
 	<div id="enc-border">
-	<textarea id="preview" style="float: right; width: 45%;"></textarea>
+	<textarea id="preview" ></textarea>
 	</div>
 </div>

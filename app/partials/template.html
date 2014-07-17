@@ -9,14 +9,14 @@
 <div style="float: right; width: 45%;">
 	<h3>Champs simples :</h3>
 	<div ng-repeat="keyValueProperty in template.scope.keyValueProperties track by $index">
-		{{ keyValueProperty.name }} - {{ keyValueProperty.comment }}
+		{{ keyValueProperty.name }} <small>{{ keyValueProperty.comment }}</small>
 	</div>
 	<h3>Champs iterables :</h3>
 	<div ng-repeat="iterableProperty in template.scope.iterableProperties track by $index">
 		{{ iterableProperty.name }}
 		<ul>
 			<li ng-repeat="field in iterableProperty.fields track by $index">
-				{{ field.name }} - {{ field.comment }}
+				{{ field.name }}  <small>{{ field.comment }}</small>
 			</li>
 		</ul>
 	</div>

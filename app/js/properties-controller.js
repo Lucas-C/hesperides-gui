@@ -8,65 +8,26 @@ angular.module('Hesperides.controllers').controller('PropertiesCtrl', ['$scope',
 		readOnly: true
     });
 	
+	/* Chargement des properties */
 	Properties.get({version: $routeParams.version, application: $routeParams.application, platform: $routeParams.platform, filename: $routeParams.filename})
-								.$promise.then(function(properties){
-									return properties;
-								}, function(error) {
-									return new Properties({version: $routeParams.version, application: $routeParams.application, platform: $routeParams.platform, filename: $routeParams.filename});
-								}).then(function(properties){
-									Template.get({version: $routeParams.version, application: $routeParams.application, filename: $routeParams.filename})
-									.$promise.then(function(template){
-										
-									//Merge avec la description du template
-									//Algo basique :
-									//Le template a tjs raison
-									//pour les keyValueProperties -> ne garder que celles qui ont le même nom, ajouter les manquantes
-									//pour les iterableProperties -> ne garder que celles qui ont le même nom+même fields, ajouter les manquantes
-									var propertiesScope = {}; 
-									propertiesScope['keyValueProperties'] = [];
-									propertiesScope['iterableProperties'] = [];
-									template.scope.keyValueProperties.forEach(function(keyValueProp){
-										var existing = _.find(properties.scope.keyValueProperties, function(existingProp){
-											return existingProp.name === keyValueProp.name;
-										})
-										if(existing) { 
-											propertiesScope['keyValueProperties'].push(existing); 
-										} else {
-											propertiesScope['keyValueProperties'].push(keyValueProp);
-										}
-									});
-									_.each(template.scope.iterableProperties, function(iterableProp){
-										var existing = _.find(properties.scope.iterableProperties, function(existingProp){
-											var bool = (existingProp.name === iterableProp.name);
-											if(bool){
-												/* Check fields */
-												if(existingProp.fields){
-													bool = existingProp.fields.length === iterableProp.fields.length
-												}
-												if(bool){
-													/* regarder si tous les fields de existing sont dans iterableProp (le template) */
-													return _.every(existingProp.fields, function(existingField){
-															var result = _.find(iterableProp.fields, function(field){ return field.name === existingField.name });
-															if(result) return true; else return false;
-														});
-												}
-											}
-											return bool;
-										})
-										if(existing) { 
-											propertiesScope['iterableProperties'].push(existing); 
-										} else {
-											propertiesScope['iterableProperties'].push(iterableProp);
-										}
-									});
+			.$promise.then(function(properties){
+				/* retourne les properties existantes */
+				return properties;
+			}, function(error) {
+				/* Pas de properties existante, on créer le wrapper pour les nouvelles */
+				return new Properties({version: $routeParams.version, application: $routeParams.application, platform: $routeParams.platform, filename: $routeParams.filename});
+			}).then(function(properties){
+				/* Recherche du template associé */
+				Template.get({version: $routeParams.version, application: $routeParams.application, filename: $routeParams.filename})
+						.$promise.then(function(template){
 									
-									properties.scope = propertiesScope;
-									$scope.properties = properties;	
-										
-									}, function(error){
-										alert('Aucun template pour '+$routeParams.application+'/'+$routeParams.version+'/'+$routeParams.filename);
-									})
-								});
+							properties.rebuildScopeWithTemplate(template);
+							$scope.properties = properties;	
+								
+						}, function(error){
+							alert('Aucun template pour '+$routeParams.application+'/'+$routeParams.version+'/'+$routeParams.filename);
+						});
+			});
    
    
     //Use save in progress to avoid double saves (when model is updated by server response for instance)

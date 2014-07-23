@@ -67,6 +67,9 @@ hesperidesServices.factory('Properties', ['$resource', function ($resource) {
 		/* key value properties */
 		template.getKeyValueProperties().forEach(function(kvpFromTemplate){
 			if(self.hasProperties(kvpFromTemplate.name)){
+				var selfProp = self.getKeyValueProperty(kvpFromTemplate.name);
+				/* In case template was updated, change the comment */
+				selfProp.comment = kvpFromTemplate.comment;
 				newScope.addKeyValueProperties(self.getKeyValueProperty(kvpFromTemplate.name));
 			} else {
 				newScope.addKeyValueProperties(kvpFromTemplate);
@@ -76,7 +79,11 @@ hesperidesServices.factory('Properties', ['$resource', function ($resource) {
 		/* Iterable Properties */
 		template.getIterableProperties().forEach(function(ipFromTemplate){
 			var ip = self.getIterableProperty(ipFromTemplate.name, ipFromTemplate.fields);
-			if(ip) newScope.addIterableProperties(ip);
+			if(ip) {
+				/* In case template was updated, change the comment */
+				ip.comment = ipFromTemplate.comment;
+				newScope.addIterableProperties(ip);
+			}
 			else newScope.addIterableProperties(ipFromTemplate);
 		});
 		

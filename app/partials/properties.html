@@ -1,7 +1,7 @@
 <div style="float: left; width: 50%; padding-right:10px">
 	<form class="form-horizontal">
 	<h3>Champs simples :</h3>
-	<div class="form-group" ng-repeat="keyValueProperty in properties.scope.keyValueProperties track by $index">
+	<div style="margin-bottom: 1px" class="form-group" ng-repeat="keyValueProperty in properties.scope.keyValueProperties track by $index">
 		<label for="keyValueProp-{{$index}}" class="col-sm-2 control-label">{{ keyValueProperty.name }}</label>
 		<div class="col-sm-8 pull-right">
 			<input id="keyValueProp-{{$index}}" type="text" ng-model="keyValueProperty.value" class="form-control" tooltip="{{keyValueProperty.comment}}" tooltip-trigger="focus" tooltip-placement="right" />

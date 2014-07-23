@@ -4,7 +4,9 @@ angular.module('Hesperides.controllers').controller('TemplateCtrl', ['$scope', '
     Page.setTitle("Templates");
 	
 	var templateTextArea = CodeMirror.fromTextArea(document.getElementById('template'), {
-        mode: "text"
+        mode: "text",
+		lineNumbers: true,
+		lineWrapping: true
     });
 	
 	Template.get({version: $routeParams.version, application: $routeParams.application, filename: $routeParams.filename})

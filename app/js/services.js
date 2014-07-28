@@ -24,7 +24,7 @@ var EvaluatedField = function(title, fields){
 
 hesperidesServices.factory('Instance', ['$resource', function ($resource) {
 
-    return $resource('rest/instances/:id', {id: '@id'}, {
+    return $resource('/rest/instances/:id', {id: '@id'}, {
         all: {method: 'GET', params: {id: ''}, isArray: true},
         put: {method: 'PUT'}
     });
@@ -33,7 +33,7 @@ hesperidesServices.factory('Instance', ['$resource', function ($resource) {
 
 hesperidesServices.factory('Properties', ['$resource', function ($resource) {
 
-    var Properties  = $resource('rest/properties/:version/:application/:platform/:filename', {version: '@version', application: '@application', platform: '@platform', filename: '@filename'}, {
+    var Properties  = $resource('/rest/properties/:version/:application/:platform/:filename', {version: '@version', application: '@application', platform: '@platform', filename: '@filename'}, {
         put: {method: 'PUT'},
 		all: {method: 'GET', isArray: true}
     });
@@ -96,7 +96,7 @@ hesperidesServices.factory('Properties', ['$resource', function ($resource) {
 
 hesperidesServices.factory('Template', ['$resource', function ($resource) {
 
-    var Template = $resource('rest/templates/:version/:application/:filename', {version: '@version', application: '@application', filename: '@filename'}, {
+    var Template = $resource('/rest/templates/:version/:application/:filename', {version: '@version', application: '@application', filename: '@filename'}, {
         put: {method: 'PUT'},
 		all: {method: 'GET', isArray: true}
     });
@@ -119,7 +119,7 @@ hesperidesServices.factory('FileGenerator', ['$http', function ($http) {
 
 	return {
 		generate: function (application, version, platform, filename) {
-			return $http.get('rest/properties/generated/'+version+'/'+application+'/'+platform+'/'+filename).then(function(response) {
+			return $http.get('/rest/properties/generated/'+version+'/'+application+'/'+platform+'/'+filename).then(function(response) {
 				return response.data;
 			}, function(error) {
 				alert('Impossible de générer le template\nStatus Code : '+error.status+" "+error.statusText);
@@ -136,7 +136,7 @@ hesperidesServices.factory('Search', ['$http', 'Instance', function ($http, Inst
 
     return {
         instances: function (application, component) {
-            return $http.get('rest/search?application=' + application + '&platform=' + component).then(function (response) {
+            return $http.get('/rest/search?application=' + application + '&platform=' + component).then(function (response) {
                 var instances = [];
                 for (var i = 0; i < response.data.length; i++) {
                     var instance = new Instance(response.data[i]);
@@ -148,14 +148,14 @@ hesperidesServices.factory('Search', ['$http', 'Instance', function ($http, Inst
 			});
         },
         fulltext: function (keywords) {
-            return $http.get('rest/search/fulltext/appinst/' + keywords).then(function (response) {
+            return $http.get('/rest/search/fulltext/appinst/' + keywords).then(function (response) {
                 return response.data;
             }, function(response) {
 				alert('Probleme du serveur\nStatus Code : '+response.status+" "+response.statusText);
 			});
         },
         fulltextHostname: function (hostname) {
-            return $http.get('rest/search/fulltext/hostname/' + hostname).then(function (response) {
+            return $http.get('/rest/search/fulltext/hostname/' + hostname).then(function (response) {
                 return response.data;
             }, function(response) {
 				alert('Probleme du serveur\nStatus Code : '+response.status+" "+response.statusText);
@@ -168,12 +168,12 @@ hesperidesServices.factory('Search', ['$http', 'Instance', function ($http, Inst
 hesperidesServices.factory('ENC', ['$http', '$resource', function ($http, $resource) {
     return {
         get: function (hostname) {
-            return $http.get('rest/enc/' + hostname).then(function (response) {
+            return $http.get('/rest/enc/' + hostname).then(function (response) {
                 return response.data;
             })
         },
         save: function (hostname, enc) {
-            return $http({method: 'POST', url: 'rest/enc/' + hostname, data: enc}).then(function (response) {
+            return $http({method: 'POST', url: '/rest/enc/' + hostname, data: enc}).then(function (response) {
                 return response.data;
             })
         }

@@ -15,10 +15,10 @@
     <div id="search-results">
 			<span ng-switch="searchType">
 				<span ng-switch-when="AI">
-					<p ng-repeat="searchKey in searchKeys"><a href="/app/index.html#/application/{{searchKey.application}}/{{searchKey.platform}}">{{searchKey.application}}/{{searchKey.platform}}</a></p>
+					<p ng-repeat="searchKey in searchKeys"><a href="index.html#/application/{{searchKey.application}}/{{searchKey.platform}}">{{searchKey.application}}/{{searchKey.platform}}</a></p>
 				</span>
 				<span ng-switch-when="hostname">
-					<p ng-repeat="hostname in hostnames"><a href="/app/index.html#/enc/{{hostname}}">{{hostname}}</a></p>
+					<p ng-repeat="hostname in hostnames"><a href="index.html#/enc/{{hostname}}">{{hostname}}</a></p>
 				</span>
 			</span>
     </div>

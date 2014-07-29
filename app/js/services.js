@@ -25,7 +25,6 @@ var EvaluatedField = function(title, fields){
 hesperidesServices.factory('Instance', ['$resource', function ($resource) {
 
     return $resource('rest/instances/:id', {id: '@id'}, {
-        all: {method: 'GET', params: {id: ''}, isArray: true},
         put: {method: 'PUT'}
     });
 
@@ -33,9 +32,9 @@ hesperidesServices.factory('Instance', ['$resource', function ($resource) {
 
 hesperidesServices.factory('Properties', ['$resource', function ($resource) {
 
-    var Properties  = $resource('rest/properties/:version/:application/:platform/:filename', {version: '@version', application: '@application', platform: '@platform', filename: '@filename'}, {
-        put: {method: 'PUT'},
-		all: {method: 'GET', isArray: true}
+    var Properties  = $resource('rest/properties/:application/:version/:platform/:filename', {version: '@version', application: '@application', platform: '@platform', filename: '@filename'}, {
+        create: {method: 'PUT'},
+		update: {method: 'POST'}
     });
 	
 	Properties.prototype.scope = new Scope();
@@ -96,9 +95,9 @@ hesperidesServices.factory('Properties', ['$resource', function ($resource) {
 
 hesperidesServices.factory('Template', ['$resource', function ($resource) {
 
-    var Template = $resource('rest/templates/:version/:application/:filename', {version: '@version', application: '@application', filename: '@filename'}, {
-        put: {method: 'PUT'},
-		all: {method: 'GET', isArray: true}
+    var Template = $resource('rest/templates/:application/:version/:filename', {version: '@version', application: '@application', filename: '@filename'}, {
+        create: {method: 'PUT'},
+		update: {method: 'POST'}
     });
 	
 	Template.prototype.scope = new Scope();
@@ -148,7 +147,7 @@ hesperidesServices.factory('Search', ['$http', 'Instance', function ($http, Inst
 			});
         },
         fulltext: function (keywords) {
-            return $http.get('rest/search/fulltext/appinst/' + keywords).then(function (response) {
+            return $http.get('rest/search/fulltext/applicationplatform/' + keywords).then(function (response) {
                 return response.data;
             }, function(response) {
 				alert('Probleme du serveur\nStatus Code : '+response.status+" "+response.statusText);

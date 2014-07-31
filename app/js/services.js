@@ -32,7 +32,7 @@ hesperidesServices.factory('Instance', ['$resource', function ($resource) {
 
 hesperidesServices.factory('Properties', ['$resource', function ($resource) {
 
-    var Properties  = $resource('rest/properties/:application/:version/:platform/:filename', {version: '@version', application: '@application', platform: '@platform', filename: '@filename'}, {
+    var Properties  = $resource('rest/properties/:application/:version/:platform/:template_name', {version: '@version', application: '@application', platform: '@platform', template_name: '@template_name'}, {
         create: {method: 'PUT'},
 		update: {method: 'POST'}
     });
@@ -95,7 +95,7 @@ hesperidesServices.factory('Properties', ['$resource', function ($resource) {
 
 hesperidesServices.factory('Template', ['$resource', function ($resource) {
 
-    var Template = $resource('rest/templates/:application/:version/:filename', {version: '@version', application: '@application', filename: '@filename'}, {
+    var Template = $resource('rest/templates/:application/:version/:name', {version: '@version', application: '@application', name: '@name'}, {
         create: {method: 'PUT'},
 		update: {method: 'POST'}
     });
@@ -114,11 +114,28 @@ hesperidesServices.factory('Template', ['$resource', function ($resource) {
 
 }]);
 
+hesperidesServices.factory('Templates', ['$resource', function ($resource) {
+
+    var Templates = $resource('rest/templates/:application/:version', {version: '@version', application: '@application'}, {
+		get: {method: 'GET', isArray: true}
+	});
+	
+	/* JUST FOR DOC */
+	var TemplateEntry = function() {
+		this.filename;
+		this.location;
+		this.id;
+	}
+	
+	return Templates;
+
+}]);
+
 hesperidesServices.factory('FileGenerator', ['$http', function ($http) {
 
 	return {
-		generate: function (application, version, platform, filename) {
-			return $http.get('rest/properties/generated/'+version+'/'+application+'/'+platform+'/'+filename).then(function(response) {
+		generate: function (application, version, platform, template_name) {
+			return $http.get('rest/properties/generated/'+version+'/'+application+'/'+platform+'/'+template_name).then(function(response) {
 				return response.data;
 			}, function(error) {
 				alert('Impossible de générer le template\nStatus Code : '+error.status+" "+error.statusText);

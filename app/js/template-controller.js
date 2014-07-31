@@ -9,12 +9,12 @@ angular.module('Hesperides.controllers').controller('TemplateCtrl', ['$scope', '
 		lineWrapping: true
     });
 	
-	Template.get({version: $routeParams.version, application: $routeParams.application, filename: $routeParams.filename})
+	Template.get({version: $routeParams.version, application: $routeParams.application, name: $routeParams.template_name})
 								.$promise.then(function(template){
 									$scope.template = template;
 									templateTextArea.setValue(template.template);
 								}, function(error) {
-									$scope.template = new Template({version: $routeParams.version, application: $routeParams.application, filename: $routeParams.filename});
+									$scope.template = new Template({version: $routeParams.version, application: $routeParams.application, name: $routeParams.template_name});
 								});
    
    
@@ -25,9 +25,9 @@ angular.module('Hesperides.controllers').controller('TemplateCtrl', ['$scope', '
 			saveInProgress = true;
 			$scope.template.template = templateTextArea.getValue();
 			if($scope.template.id){
-				$scope.template.$save();
+				$scope.template.$update();
 			} else {
-				$scope.template.$put();
+				$scope.template.$create();
 			}
 			saveInProgress = false;
 		}

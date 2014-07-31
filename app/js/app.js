@@ -38,11 +38,11 @@ angular.module('Hesperides', [
                 templateUrl: 'partials/enc.html',
                 controller: 'ENCCtrl'
             }).
-			when('/properties/:application/:version/:platform/:filename', {
+			when('/properties/:application/:version/:platform/:template_name', {
 				templateUrl: 'partials/properties.html',
 				controller: 'PropertiesCtrl'
 			}).
-			when('/templates/:application/:version/:filename', {
+			when('/templates/:application/:version/:template_name', {
 				templateUrl: 'partials/template.html',
 				controller: 'TemplateCtrl'
 			}).

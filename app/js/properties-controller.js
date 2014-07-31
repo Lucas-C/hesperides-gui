@@ -11,23 +11,23 @@ angular.module('Hesperides.controllers').controller('PropertiesCtrl', ['$scope',
     });
 	
 	/* Chargement des properties */
-	Properties.get({version: $routeParams.version, application: $routeParams.application, platform: $routeParams.platform, filename: $routeParams.filename})
+	Properties.get({version: $routeParams.version, application: $routeParams.application, platform: $routeParams.platform, template_name: $routeParams.template_name})
 			.$promise.then(function(properties){
 				/* retourne les properties existantes */
 				return properties;
 			}, function(error) {
 				/* Pas de properties existante, on créer le wrapper pour les nouvelles */
-				return new Properties({version: $routeParams.version, application: $routeParams.application, platform: $routeParams.platform, filename: $routeParams.filename});
+				return new Properties({version: $routeParams.version, application: $routeParams.application, platform: $routeParams.platform, template_name: $routeParams.template_name});
 			}).then(function(properties){
 				/* Recherche du template associé */
-				Template.get({version: $routeParams.version, application: $routeParams.application, filename: $routeParams.filename})
+				Template.get({version: $routeParams.version, application: $routeParams.application, name: $routeParams.template_name})
 						.$promise.then(function(template){
 									
 							properties.rebuildScopeWithTemplate(template);
 							$scope.properties = properties;	
 								
 						}, function(error){
-							alert('Aucun template pour '+$routeParams.application+'/'+$routeParams.version+'/'+$routeParams.filename);
+							alert('Aucun template pour '+$routeParams.application+'/'+$routeParams.version+'/'+$routeParams.template_name);
 						});
 			});
    
@@ -38,16 +38,16 @@ angular.module('Hesperides.controllers').controller('PropertiesCtrl', ['$scope',
 		if($scope.properties && !saveInProgress){
 			saveInProgress = true;
 			if($scope.properties.id){
-				$scope.properties.$save();
+				$scope.properties.$update();
 			} else {
-				$scope.properties.$put();
+				$scope.properties.$create();
 			}
 			saveInProgress = false;
 		}
 	};
 	
 	$scope.generatePreview = function() {
-		FileGenerator.generate($routeParams.application, $routeParams.version, $routeParams.platform, $routeParams.filename).then(function(filecontent){
+		FileGenerator.generate($routeParams.application, $routeParams.version, $routeParams.platform, $routeParams.template_name).then(function(filecontent){
 			preview.setValue(filecontent);
 		});
 	};

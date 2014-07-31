@@ -1,5 +1,7 @@
 <div style="float: left; width: 50%; padding-right:10px">
 	<form class="form-horizontal">
+	<div style="width: 90%">Nom du fichier réel: <input type="text" ng-model="properties.filename" /></div>
+	<div style="width: 90%">Location: <input type="text" ng-model="properties.location" /></div>
 	<h3>Champs simples :</h3>
 	<div style="margin-bottom: 1px" class="form-group" ng-repeat="keyValueProperty in properties.scope.keyValueProperties track by $index">
 		<label for="keyValueProp-{{$index}}" class="col-sm-2 control-label">{{ keyValueProperty.name }}</label>

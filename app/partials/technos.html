@@ -1,0 +1,7 @@
+
+<p ng-repeat="template_entry in templateEntries" ><a href="" ng-click="edit_template(template_entry.namespace, template_entry.name)">{{template_entry.name}}</a><button ng-click="delete_template(template_entry.namespace, template_entry.name)" class="btn">X</button></p>
+<button ng-click="add_template()" class="btn">Ajouter un template</button>
+
+<div class="modal fade" tabindex="-1" role="dialog"  id="template-edit-modal" aria-hidden="true">
+<div ng-include="'partials/template.html'" id="edit-template-container" class="modal-dialog modal-lg modal-content" ></div>
+</div>

@@ -16,8 +16,7 @@ angular.module('Hesperides', [
 			title: function() { return title;},
 			setTitle: function(newTitle) { title = "Hesperides - "+newTitle }
 		}
-	}).
-	controller("TitleCtrl", ['$scope', 'Page', function($scope, Page) {
+	}).controller("TitleCtrl", ['$scope', 'Page', function($scope, Page) {
 		$scope.Page = Page;
 	}]).
     config(['$routeProvider', function ($routeProvider) {
@@ -45,6 +44,10 @@ angular.module('Hesperides', [
 			when('/templates/:application/:version/:template_name', {
 				templateUrl: 'partials/template.html',
 				controller: 'TemplateCtrl'
+			}).
+			when('/technos/:name/:version', {
+				templateUrl: 'partials/technos.html',
+				controller: 'TechnosCtrl'
 			}).
             otherwise({
                 redirectTo: '/search'

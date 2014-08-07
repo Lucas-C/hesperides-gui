@@ -95,20 +95,16 @@ hesperidesServices.factory('Properties', ['$resource', function ($resource) {
 
 hesperidesServices.factory('Template', ['$resource', function ($resource) {
 
-    var Template = $resource('rest/templates/:application/:version/:name', {version: '@version', application: '@application', name: '@name'}, {
-        create: {method: 'PUT'},
-		update: {method: 'POST'}
+    var Template = $resource('rest/templates/:namespace/:name', {namespace: '@hesnamespace', name: '@name'}, {
+        update: {method: 'PUT'},
+		create: {method: 'POST'},
+		all: {method: 'GET', url: 'rest/templates/:namespace', isArray: true},
     });
 	
-	Template.prototype.scope = new Scope();
-	
-	Template.prototype.getKeyValueProperties = function() {
-		if(this.scope) return this.scope.keyValueProperties;
-	};
-	
-	Template.prototype.getIterableProperties = function() {
-		return this.scope.iterableProperties;
-	};
+	Template.prototype.name = "";
+	Template.prototype.filename = "";
+	Template.prototype.location = "";
+	Template.prototype.template = "";
 	
 	return Template;
 

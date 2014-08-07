@@ -1,25 +1,12 @@
-<div style="float: left; width: 65%;">
-	<button ng-click="SaveCurrentTemplate()" class="btn btn-success" style="margin-bottom: 10px">Sauver le template</button>
+<div style="padding-top:10px;padding-left: 20px;padding-right: 20px;">
+	<p>Nom du template: <input type="text" ng-model="template.name" /></p>
+	<p>Nom du fichier sur le serveur: <input type="text" ng-model="template.filename" /></p>
+	<p>Emplacement du fichier sur le serveur: <input type="text" ng-model="template.location" /></p>
 	<div class="enc-border" style="height: 700px">
-	<textarea id="template"  style="height: 700px"></textarea>
+	<textarea id="template"  style="height: 700px; width: 100%"></textarea>
 	</div>
+	<p><button ng-click="save_template(template)" class="btn btn-success" style="margin-bottom: 10px">Sauver le template</button></p>
 </div>
-
-<div style="float: right; width: 30%;">
-	<h3>Champs simples :</h3>
-	<div ng-repeat="keyValueProperty in template.scope.keyValueProperties track by $index">
-		{{ keyValueProperty.name }} <small>{{ keyValueProperty.comment }}</small>
-	</div>
-	<h3>Champs iterables :</h3>
-	<div ng-repeat="iterableProperty in template.scope.iterableProperties track by $index">
-		{{ iterableProperty.name }}
-		<ul>
-			<li ng-repeat="field in iterableProperty.fields track by $index">
-				{{ field.name }}  <small>{{ field.comment }}</small>
-			</li>
-		</ul>
-	</div>
-	
 	
 </div>
 

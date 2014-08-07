@@ -24,6 +24,7 @@
   <script src="bower_components/bootstrap/dist/js/bootstrap.js"></script>
   <script src="bower_components/underscore/underscore.js"></script>
   <script src="js/app.js"></script>
+  <script src="js/notify.js"></script>
   <script src="js/services.js"></script>
   <script src="js/controllers.js"></script>
   <script src="js/filters.js"></script>
@@ -35,6 +36,7 @@
   <script src="js/application-controller.js"></script>
   <script src="js/properties-controller.js"></script>
   <script src="js/template-controller.js"></script>
+  <script src="js/technos-controller.js"></script>
   <script src="js/enc-controller.js"></script>
   <script src="js/lib/esprima.js"></script>
   <script src="js/lib/js-yaml.js"></script>
@@ -44,10 +46,8 @@
 </head>
 <body>
 
-<div id="headerWrapper">
-    <div id="header">
-        <h2>{{ Page.title() }}</h2>
-    </div>
+<div id="header">
+    <h2>{{ Page.title() }}</h2>
 </div>
 
 <script type="text/ng-template" id="/tooltip/tooltip-popup.html">
@@ -55,7 +55,7 @@
 </script>
 
 
-<div ng-view style="padding-top:60px;padding-left: 20px;padding-right: 20px;"></div>
+<div ng-view style="padding-top:90px;padding-left: 20px;padding-right: 20px;"></div>
 
 </body>
 </html>

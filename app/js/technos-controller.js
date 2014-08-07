@@ -3,13 +3,16 @@
 var TemplateEntry = function(template) {
 	this.name = template.name;
 	this.namespace = template.hesnamespace;
+	this.filename = template.filename;
+	this.location = template.location;
 }
 
-angular.module('Hesperides.controllers').controller('TechnosCtrl', ['$scope', '$routeParams', 'Template', 'Page', function ($scope, $routeParams, Template, Page) {
+angular.module('Hesperides.controllers').controller('TechnosCtrl', ['$scope', '$routeParams', 'Template', 'Properties', 'Page', function ($scope, $routeParams, Template, Properties, Page) {
     Page.setTitle("Technos");
 	
 	$scope.namespace = $routeParams.name+'.'+$routeParams.version
 	
+	/* Load template list */
 	Template.all({namespace: $scope.namespace}).$promise.then(function(templateEntries){
 		$scope.templateEntries = templateEntries;
 	}, function(error) {
@@ -18,6 +21,22 @@ angular.module('Hesperides.controllers').controller('TechnosCtrl', ['$scope', '$
 		}
 		$scope.templateEntries = [];
 	});
+	
+	/* Load Properties */
+	Properties.getModel({namespace: $scope.namespace}).$promise.then(function(propertiesModel){
+		$scope.propertiesModel = propertiesModel;
+	}, function(error) {
+		$.notify(error.data, "error");
+	});
+	
+	$scope.refresh_properties = function() {
+		/* Refresh properties */
+		Properties.getModel({namespace: $scope.namespace}).$promise.then(function(propertiesModel){
+			$scope.propertiesModel = propertiesModel;
+		}, function(error) {
+			$.notify(error.data, "error");
+		});
+	};
 			
 	$scope.add_template = function() {
 		$scope.template = new Template({hesnamespace: $scope.namespace});

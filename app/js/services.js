@@ -34,7 +34,8 @@ hesperidesServices.factory('Properties', ['$resource', function ($resource) {
 
     var Properties  = $resource('rest/properties/:application/:version/:platform/:template_name', {version: '@version', application: '@application', platform: '@platform', template_name: '@template_name'}, {
         create: {method: 'PUT'},
-		update: {method: 'POST'}
+		update: {method: 'POST'},
+		getModel: {method: 'GET', url: 'rest/properties/model/:namespace'}
     });
 	
 	Properties.prototype.scope = new Scope();

@@ -1,6 +1,26 @@
 
-<p ng-repeat="template_entry in templateEntries" ><a href="" ng-click="edit_template(template_entry.namespace, template_entry.name)">{{template_entry.name}}</a><button ng-click="delete_template(template_entry.namespace, template_entry.name)" class="btn">X</button></p>
+<div style="float: left; width: 40%">
+<h3>Les fichiers associes a la techno</h3>
+<p ng-repeat="template_entry in templateEntries" ><a href="" ng-click="edit_template(template_entry.namespace, template_entry.name)">{{template_entry.name}}</a> <small>{{template_entry.location}}/{{template_entry.filename}}</small><button ng-click="delete_template(template_entry.namespace, template_entry.name)" class="btn">X</button></p>
 <button ng-click="add_template()" class="btn">Ajouter un template</button>
+</div>
+
+<div style="float: right; width: 55%">
+	<h3>Les properties associees a la techno  <button ng-click="refresh_properties()" class="btn">Rafraichir</button></h3>
+	<h2>Champs simples :</h2>
+	<div ng-repeat="keyValueProperty in propertiesModel.keyValueProperties track by $index">
+		{{ keyValueProperty.name }} <small>{{ keyValueProperty.comment }}</small>
+	</div>
+	<h2>Champs iterables :</h2>
+	<div ng-repeat="iterableProperty in propertiesModel.iterableProperties track by $index">
+		{{ iterableProperty.name }}
+		<ul>
+			<li ng-repeat="field in iterableProperty.fields track by $index">
+				{{ field.name }}  <small>{{ field.comment }}</small>
+			</li>
+		</ul>
+	</div>
+</div>
 
 <div class="modal fade" tabindex="-1" role="dialog"  id="template-edit-modal" aria-hidden="true">
 <div ng-include="'partials/template.html'" id="edit-template-container" class="modal-dialog modal-lg modal-content" ></div>

@@ -22,6 +22,16 @@
 	</div>
 </div>
 
-<div class="modal fade" tabindex="-1" role="dialog"  id="template-edit-modal" aria-hidden="true">
-<div ng-include="'partials/template.html'" id="edit-template-container" class="modal-dialog modal-lg modal-content" ></div>
+<div class="modal" tabindex="-1" role="dialog"  id="template-edit-modal" aria-hidden="true">
+<div id="edit-template-container" class="modal-dialog modal-lg modal-content">
+<div style="padding-top:10px;padding-left: 20px;padding-right: 20px;">
+	<p>Nom du template: <input type="text" ng-model="template.name" size="30" /></p>
+	<p>Nom du fichier sur le serveur: <input type="text" ng-model="template.filename" size="30"/></p>
+	<p>Emplacement du fichier sur le serveur: <input type="text" ng-model="template.location" size="40"/></p>
+	<div class="enc-border" style="height: 400px">
+	<textarea id="template-textarea" style="height: 400px; width: 100%" ></textarea>
+	</div>
+	<p><button ng-click="save_template(template)" class="btn btn-success" style="margin-bottom: 10px">Sauver le template</button></p>
+</div>
+</div>
 </div>

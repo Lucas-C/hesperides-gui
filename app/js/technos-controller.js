@@ -28,11 +28,12 @@ angular.module('Hesperides.controllers').controller('TechnosCtrl', ['$scope', '$
 	}, function(error) {
 		$.notify(error.data, "error");
 	});
-	
+		
+	/* Functions */
 	$scope.refresh_properties = function() {
-		/* Refresh properties */
 		Properties.getModel({namespace: $scope.namespace}).$promise.then(function(propertiesModel){
 			$scope.propertiesModel = propertiesModel;
+			$.notify("Properties mise a jour", "success");
 		}, function(error) {
 			$.notify(error.data, "error");
 		});
@@ -62,17 +63,17 @@ angular.module('Hesperides.controllers').controller('TechnosCtrl', ['$scope', '$
 	};
 	
 	$scope.show_edit_template = function() {
-		$('#template-edit-modal').modal('show');
 		$('#template-edit-modal').on('shown.bs.modal', function() {
-			if(!$scope.templateTextArea) $scope.templateTextArea = CodeMirror.fromTextArea(document.getElementById('template'), {
+			/* Load CodeMirror */
+			if(_.isUndefined($scope.templateTextArea)) $scope.templateTextArea = CodeMirror.fromTextArea(document.getElementById('template-textarea'), {
 				mode: "text",
-				lineNumbers: true,
-				lineWrapping: true
+				lineNumbers: true
 			});
-			$scope.templateTextArea.setValue($scope.template.template);
-		})
+			$scope.templateTextArea.setValue($scope.template.template || "");
+		});
+		$('#template-edit-modal').modal('show');
 	};
-	
+
 	$scope.save_template = function(template) {
 		$scope.template.template = $scope.templateTextArea.getValue();
 		if($scope.template.id){

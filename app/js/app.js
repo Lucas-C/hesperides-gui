@@ -45,6 +45,10 @@ angular.module('Hesperides', [
 				templateUrl: 'partials/template.html',
 				controller: 'TemplateCtrl'
 			}).
+			when('/technos', {
+				templateUrl: 'partials/technos-search.html',
+				controller: 'TechnosSearchCtrl'
+			}).
 			when('/technos/:name/:version', {
 				templateUrl: 'partials/technos.html',
 				controller: 'TechnosCtrl'

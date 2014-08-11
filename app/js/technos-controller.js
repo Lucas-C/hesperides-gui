@@ -10,7 +10,7 @@ var TemplateEntry = function(template) {
 angular.module('Hesperides.controllers').controller('TechnosCtrl', ['$scope', '$routeParams', 'Template', 'Properties', 'Page', function ($scope, $routeParams, Template, Properties, Page) {
     Page.setTitle("Technos");
 	
-	$scope.namespace = $routeParams.name+'.'+$routeParams.version
+	$scope.namespace = "technos."+$routeParams.name+'.'+$routeParams.version
 	
 	/* Load template list */
 	Template.all({namespace: $scope.namespace}).$promise.then(function(templateEntries){

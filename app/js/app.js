@@ -21,7 +21,7 @@ angular.module('Hesperides', [
 	}]).
     config(['$routeProvider', function ($routeProvider) {
         $routeProvider.
-            when('/application/:application/:platform', {
+            when('/application/:application/:version', {
                 templateUrl: 'application.html',
                 controller: 'ApplicationCtrl'
             }).
@@ -57,3 +57,4 @@ angular.module('Hesperides', [
                 redirectTo: '/search'
             });
     }]);
+

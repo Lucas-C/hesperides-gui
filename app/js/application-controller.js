@@ -1,190 +1,107 @@
 'use strict';
 
-angular.module('Hesperides.controllers').controller('ApplicationCtrl', ['$scope', '$routeParams', '$timeout', 'Search', 'Instance', 'Page', function($scope, $routeParams, $timeout, Search, Instance, Page) {
+var Application = function() {
+	this.units = [];
+}
+
+var Unit = function() {
+	this.technos = [];
+	this.hasTechno = function(techno) {
+		var namespaces = _.pluck(this.technos, "namespace");
+		return  _.contains(namespaces, techno.namespace);
+	};
+}
+
+angular.module('Hesperides.controllers').controller('ApplicationCtrl', ['$scope', '$routeParams', 'Technos', 'Template', 'Page', function($scope, $routeParams, Technos, Template, Page) {
     
-	Page.setTitle("edition "+$routeParams.application+" "+$routeParams.platform);
+	Page.setTitle($routeParams.application+" version "+$routeParams.version);
 	
-	//Initial Params
-	$scope.application = $routeParams.application;
-	$scope.platform = $routeParams.platform;
-	$scope.editing = false;
+	$scope.application = new Application();
 	
-	//Load data for app/platform
-	$scope.instances = [];
-	Search.instances($routeParams.application, $routeParams.platform).then(function(instances){
-		$scope.instances = instances;
-	});
-	
-	//Define functions for App menu
-	$scope.Edit =  function(bool) {
-		$scope.editing = bool;
+	$scope.get_technos = function(name, chosenTechnos) {
+		return Technos.like(name).then(function(technosByName){
+			chosenTechnos = _.pluck(chosenTechnos, "namespace");
+			return _.chain(technosByName).flatten().reject(function(techno) { 
+				return  _.contains(chosenTechnos, techno.namespace);
+			}).value();
+		});
 	};
 	
-	$scope.EditInstance = function(instance){
-		$scope.instance = instance;		
-		$('#instance-edit-modal').modal('show');
+	$scope.add_unit = function(application) {
+		var unit = new Unit();
+		application.units.push(unit);
+		$scope.editingUnit = unit;
 	};
 	
-	var findInstance = function(id){
-		return $scope.instances.filter(function(instance){ return instance.id == id })[0];
+	$scope.edit_unit = function(unit) {
+		$scope.editingUnit = unit;	
 	};
 	
-	//Define functions for current instance
-	//Use save in progress to avoid double saves (when model is updated by server response for instance)
-	var saveInProgress = false;
-	$scope.SaveCurrentInstance = function() {
-		//if($scope.$instanceForm.$valid && !saveInProgress){
-		if($scope.instance && !saveInProgress){
-			saveInProgress = true;
-			if($scope.instance.id){
-				$scope.instance.$save();
-			} else {
-				$scope.instance.$put();
-			}
-			saveInProgress = false;
-		}
+	$scope.add_techno = function(techno, unit) {
+		if(techno instanceof Techno && !unit.hasTechno(techno)) unit.technos.push(techno);
 	};
 	
-	var removeInstanceFromView = function(instance) {
-		if($scope.instance && $scope.instance.id == instance.id){
-			$scope.instance = null;
-			$scope.Edit(false);
-		}
-		$scope.instances.splice($scope.instances.indexOf(instance), 1);
+	$scope.is_editing = function() {
+		return !_.isUndefined($scope.editingUnit);
 	}
 	
-	$scope.DeleteInstance = function(instance) {
-		if(confirm("Suppression de l'instance "+instance.name+" ?")){
-		
-			//If the instance was saved, it must have an id
-			if(instance.id){
-				Instance.delete({id: instance.id}, function(){
-					removeInstanceFromView(instance);
+	/* Peut etre factorise avec techno controller */
+	$scope.add_template = function() {
+		$scope.template = new Template({hesnamespace: $scope.editingUnit.namespace});
+		$scope.show_edit_template();
+	};
+	
+	$scope.delete_template = function(namespace, name) {
+		Template.delete({namespace: namespace, name: name}).$promise.then(function(){
+			$scope.editingUnit.templateEntries = _.reject($scope.editingUnit.templateEntries, function(templateEntry) { return templateEntry.name === name; });
+			$.notify("Le template a bien ete supprime", "success"); 
+		}, function(error) {
+			$.notify(error.data, "error");
+		});
+	};
+	
+	$scope.edit_template = function(namespace, name){
+		Template.get({namespace: namespace, name: name}).$promise.then(function(template){
+			$scope.template = template;
+			$scope.show_edit_template();
+		}, function(error) {
+			$.notify(error.data, "error");
+		});
+	};
+	
+	$scope.show_edit_template = function() {
+		$('#template-edit-modal').on('shown.bs.modal', function() {
+			/* Load CodeMirror */
+			if(_.isUndefined($scope.templateTextArea)) $scope.templateTextArea = CodeMirror.fromTextArea(document.getElementById('template-textarea'), {
+				mode: "text",
+				lineNumbers: true
 			});
-			} else {
-				//just refresh view without server call
-				removeInstanceFromView(instance);
-			}
+			$scope.templateTextArea.setValue($scope.template.template || "");
+		});
+		$('#template-edit-modal').modal('show');
+	};
 
-		}
-	};
-	
-	$scope.AddInstance = function(type) {
-		var newInstance = new Instance();
-		newInstance.type = type;
-		newInstance.application = $scope.application;
-		newInstance.platform = $scope.platform;
-		newInstance.component = $scope.application;
-		newInstance.bins = [];
-		newInstance.modules = [];
-		newInstance.jvm_optjs = { 'tuning': [],	'system': []};
-		newInstance.ports = [];
-		newInstance.links = [];
-		newInstance.schemas = [];
-				
-		//Try to add more elements if there are instances already existing
-		if($scope.instances.length > 0){
-			newInstance.client = $scope.instances[0].client;
-			newInstance.application_version = $scope.instances[0].application_version;
-			newInstance.application_url = $scope.instances[0].application_url;
-		}
-		
-		$scope.instances.push(newInstance);
-		$scope.EditInstance(newInstance);
-	};
-	
-	$scope.DupInstance = function(instance) {
-		var newInstance = new Instance(instance);
-		newInstance.id = null;
-		$scope.instances.push(newInstance);
-		$scope.EditInstance(newInstance);
-	}
-	
-	$scope.Add_bin = function() {
-		if($scope.instance.bins == null) $scope.instance.bins = [];
-		$scope.instance.bins.push({});		
-	};
-	
-	$scope.Add_module = function() {
-		if($scope.instance.modules == null) $scope.instance.modules = [];
-		$scope.instance.modules.push({});		
-	};
-	
-	$scope.Add_port = function() {
-		if($scope.instance.ports == null) $scope.instance.ports = [];
-		$scope.instance.ports.push({});		
-	};
-	
-	$scope.Add_link = function() {
-		if($scope.instance.links == null) $scope.instance.links = [];
-		$scope.instance.links.push({});		
-	};
-	
-	$scope.Del_bin = function(index) {
-		$scope.instance.bins.splice(index, 1);		
-	};
-	
-	$scope.Del_module = function(index) {
-		$scope.instance.modules.splice(index, 1);		
-	};
-	
-	$scope.Del_port = function(index) {
-		$scope.instance.ports.splice(index, 1);	
-	};
-	
-	$scope.Del_link = function(link) {
-		$scope.instance.links.splice($scope.instance.links.indexOf(link), 1);		
-	};
-	
-	$scope.instanceTypeIs = function(types) {
-		if($scope.instance == null) return false;
-		if(Object.prototype.toString.call( types ) == '[object Array]'){
-			for(var i = 0; i<types.length; i++){
-				if($scope.instance.type === types[i]) return true;
-			}
-			return false;
+	$scope.save_template = function(template) {
+		$scope.template.template = $scope.templateTextArea.getValue();
+		if($scope.template.id){
+			$scope.template.$update(function(){
+				$.notify("Le template a ete mis a jour", "success");
+			}, function(error){
+				$.notify(error.data, "error");
+			});
 		} else {
-			return $scope.instance.type === types;
+			$scope.template.$create(function(){
+				$.notify("Le template bien ete cree", "success");
+				$scope.editingUnit.templateEntries.push(new TemplateEntry($scope.template));
+			}, function(error){
+				if(error.status === 409){
+					$.notify("Impossible de creer le template car il existe deja un template avec ce nom", "error");
+				} else {
+					$.notify(error.data, "error");
+				}
+			});
 		}
-	}	
+	};
+			
+}]);
 
-	
-	//Define functions for form edition
-	
-	//Save instance when it changes, with a 1 second timeout to avoid multiple save
-	var save_timeout = null;
-	$scope.$watch('instance', function(oldVal, newVal){	
-		//We want to save only when the same instance has changed, not when user chooses another instance to modify
-		if(oldVal && newVal && oldVal.id == newVal.id){
-			if(save_timeout){
-				$timeout.cancel(save_timeout);
-			}
-			
-			save_timeout = $timeout($scope.SaveCurrentInstance, 1000);
-		}
-	}, true);
-	
-	/* refresh components and hostnames */
-	$scope.$watch('instances', function(){
-		$scope.components = InstanceUtils.getComponents($scope.instances);
-		$scope.hostnames = InstanceUtils.getHostnames($scope.instances);
-	}, true);
-	
-	/* refresh home value when user changes */
-	$scope.$watch('instance.user', function(){
-		if($scope.instance){
-			$scope.instance.home = InstanceUtils.guessInstanceHome($scope.instance);
-		}
-	},true);
-	
-	/* refresh home value when component changes */
-	$scope.$watch('instance.component', function(){
-		if($scope.instance){
-			$scope.instance.home = InstanceUtils.guessInstanceHome($scope.instance);
-		}
-	},true);
-	
-	/* used by templates */
-	$scope.identity = function(object) { return object; };
-			
-  }]);

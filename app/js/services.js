@@ -26,6 +26,7 @@ var Techno = function(name, version, namespace) {
 	this.name = name;
 	this.version = version;
 	this.namespace = namespace;
+	this.title = name+", version "+version;
 };	
 
 hesperidesServices.factory('Instance', ['$resource', function ($resource) {
@@ -122,6 +123,20 @@ hesperidesServices.factory('Technos', ['$http', function ($http) {
     return {
 		all: function () {
 			return $http.get('rest/templates/search/namespace/technos').then(function(response) {
+				return _.chain(response.data)
+						.groupBy("namespace")
+						.map(function(templateList) { 
+							var template = templateList[0];
+							var namespaceTokens = template.namespace.split(".");
+							return new Techno(namespaceTokens[1], namespaceTokens[2], template.namespace);
+						})
+						.groupBy("name")
+						.sortBy("version")
+						.value();
+			});
+		},
+		like: function (name) {
+			return $http.get('rest/templates/search/namespace/technos.*'+name+'*').then(function(response) {
 				return _.chain(response.data)
 						.groupBy("namespace")
 						.map(function(templateList) { 

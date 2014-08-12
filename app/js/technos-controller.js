@@ -39,8 +39,8 @@ angular.module('Hesperides.controllers').controller('TechnosCtrl', ['$scope', '$
 		});
 	};
 			
-	$scope.add_template = function() {
-		$scope.template = new Template({hesnamespace: $scope.namespace});
+	$scope.add_template = function(namespace) {
+		$scope.template = new Template({hesnamespace: namespace});
 		$scope.show_edit_template();
 	};
 	
@@ -97,3 +97,4 @@ angular.module('Hesperides.controllers').controller('TechnosCtrl', ['$scope', '$
 	};
 	
 }]);
+

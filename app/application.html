@@ -1,56 +1,41 @@
-	<div id="instances-matrix-container">
-	<table class="table table-condensed table-hover instances-matrix">
-		<tr class="head">
-			<th></th>
-			<th class="techno-type"><div class="box"><div class="left"><span>AMQ</span></div><div class="right"><button ng-click="AddInstance('AMQ')" class="btn btn-add">Ajouter</button></div></div></th>
-			<th class="techno-type"><div class="box"><div class="left">ATO</div><div class="right"><button ng-click="AddInstance('ATO')" class="btn btn-add">Ajouter</button></div></div></th>
-			<th class="techno-type"><div class="box"><div class="left">ESB</div><div class="right"><button ng-click="AddInstance('ESB')" class="btn btn-add">Ajouter</button></div></div></th>
-			<th class="techno-type"><div class="box"><div class="left">HAP</div><div class="right"><button ng-click="AddInstance('HAP')" class="btn btn-add">Ajouter</button></div></div></th>
-			<th class="techno-type"><div class="box"><div class="left">HTTP</div><div class="right"><button ng-click="AddInstance('HTTP')" class="btn btn-add">Ajouter</button></div></div></th>
-			<th class="techno-type"><div class="box"><div class="left">SGBD</div><div class="right"><button ng-click="AddInstance('SGBD')" class="btn btn-add">Ajouter</button></div></div></th>
-			<th class="techno-type"><div class="box"><div class="left">TUX</div><div class="right"><button ng-click="AddInstance('TUX')" class="btn btn-add">Ajouter</button></div></div></th>
-			<th class="techno-type"><div class="box"><div class="left">WAS</div><div class="right"><button ng-click="AddInstance('WAS')" class="btn btn-add">Ajouter</button></div></div></th>
-		</tr>
-		<tr class="spacer" ng-repeat-end><td colspan="9"></td></tr>
-		<tr ng-repeat-start="component in components | orderBy:identity:false"  ng-class="$index%2==0&&'bright'||'dark'">
-			<td class="component-title">{{component}}</td>
-			<td>
-				<p ng-repeat="instance in instances | filter : {type: 'AMQ', component:component}" /><button ng-click="DeleteInstance(instance)" class="btn btn-danger">x</button><button ng-click="EditInstance(instance)" class="btn btn-info">{{instance.name}}</button><button ng-click="DupInstance(instance)" class="btn btn-success">+</button></p>
-			</td>
-			<td>
-				<p ng-repeat="instance in instances | filter : {type: 'ATO', component:component}" /><button ng-click="DeleteInstance(instance)" class="btn btn-danger">x</button><button ng-click="EditInstance(instance)" class="btn btn-info">{{instance.name}}</button><button ng-click="DupInstance(instance)" class="btn btn-success">+</button></p>
-			</td>
-			<td>
-				<p ng-repeat="instance in instances | filter : {type: 'ESB', component:component}" /><button ng-click="DeleteInstance(instance)" class="btn btn-danger">x</button><button ng-click="EditInstance(instance)" class="btn btn-info">{{instance.name}}</button><button ng-click="DupInstance(instance)" class="btn btn-success">+</button></p>
-			</td>
-			<td>
-				<p ng-repeat="instance in instances | filter : {type: 'HAP', component:component}" /><button ng-click="DeleteInstance(instance)" class="btn btn-danger">x</button><button ng-click="EditInstance(instance)" class="btn btn-info">{{instance.name}}</button><button ng-click="DupInstance(instance)" class="btn btn-success">+</button></p>
-			</td>
-			<td>
-				<p ng-repeat="instance in instances | filter : {type: 'HTTP', component:component}" /><button ng-click="DeleteInstance(instance)" class="btn btn-danger">x</button><button ng-click="EditInstance(instance)" class="btn btn-info">{{instance.name}}</button><button ng-click="DupInstance(instance)" class="btn btn-success">+</button></p>
-			</td>
-			<td>
-				<p ng-repeat="instance in instances | filter : {type: 'SGBD', component:component}" /><button ng-click="DeleteInstance(instance)" class="btn btn-danger">x</button><button ng-click="EditInstance(instance)" class="btn btn-info">{{instance.name}}/{{instance.schema}}</button><button ng-click="DupInstance(instance)" class="btn btn-success">+</button></p>
-			</td>
-			<td>
-				<p ng-repeat="instance in instances | filter : {type: 'TUX', component:component}" /><button ng-click="DeleteInstance(instance)" class="btn btn-danger">x</button><button ng-click="EditInstance(instance)" class="btn btn-info">{{instance.name}}</button><button ng-click="DupInstance(instance)" class="btn btn-success">+</button></p>
-			</td>
-			<td>
-				<p ng-repeat="instance in instances | filter : {type: 'WAS', component:component}" /><button ng-click="DeleteInstance(instance)" class="btn btn-danger">x</button><button ng-click="EditInstance(instance)" class="btn btn-info">{{instance.name}}</button><button ng-click="DupInstance(instance)" class="btn btn-success">+</button></p>
-			</td>
-		</tr>
-		<tr class="spacer" ng-repeat-end><td colspan="9"></td></tr>
-	</table>
-	<div id="hostnames" class="instances-matrix">
-		<h4>Consulter les ENC :</h4>
-		<ul style="list-style-type: none"><li style="display: inline;padding-left: 10px;" ng-repeat="hostname in hostnames | orderBy:identity:false"><a href="index.html#/enc/{{hostname}}" >{{hostname}}</a></li></ul>
+<div style="border-style: solid; padding: 10px 10px 10px 10px">
+	<h3>Composants:</h3>
+	<ul style="list-style-type: none;">
+		<li style="display: inline;  padding: 0 0.5em"  ng-repeat="unit in application.units track by $index"><a href="" ng-click="edit_unit(unit)">{{unit.name}}</a></li>
+	</ul>
+	<button ng-click="add_unit(application)" class="btn">Ajouter un composant</button>
+</div>
+
+<div ng-show="is_editing()">
+<div style="margin-top: 30px">
+	<h4>Nom du composant:</h4>
+	<input type="text" ng-model="editingUnit.name" />
+	<h4>Technos:</h4>
+	<ul>
+		<li ng-repeat="techno in editingUnit.technos track by $index">{{techno.name}}</li>
+	</ul>
+	<input type="text" ng-model="asyncTechnoSelected" placeholder="Ajouter une nouvelle techno" typeahead="techno as techno.title for techno in get_technos($viewValue, editingUnit.technos)" />
+	<button ng-click="add_techno(asyncTechnoSelected, editingUnit)" class="btn">Ok</button>
+</div>
+
+<div>
+<h3>Les fichiers associes au composant</h3>
+<p ng-repeat="template_entry in editingUnit.templateEntries" ><a href="" ng-click="edit_template(template_entry.namespace, template_entry.name)">{{template_entry.name}}</a> <small>{{template_entry.location}}/{{template_entry.filename}}</small><button ng-click="delete_template(template_entry.namespace, template_entry.name)" class="btn">X</button></p>
+<button ng-click="add_template()" class="btn">Ajouter un template</button>
+</div>
+</div>
+
+<div class="modal" tabindex="-1" role="dialog"  id="template-edit-modal" aria-hidden="true">
+<div id="edit-template-container" class="modal-dialog modal-lg modal-content">
+<div style="padding-top:10px;padding-left: 20px;padding-right: 20px;">
+	<p>Nom du template: <input type="text" ng-model="template.name" size="30" /></p>
+	<p>Nom du fichier sur le serveur: <input type="text" ng-model="template.filename" size="30"/></p>
+	<p>Emplacement du fichier sur le serveur: <input type="text" ng-model="template.location" size="40"/></p>
+	<div class="enc-border" style="height: 400px">
+	<textarea id="template-textarea" style="height: 400px; width: 100%" ></textarea>
 	</div>
-	</div>
-	
-	
-	<div class="modal fade" tabindex="-1" role="dialog"  id="instance-edit-modal" aria-hidden="true">
-	<div ng-include="'partials/instance.html'" id="edit-instance-container" class="modal-dialog modal-lg modal-content" ></div>
-	</div>
-	
-	<!--<div ng-view></div>-->
+	<p><button ng-click="save_template(template)" class="btn btn-success" style="margin-bottom: 10px">Sauver le template</button></p>
+</div>
+</div>
+</div>
 

@@ -1,22 +1,33 @@
 'use strict';
 
-var Application = function() {
-	this.units = [];
-}
-
-var Unit = function() {
-	this.technos = [];
-	this.hasTechno = function(techno) {
-		var namespaces = _.pluck(this.technos, "namespace");
-		return  _.contains(namespaces, techno.namespace);
-	};
-}
-
-angular.module('Hesperides.controllers').controller('ApplicationCtrl', ['$scope', '$routeParams', 'Technos', 'Template', 'Page', function($scope, $routeParams, Technos, Template, Page) {
+angular.module('Hesperides.controllers').controller('ApplicationCtrl', ['$scope', '$routeParams', 'Technos', 'Template', 'Application', 'Page', '$q', function($scope, $routeParams, Technos, Template, Application, Page, $q) {
     
 	Page.setTitle($routeParams.application+" version "+$routeParams.version);
 	
-	$scope.application = new Application();
+	Application.get({name: $routeParams.application, version: $routeParams.version}).$promise.then(function(application){		
+		$scope.application = application;	
+	}, function(error){
+		if(error.status != 404){
+			$.notify(error.data, "error");
+		}
+		$scope.application = new Application({name: $routeParams.application, version: $routeParams.version, units: []});
+	});
+	
+	$scope.save = function(application) {
+		if(application.id){
+			application.$update(function(){
+				$.notify("L'application a bien ete mise a jour", "success");
+			}, function(error) {
+				$.notify(error.data, "error");
+			});
+		} else {
+			application.$create(function(){
+				$.notify("L'application a bien ete creee", "success");
+			}, function(error) {
+				$.notify(error.data, "error");
+			});
+		}
+	};
 	
 	$scope.get_technos = function(name, chosenTechnos) {
 		return Technos.like(name).then(function(technosByName){
@@ -28,17 +39,78 @@ angular.module('Hesperides.controllers').controller('ApplicationCtrl', ['$scope'
 	};
 	
 	$scope.add_unit = function(application) {
-		var unit = new Unit();
+		var unit = {name:"Change me!", technos: []};
 		application.units.push(unit);
 		$scope.editingUnit = unit;
 	};
 	
+	$scope.update_unit_title = function(new_title) {
+		/* We need to resave the templates with a different namespace 
+		   Then save the application with the new unit name
+		   Then delete the ones with the old namespace
+		   Proceding in this order guaranties no loss of data		   */
+		var new_namespace = "app."+$routeParams.application+"."+$routeParams.version+"."+new_title;   
+		   
+		return _.reduce($scope.templateEntries, function(promise, tEntry) { 
+			return promise.then(function(){ return Template.get({namespace: tEntry.namespace, name: tEntry.name}).$promise; })
+						  .then(function(template){
+									template.hesnamespace = new_namespace;
+									return template.$create();
+								})
+		}, $q.when()).then(function(){
+			/* Update or create the app */
+			$scope.editingUnit.name = new_title;
+			if($scope.application.id){
+				return $scope.application.$update();
+			} else {
+				return $scope.application.$create();
+			}
+		}).then(function(){
+			/* Construct the chain of deletion */
+			return _.reduce($scope.templateEntries, function(promise, tEntry) {
+				return promise.then(function() { return Template.delete({namespace: tEntry.namespace, name: tEntry.name}).$promise; });
+			}, $q.when());
+			
+		}).then(function(){
+			/* Everything went well, update model*/
+			_.each($scope.templateEntries, function(tEntry) { tEntry.namespace = "app."+$routeParams.application+"."+$routeParams.version+"."+new_title; });
+			return true;
+			
+		}, function(error) {
+			return "Probleme : "+error.data;
+		});
+		   
+	};
+	
+	var update_template_namespace = function(tEntry, new_namespace){
+		return ;
+	}
+	
+	$scope.get_current_unit_namespace = function() {
+		return "app."+$routeParams.application+"."+$routeParams.version+"."+$scope.editingUnit.name;
+	}
+	
 	$scope.edit_unit = function(unit) {
-		$scope.editingUnit = unit;	
+		$scope.editingUnit = unit;
+		/* Load the templates */
+		Template.all({namespace: $scope.get_current_unit_namespace()}).$promise.then(function(templateEntries){
+			$scope.templateEntries = templateEntries;
+		}, function(error) {
+			if(error.status != 404){
+				$.notify(error.data, "error");
+			}
+			$scope.templateEntries = [];
+		});
 	};
 	
 	$scope.add_techno = function(techno, unit) {
-		if(techno instanceof Techno && !unit.hasTechno(techno)) unit.technos.push(techno);
+		if(techno instanceof Techno && !_.contains(unit.technos, techno.namespace)){
+			unit.technos.push(techno.namespace);
+		}
+	};
+	
+	$scope.del_techno = function(techno_namespace, unit) {
+		unit.technos = _.without(unit.technos, techno_namespace);
 	};
 	
 	$scope.is_editing = function() {
@@ -47,13 +119,13 @@ angular.module('Hesperides.controllers').controller('ApplicationCtrl', ['$scope'
 	
 	/* Peut etre factorise avec techno controller */
 	$scope.add_template = function() {
-		$scope.template = new Template({hesnamespace: $scope.editingUnit.namespace});
+		$scope.template = new Template({hesnamespace: $scope.get_current_unit_namespace()});
 		$scope.show_edit_template();
 	};
 	
 	$scope.delete_template = function(namespace, name) {
 		Template.delete({namespace: namespace, name: name}).$promise.then(function(){
-			$scope.editingUnit.templateEntries = _.reject($scope.editingUnit.templateEntries, function(templateEntry) { return templateEntry.name === name; });
+			$scope.templateEntries = _.reject($scope.templateEntries, function(templateEntry) { return templateEntry.name === name; });
 			$.notify("Le template a bien ete supprime", "success"); 
 		}, function(error) {
 			$.notify(error.data, "error");
@@ -92,7 +164,7 @@ angular.module('Hesperides.controllers').controller('ApplicationCtrl', ['$scope'
 		} else {
 			$scope.template.$create(function(){
 				$.notify("Le template bien ete cree", "success");
-				$scope.editingUnit.templateEntries.push(new TemplateEntry($scope.template));
+				$scope.templateEntries.push(new TemplateEntry($scope.template));
 			}, function(error){
 				if(error.status === 409){
 					$.notify("Impossible de creer le template car il existe deja un template avec ce nom", "error");

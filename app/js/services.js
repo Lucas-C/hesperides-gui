@@ -22,11 +22,12 @@ var EvaluatedField = function(title, fields){
 	this.fields = fields;
 };
 
-var Techno = function(name, version, namespace) {
-	this.name = name;
-	this.version = version;
+var Techno = function(namespace) {
+	var namespaceTokens = namespace.split(".");
+	this.name = namespaceTokens[1];
+	this.version = namespaceTokens[2];
 	this.namespace = namespace;
-	this.title = name+", version "+version;
+	this.title = this.name+", version "+this.version;
 };	
 
 hesperidesServices.factory('Instance', ['$resource', function ($resource) {
@@ -118,6 +119,17 @@ hesperidesServices.factory('Template', ['$resource', function ($resource) {
 
 }]);
 
+hesperidesServices.factory('Application', ['$resource', function ($resource) {
+
+    var Application = $resource('rest/applications/:name/:version', {name: '@name', version: '@version'}, {
+        update: {method: 'PUT'},
+		create: {method: 'POST'}
+    });
+	
+	return Application;
+
+}]);
+
 hesperidesServices.factory('Technos', ['$http', function ($http) {
 
     return {
@@ -127,8 +139,7 @@ hesperidesServices.factory('Technos', ['$http', function ($http) {
 						.groupBy("namespace")
 						.map(function(templateList) { 
 							var template = templateList[0];
-							var namespaceTokens = template.namespace.split(".");
-							return new Techno(namespaceTokens[1], namespaceTokens[2], template.namespace);
+							return new Techno(template.namespace);
 						})
 						.groupBy("name")
 						.sortBy("version")
@@ -141,8 +152,7 @@ hesperidesServices.factory('Technos', ['$http', function ($http) {
 						.groupBy("namespace")
 						.map(function(templateList) { 
 							var template = templateList[0];
-							var namespaceTokens = template.namespace.split(".");
-							return new Techno(namespaceTokens[1], namespaceTokens[2], template.namespace);
+							return new Techno(template.namespace);
 						})
 						.groupBy("name")
 						.sortBy("version")
@@ -186,7 +196,6 @@ hesperidesServices.factory('FileGenerator', ['$http', function ($http) {
 	}
 	
 }]);
-
 
 hesperidesServices.factory('Search', ['$http', 'Instance', function ($http, Instance) {
 

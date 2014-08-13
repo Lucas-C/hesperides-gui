@@ -6,10 +6,55 @@ var hesperidesServices = angular.module('Hesperides.services', ['ngResource']).
 hesperidesServices.factory('Properties', ['$http', function ($http) {
 
     return {
-		getModel: function(namespace) {
-			return $http.get('rest/properties/model/'+namespace).then(function(response){
+		getModel: function(namespaces) {
+			var namespaces_as_string = _.isArray(namespaces) ? namespaces.join(",")  : namespaces;
+			return $http.get('rest/properties/model/'+namespaces_as_string).then(function(response){
 				return response.data;
 			});
+		},
+		getProperties: function(properties_namespace, model_namespaces) {
+			return this.getModel(model_namespaces).then(function(model){
+				return $http.get('rest/properties/'+properties_namespace).then(function(response){
+					return response.data;
+				}, function(error) {
+					return {namespace: properties_namespace, keyValueProperties: [], iterableProperties: []};
+				}).then(function(properties){
+					/* Detect properties that are/are not in the model */
+					_.each(properties.keyValueProperties, function(property){
+						property.inModel = _.some(model.keyValueProperties, function(modelProp){
+							return modelProp.name === property.name;
+						});					
+					});
+					
+					_.each(properties.iterableProperties, function(property){
+						property.inModel = _.some(model.iterableProperties, function(modelProp){
+							return modelProp.name === property.name;
+						});					
+					});
+					
+					/* Add properties only in the model */
+					_.chain(model.keyValueProperties)
+					 .filter(function(model){
+						return !_.some(properties.keyValueProperties, function(property){
+							return property.name === model.name;
+						});
+					}).each(function(model){
+						properties.keyValueProperties.push({name: model.name, comment: model.comment, value: "", inModel: true});
+					});
+					
+					_.chain(model.iterableProperties)
+					 .filter(function(model){
+						return !_.some(properties.keyValueProperties, function(property){
+							return property.name === model.name;
+						});
+					}).each(function(model){
+						properties.iterableProperties.push({name: model.name, comment: model.comment, value: "", inModel: true, fields: model.fields});
+					});
+				
+					return properties;
+				});
+			})
+			
 		}
     }
 
@@ -39,7 +84,7 @@ hesperidesServices.factory('Application', ['$resource', function ($resource) {
 }]);
 
 hesperidesServices.factory('Technos', ['$http', function ($http) {
-	
+
 	var Techno = function(namespace) {
 		var namespaceTokens = namespace.split(".");
 		this.name = namespaceTokens[1];

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('Hesperides.controllers').controller('ApplicationCtrl', ['$scope', '$routeParams', 'Technos', 'Template', 'Application', 'Page', '$q', function($scope, $routeParams, Technos, Template, Application, Page, $q) {
+angular.module('Hesperides.controllers').controller('ApplicationCtrl', ['$scope', '$routeParams', 'Technos', 'Template', 'Application', 'Properties', 'Page', '$q', function($scope, $routeParams, Technos, Template, Application, Properties, Page, $q) {
     
 	Page.setTitle($routeParams.application+" version "+$routeParams.version);
 	
@@ -104,7 +104,7 @@ angular.module('Hesperides.controllers').controller('ApplicationCtrl', ['$scope'
 	};
 	
 	$scope.add_techno = function(techno, unit) {
-		if(techno instanceof Techno && !_.contains(unit.technos, techno.namespace)){
+		if(!_.contains(unit.technos, techno.namespace)){
 			unit.technos.push(techno.namespace);
 		}
 	};
@@ -174,6 +174,17 @@ angular.module('Hesperides.controllers').controller('ApplicationCtrl', ['$scope'
 			});
 		}
 	};
+	
+	/* Properties */
+	$scope.refresh_unit_properties = function() {
+		var model_namespaces = [];
+		model_namespaces.push("app."+$routeParams.application+"."+$routeParams.version+"."+$scope.editingUnit.name);
+		_.each($scope.editingUnit.technos, function(techno){ model_namespaces.push(techno) });
+		Properties.getProperties("app."+$routeParams.application+"."+$routeParams.version+"."+$scope.editingUnit.name, model_namespaces).then(function(properties){
+			$scope.properties = properties;
+		});
+	
+	}
 			
 }]);
 

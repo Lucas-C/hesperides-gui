@@ -3,13 +3,15 @@
 var hesperidesServices = angular.module('Hesperides.services', ['ngResource']).
     value('version', '0.1');
 	
-hesperidesServices.factory('Properties', ['$resource', function ($resource) {
+hesperidesServices.factory('Properties', ['$http', function ($http) {
 
-    var Properties  = $resource('rest/properties/:application/:version/:platform/:template_name', {version: '@version', application: '@application', platform: '@platform', template_name: '@template_name'}, {
-		getModel: {method: 'GET', url: 'rest/properties/model/:namespace'}
-    });
-		
-	return Properties;
+    return {
+		getModel: function(namespace) {
+			return $http.get('rest/properties/model/'+namespace).then(function(response){
+				return response.data;
+			});
+		}
+    }
 
 }]);
 

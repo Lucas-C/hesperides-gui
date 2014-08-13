@@ -23,7 +23,7 @@ angular.module('Hesperides.controllers').controller('TechnosCtrl', ['$scope', '$
 	});
 	
 	/* Load Properties */
-	Properties.getModel({namespace: $scope.namespace}).$promise.then(function(propertiesModel){
+	Properties.getModel($scope.namespace).then(function(propertiesModel){
 		$scope.propertiesModel = propertiesModel;
 	}, function(error) {
 		$.notify(error.data, "error");
@@ -31,7 +31,7 @@ angular.module('Hesperides.controllers').controller('TechnosCtrl', ['$scope', '$
 		
 	/* Functions */
 	$scope.refresh_properties = function() {
-		Properties.getModel({namespace: $scope.namespace}).$promise.then(function(propertiesModel){
+		Properties.getModel($scope.namespace).then(function(propertiesModel){
 			$scope.propertiesModel = propertiesModel;
 			$.notify("Properties mise a jour", "success");
 		}, function(error) {

@@ -3,100 +3,11 @@
 var hesperidesServices = angular.module('Hesperides.services', ['ngResource']).
     value('version', '0.1');
 	
-var Scope = function() {
-		this.keyValueProperties = [];
-		this.iterableProperties = [];
-		
-		this.addKeyValueProperties = function(keyValueProps) {
-			this.keyValueProperties.push(keyValueProps);
-		};
-		
-		this.addIterableProperties = function(iterableProps) {
-			this.iterableProperties.push(iterableProps);
-		};
-		
-};
-
-var EvaluatedField = function(title, fields){
-	this.title = title;
-	this.fields = fields;
-};
-
-var Techno = function(namespace) {
-	var namespaceTokens = namespace.split(".");
-	this.name = namespaceTokens[1];
-	this.version = namespaceTokens[2];
-	this.namespace = namespace;
-	this.title = this.name+", version "+this.version;
-};	
-
-hesperidesServices.factory('Instance', ['$resource', function ($resource) {
-
-    return $resource('rest/instances/:id', {id: '@id'}, {
-        put: {method: 'PUT'}
-    });
-
-}]);
-
 hesperidesServices.factory('Properties', ['$resource', function ($resource) {
 
     var Properties  = $resource('rest/properties/:application/:version/:platform/:template_name', {version: '@version', application: '@application', platform: '@platform', template_name: '@template_name'}, {
-        create: {method: 'PUT'},
-		update: {method: 'POST'},
 		getModel: {method: 'GET', url: 'rest/properties/model/:namespace'}
     });
-	
-	Properties.prototype.scope = new Scope();
-	
-	Properties.prototype.hasProperties = function(name) {
-		return _.some(this.scope.keyValueProperties, function(kvp) { return kvp.name === name; });
-	};
-
-	Properties.prototype.getIterableProperty = function(name, fields) {
-		return _.chain(this.scope.iterableProperties).filter(function(ip) { return ip.name === name; })
-											  .find(function(ip) {
-												/* Compare les noms des fields */
-												return ip.fields.length === fields.length && _.intersection(_.pluck(ip.fields, 'name'),_.pluck(fields,'name')).length === fields.length;
-											}).value(); 
-	};
-	
-	Properties.prototype.getKeyValueProperty = function(name) {
-		return _.find(this.scope.keyValueProperties, function(kvp) { return kvp.name === name; });
-	};
-	
-	Properties.prototype.rebuildScopeWithTemplate = function(template) {
-		var self = this;
-		//Merge avec la description du template
-		//Algo basique :
-		//Le template a tjs raison
-		//pour les keyValueProperties -> ne garder que celles qui ont le même nom, ajouter les manquantes
-		//pour les iterableProperties -> ne garder que celles qui ont le même nom+même fields, ajouter les manquantes
-		var newScope = new Scope();
-		/* key value properties */
-		template.getKeyValueProperties().forEach(function(kvpFromTemplate){
-			if(self.hasProperties(kvpFromTemplate.name)){
-				var selfProp = self.getKeyValueProperty(kvpFromTemplate.name);
-				/* In case template was updated, change the comment */
-				selfProp.comment = kvpFromTemplate.comment;
-				newScope.addKeyValueProperties(self.getKeyValueProperty(kvpFromTemplate.name));
-			} else {
-				newScope.addKeyValueProperties(kvpFromTemplate);
-			}
-		});
-		
-		/* Iterable Properties */
-		template.getIterableProperties().forEach(function(ipFromTemplate){
-			var ip = self.getIterableProperty(ipFromTemplate.name, ipFromTemplate.fields);
-			if(ip) {
-				/* In case template was updated, change the comment */
-				ip.comment = ipFromTemplate.comment;
-				newScope.addIterableProperties(ip);
-			}
-			else newScope.addIterableProperties(ipFromTemplate);
-		});
-		
-		this.scope = newScope;
-	};
 		
 	return Properties;
 
@@ -109,12 +20,7 @@ hesperidesServices.factory('Template', ['$resource', function ($resource) {
 		create: {method: 'POST'},
 		all: {method: 'GET', url: 'rest/templates/:namespace', isArray: true},
     });
-	
-	Template.prototype.name = "";
-	Template.prototype.filename = "";
-	Template.prototype.location = "";
-	Template.prototype.template = "";
-	
+		
 	return Template;
 
 }]);
@@ -131,6 +37,14 @@ hesperidesServices.factory('Application', ['$resource', function ($resource) {
 }]);
 
 hesperidesServices.factory('Technos', ['$http', function ($http) {
+	
+	var Techno = function(namespace) {
+		var namespaceTokens = namespace.split(".");
+		this.name = namespaceTokens[1];
+		this.version = namespaceTokens[2];
+		this.namespace = namespace;
+		this.title = this.name+", version "+this.version;
+	};
 
     return {
 		all: function () {
@@ -161,23 +75,6 @@ hesperidesServices.factory('Technos', ['$http', function ($http) {
 		}
 	
 	}
-
-}]);
-
-hesperidesServices.factory('Templates', ['$resource', function ($resource) {
-
-    var Templates = $resource('rest/templates/:application/:version', {version: '@version', application: '@application'}, {
-		get: {method: 'GET', isArray: true}
-	});
-	
-	/* JUST FOR DOC */
-	var TemplateEntry = function() {
-		this.filename;
-		this.location;
-		this.id;
-	}
-	
-	return Templates;
 
 }]);
 
@@ -227,21 +124,5 @@ hesperidesServices.factory('Search', ['$http', 'Instance', function ($http, Inst
 			});
         }
     };
-
-}]);
-
-hesperidesServices.factory('ENC', ['$http', '$resource', function ($http, $resource) {
-    return {
-        get: function (hostname) {
-            return $http.get('rest/enc/' + hostname).then(function (response) {
-                return response.data;
-            })
-        },
-        save: function (hostname, enc) {
-            return $http({method: 'POST', url: 'rest/enc/' + hostname, data: enc}).then(function (response) {
-                return response.data;
-            })
-        }
-    }
 
 }]);

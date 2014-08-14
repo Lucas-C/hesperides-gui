@@ -182,7 +182,25 @@ angular.module('Hesperides.controllers').controller('ApplicationCtrl', ['$scope'
 			$scope.properties = properties;
 		});
 	
-	}
+	};
+	
+	$scope.save_properties = function(properties) {
+		if(_.isUndefined(properties.id)){
+			Properties.create(properties).then(function(){
+				$scope.properties = properties;
+				$.notify("Les proprietes ont bien ete crees", "success");
+			}, function(error) {
+				$.notify(error.data, "error");
+			});
+		} else {
+			Properties.update(properties).then(function(){
+				$scope.properties = properties;
+				$.notify("Les proprietes ont bien ete mises à jour", "success");
+			}, function(error) {
+				$.notify(error.data, "error");
+			});
+		}
+	};	
 			
 }]);
 

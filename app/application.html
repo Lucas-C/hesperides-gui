@@ -4,7 +4,7 @@
 		<li style="display: inline;  padding: 0 0.5em"  ng-repeat="unit in application.units track by $index"><a href="" ng-click="edit_unit(unit)">{{unit.name}}</a></li>
 	</ul>
 	<button ng-click="add_unit(application)" class="btn">Ajouter un composant</button>
-	<button ng-click="save(application)" class="btn">Sauvegarder</button>
+	<button ng-click="save(application)" class="btn">Sauver</button>
 </div>
 
 <div ng-show="is_editing()" style="border-style: solid; padding: 10px 10px 10px 10px">
@@ -27,16 +27,16 @@
 		</div>
 	</div>
 	<div style="float: right; width: 45%;border-style: solid;">
-		<h4>Les properties associees au composant  <button ng-click="refresh_unit_properties()" class="btn">Rafraichir</button></h4>
+		<h4>Les properties associees au composant  <button ng-click="refresh_unit_properties()" class="btn">Rafraichir</button><button ng-click="save_properties(properties)" class="btn">Sauver</button></h4>
 		<h5>Champs simples :</h5>
-		<div ng-repeat="keyValueProperty in properties.keyValueProperties track by $index">
-			{{ keyValueProperty.name }} <input type="text"  ng-model="keyValueProperty.value" tooltip="{{keyValueProperty.comment}}" tooltip-trigger="focus" tooltip-placement="right" />
+		<div ng-repeat="key_value_property in properties.key_value_properties track by $index">
+			{{ key_value_property.name }} <input type="text"  ng-model="key_value_property.value" tooltip="{{key_value_property.comment}}" tooltip-trigger="focus" tooltip-placement="right" /><span class="glyphicon glyphicon-thumbs-down" ng-hide="key_value_property.inModel"/>
 		</div>
 		<h5>Champs iterables :</h5>
-		<div ng-repeat="iterableProperty in properties.iterableProperties track by $index">
-			{{ iterableProperty.name }}
+		<div ng-repeat="iterable_property in properties.iterable_properties track by $index">
+			{{ iterable_property.name }}
 			<ul>
-				<li ng-repeat="field in iterableProperty.fields track by $index">
+				<li ng-repeat="field in iterable_property.fields track by $index">
 					{{ field.name }}  <small>{{ field.comment }}</small>
 				</li>
 			</ul>

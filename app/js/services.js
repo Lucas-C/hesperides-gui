@@ -17,44 +17,49 @@ hesperidesServices.factory('Properties', ['$http', function ($http) {
 				return $http.get('rest/properties/'+properties_namespace).then(function(response){
 					return response.data;
 				}, function(error) {
-					return {namespace: properties_namespace, keyValueProperties: [], iterableProperties: []};
+					return {hesnamespace: properties_namespace, key_value_properties: [], iterable_properties: []};
 				}).then(function(properties){
 					/* Detect properties that are/are not in the model */
-					_.each(properties.keyValueProperties, function(property){
-						property.inModel = _.some(model.keyValueProperties, function(modelProp){
+					_.each(properties.key_value_properties, function(property){
+						property.inModel = _.some(model.key_value_properties, function(modelProp){
 							return modelProp.name === property.name;
 						});					
 					});
 					
-					_.each(properties.iterableProperties, function(property){
-						property.inModel = _.some(model.iterableProperties, function(modelProp){
+					_.each(properties.iterable_properties, function(property){
+						property.inModel = _.some(model.iterable_properties, function(modelProp){
 							return modelProp.name === property.name;
 						});					
 					});
 					
 					/* Add properties only in the model */
-					_.chain(model.keyValueProperties)
+					_.chain(model.key_value_properties)
 					 .filter(function(model){
-						return !_.some(properties.keyValueProperties, function(property){
+						return !_.some(properties.key_value_properties, function(property){
 							return property.name === model.name;
 						});
 					}).each(function(model){
-						properties.keyValueProperties.push({name: model.name, comment: model.comment, value: "", inModel: true});
+						properties.key_value_properties.push({name: model.name, comment: model.comment, value: "", inModel: true});
 					});
 					
-					_.chain(model.iterableProperties)
+					_.chain(model.iterable_properties)
 					 .filter(function(model){
-						return !_.some(properties.keyValueProperties, function(property){
+						return !_.some(properties.key_value_properties, function(property){
 							return property.name === model.name;
 						});
 					}).each(function(model){
-						properties.iterableProperties.push({name: model.name, comment: model.comment, value: "", inModel: true, fields: model.fields});
+						properties.iterable_properties.push({name: model.name, comment: model.comment, value: "", inModel: true, fields: model.fields});
 					});
 				
 					return properties;
 				});
-			})
-			
+			});
+		},
+		create: function(properties) {
+			return $http.post('rest/properties/'+properties.hesnamespace, properties).then(function(response) { return response.data });
+		},
+		update: function(properties) {
+			return $http.put('rest/properties/'+properties.hesnamespace, properties).then(function(response) { return response.data });
 		}
     }
 

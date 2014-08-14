@@ -11,13 +11,13 @@
 	<div style="float: left; width: 45%;border-style: solid;">
 		<div style="margin-top: 30px">
 			<h4>Nom du composant:</h4>
-			<span editable-text="editingUnit.name" onbeforesave="update_unit_title($data)">{{editingUnit.name}}</span>
+			<span editable-text="editing_unit.name" onbeforesave="update_unit_title($data)">{{editing_unit.name}}</span>
 			<h4>Technos:</h4>
 			<ul>
-				<li ng-repeat="techno in editingUnit.technos track by $index">{{techno.split('.')[1]}}, version {{techno.split('.')[2]}}<button ng-click="del_techno(techno, editingUnit)" class="btn">X</button></li>
+				<li ng-repeat="techno in editing_unit.technos track by $index">{{techno.split('.')[1]}}, version {{techno.split('.')[2]}}<button ng-click="del_techno(techno, editing_unit)" class="btn">X</button></li>
 			</ul>
-			<input type="text" ng-model="asyncTechnoSelected" placeholder="Ajouter une nouvelle techno" typeahead="techno as techno.title for techno in get_technos($viewValue, editingUnit.technos)" />
-			<button ng-click="add_techno(asyncTechnoSelected, editingUnit)" class="btn">Ok</button>
+			<input type="text" ng-model="asyncTechnoSelected" placeholder="Ajouter une nouvelle techno" typeahead="techno as techno.title for techno in get_technos($viewValue, editing_unit.technos)" />
+			<button ng-click="add_techno(asyncTechnoSelected, editing_unit)" class="btn">Ok</button>
 		</div>
 
 		<div>

@@ -65,9 +65,50 @@ hesperidesServices.factory('Properties', ['$http', function ($http) {
 
 }]);
 
+hesperidesServices.factory('Context', ['$http', function ($http) {
+
+    return {
+		getModel: function(namespace) {
+			return $http.get('rest/contexts/model/'+namespace).then(function(response){ return response.data; });
+		},
+		get: function(namespace, name) {
+			return this.getModel(namespace).then(function(model) {
+				return $http.get('rest/contexts/'+hesnamespace+'/'+name).then(function(response) {
+					return response.data;
+				}, function(error) {
+					return {hesnamespace: namespace, name: name, key_values: []}; 
+				}).then(function(context) {
+					/* Mark key/values that are in the model */
+					_.each(context.key_values, function(key_value){
+						key_value.inModel = _.some(model.key_values, function(model_key_value){
+							return model_key_value.name === key_value.name;
+						});					
+					});
+					
+					/* Add key_values that are only in the model */
+					_(model.key_values).filter(function(model_key_value){
+						return !_.some(context.key_values, function(key_value){
+							return key_value.name === model_key_value.name;
+						});
+					}).each(function(model_key_value){
+						context.key_values.push({name: model_key_value.name, comment: model_key_value.comment, value: "", inModel: true});
+					});
+				});
+			});
+		},
+		create: function(context) {
+			return $http.post('rest/contexts/'+context.hesnamespace+'/'+context.name, context).then(function(response) { return response.data });
+		},
+		update: function(context) {
+			return $http.put('rest/contexts/'+context.hesnamespace+'/'+context.name, context).then(function(response) { return response.data });
+		}
+	};
+
+}]);
+
 hesperidesServices.factory('Template', ['$resource', function ($resource) {
 
-    var Template = $resource('rest/templates/:namespace/:name', {namespace: '@hesnamespace', name: '@name'}, {
+	var Template = $resource('rest/templates/:namespace/:name', {namespace: '@hesnamespace', name: '@name'}, {
         update: {method: 'PUT'},
 		create: {method: 'POST'},
 		all: {method: 'GET', url: 'rest/templates/:namespace', isArray: true},

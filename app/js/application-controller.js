@@ -59,7 +59,7 @@ angular.module('Hesperides.controllers').controller('ApplicationCtrl', ['$scope'
 								})
 		}, $q.when()).then(function(){
 			/* Update or create the app */
-			$scope.editingUnit.name = new_title;
+			$scope.editing_unit.name = new_title;
 			if($scope.application.id){
 				return $scope.application.$update();
 			} else {
@@ -83,11 +83,11 @@ angular.module('Hesperides.controllers').controller('ApplicationCtrl', ['$scope'
 	};
 		
 	$scope.get_current_unit_namespace = function() {
-		return "app."+$routeParams.application+"."+$routeParams.version+"."+$scope.editingUnit.name;
+		return "app."+$routeParams.application+"."+$routeParams.version+"."+$scope.editing_unit.name;
 	}
 	
 	$scope.edit_unit = function(unit) {
-		$scope.editingUnit = unit;
+		$scope.editing_unit = unit;
 		/* Load the templates */
 		Template.all({namespace: $scope.get_current_unit_namespace()}).$promise.then(function(templateEntries){
 			$scope.templateEntries = templateEntries;
@@ -112,7 +112,7 @@ angular.module('Hesperides.controllers').controller('ApplicationCtrl', ['$scope'
 	};
 	
 	$scope.is_editing = function() {
-		return !_.isUndefined($scope.editingUnit);
+		return !_.isUndefined($scope.editing_unit);
 	}
 	
 	/* Peut etre factorise avec techno controller */
@@ -176,9 +176,9 @@ angular.module('Hesperides.controllers').controller('ApplicationCtrl', ['$scope'
 	/* Properties */
 	$scope.refresh_unit_properties = function() {
 		var model_namespaces = [];
-		model_namespaces.push("app."+$routeParams.application+"."+$routeParams.version+"."+$scope.editingUnit.name);
-		_.each($scope.editingUnit.technos, function(techno){ model_namespaces.push(techno) });
-		Properties.getProperties("app."+$routeParams.application+"."+$routeParams.version+"."+$scope.editingUnit.name, model_namespaces).then(function(properties){
+		model_namespaces.push("app."+$routeParams.application+"."+$routeParams.version+"."+$scope.editing_unit.name);
+		_.each($scope.editing_unit.technos, function(techno){ model_namespaces.push(techno) });
+		Properties.getProperties("app."+$routeParams.application+"."+$routeParams.version+"."+$scope.editing_unit.name, model_namespaces).then(function(properties){
 			$scope.properties = properties;
 		});
 	

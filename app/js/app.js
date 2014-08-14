@@ -45,6 +45,10 @@ angular.module('Hesperides', [
 				templateUrl: 'partials/template.html',
 				controller: 'TemplateCtrl'
 			}).
+			when('/contexts/:application/:version/:component/:name', {
+				templateUrl: 'partials/context.html',
+				controller: 'ContextCtrl'
+			}).
 			when('/technos', {
 				templateUrl: 'partials/technos-search.html',
 				controller: 'TechnosSearchCtrl'

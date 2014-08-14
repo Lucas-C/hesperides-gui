@@ -41,7 +41,7 @@ angular.module('Hesperides.controllers').controller('ApplicationCtrl', ['$scope'
 	$scope.add_unit = function(application) {
 		var unit = {name:"Change me!", technos: []};
 		application.units.push(unit);
-		$scope.editingUnit = unit;
+		$scope.edit_unit(unit);
 	};
 	
 	$scope.update_unit_title = function(new_title) {
@@ -81,11 +81,7 @@ angular.module('Hesperides.controllers').controller('ApplicationCtrl', ['$scope'
 		});
 		   
 	};
-	
-	var update_template_namespace = function(tEntry, new_namespace){
-		return ;
-	}
-	
+		
 	$scope.get_current_unit_namespace = function() {
 		return "app."+$routeParams.application+"."+$routeParams.version+"."+$scope.editingUnit.name;
 	}
@@ -101,6 +97,8 @@ angular.module('Hesperides.controllers').controller('ApplicationCtrl', ['$scope'
 			}
 			$scope.templateEntries = [];
 		});
+		
+		$scope.refresh_unit_properties();
 	};
 	
 	$scope.add_techno = function(techno, unit) {

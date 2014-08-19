@@ -1,4 +1,4 @@
 <h3>Contexte {{context.name}} du composant {{component}} pour {{application}} {{version}}</h3>
-<p ng-repeat="key_value in context.context" >{{key_value.name}} <input type="text" ng-model="key_value.value" /></p>
+<p ng-repeat="key_value in context.key_values" >{{key_value.name}} <input type="text" ng-model="key_value.value" /><span class="glyphicon glyphicon-thumbs-down" ng-hide="key_value.inModel"/></p>
 <button ng-click="save_context(context)" class="btn">Sauver</button>
 </div>

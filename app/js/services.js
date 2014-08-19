@@ -44,11 +44,11 @@ hesperidesServices.factory('Properties', ['$http', function ($http) {
 					
 					_.chain(model.iterable_properties)
 					 .filter(function(model){
-						return !_.some(properties.key_value_properties, function(property){
+						return !_.some(properties.iterable_properties, function(property){
 							return property.name === model.name;
 						});
 					}).each(function(model){
-						properties.iterable_properties.push({name: model.name, comment: model.comment, value: "", inModel: true, fields: model.fields});
+						properties.iterable_properties.push({name: model.name, comment: model.comment, inModel: true, fields: model.fields});
 					});
 				
 					return properties;
@@ -73,7 +73,7 @@ hesperidesServices.factory('Context', ['$http', function ($http) {
 		},
 		get: function(namespace, name) {
 			return this.getModel(namespace).then(function(model) {
-				return $http.get('rest/contexts/'+hesnamespace+'/'+name).then(function(response) {
+				return $http.get('rest/contexts/'+namespace+'/'+name).then(function(response) {
 					return response.data;
 				}, function(error) {
 					return {hesnamespace: namespace, name: name, key_values: []}; 
@@ -93,6 +93,8 @@ hesperidesServices.factory('Context', ['$http', function ($http) {
 					}).each(function(model_key_value){
 						context.key_values.push({name: model_key_value.name, comment: model_key_value.comment, value: "", inModel: true});
 					});
+					
+					return context;
 				});
 			});
 		},

@@ -9,8 +9,9 @@ angular.module('Hesperides.controllers').controller('ApplicationCtrl', ['$scope'
 	}, function(error){
 		if(error.status != 404){
 			$.notify(error.data, "error");
+		} else {
+			$scope.application = new Application({name: $routeParams.application, version: $routeParams.version, units: []});
 		}
-		$scope.application = new Application({name: $routeParams.application, version: $routeParams.version, units: []});
 	});
 	
 	$scope.save = function(application) {

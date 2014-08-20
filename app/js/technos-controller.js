@@ -7,7 +7,7 @@ var TemplateEntry = function(template) {
 	this.location = template.location;
 }
 
-angular.module('Hesperides.controllers').controller('TechnosCtrl', ['$scope', '$routeParams', 'Template', 'Properties', 'Page', function ($scope, $routeParams, Template, Properties, Page) {
+angular.module('Hesperides.controllers').controller('TechnosCtrl', ['$scope', '$routeParams', '$modal', 'Template', 'Properties', 'Page', function ($scope, $routeParams, $modal, Template, Properties, Page) {
     Page.setTitle("Technos");
 	
 	$scope.namespace = "technos."+$routeParams.name+'.'+$routeParams.version
@@ -63,19 +63,19 @@ angular.module('Hesperides.controllers').controller('TechnosCtrl', ['$scope', '$
 	};
 	
 	$scope.show_edit_template = function() {
-		$('#template-edit-modal').on('shown.bs.modal', function() {
-			/* Load CodeMirror */
-			if(_.isUndefined($scope.templateTextArea)) $scope.templateTextArea = CodeMirror.fromTextArea(document.getElementById('template-textarea'), {
-				mode: "text",
-				lineNumbers: true
-			});
-			$scope.templateTextArea.setValue($scope.template.template || "");
+		$scope.templateModalInstance = $modal.open({
+			templateUrl: 'edit-template-modal.html',
+			backdrop: 'static',
+			size: 'lg',
+			scope: $scope
 		});
-		$('#template-edit-modal').modal('show');
+		
+		$scope.templateModalInstance.result.then(function(template){
+			$scope.save_template(template);
+		});
 	};
 
 	$scope.save_template = function(template) {
-		$scope.template.template = $scope.templateTextArea.getValue();
 		if($scope.template.id){
 			$scope.template.$update(function(){
 				$.notify("Le template a ete mis a jour", "success");

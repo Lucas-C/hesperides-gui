@@ -258,3 +258,22 @@
   z-index: 200000;
 }
 
+/* Buttons */
+
+.btn-red:hover {
+	color: #E00000;
+	padding-left: 13px;
+	padding-right: 14px;
+	padding-top: 8px;
+	padding-bottom: 4px;
+	
+}
+
+.btn-red {
+	color: #780000;
+}
+
+.btn-red:hover span {
+	font-size: 1.6em;
+}
+

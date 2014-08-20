@@ -1,5 +1,5 @@
-<div style="border-style: solid; padding: 10px 10px 10px 10px">
-	<h3>Composants:</h3>
+<div style="padding: 10px 10px 10px 10px">
+	<h3>Briques applicatives:</h3>
 	<ul style="list-style-type: none;">
 		<li style="display: inline;  padding: 0 0.5em"  ng-repeat="unit in application.units track by $index"><a href="" ng-click="edit_unit(unit)">{{unit.name}}</a></li>
 	</ul>
@@ -7,8 +7,8 @@
 	<button ng-click="save(application)" class="btn">Sauver</button>
 </div>
 
-<div ng-show="is_editing()" style="border-style: solid; padding: 10px 10px 10px 10px">
-	<div style="float: left; width: 45%;border-style: solid;">
+<div ng-show="is_editing()" style="padding: 10px 10px 10px 10px">
+	<div style="float: left; width: 45%">
 		<div style="margin-top: 30px">
 			<h4>Nom du composant:</h4>
 			<span editable-text="editing_unit.name" onbeforesave="update_unit_title($data)">{{editing_unit.name}}</span>
@@ -26,7 +26,7 @@
 			<button ng-click="add_template()" class="btn">Ajouter un template</button>
 		</div>
 	</div>
-	<div style="float: right; width: 45%;border-style: solid;">
+	<div style="float: right; width: 45%">
 		<h4>Les properties associees au composant  <button ng-click="refresh_unit_properties()" class="btn">Rafraichir</button><button ng-click="save_properties(properties)" class="btn">Sauver</button></h4>
 		<h5>Champs simples :</h5>
 		<div ng-repeat="key_value_property in properties.key_value_properties track by $index">

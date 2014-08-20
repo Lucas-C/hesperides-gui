@@ -57,10 +57,6 @@ angular.module('Hesperides', [
 				templateUrl: 'partials/technos.html',
 				controller: 'TechnosCtrl'
 			}).
-			when('/admin', {
-				templateUrl: 'partials/admin.html',
-				controller: 'AdminCtrl'
-			}).
             otherwise({
                 redirectTo: '/search'
             });

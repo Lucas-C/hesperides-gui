@@ -12,6 +12,25 @@ angular.module('Hesperides.controllers').controller('TechnosCtrl', ['$scope', '$
 	
 	$scope.namespace = "technos."+$routeParams.name+'.'+$routeParams.version
 	
+	$scope.codeMirrorOptions = {
+		mode: 'text',
+		lineNumbers: true,
+		extraKeys: {
+            'F11': function(cm) {
+				$('body').append($('#templateContent')); //Change the parent of codemirror because if not, fullscreen is restricted to the modal
+                $('#templateContent').children().css("z-index", 100000);
+				cm.setOption('fullScreen', true);
+				cm.focus();
+            },
+           'Esc': function(cm) {
+				$('#templateContentParent').append($('#templateContent'));
+                if (cm.getOption('fullScreen')) cm.setOption('fullScreen', false);
+				cm.focus();
+            }
+        }
+	};
+	
+	
 	/* Load template list */
 	Template.all({namespace: $scope.namespace}).$promise.then(function(templateEntries){
 		$scope.templateEntries = templateEntries;
@@ -67,6 +86,7 @@ angular.module('Hesperides.controllers').controller('TechnosCtrl', ['$scope', '$
 			templateUrl: 'edit-template-modal.html',
 			backdrop: 'static',
 			size: 'lg',
+			keyboard: false,
 			scope: $scope
 		});
 		

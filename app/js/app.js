@@ -9,7 +9,8 @@ angular.module('Hesperides', [
         'Hesperides.services',
         'Hesperides.directives',
 		'ui.bootstrap',
-		'xeditable'
+		'xeditable',
+		'ui.codemirror'
     ]).factory('Page', function() {
 		var title = 'Hesperides';
 		return {

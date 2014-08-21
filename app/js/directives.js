@@ -3,33 +3,6 @@
 /* Directives */
 
 angular.module('Hesperides.directives', [])
-	.directive('codeMirror', function() {
-		return {
-			
-			link: function (scope, element, attrs) {
-			
-		
-				scope.codeMirrorInstance = CodeMirror.fromTextArea(element[0], {
-						mode: "text",
-						lineNumbers: true
-				});
-				
-				scope.codeMirrorInstance.setValue(scope.text || "");
-				
-				scope.codeMirrorInstance.on("change", function(codeMirrorInstance, changeObj){
-					scope.text = codeMirrorInstance.getValue();
-					scope.$apply();
-				});
-				
-				scope.codeMirrorInstance.refresh(scope.codeMirrorInstance);
-			
-			
-			},
-			scope: {
-				text: '=codeMirrorModel'
-			}
-		};
-	})
 	.directive('ngEnter', function () {
 		return function (scope, element, attrs) {
 			element.bind("keydown keypress", function (event) {

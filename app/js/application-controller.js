@@ -1,8 +1,27 @@
 'use strict';
 
-angular.module('Hesperides.controllers').controller('ApplicationCtrl', ['$scope', '$routeParams', 'Technos', 'Template', 'Application', 'Properties', 'Page', '$q', function($scope, $routeParams, Technos, Template, Application, Properties, Page, $q) {
+angular.module('Hesperides.controllers').controller('ApplicationCtrl', ['$scope', '$routeParams', '$modal', 'Technos', 'Template', 'Application', 'Properties', 'Page', '$q', function($scope, $routeParams, $modal, Technos, Template, Application, Properties, Page, $q) {
     
 	Page.setTitle($routeParams.application+" version "+$routeParams.version);
+	
+	$scope.codeMirrorOptions = {
+		mode: 'text',
+		lineNumbers: true,
+		extraKeys: {
+            'F11': function(cm) {
+				$('body').append($('#templateContent')); //Change the parent of codemirror because if not, fullscreen is restricted to the modal
+                $('#templateContent').children().css("z-index", 100000);
+				cm.setOption('fullScreen', true);
+				cm.focus();
+            },
+           'Esc': function(cm) {
+				$('#templateContentParent').append($('#templateContent'));
+                if (cm.getOption('fullScreen')) cm.setOption('fullScreen', false);
+				cm.focus();
+            }
+        }
+	};
+	
 	
 	Application.get({name: $routeParams.application, version: $routeParams.version}).$promise.then(function(application){		
 		$scope.application = application;	
@@ -126,6 +145,7 @@ angular.module('Hesperides.controllers').controller('ApplicationCtrl', ['$scope'
 		Template.delete({namespace: namespace, name: name}).$promise.then(function(){
 			$scope.templateEntries = _.reject($scope.templateEntries, function(templateEntry) { return templateEntry.name === name; });
 			$.notify("Le template a bien ete supprime", "success"); 
+			setTimeout($scope.refresh_unit_properties, 1000);
 		}, function(error) {
 			$.notify(error.data, "error");
 		});
@@ -141,15 +161,17 @@ angular.module('Hesperides.controllers').controller('ApplicationCtrl', ['$scope'
 	};
 	
 	$scope.show_edit_template = function() {
-		$('#template-edit-modal').on('shown.bs.modal', function() {
-			/* Load CodeMirror */
-			if(_.isUndefined($scope.templateTextArea)) $scope.templateTextArea = CodeMirror.fromTextArea(document.getElementById('template-textarea'), {
-				mode: "text",
-				lineNumbers: true
-			});
-			$scope.templateTextArea.setValue($scope.template.template || "");
+		$scope.templateModalInstance = $modal.open({
+			templateUrl: 'edit-template-modal.html',
+			backdrop: 'static',
+			size: 'lg',
+			keyboard: false,
+			scope: $scope
 		});
-		$('#template-edit-modal').modal('show');
+		
+		$scope.templateModalInstance.result.then(function(template){
+			$scope.save_template(template);
+		});
 	};
 
 	$scope.save_template = function(template) {
@@ -157,6 +179,7 @@ angular.module('Hesperides.controllers').controller('ApplicationCtrl', ['$scope'
 		if($scope.template.id){
 			$scope.template.$update(function(){
 				$.notify("Le template a ete mis a jour", "success");
+				setTimeout($scope.refresh_unit_properties, 1000);
 			}, function(error){
 				$.notify(error.data, "error");
 			});
@@ -164,6 +187,7 @@ angular.module('Hesperides.controllers').controller('ApplicationCtrl', ['$scope'
 			$scope.template.$create(function(){
 				$.notify("Le template bien ete cree", "success");
 				$scope.templateEntries.push(new TemplateEntry($scope.template));
+				setTimeout($scope.refresh_unit_properties, 1000);
 			}, function(error){
 				if(error.status === 409){
 					$.notify("Impossible de creer le template car il existe deja un template avec ce nom", "error");

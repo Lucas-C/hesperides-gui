@@ -1,60 +1,92 @@
-<div style="padding: 10px 10px 10px 10px">
-	<h3>Briques applicatives:</h3>
-	<ul style="list-style-type: none;">
-		<li style="display: inline;  padding: 0 0.5em"  ng-repeat="unit in application.units track by $index"><a href="" ng-click="edit_unit(unit)">{{unit.name}}</a></li>
-	</ul>
-	<button ng-click="add_unit(application)" class="btn">Ajouter un composant</button>
-	<button ng-click="save(application)" class="btn">Sauver</button>
-</div>
-
-<div ng-show="is_editing()" style="padding: 10px 10px 10px 10px">
-	<div style="float: left; width: 45%">
-		<div style="margin-top: 30px">
-			<h4>Nom du composant:</h4>
-			<span editable-text="editing_unit.name" onbeforesave="update_unit_title($data)">{{editing_unit.name}}</span>
-			<h4>Technos:</h4>
-			<ul>
-				<li ng-repeat="techno in editing_unit.technos track by $index">{{techno.split('.')[1]}}, version {{techno.split('.')[2]}}<button ng-click="del_techno(techno, editing_unit)" class="btn">X</button></li>
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+			<h3>Briques applicatives:</h3>
+			<ul style="list-style-type: none;">
+				<li style="display: inline;  padding: 0 0.5em"  ng-repeat="unit in application.units track by $index"><a href="" ng-click="edit_unit(unit)">{{unit.name}}</a></li>
 			</ul>
-			<input type="text" ng-model="asyncTechnoSelected" placeholder="Ajouter une nouvelle techno" typeahead="techno as techno.title for techno in get_technos($viewValue, editing_unit.technos)" />
-			<button ng-click="add_techno(asyncTechnoSelected, editing_unit)" class="btn">Ok</button>
+			<button ng-click="add_unit(application)" class="btn">Ajouter un composant</button>
+			<button ng-click="save(application)" class="btn">Sauver</button>
 		</div>
+	</div>
 
-		<div>
-			<h3>Les fichiers specifiques associes au composant</h3>
-			<p ng-repeat="template_entry in templateEntries" ><a href="" ng-click="edit_template(template_entry.namespace, template_entry.name)">{{template_entry.name}}</a> <small>{{template_entry.location}}/{{template_entry.filename}}</small><button ng-click="delete_template(template_entry.namespace, template_entry.name)" class="btn">X</button></p>
-			<button ng-click="add_template()" class="btn">Ajouter un template</button>
+	<div class="row voffset1" ng-show="is_editing()">
+		<div ng-class="{'col-md-5': !expand_right_side}" ng-hide="expand_right_side">
+			<div style="margin-top: 30px">
+				<h4>Nom du composant:</h4>
+				<span editable-text="editing_unit.name" onbeforesave="update_unit_title($data)">{{editing_unit.name}}</span>
+				<h4>Technos:</h4>
+				<ul>
+					<li ng-repeat="techno in editing_unit.technos track by $index">{{techno.split('.')[1]}}, version {{techno.split('.')[2]}}<button ng-click="del_techno(techno, editing_unit)" class="btn">X</button></li>
+				</ul>
+				<input type="text" ng-model="asyncTechnoSelected" placeholder="Ajouter une nouvelle techno" typeahead="techno as techno.title for techno in get_technos($viewValue, editing_unit.technos)" />
+				<button ng-click="add_techno(asyncTechnoSelected, editing_unit)" class="btn">Ok</button>
+			</div>
+
+			<div>
+				<h3>Les fichiers specifiques de cette brique applicative</h3>
+				<blockquote>
+					<p ng-repeat="template_entry in templateEntries | orderBy:['location', 'name']" style="font-size: 14px;margin-bottom: 0px;">
+						<button ng-really-message="Etes-vous sur de vouloir supprimer le template '{{template_entry.name}}'" ng-really-click="delete_template(template_entry.namespace, template_entry.name)" class="btn btn-link btn-red btn-no-padding" ng-mouseenter="hover = true" ng-mouseleave="hover = false"><span class="glyphicon glyphicon-remove"  ></span></button>
+						{{template_entry.location}}/<a href="" ng-click="edit_template(template_entry.namespace, template_entry.name)">{{template_entry.filename}}</a><em style="font-size: 12px;margin-left: 5px;">{{template_entry.name}}</em>
+					</p>
+				</blockquote>
+				<button ng-click="add_template()" class="btn">Ajouter un template</button>
+			</div>
 		</div>
-	</div>
-	<div style="float: right; width: 45%">
-		<h4>Les properties associees au composant  <button ng-click="refresh_unit_properties()" class="btn">Rafraichir</button><button ng-click="save_properties(properties)" class="btn">Sauver</button></h4>
-		<h5>Champs simples :</h5>
-		<div ng-repeat="key_value_property in properties.key_value_properties track by $index">
-			{{ key_value_property.name }} <input type="text"  ng-model="key_value_property.value" tooltip="{{key_value_property.comment}}" tooltip-trigger="focus" tooltip-placement="right" /><span class="glyphicon glyphicon-thumbs-down" ng-hide="key_value_property.inModel"/>
+		<div class="col-md-1">
+			<button type="button" class="btn btn-resize btn-xs" style="height: 200px;margin-top: 80px;" ng-click="expand_right_side = !expand_right_side"><strong>{{(expand_right_side ? '>' : '<')}}</strong></button>
 		</div>
-		<h5>Champs iterables :</h5>
-		<div ng-repeat="iterable_property in properties.iterable_properties track by $index">
-			{{ iterable_property.name }}
-			<ul>
-				<li ng-repeat="field in iterable_property.fields track by $index">
-					{{ field.name }}  <small>{{ field.comment }}</small>
-				</li>
-			</ul>
+		<div ng-class="{'col-md-6': !expand_right_side, 'col-md-11': expand_right_side}">
+			<h3>Les properties associees a '{{editing_unit.name}}'  <button ng-click="refresh_unit_properties()" style="margin-left:10px;" class="btn btn-info btn-xs">Forcer un recalcul</button><button ng-click="save_properties(properties)" style="margin-left:10px;" class="btn btn-success btn-xs">Sauver</button></h3>
+			<form class="form-horizontal narrow" role="form">
+				<div class="form-group" ng-class="{'property-not-used': !key_value_property.inModel}" ng-repeat="key_value_property in properties.key_value_properties | orderBy:'name' track by $index">
+					<label for="input-{{ key_value_property.name }}" class="col-md-3 control-label">{{ key_value_property.name }}</label>
+					<div ng-class="{'col-md-9': key_value_property.inModel, 'col-md-8': !key_value_property.inModel}">
+						<input id="input-{{ key_value_property.name }}" type="text" class="form-control" placeholder="{{key_value_property.comment}}" ng-model="key_value_property.value" tooltip="{{key_value_property.comment}}" tooltip-trigger="focus" tooltip-placement="right" />
+					</div>
+					<div class="col-md-1" ng-hide="key_value_property.inModel" style="height: 100%">
+						<span class="glyphicon glyphicon-thumbs-down"></span>
+					</div>
+				</div>
+			</form>
+			<h3 ng-show="properties.iterable_properties.length > 0">Proprietes multiples :</h3>
+			<dl class="dl-horizontal text-overflow" style="margin-bottom:0" ng-repeat="iterable_property in properties.iterable_properties | orderBy:'name' track by $index">
+				<dt>{{ iterable_property.name }}</dt>
+				<dd ng-repeat="field in iterable_property.fields | orderBy:'name' track by $index">{{ field.name }}<small style="padding-left: 10px;"><em>{{ field.comment }}</em></small></dd>
+			</dl>
 		</div>
 	</div>
 </div>
 
-<div class="modal" tabindex="-1" role="dialog"  id="template-edit-modal" aria-hidden="true">
-<div id="edit-template-container" class="modal-dialog modal-lg modal-content">
-<div style="padding-top:10px;padding-left: 20px;padding-right: 20px;">
-	<p>Nom du template: <input type="text" ng-model="template.name" size="30" /></p>
-	<p>Nom du fichier sur le serveur: <input type="text" ng-model="template.filename" size="30"/></p>
-	<p>Emplacement du fichier sur le serveur: <input type="text" ng-model="template.location" size="40"/></p>
-	<div class="enc-border" style="height: 400px">
-	<textarea id="template-textarea" style="height: 400px; width: 100%" ></textarea>
-	</div>
-	<p><button ng-click="save_template(template)" class="btn btn-success" style="margin-bottom: 10px">Sauver le template</button></p>
-</div>
-</div>
-</div>
+<script type="text/ng-template" id="edit-template-modal.html">
+	<div class="modal-header">
+        <h3 class="modal-title">Ajout/Edition de template</h3>
+    </div>
+	<div class="modal-body">
+        <form name="templateForm" role="form">
+			<div class="form-group">
+				<label for="templateName">Titre</label>
+				<input type="text" class="form-control" required ng-trim="true" ng-model="template.name" id="templateName" placeholder="Donner un titre au template"/>
+			</div>
+			<div class="form-group">
+				<label for="templateFilename">Nom du fichier final</label>
+				<input type="text" class="form-control" required ng-trim="true" ng-model="template.filename" id="templateFilename" placeholder="Indiquer le nom qu'aura le fichier sur le serveur. On peut utiliser des proprietes dans ce champ"/>
+			</div>
+			<div class="form-group">
+				<label for="templateLocation">Dossier de destination</label>
+				<input type="text" class="form-control" required ng-trim="true" ng-model="template.location" id="templateLocation" placeholder="Indiquer le dossier dans lequel sera copie le fichier sur le serveur. On peut utiliser des proprietes dans ce champ"/>
+			</div>
+			<div class="form-group" id="templateContentParent">
+				<label for="templateContent" style="width: 100%">Contenu du fichier <small class="text-right" style="padding-left: 10px; color: grey;font-weight:normal">F11/Esc pour Activer/desactiver l'edtion en plein ecran</small></label>
+				<ui-codemirror id="templateContent" ui-codemirror-opts="codeMirrorOptions" ng-model="template.template"></ui-codemirror>
+			</div>	
+		</form>
+    </div>
+    <div class="modal-footer">
+		<button class="btn btn-primary"  ng-disabled="templateForm.$invalid" ng-click="save_template(template)">Sauver le template</button>
+        <button class="btn btn-success" ng-disabled="templateForm.$invalid" ng-click="$close(template)">Sauver et Fermer</button>
+		<button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
+    </div>
+</script>
 

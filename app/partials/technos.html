@@ -12,21 +12,16 @@
 	</div>
 
 	<div class="col-md-6">
-		<h3>Les properties associees a la techno  <button ng-click="refresh_properties()" class="btn">Rafraichir</button></h3>
-		<h2 ng-show="propertiesModel.key_value_properties.length > 0">Champs simples :</h2>
+		<h3>Les properties associees a la techno  <button ng-click="refresh_properties()" class="btn btn-info btn-xs">Forcer un recalcul</button></h3>
 		<dl class="dl-horizontal text-overflow" style="margin-bottom:0" ng-repeat="keyValueProperty in propertiesModel.key_value_properties | orderBy:'name' track by $index">
 			<dt>{{ keyValueProperty.name }}</dt>
-			<dd><small>{{ keyValueProperty.comment }}</small></dd>
+			<dd><small><em>{{ keyValueProperty.comment }}</em></small></dd>
 		</dl>
-		<h2 ng-show="propertiesModel.iterable_properties.length > 0">Champs iterables :</h2>
-		<div ng-repeat="iterableProperty in propertiesModel.iterable_properties track by $index">
-			{{ iterableProperty.name }}
-			<ul>
-				<li ng-repeat="field in iterableProperty.fields track by $index">
-					{{ field.name }}  <small>{{ field.comment }}</small>
-				</li>
-			</ul>
-		</div>
+		<h3 ng-show="propertiesModel.iterable_properties.length > 0">Proprietes multiples :</h3>
+		<dl class="dl-horizontal text-overflow" style="margin-bottom:0" ng-repeat="iterableProperty in propertiesModel.iterable_properties | orderBy:'name' track by $index">
+			<dt>{{ iterableProperty.name }}</dt>
+			<dd ng-repeat="field in iterableProperty.fields | orderBy:'name' track by $index">{{ field.name }}<small style="padding-left: 10px;"><em>{{ field.comment }}</em></small></dd>
+		</dl>
 	</div>
 </div>
 

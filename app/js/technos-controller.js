@@ -34,25 +34,21 @@ angular.module('Hesperides.controllers').controller('TechnosCtrl', ['$scope', '$
 	/* Load template list */
 	Template.all({namespace: $scope.namespace}).$promise.then(function(templateEntries){
 		$scope.templateEntries = templateEntries;
+		$scope.refresh_properties();
 	}, function(error) {
 		if(error.status != 404){
 			$.notify(error.data, "error");
 		}
 		$scope.templateEntries = [];
 	});
-	
-	/* Load Properties */
-	Properties.getModel($scope.namespace).then(function(propertiesModel){
-		$scope.propertiesModel = propertiesModel;
-	}, function(error) {
-		$.notify(error.data, "error");
-	});
 		
 	/* Functions */
 	$scope.refresh_properties = function() {
 		Properties.getModel($scope.namespace).then(function(propertiesModel){
 			$scope.propertiesModel = propertiesModel;
-			$.notify("Properties mise a jour", "success");
+			if(!$scope.$$phase) {
+				$scope.$apply();
+			}
 		}, function(error) {
 			$.notify(error.data, "error");
 		});
@@ -67,6 +63,7 @@ angular.module('Hesperides.controllers').controller('TechnosCtrl', ['$scope', '$
 		Template.delete({namespace: namespace, name: name}).$promise.then(function(){
 			$scope.templateEntries = _.reject($scope.templateEntries, function(templateEntry) { return templateEntry.name === name; });
 			$.notify("Le template a bien ete supprime", "success"); 
+			setTimeout($scope.refresh_properties, 1000);
 		}, function(error) {
 			$.notify(error.data, "error");
 		});
@@ -99,6 +96,7 @@ angular.module('Hesperides.controllers').controller('TechnosCtrl', ['$scope', '$
 		if($scope.template.id){
 			$scope.template.$update(function(){
 				$.notify("Le template a ete mis a jour", "success");
+				setTimeout($scope.refresh_properties, 1000);
 			}, function(error){
 				$.notify(error.data, "error");
 			});
@@ -106,6 +104,7 @@ angular.module('Hesperides.controllers').controller('TechnosCtrl', ['$scope', '$
 			$scope.template.$create(function(){
 				$.notify("Le template bien ete cree", "success");
 				$scope.templateEntries.push(new TemplateEntry($scope.template));
+				setTimeout($scope.refresh_properties, 1000);
 			}, function(error){
 				if(error.status === 409){
 					$.notify("Impossible de creer le template car il existe deja un template avec ce nom", "error");
@@ -115,6 +114,6 @@ angular.module('Hesperides.controllers').controller('TechnosCtrl', ['$scope', '$
 			});
 		}
 	};
-	
+		
 }]);
 

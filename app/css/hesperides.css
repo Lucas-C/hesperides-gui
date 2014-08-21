@@ -277,3 +277,7 @@
 	font-size: 1.6em;
 }
 
+.btn-no-padding {
+	padding: 0 !important;
+}
+

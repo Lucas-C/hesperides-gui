@@ -11,7 +11,10 @@ angular.module('Hesperides', [
 		'ui.bootstrap',
 		'xeditable',
 		'ui.codemirror'
-    ]).factory('Page', function() {
+    ]).run(function(editableOptions){
+		editableOptions.theme = 'bs3';
+	})
+	.factory('Page', function() {
 		var title = 'Hesperides';
 		return {
 			title: function() { return title;},

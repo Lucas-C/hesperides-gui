@@ -22,6 +22,12 @@ angular.module('Hesperides.controllers').controller('ApplicationCtrl', ['$scope'
         }
 	};
 	
+	$scope.focus_choose_techno = function() {
+		window.setTimeout(function(){
+            $('#chooseTechnoInput').focus();
+        },80);
+	};
+	
 	
 	Application.get({name: $routeParams.application, version: $routeParams.version}).$promise.then(function(application){		
 		$scope.application = application;	
@@ -51,7 +57,6 @@ angular.module('Hesperides.controllers').controller('ApplicationCtrl', ['$scope'
 	
 	$scope.get_technos = function(name, chosenTechnos) {
 		return Technos.like(name).then(function(technosByName){
-			chosenTechnos = _.pluck(chosenTechnos, "namespace");
 			return _.chain(technosByName).flatten().reject(function(techno) { 
 				return  _.contains(chosenTechnos, techno.namespace);
 			}).value();
@@ -64,11 +69,20 @@ angular.module('Hesperides.controllers').controller('ApplicationCtrl', ['$scope'
 		$scope.edit_unit(unit);
 	};
 	
+	$scope.del_unit = function(unit, application) {
+		_.remove(application.units, unit);
+		$scope.editing_unit = undefined;
+	};
+	
 	$scope.update_unit_title = function(new_title) {
 		/* We need to resave the templates with a different namespace 
 		   Then save the application with the new unit name
 		   Then delete the ones with the old namespace
 		   Proceding in this order guaranties no loss of data		   */
+		if(new_title === $scope.editing_unit.name){
+			return true; /* Display no error but do nothing */
+		}
+		   
 		var new_namespace = "app."+$routeParams.application+"."+$routeParams.version+"."+new_title;   
 		   
 		return _.reduce($scope.templateEntries, function(promise, tEntry) { 

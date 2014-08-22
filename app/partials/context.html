@@ -1,4 +1,24 @@
 <div class="row">
+		<div class="col-md-12">
+			<div class="bg-light">
+				<h3>BRIQUES APPLICATIVES</h3>
+				<ul class="list-inline">
+					<li ng-repeat="unit in application_object.units track by $index">
+						<div class="bg-info center-block text-center" style="padding: 5px 5px 5px 5px;color: white;">
+							<h4>{{unit.name}}</h4>
+							<ul class="list-inline center-block">
+								<li ng-repeat=""><button ng-click="edit_unit(unit)" ng-mouseenter="hover = true" ng-mouseleave="hover = false" class="btn btn-warning">{{unit.name}}</button></li>
+								<li><button ng-click="" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-plus"></span></button></li>
+							</ul>
+						</div>
+						
+					</li>
+				</ul>
+			</div>
+		</div>
+	</div>
+
+<div class="row">
 	<div class="col-md-12">
 		<h3>Contexte <strong>{{context.name}}</strong> du composant <strong>{{component}}</strong> pour <strong>{{application}} {{version}}</strong></h3>
 		<form class="form-horizontal narrow" role="form">

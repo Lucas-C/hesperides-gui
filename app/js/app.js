@@ -49,7 +49,7 @@ angular.module('Hesperides', [
 				templateUrl: 'partials/template.html',
 				controller: 'TemplateCtrl'
 			}).
-			when('/contexts/:application/:version/:component/:name', {
+			when('/contexts/:application/:version/:component', {
 				templateUrl: 'partials/context.html',
 				controller: 'ContextCtrl'
 			}).

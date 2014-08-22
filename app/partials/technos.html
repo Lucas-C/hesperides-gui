@@ -1,26 +1,30 @@
 <div class="row">
 	<div class="col-md-6">
-		<h3>Les fichiers associes a la techno</h3>
-			<blockquote>
-				<p ng-repeat="template_entry in templateEntries | orderBy:['location', 'name']" style="font-size: 14px;margin-bottom: 0px;" ng-class="{'text-stroke': hover}">
-					<button ng-really-message="Etes-vous sur de vouloir supprimer le template '{{template_entry.name}}'" ng-really-click="delete_template(template_entry.namespace, template_entry.name)" class="btn btn-link btn-red btn-no-padding" ng-mouseenter="hover = true" ng-mouseleave="hover = false"><span class="glyphicon glyphicon-remove"  ></span></button>
-					{{template_entry.location}}/<a href="" ng-click="edit_template(template_entry.namespace, template_entry.name)">{{template_entry.filename}}</a><em style="font-size: 12px;margin-left: 5px;">{{template_entry.name}}</em>
-				</p>
-			</blockquote>
-		<button ng-click="add_template(namespace)" class="btn">Ajouter un template</button>
+		<div class="bg-light">
+			<h3>Les fichiers associes a la techno</h3>
+				<blockquote>
+					<p ng-repeat="template_entry in templateEntries | orderBy:['location', 'name']" style="font-size: 14px;margin-bottom: 0px;" ng-class="{'text-stroke': hover}">
+						<button ng-really-message="Etes-vous sur de vouloir supprimer le template '{{template_entry.name}}'" ng-really-click="delete_template(template_entry.namespace, template_entry.name)" class="btn btn-link btn-red btn-no-padding" ng-mouseenter="hover = true" ng-mouseleave="hover = false"><span class="glyphicon glyphicon-remove"  ></span></button>
+						{{template_entry.location}}/<a href="" ng-click="edit_template(template_entry.namespace, template_entry.name)">{{template_entry.filename}}</a><em style="font-size: 12px;margin-left: 5px;">{{template_entry.name}}</em>
+					</p>
+				</blockquote>
+			<button ng-click="add_template(namespace)" class="btn">Ajouter un template</button>
+		</div>
 	</div>
 
 	<div class="col-md-6">
-		<h3>Les properties associees a la techno  <button ng-click="refresh_properties()" class="btn btn-info btn-xs">Forcer un recalcul</button></h3>
-		<dl class="dl-horizontal text-overflow" style="margin-bottom:0" ng-repeat="keyValueProperty in propertiesModel.key_value_properties | orderBy:'name' track by $index">
-			<dt>{{ keyValueProperty.name }}</dt>
-			<dd><small><em>{{ keyValueProperty.comment }}</em></small></dd>
-		</dl>
-		<h3 ng-show="propertiesModel.iterable_properties.length > 0">Proprietes multiples :</h3>
-		<dl class="dl-horizontal text-overflow" style="margin-bottom:0" ng-repeat="iterableProperty in propertiesModel.iterable_properties | orderBy:'name' track by $index">
-			<dt>{{ iterableProperty.name }}</dt>
-			<dd ng-repeat="field in iterableProperty.fields | orderBy:'name' track by $index">{{ field.name }}<small style="padding-left: 10px;"><em>{{ field.comment }}</em></small></dd>
-		</dl>
+		<div class="bg-light">
+			<h3>Les properties associees a la techno  <button ng-click="refresh_properties()" class="btn btn-info btn-xs">Forcer un recalcul</button></h3>
+			<dl class="dl-horizontal text-overflow" style="margin-bottom:0" ng-repeat="keyValueProperty in propertiesModel.key_value_properties | orderBy:'name' track by $index">
+				<dt>{{ keyValueProperty.name }}</dt>
+				<dd><small><em>{{ keyValueProperty.comment }}</em></small></dd>
+			</dl>
+			<h3 ng-show="propertiesModel.iterable_properties.length > 0">Proprietes multiples :</h3>
+			<dl class="dl-horizontal text-overflow" style="margin-bottom:0" ng-repeat="iterableProperty in propertiesModel.iterable_properties | orderBy:'name' track by $index">
+				<dt>{{ iterableProperty.name }}</dt>
+				<dd ng-repeat="field in iterableProperty.fields | orderBy:'name' track by $index">{{ field.name }}<small style="padding-left: 10px;"><em>{{ field.comment }}</em></small></dd>
+			</dl>
+		</div>
 	</div>
 </div>
 

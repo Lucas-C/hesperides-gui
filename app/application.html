@@ -6,7 +6,7 @@
 					<li ng-repeat="unit in application.units track by $index"><button ng-click="edit_unit(unit)" ng-mouseenter="hover = true" ng-mouseleave="hover = false" class="btn btn-info">{{unit.name}}</button><button ng-mouseenter="hover = true" ng-mouseleave="hover = false" ng-show="hover" ng-really-message="Etes-vous sur de vouloir supprimer la brique '{{unit.name}}'" ng-really-click="del_unit(unit, application)" class="btn btn-danger" style="padding-left: 2px; padding-right: 2px"><span class="glyphicon glyphicon-trash"></span></button></li>
 					<li><button ng-click="add_unit(application)" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span></button></li>
 				</ul>
-				<button ng-click="save(application)" class="btn">Sauver</button>
+				<button ng-click="save(application)" class="btn btn-primary">Sauver</button>
 			</div>
 		</div>
 	</div>
@@ -56,7 +56,7 @@
 			<button type="button" class="btn btn-resize btn-xs" style="height: 200px;margin-top: 80px;" ng-click="expand_right_side = !expand_right_side"><span class="glyphicon glyphicon-chevron-left" ng-class="{'glyphicon-chevron-left': !expand_right_side , 'glyphicon-chevron-right': expand_right_side }"></span></button>
 		</div>
 		<div ng-class="{'col-md-6': !expand_right_side, 'col-md-11': expand_right_side}">
-			<h3>Les properties associees a '{{editing_unit.name}}'  <button ng-click="refresh_unit_properties()" style="margin-left:10px;" class="btn btn-info btn-xs">Forcer un recalcul</button><button ng-click="save_properties(properties)" style="margin-left:10px;" class="btn btn-success btn-xs">Sauver</button></h3>
+			<h3>Les properties associees a '{{editing_unit.name}}'  <button ng-click="refresh_unit_properties()" style="margin-left:10px;" class="btn btn-info btn-xs">Forcer un recalcul</button><button ng-click="save_properties(properties)" style="margin-left:10px;" class="btn btn-primary btn-xs">Sauver</button></h3>
 			<form class="form-horizontal narrow" role="form">
 				<div class="form-group" ng-class="{'property-not-used': !key_value_property.inModel}" ng-repeat="key_value_property in properties.key_value_properties | orderBy:'name' track by $index">
 					<label for="input-{{ key_value_property.name }}" class="col-md-3 control-label">{{ key_value_property.name }}</label>

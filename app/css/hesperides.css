@@ -37,216 +37,8 @@
 	width: 100%;
 }
 
-
-/*
- * Matrice des instances pour une application 
- */
- 
-#instances-matrix-container {
-	margin: 0 auto;
-	padding: 0;
-	width: 95%;
-} 
-
-.instances-matrix  th {
-  margin: 0;
-  font-weight: bold;
-  font-size: 14px;
-  vertical-align: baseline;
-  color: rgb(110, 116, 122);
-}
-
-.instances-matrix  th.techno-type {
-  text-align: left;
-}
-
-.instances-matrix  th.techno-type button{
-  text-align: left;
-  background-color: #EEEEEE;
-  border-color: #DDD;
-  border-radius: 0px;
-  margin-right: 0.3em;
-  padding: 0 2px 0 2px;
-}
-
-.instances-matrix  th.techno-type .box{
-	display: table;
-	width: 95%;
-	margin: 0 0 0 0.65em;
-}
-
-.instances-matrix  th.techno-type .left{
-	display: table-cell;
-	vertical-align: middle;
-	padding-left: 0.7em;
-}
-
-.instances-matrix  th.techno-type .right{
-	display: table-cell;
-	vertical-align: middle;
-	text-align: right;
-	padding-bottom: 3px;
-}
-
-.instances-matrix {
-  border-collapse: collapse;
-  border-spacing: 0;
-  color: rgb(110, 116, 122);
-  font-weight: bold;
-}
-
-.instances-matrix  td {
-  vertical-align: top;
-  font-size: 10px;
-}
-
-.instances-matrix td.component-title {
-	vertical-align: middle;
-	text-align: center;
-	padding: 0 0.5em 0 0.5em;
-}
-
-.instances-matrix  button {
-  font-size: 10px;
-}
-
-.instances-matrix  button.btn-info {
-  padding-left: 0.3em;
-  padding-right: 0.3em;
-  padding-top: 0.3em;
-  padding-bottom: 0.3em;
-  background-color: #FAFAFA;
-  border-radius: 0px;
-  border-color: #DDD;
-  color: #324270;
-  margin-right: 0.1em;
-}
-
-.instances-matrix  button.btn-success {
-  padding-left: 0.3em;
-  padding-right: 0.3em;
-  padding-top: 0.1em;
-  padding-bottom: 0.1em;
-  margin-right: 0.1em;
-  background-color: #FAFAFA;
-  border-radius: 0px;
-  border-color: #DDD;
-  color: #324270;
-  height: 22px;
-  width: 18px;
-}
-
-.instances-matrix  button.btn-danger {
-  padding-left: 0.3em;
-  padding-right: 0.3em;
-  padding-top: 0.1em;
-  padding-bottom: 0.1em;
-  border-color: #DDD;
-  color: #324270;
-  border-radius: 0px;
-  background-color: #E6E6E6;
-  margin-right: 0.1em;
-  padding-left: 4px;
-  padding-right: 4px;
-  height: 22px;
-  width: 18px;
-}
-
-.instances-matrix  p {
-	display: block;
-	margin: 0 0 0 0;
-}
-
-.instances-matrix td > p {
-	margin-bottom: 0.2em;
-}
-
-.instances-matrix tr > td{
-	margin-bottom: 1em;
-}
-
-.instances-matrix tr.head {
-	background-color: #FFFFFF;
-	color: rgb(51, 51, 51);
-}
-
-.instances-matrix tr {
-	background-color: #FFFFFF;
-}
-
-.instances-matrix tr.spacer td{
-	padding: 0 0 1em 0;
-	background-color: #FFFFFF;
-}
-
-/*
- * Edition d'une instance
- */
-
-#edit-instance-container {
-	margin: 0 auto;
-	padding: 0 2em 1em 2em;
-	width: 1050px;
-	background-color: #F0F0F0;
-}
-
-.instance-form {
-	font-size: 12px;
-}
-
-.instance-form h2 {
-	color: #455172;
-	font-size: 16px;
-	font-weight: bold;
-}
-
-.instance-form span {
-	font-weight: bold;
-	color: #4C4E52;
-}
-
-.instance-form input {
-	font-weight: bold;
-	color: #777A81;
-}
-
-.instance-form p {
-	padding: 0 0 0 3em;
-}
-.instance-form li {
-	padding: 0.2em 0 0 0;
-}
-
-.instance-form input{
-	font-size: 12px;
-	margin-left: 0.1em;
-	margin-right: 0.2em;
-
-}
-
-.instance-form  button.btn-success {
-  padding-left: 0.5em;
-  padding-right: 0.5em;
-  padding-top: 0;
-  padding-bottom: 0;
-  margin-right: 0;
-  margin-bottom: 2px;
-  background-color: #ADC3B1;
-  border-color: #ADC3B1;
-  color: #387F45;
-}
-
-.instance-form  button.btn-danger {
-  padding-left: 0.3em;
-  padding-right: 0.3em;
-  padding-top: 0;
-  padding-bottom: 0;
-  margin-right: 0;
-  margin-bottom: 2px;
-}
-
 /* 
- * Edition des ENC
+ * CodeMirror
  */ 
 
 .CodeMirror {
@@ -262,10 +54,10 @@
 
 .btn-red:hover {
 	color: #E00000;
-	padding-left: 13px;
-	padding-right: 14px;
-	padding-top: 8px;
-	padding-bottom: 4px;
+	margin-left: -5px;
+	margin-right: -4px;
+	margin-top: -4px;
+	margin-bottom: -4px;
 	
 }
 
@@ -327,3 +119,7 @@
 .voffset7 { margin-top: 80px; }
 .voffset8 { margin-top: 100px; }
 .voffset9 { margin-top: 150px; }
+
+.text-stroke{
+	text-decoration: line-through !important;
+}

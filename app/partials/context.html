@@ -1,4 +1,14 @@
-<h3>Contexte {{context.name}} du composant {{component}} pour {{application}} {{version}}</h3>
-<p ng-repeat="key_value in context.key_values" >{{key_value.name}} <input type="text" ng-model="key_value.value" /><span class="glyphicon glyphicon-thumbs-down" ng-hide="key_value.inModel"/></p>
-<button ng-click="save_context(context)" class="btn">Sauver</button>
+<div class="row">
+	<div class="col-md-12">
+		<h3>Contexte <strong>{{context.name}}</strong> du composant <strong>{{component}}</strong> pour <strong>{{application}} {{version}}</strong></h3>
+		<form class="form-horizontal narrow" role="form">
+				<div class="form-group" ng-class="{'property-not-used': !key_value.inModel}" ng-repeat="key_value in context.key_values | orderBy:'name' track by $index">
+					<label for="input-{{ key_value.name }}" class="col-md-1 control-label">{{ key_value.name }}</label>
+					<div class="col-md-11">
+						<input id="input-{{ key_value.name }}" type="text" class="form-control" placeholder="{{key_value.comment}}" ng-model="key_value.value" tooltip="{{key_value.comment}}" tooltip-trigger="focus" tooltip-placement="right" />
+					</div>
+				</div>
+		</form>
+		<button ng-click="save_context(context)" class="btn btn-primary">Sauver</button>
+	</div>
 </div>

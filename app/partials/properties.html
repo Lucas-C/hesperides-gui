@@ -27,7 +27,7 @@
 </div>
 <div class="row" ng-show="display_properties()">
 	<div class="col-md-12">
-		<h3>Les properties associees a '{{chosen_unit.name}}'  <button ng-click="refresh_unit_properties()" style="margin-left:10px;" class="btn btn-info btn-xs">Forcer un recalcul</button><button ng-click="save_properties(properties)" style="margin-left:10px;" class="btn btn-primary btn-xs">Sauver</button></h3>
+		<h3>Les properties associees a '{{chosen_unit.name}}'  <button ng-click="save_properties(properties)" style="margin-left:10px;" class="btn btn-primary btn-xs">Sauver</button></h3>
 		<form class="form-horizontal narrow" role="form">
 			<div class="form-group" ng-class="{'property-not-used': !key_value_property.inModel}" ng-repeat="key_value_property in properties.key_value_properties | orderBy:'name' track by $index">
 				<label for="input-{{ key_value_property.name }}" class="col-md-3 control-label">{{ key_value_property.name }}</label>

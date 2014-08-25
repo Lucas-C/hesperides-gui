@@ -7,6 +7,8 @@ hesperidesServices.factory('Platform', ['$http', function ($http) {
 
 	return {
 		get: function(application, version) {
+			application = application.toLowerCase();
+			version = version.toLowerCase();//Put this server side
 			return $http.get('rest/properties/search/namespace/properties.*'+application+'*.'+'*'+version+'*').then(function(response) {
 				return _(response.data).map(function(properties){
 					var splittedNamespace = properties.hesnamespace.split(".");

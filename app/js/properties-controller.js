@@ -83,7 +83,7 @@ angular.module('Hesperides.controllers').controller('PropertiesCtrl', ['$scope',
 		var model_namespaces = [];
 		model_namespaces.push("app."+application.name+"."+application.version+"."+unit.name);
 		_.each(unit.technos, function(techno){ model_namespaces.push(techno) });
-		Properties.getProperties("app."+application.name+"."+application.version+"."+platform+"."+unit.name, model_namespaces).then(function(properties){
+		Properties.getProperties("properties."+application.name+"."+application.version+"."+platform+"."+unit.name, model_namespaces).then(function(properties){
 			$scope.properties = properties;
 		});
 	};

@@ -17,7 +17,7 @@
 	</div>
 
 	<div class="row voffset1" ng-show="is_editing()">
-		<div ng-class="{'col-md-5': !expand_right_side}" ng-hide="expand_right_side">
+		<div class="col-md-5">
 			<div style="margin-top: 30px" class="row" >
 				<div class="col-md-12">
 					<div class="bg-light">
@@ -36,7 +36,6 @@
 					</div>
 				</div>
 			</div>
-
 			<div class="row">
 				<div class="col-md-12">
 					<div class="bg-light">
@@ -53,22 +52,18 @@
 			</div>
 		</div>
 		<div class="col-md-1">
-			<button type="button" class="btn btn-resize btn-xs" style="height: 200px;margin-top: 80px;" ng-click="expand_right_side = !expand_right_side"><span class="glyphicon glyphicon-chevron-left" ng-class="{'glyphicon-chevron-left': !expand_right_side , 'glyphicon-chevron-right': expand_right_side }"></span></button>
+			<div class="bd-light" style="height: 200px;margin-top: 80px;"><span class="glyphicon glyphicon-chevron-right" ></span></div>
 		</div>
-		<div ng-class="{'col-md-6': !expand_right_side, 'col-md-11': expand_right_side}">
-			<h3>Les properties associees a '{{editing_unit.name}}'  <button ng-click="refresh_unit_properties()" style="margin-left:10px;" class="btn btn-info btn-xs">Forcer un recalcul</button><button ng-click="save_properties(properties)" style="margin-left:10px;" class="btn btn-primary btn-xs">Sauver</button></h3>
-			<form class="form-horizontal narrow" role="form">
-				<div class="form-group" ng-class="{'property-not-used': !key_value_property.inModel}" ng-repeat="key_value_property in properties.key_value_properties | orderBy:'name' track by $index">
-					<label for="input-{{ key_value_property.name }}" class="col-md-3 control-label">{{ key_value_property.name }}</label>
-					<div class="col-md-9">
-						<input id="input-{{ key_value_property.name }}" type="text" class="form-control" placeholder="{{key_value_property.comment}}" ng-model="key_value_property.value" tooltip="{{key_value_property.comment}}" tooltip-trigger="focus" tooltip-placement="right" />
-					</div>
-				</div>
-			</form>
-			<h3 ng-show="properties.iterable_properties.length > 0">Proprietes multiples :</h3>
-			<dl class="dl-horizontal text-overflow" style="margin-bottom:0" ng-repeat="iterable_property in properties.iterable_properties | orderBy:'name' track by $index">
-				<dt>{{ iterable_property.name }}</dt>
-				<dd ng-repeat="field in iterable_property.fields | orderBy:'name' track by $index">{{ field.name }}<small style="padding-left: 10px;"><em>{{ field.comment }}</em></small></dd>
+		<div class="col-md-5">
+			<h3>Les properties associees a '{{editing_unit.name}}'  <button ng-click="refresh_unit_properties()" style="margin-left:10px;" class="btn btn-info btn-xs">Forcer un recalcul</button></h3>
+			<dl class="dl-horizontal text-overflow" style="margin-bottom:0" ng-repeat="keyValueProperty in propertiesModel.key_value_properties | orderBy:'name' track by $index">
+				<dt>{{ keyValueProperty.name }}</dt>
+				<dd><small><em>{{ keyValueProperty.comment }}</em></small></dd>
+			</dl>
+			<h3 ng-show="propertiesModel.iterable_properties.length > 0">Proprietes multiples :</h3>
+			<dl class="dl-horizontal text-overflow" style="margin-bottom:0" ng-repeat="iterableProperty in propertiesModel.iterable_properties | orderBy:'name' track by $index">
+				<dt>{{ iterableProperty.name }}</dt>
+				<dd ng-repeat="field in iterableProperty.fields | orderBy:'name' track by $index">{{ field.name }}<small style="padding-left: 10px;"><em>{{ field.comment }}</em></small></dd>
 			</dl>
 		</div>
 	</div>

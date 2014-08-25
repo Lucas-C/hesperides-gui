@@ -41,13 +41,9 @@ angular.module('Hesperides', [
                 templateUrl: 'partials/enc.html',
                 controller: 'ENCCtrl'
             }).
-			when('/properties/:application/:version/:platform/:template_name', {
+			when('/properties/:application/:version/:platform', {
 				templateUrl: 'partials/properties.html',
 				controller: 'PropertiesCtrl'
-			}).
-			when('/templates/:application/:version/:template_name', {
-				templateUrl: 'partials/template.html',
-				controller: 'TemplateCtrl'
 			}).
 			when('/contexts/:application/:version/:component', {
 				templateUrl: 'partials/context.html',

@@ -1,46 +1,14 @@
-<div style="float: left; width: 50%; padding-right:10px">
-	<form class="form-horizontal">
-	<div style="width: 90%">Nom du fichier deploye: <input type="text" ng-model="properties.filename" /></div>
-	<div style="width: 90%">Location: <input type="text" ng-model="properties.location" /></div>
-	<h3>Champs simples :</h3>
-	<div style="margin-bottom: 1px" class="form-group" ng-repeat="keyValueProperty in properties.scope.keyValueProperties track by $index">
-		<label for="keyValueProp-{{$index}}" class="col-sm-2 control-label">{{ keyValueProperty.name }}</label>
-		<div class="col-sm-8 pull-right">
-			<input id="keyValueProp-{{$index}}" type="text" ng-model="keyValueProperty.value" class="form-control" tooltip="{{keyValueProperty.comment}}" tooltip-trigger="focus" tooltip-placement="right" />
-		</div>
-	</div>
-	<h3>Listes :</h3>
-	<div ng-repeat="iterableProperty in properties.scope.iterableProperties track by $index">
-		<div class="col-sm-10" style="display:inline-block; vertical-align: middle">
-			<h4 class="col-sm-3">{{ iterableProperty.name }}</h4>
-			<button ng-click="addEvaluatedField(iterableProperty)" style="padding: 0 2px 0 2px; margin-top: 8px; margin-bottom: 10px;" class="btn btn-success">+</button>
-		</div>
-		<div class="col-sm-10">
-			<accordion close-others="false">
-				<accordion-group is-open="status.open" ng-repeat="evaluatedField in iterableProperty.evaluatedFields track by $index">
-					<accordion-heading>
-							<span ng-click="$event.stopPropagation()"><span editable-text="evaluatedField.title" buttons="no">{{evaluatedField.title}}</span></span>
-							<button ng-click="$event.stopPropagation();removeEvaluatedField(iterableProperty, evaluatedField)" style="padding: 0 2px 0 2px;"  class="btn btn-danger" >-</button>
-							<i class="pull-right glyphicon" ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
-					</accordion-heading>
-					<div class="form-group" style="margin-bottom: 5px;" ng-repeat="field in evaluatedField.fields track by $index">
-						<label for="{{evaluatedField.title}}-field-{{$index}}" class="col-sm-2 control-label">{{ field.name }}</label>
-						<div class="col-sm-10">
-							<input id="{{evaluatedField.title}}-field-{{$index}}" type="text" ng-model="field.value" style="width: 80%" class="form-control" tooltip="{{field.comment}}" tooltip-trigger="focus" tooltip-placement="right"/>
-						</div>
+<h3>Les properties associees a '{{editing_unit.name}}'  <button ng-click="refresh_unit_properties()" style="margin-left:10px;" class="btn btn-info btn-xs">Forcer un recalcul</button><button ng-click="save_properties(properties)" style="margin-left:10px;" class="btn btn-primary btn-xs">Sauver</button></h3>
+			<form class="form-horizontal narrow" role="form">
+				<div class="form-group" ng-class="{'property-not-used': !key_value_property.inModel}" ng-repeat="key_value_property in properties.key_value_properties | orderBy:'name' track by $index">
+					<label for="input-{{ key_value_property.name }}" class="col-md-3 control-label">{{ key_value_property.name }}</label>
+					<div class="col-md-9">
+						<input id="input-{{ key_value_property.name }}" type="text" class="form-control" placeholder="{{key_value_property.comment}}" ng-model="key_value_property.value" tooltip="{{key_value_property.comment}}" tooltip-trigger="focus" tooltip-placement="right" />
 					</div>
-				</accordion-group>
-			</accordion>
-		</div>
-	</div>
-	<div class="form-group">
-		<button ng-click="SaveCurrentProperties()" class="btn btn-success">Sauver les properties</button>
-	</div>
-	</form>
-</div>
-<div style="float: right; width: 50%">
-	<h3>Preview du fichier final <button ng-click="generatePreview()" class="btn btn-success">GO!</button></h3>
-	<div id="enc-border">
-	<textarea id="preview" ></textarea>
-	</div>
-</div>
+				</div>
+			</form>
+			<h3 ng-show="properties.iterable_properties.length > 0">Proprietes multiples :</h3>
+			<dl class="dl-horizontal text-overflow" style="margin-bottom:0" ng-repeat="iterable_property in properties.iterable_properties | orderBy:'name' track by $index">
+				<dt>{{ iterable_property.name }}</dt>
+				<dd ng-repeat="field in iterable_property.fields | orderBy:'name' track by $index">{{ field.name }}<small style="padding-left: 10px;"><em>{{ field.comment }}</em></small></dd>
+			</dl>

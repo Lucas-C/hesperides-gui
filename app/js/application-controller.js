@@ -138,11 +138,13 @@ angular.module('Hesperides.controllers').controller('ApplicationCtrl', ['$scope'
 	$scope.add_techno = function(techno, unit) {
 		if(!_.contains(unit.technos, techno.namespace)){
 			unit.technos.push(techno.namespace);
+			setTimeout($scope.refresh_unit_properties, 1000);
 		}
 	};
 	
 	$scope.del_techno = function(techno_namespace, unit) {
 		unit.technos = _.without(unit.technos, techno_namespace);
+		setTimeout($scope.refresh_unit_properties, 1000);
 	};
 	
 	$scope.is_editing = function() {
@@ -217,29 +219,11 @@ angular.module('Hesperides.controllers').controller('ApplicationCtrl', ['$scope'
 		var model_namespaces = [];
 		model_namespaces.push("app."+$routeParams.application+"."+$routeParams.version+"."+$scope.editing_unit.name);
 		_.each($scope.editing_unit.technos, function(techno){ model_namespaces.push(techno) });
-		Properties.getProperties("app."+$routeParams.application+"."+$routeParams.version+"."+$scope.editing_unit.name, model_namespaces).then(function(properties){
-			$scope.properties = properties;
+		Properties.getModel(model_namespaces).then(function(propertiesModel){
+			$scope.propertiesModel = propertiesModel;
 		});
 	
 	};
-	
-	$scope.save_properties = function(properties) {
-		if(_.isUndefined(properties.id)){
-			Properties.create(properties).then(function(){
-				$scope.properties = properties;
-				$.notify("Les proprietes ont bien ete crees", "success");
-			}, function(error) {
-				$.notify(error.data, "error");
-			});
-		} else {
-			Properties.update(properties).then(function(){
-				$scope.properties = properties;
-				$.notify("Les proprietes ont bien ete mises à jour", "success");
-			}, function(error) {
-				$.notify(error.data, "error");
-			});
-		}
-	};	
 			
 }]);
 

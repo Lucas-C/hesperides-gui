@@ -132,19 +132,19 @@ angular.module('Hesperides.controllers').controller('ApplicationCtrl', ['$scope'
 			$scope.templateEntries = [];
 		});
 		
-		$scope.refresh_unit_properties();
+		$scope.refresh_unit_properties(0);
 	};
 	
 	$scope.add_techno = function(techno, unit) {
 		if(!_.contains(unit.technos, techno.namespace)){
 			unit.technos.push(techno.namespace);
-			setTimeout($scope.refresh_unit_properties, 1000);
+			$scope.refresh_unit_properties(1000);
 		}
 	};
 	
 	$scope.del_techno = function(techno_namespace, unit) {
 		unit.technos = _.without(unit.technos, techno_namespace);
-		setTimeout($scope.refresh_unit_properties, 1000);
+		$scope.refresh_unit_properties(1000);
 	};
 	
 	$scope.is_editing = function() {
@@ -161,7 +161,7 @@ angular.module('Hesperides.controllers').controller('ApplicationCtrl', ['$scope'
 		Template.delete({namespace: namespace, name: name}).$promise.then(function(){
 			$scope.templateEntries = _.reject($scope.templateEntries, function(templateEntry) { return templateEntry.name === name; });
 			$.notify("Le template a bien ete supprime", "success"); 
-			setTimeout($scope.refresh_unit_properties, 1000);
+			$scope.refresh_unit_properties(1000);
 		}, function(error) {
 			$.notify(error.data, "error");
 		});
@@ -191,11 +191,10 @@ angular.module('Hesperides.controllers').controller('ApplicationCtrl', ['$scope'
 	};
 
 	$scope.save_template = function(template) {
-		$scope.template.template = $scope.templateTextArea.getValue();
 		if($scope.template.id){
 			$scope.template.$update(function(){
 				$.notify("Le template a ete mis a jour", "success");
-				setTimeout($scope.refresh_unit_properties, 1000);
+				$scope.refresh_unit_properties(1000);
 			}, function(error){
 				$.notify(error.data, "error");
 			});
@@ -203,7 +202,7 @@ angular.module('Hesperides.controllers').controller('ApplicationCtrl', ['$scope'
 			$scope.template.$create(function(){
 				$.notify("Le template bien ete cree", "success");
 				$scope.templateEntries.push(new TemplateEntry($scope.template));
-				setTimeout($scope.refresh_unit_properties, 1000);
+				$scope.refresh_unit_properties(1000);
 			}, function(error){
 				if(error.status === 409){
 					$.notify("Impossible de creer le template car il existe deja un template avec ce nom", "error");
@@ -215,14 +214,19 @@ angular.module('Hesperides.controllers').controller('ApplicationCtrl', ['$scope'
 	};
 	
 	/* Properties */
-	$scope.refresh_unit_properties = function() {
+	$scope.refresh_unit_properties = function(timeout) {
+		$scope.loading_properties = true;
+		setTimeout($scope.load_unit_properties, timeout);
+	};
+	
+	$scope.load_unit_properties = function() {
 		var model_namespaces = [];
 		model_namespaces.push("app."+$routeParams.application+"."+$routeParams.version+"."+$scope.editing_unit.name);
 		_.each($scope.editing_unit.technos, function(techno){ model_namespaces.push(techno) });
 		Properties.getModel(model_namespaces).then(function(propertiesModel){
 			$scope.propertiesModel = propertiesModel;
 		});
-	
+		$scope.loading_properties = false;
 	};
 			
 }]);

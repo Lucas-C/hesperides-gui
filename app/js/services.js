@@ -3,6 +3,21 @@
 var hesperidesServices = angular.module('Hesperides.services', ['ngResource']).
     value('version', '0.1');
 	
+hesperidesServices.factory('Platform', ['$http', function ($http) {
+
+	return {
+		get: function(application, version) {
+			return $http.get('rest/properties/search/namespace/properties.*'+application+'*.'+'*'+version+'*').then(function(response) {
+				return _(response.data).map(function(properties){
+					var splittedNamespace = properties.hesnamespace.split(".");
+					return splittedNamespace[3];
+				}).groupBy().keys().value();
+			});
+		}
+	}
+
+}]);	
+	
 hesperidesServices.factory('Properties', ['$http', function ($http) {
 
     return {
@@ -120,12 +135,21 @@ hesperidesServices.factory('Template', ['$resource', function ($resource) {
 
 }]);
 
-hesperidesServices.factory('Application', ['$resource', function ($resource) {
+hesperidesServices.factory('Application', ['$resource', '$http', function ($resource, $http) {
 
     var Application = $resource('rest/applications/:name/:version', {name: '@name', version: '@version'}, {
         update: {method: 'PUT'},
 		create: {method: 'POST'}
     });
+	
+	Application.like = function(name) {
+		return $http.get('rest/applications/search/*'+name+'*').then(function(response) {
+			return _.chain(response.data)
+					.groupBy("name")
+					.sortBy("version")
+					.value();
+		});
+	};
 	
 	return Application;
 

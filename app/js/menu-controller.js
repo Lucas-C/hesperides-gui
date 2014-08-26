@@ -49,7 +49,7 @@ angular.module('Hesperides.controllers').controller('MenuCtrl', ['$scope', '$loc
 	$scope.open_properties_page = function(name, version, platform) {
 		var path = '/properties/'+name+'/'+version;
 		if(platform) path += '?platform='+platform;
-		$location.path(path);
+		$location.url(path);
 		$scope.applicationSearched = "";
 		if($scope.propertiesModalInstance) $scope.propertiesModalInstance.close();
 	}

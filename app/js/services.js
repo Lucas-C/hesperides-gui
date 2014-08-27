@@ -88,8 +88,8 @@ hesperidesServices.factory('Context', ['$http', function ($http) {
 		getModel: function(namespace) {
 			return $http.get('rest/contexts/model/'+namespace).then(function(response){ return response.data; });
 		},
-		get: function(namespace, name) {
-			return this.getModel(namespace).then(function(model) {
+		get: function(model_namespace, namespace, name) {
+			return this.getModel(model_namespace).then(function(model) {
 				return $http.get('rest/contexts/'+namespace+'/'+name).then(function(response) {
 					return response.data;
 				}, function(error) {
@@ -120,6 +120,11 @@ hesperidesServices.factory('Context', ['$http', function ($http) {
 		},
 		update: function(context) {
 			return $http.put('rest/contexts/'+context.hesnamespace+'/'+context.name, context).then(function(response) { return response.data });
+		},
+		all: function(namespace) {
+			return $http.get('rest/contexts/'+namespace).then(function(response){
+				return response.data;
+			});
 		}
 	};
 

@@ -45,7 +45,7 @@ angular.module('Hesperides', [
 				templateUrl: 'partials/properties.html',
 				controller: 'PropertiesCtrl'
 			}).
-			when('/contexts/:application/:version/:unit', {
+			when('/contexts/:application/:version', {
 				templateUrl: 'partials/context.html',
 				controller: 'ContextCtrl'
 			}).

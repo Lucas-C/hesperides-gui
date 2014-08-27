@@ -66,9 +66,7 @@ angular.module('Hesperides.controllers').controller('PropertiesCtrl', ['$scope',
 		$scope.platforms = platforms;
 	}).then(function(){
 		/* If platform was mentionned in the route, try to find it or add it */
-		if($scope.is_platform_chosen()){
-			$scope.add_platform($scope.chosen_platform);
-		};
+		$scope.add_platform($scope.chosen_platform);
 	});
 	
 	

@@ -1,33 +1,58 @@
 <div class="row">
-		<div class="col-md-12">
-			<div class="bg-light">
-				<h3>BRIQUES APPLICATIVES</h3>
-				<ul class="list-inline">
-					<li ng-repeat="unit in application_object.units track by $index">
-						<div class="bg-info center-block text-center" style="padding: 5px 5px 5px 5px;color: white;">
-							<h4>{{unit.name}}</h4>
-							<ul class="list-inline center-block">
-								<li ng-repeat=""><button ng-click="edit_unit(unit)" ng-mouseenter="hover = true" ng-mouseleave="hover = false" class="btn btn-warning">{{unit.name}}</button></li>
-								<li><button ng-click="" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-plus"></span></button></li>
-							</ul>
-						</div>
-						
-					</li>
-				</ul>
-			</div>
-		</div>
+	<div class="col-md-12">
+		<blockquote>
+			<h3><strong>INSTANCES</strong> Pour l'application <strong>{{application.name}}</strong>, Version <strong>{{application.version}}</strong></h3>
+		</blockquote>
 	</div>
-
+</div>
 <div class="row">
 	<div class="col-md-12">
-		<h3>Contexte <strong>{{context.name}}</strong> du composant <strong>{{component}}</strong> pour <strong>{{application}} {{version}}</strong></h3>
+		<div class="bg-light">
+			<h3>PLATEFORMES</h3>
+			<ul class="list-inline">
+				<li ng-repeat="platform in platforms track by $index">
+					<button class="btn" ng-click="choose_platform(platform)" ng-class="{'btn-info': !(chosen_platform === platform), 'btn-warning': chosen_platform === platform}">{{platform}}</button>
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-12">
+		<div class="bg-light">
+			<h3>BRIQUES APPLICATIVES</h3>
+			<ul class="list-inline">
+				<li ng-repeat="unit in application.units track by $index">
+					<button class="btn btn-info" ng-click="choose_unit(unit)" ng-disabled="!is_platform_chosen()" ng-class="{'btn-info': !(chosen_unit === unit), 'btn-warning': chosen_unit === unit}">{{unit.name}}</button>			
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+<div class="row" ng-show="is_unit_chosen()">
+	<div class="col-md-12">
+		<div class="bg-light">
+			<h3>INSTANCES</h3>
+			<ul class="list-inline">
+				<li ng-repeat="context in contexts track by $index">
+					<button class="btn btn-info" ng-click="choose_context(context.name)" ng-class="{'btn-info': !(chosen_context === context.name), 'btn-warning': chosen_context === context.name}">{{context.name}}</button>			
+				</li>
+				<li style="vertical-align: middle"><button ng-click="show_input = true;focus_name_context()" ng-hide="show_input" class="btn btn-success"><span class="glyphicon glyphicon-plus"></span></button>
+					<input id="nameContextInput" type="text" class="form-control" ng-show="show_input" ng-blur="show_input=false; new_context= ''" ng-model="new_context" placeholder="Entrer un nom" ng-enter="add_context(new_context); new_context=''; show_input=false"  />
+				</li>
+			</ul>
+		</div>
+	</div>
+</div>
+<div class="row" ng-show="is_context_chosen()">
+	<div class="col-md-12">
 		<form class="form-horizontal narrow" role="form">
-				<div class="form-group" ng-class="{'property-not-used': !key_value.inModel}" ng-repeat="key_value in context.key_values | orderBy:'name' track by $index">
-					<label for="input-{{ key_value.name }}" class="col-md-1 control-label">{{ key_value.name }}</label>
-					<div class="col-md-11">
-						<input id="input-{{ key_value.name }}" type="text" class="form-control" placeholder="{{key_value.comment}}" ng-model="key_value.value" tooltip="{{key_value.comment}}" tooltip-trigger="focus" tooltip-placement="right" />
-					</div>
+			<div class="form-group" ng-class="{'property-not-used': !key_value.inModel}" ng-repeat="key_value in context.key_values | orderBy:'name' track by $index">
+				<label for="input-{{ key_value.name }}" class="col-md-1 control-label">{{ key_value.name }}</label>
+				<div class="col-md-11">
+					<input id="input-{{ key_value.name }}" type="text" class="form-control" placeholder="{{key_value.comment}}" ng-model="key_value.value" tooltip="{{key_value.comment}}" tooltip-trigger="focus" tooltip-placement="right" />
 				</div>
+			</div>
 		</form>
 		<button ng-click="save_context(context)" class="btn btn-primary">Sauver</button>
 	</div>

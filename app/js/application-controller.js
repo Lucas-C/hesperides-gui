@@ -2,7 +2,7 @@
 
 angular.module('Hesperides.controllers').controller('ApplicationCtrl', ['$scope', '$routeParams', '$modal', 'Technos', 'Template', 'Application', 'Properties', 'Page', '$q', function($scope, $routeParams, $modal, Technos, Template, Application, Properties, Page, $q) {
     
-	Page.setTitle($routeParams.application+" version "+$routeParams.version);
+	Page.setTitle('Applications');
 	
 	$scope.codeMirrorOptions = {
 		mode: 'text',
@@ -21,13 +21,12 @@ angular.module('Hesperides.controllers').controller('ApplicationCtrl', ['$scope'
             }
         }
 	};
-	
+		
 	$scope.focus_choose_techno = function() {
 		window.setTimeout(function(){
             $('#chooseTechnoInput').focus();
         },80);
 	};
-	
 	
 	Application.get({name: $routeParams.application, version: $routeParams.version}).$promise.then(function(application){		
 		$scope.application = application;	

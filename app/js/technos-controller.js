@@ -11,6 +11,9 @@ angular.module('Hesperides.controllers').controller('TechnosCtrl', ['$scope', '$
     Page.setTitle("Technos");
 	
 	$scope.namespace = "technos."+$routeParams.name+'.'+$routeParams.version
+	$scope.techno = $routeParams.name;
+	$scope.version = $routeParams.version;
+	
 	
 	$scope.codeMirrorOptions = {
 		mode: 'text',

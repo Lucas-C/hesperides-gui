@@ -58,7 +58,7 @@
 			</div>
 
 			<div class="collapse navbar-collapse">
-				<ul class="nav navbar-nav">
+				<ul class="nav navbar-nav navbar-left">
 					<li class="dropdown">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Technos <span class="caret"></span></a>
 						<ul class="dropdown-menu" role="menu" ng-click="$event.stopPropagation()">
@@ -92,7 +92,17 @@
 							<li><a href=""><input style="border: none;background:transparent;width: 420px !important" type="text" ng-model="applicationSearched" ng-blur="applicationSearched=''" placeholder="Rechercher une application pour y éditer/ajouter des instances" typeahead="application as application.title for application in get_applications($viewValue)" typeahead-on-select="open_context_page($item.name, $item.version)" /></a></li>
 						</ul>
 					</li>
-				
+					
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					
+					<li class="dropdown">
+						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Aide <span class="caret"></span></a>
+						<ul class="dropdown-menu" role="menu" ng-click="$event.stopPropagation()">
+							<li><a href="#/help/api">API</a></li>
+						</ul>
+					</li>
+					
 				</ul>
 			</div>
 		</div>

@@ -1,0 +1,523 @@
+﻿<div class="row">
+	<div class="col-md-12">
+		<blockquote>
+			<h3><strong>API</strong> Backend</h3>
+		</blockquote>
+	</div>
+</div>
+
+<div class="alert alert-warning">NB: Tous les services renvoie une erreur 500 si une erreur inattendue se produit. autrement les différents code d'erreur sont précisés dans la suite du document.</div>
+
+<accordion >
+	<accordion-group heading="Template">
+		<div new-child-scope>
+			<blockquote>
+				<h5><a href="" ng-click="isCollapsed = !isCollapsed">GET</a>/rest/templates/{namespace}</h5>
+			</blockquote>
+			
+			<div collapse="!isCollapsed">
+				<div style="padding-left: 50px;">
+					<div class="alert alert-info">Retourne la liste des templates existant sous le namespace indiqué (liste vide si aucun templates)</div>
+					<pre>
+[
+	{
+		id: xxx,
+		namespace: xxx,
+		name: xxx,
+		filename: xxx,
+		location: xxx
+	},...
+]
+					</pre>
+				</div> 
+			</div>
+		</div>
+		
+		<div new-child-scope>
+			<blockquote>
+				<h5><a href="" ng-click="isCollapsed = !isCollapsed">GET</a>/rest/templates/search/namespace/{namespace_wildcard}</h5>
+			</blockquote>
+			
+			<div collapse="!isCollapsed">
+				<div style="padding-left: 50px;">
+					<div class="alert alert-info">Retourne la liste des templates existant sous le namespace indiqué (possibilité de mettre des wildcards) <br />Renvoie une liste vide si aucun templates</div>
+					<div class="alert alert-success">Exemple : app.*WD*.*0*</div>
+					<pre>
+[
+	{
+		id: xxx,
+		namespace: xxx,
+		name: xxx,
+		filename: xxx,
+		location: xxx
+	},...
+]
+					</pre>
+				</div> 
+			</div>
+		</div>
+		
+		<div new-child-scope>
+			<blockquote>
+				<h5><a href="" ng-click="isCollapsed = !isCollapsed">GET</a>/rest/templates/{namespace}/{name}</h5>
+			</blockquote>
+			
+			<div collapse="!isCollapsed">
+				<div style="padding-left: 50px;">
+					<div class="alert alert-info">Retourne l'unique template nommé 'name' dans le namespace indiqué</div>
+					<div class="alert alert-danger">Erreur 404 si aucun template n'existe</div>
+					<pre>
+{
+	id: xxx,
+	name: xxx,
+	filename: xxx,
+	location: xxx,
+	hesnamespace: xxx,
+	template: xxx
+}
+					</pre>
+				</div> 
+			</div>
+		</div>
+		
+		<div new-child-scope>
+			<blockquote>
+				<h5><a href="" ng-click="isCollapsed = !isCollapsed">POST</a>/rest/templates/{namespace}/{name}</h5>
+			</blockquote>
+			
+			<div collapse="!isCollapsed">
+				<div style="padding-left: 50px;">
+					<div class="alert alert-info">Créer un template fourni dans le body. Les champs hesnamespace et name sont réécrits pour correspondre à ceux fournis dans l'url</div>
+					<div class="alert alert-danger">Erreur 409 si un template existe déjà</div>
+				</div> 
+			</div>
+		</div>
+		
+		<div new-child-scope>
+			<blockquote>
+				<h5><a href="" ng-click="isCollapsed = !isCollapsed">PUT</a>/rest/templates/{namespace}/{name}</h5>
+			</blockquote>
+			
+			<div collapse="!isCollapsed">
+				<div style="padding-left: 50px;">
+					<div class="alert alert-info">Update le template fourni dans le body. Les champs hesnamespace et name sont réécrits pour correspondre à ceux fournis dans l'url</div>
+					<div class="alert alert-danger">Erreur 409 si le template n'existe pas</div>
+				</div> 
+			</div>
+		</div>
+		
+		<div new-child-scope>
+			<blockquote>
+				<h5><a href="" ng-click="isCollapsed = !isCollapsed">DELETE</a>/rest/templates/{namespace}</h5>
+			</blockquote>
+			
+			<div collapse="!isCollapsed">
+				<div style="padding-left: 50px;">
+					<div class="alert alert-info">Supprime tous les templates présents dans namespace</div>
+					<div class="alert alert-warning"><strong>SERVICE NON TRANSACTIONNEL</strong></div>
+					<div class="alert alert-danger">Erreur 202 si tous les templates n'ont pas été supprimés</div>	
+				</div> 
+			</div>
+		</div>
+		
+		<div new-child-scope>
+			<blockquote>
+				<h5><a href="" ng-click="isCollapsed = !isCollapsed">DELETE</a>/rest/templates/{namespace}/{name}</h5>
+			</blockquote>
+			
+			<div collapse="!isCollapsed">
+				<div style="padding-left: 50px;">
+					<div class="alert alert-info">Supprime le template 'name' de 'namespace'</div>
+					<div class="alert alert-danger">Erreur 404 si aucun template présent<br />
+						Erreur 409 si deux templates existe sous ce nom (erreur exceptionnelle)</div>
+				</div> 
+			</div>
+		</div>
+
+	</accordion-group>
+	<accordion-group heading="Properties">
+	
+		<div new-child-scope>
+			<blockquote>
+				<h5><a href="" ng-click="isCollapsed = !isCollapsed">GET</a>/rest/properties/{namespace}</h5>
+			</blockquote>
+			
+			<div collapse="!isCollapsed">
+				<div style="padding-left: 50px;">
+					<div class="alert alert-info">Récupère les properties du namespace</div>
+					<div class="alert alert-danger">Erreur 404 si aucune properties n'existe pour ce namespace</div>
+					<pre>
+{
+	hesnamespace: xxx,
+	key_value_properties: [
+		{
+			name: xxx,
+			comment: xxx,
+			value: xxx,
+		},
+		{
+			name: xxx,
+			comment: xxx,
+			value: xxx,
+		},...
+	],
+	iterable_properties: [
+		{
+			fields: [
+				{
+					name: xxx,
+					comment: xxx
+				},
+				{
+					name: xxx,
+					comment: xxx
+				},...
+			],
+			evaluated_fields: [
+				{
+					title: xxx,
+					fields: [
+						{
+							name: xxx,
+							comment: xxx,
+							value: xxx
+						},
+						{
+							name: xxx,
+							comment: xxx
+							value: xxx
+						}
+					]
+				}, ...
+			]
+		},...		
+	]
+}
+					</pre>
+				</div> 
+			</div>
+		</div>
+		
+		<div new-child-scope>
+			<blockquote>
+				<h5><a href="" ng-click="isCollapsed = !isCollapsed">GET</a>/rest/properties/model/{namespaces}</h5>
+			</blockquote>
+			
+			<div collapse="!isCollapsed">
+				<div style="padding-left: 50px;">
+					<div class="alert alert-info">Retourne un patron des properties (properties sans champ value) de tous les namespaces indiqués (séparés par des virgules). 
+						<br />Ce patron est construit à partir de l'évaluation de tous les templates enregistrés sous le namespace indiqué dans l'url.
+						<br />Les properties présentes dans plusieurs templates ne sont mentionnées qu'une seule fois
+					</div>
+					<pre>
+{
+	hesnamespace: xxx,
+	key_value_properties: [
+		{
+			name: xxx,
+			comment: xxx
+		},
+		{
+			name: xxx,
+			comment: xxx
+		},...
+	],
+	iterable_properties: [
+		{
+			fields: [
+				{
+					name: xxx,
+					comment: xxx
+				},
+				{
+					name: xxx,
+					comment: xxx
+				},...
+			]
+		}
+	]
+}
+					</pre>
+				</div> 
+			</div>
+		</div>
+		
+		<div new-child-scope>
+			<blockquote>
+				<h5><a href="" ng-click="isCollapsed = !isCollapsed">GET</a>/rest/properties/search/namespace/{tokens}</h5>
+			</blockquote>
+			
+			<div collapse="!isCollapsed">
+				<div style="padding-left: 50px;">
+					<div class="alert alert-info">Retourne la liste des properties existant sous le namespace indiqué (possibilité de mettre des wildcards)
+												<br />Retourne une liste vide si aucune properties</div>
+					<div class="alert alert-success">Exemple : properties.*WD*.*0*</div>
+					<div class="alert alert-warning">WARNING: le format retourné engloble toutes lesproperties et leur valeurs. 
+													<br />On pourrait renvoyer simplement une liste de champ pour limiter la taille des échanges.</div>
+				</div> 
+			</div>
+		</div>
+		
+		<div new-child-scope>
+			<blockquote>
+				<h5><a href="" ng-click="isCollapsed = !isCollapsed">POST</a>/rest/properties/{namespace}</h5>
+			</blockquote>
+			
+			<div collapse="!isCollapsed">
+				<div style="padding-left: 50px;">
+					<div class="alert alert-info">Créer de nouvelles properties sous ce namespace (le body doit être équivalent à celui retourné par la commande équivalente en GET)
+													<br />Le champ namespace est réécrit pour correspondre à celui fourni dans l'url</div>
+				</div> 
+			</div>
+		</div>
+		
+		<div new-child-scope>
+			<blockquote>
+				<h5><a href="" ng-click="isCollapsed = !isCollapsed">PUT</a>/rest/properties/{namespace}</h5>
+			</blockquote>
+			
+			<div collapse="!isCollapsed">
+				<div style="padding-left: 50px;">
+					<div class="alert alert-info">Met à jour de nouvelles properties sous ce namespace (le body doit être équivalent à celui retourné par la commande équivalente en GET)
+													<br />Le champ namespace est réécrit pour correspondre à celui fourni dans l'url</div>
+				</div> 
+			</div>
+		</div>
+		
+		<div new-child-scope>
+			<blockquote>
+				<h5><a href="" ng-click="isCollapsed = !isCollapsed">DELETE</a>/rest/properties/{namespace}</h5>
+			</blockquote>
+			
+			<div collapse="!isCollapsed">
+				<div style="padding-left: 50px;">
+					<div class="alert alert-info">Supprime les properties de ce namespace</div>
+				</div> 
+			</div>
+		</div>
+		
+	</accordion-group>
+	<accordion-group heading="Contexts">
+		
+		<div new-child-scope>
+			<blockquote>
+				<h5><a href="" ng-click="isCollapsed = !isCollapsed">GET</a>/rest/contexts/{namespace}</h5>
+			</blockquote>
+			
+			<div collapse="!isCollapsed">
+				<div style="padding-left: 50px;">
+					<div class="alert alert-info">Retourne la liste des contextes enregistrés sous le namespace</div>
+					<div class="alert alert-warning">Les contexts sont retournés entiers, on pourrait faire évoluer le service pour faire transiter moins de data</div>
+					<pre>
+[
+	{
+		-> CF GET ci-dessous
+	}
+]
+					</pre>
+				</div> 
+			</div>
+		</div>
+		
+		<div new-child-scope>
+			<blockquote>
+				<h5><a href="" ng-click="isCollapsed = !isCollapsed">GET</a>/rest/contexts/{namespace}/{name}</h5>
+			</blockquote>
+			
+			<div collapse="!isCollapsed">
+				<div style="padding-left: 50px;">
+					<div class="alert alert-info">Retourne le contexte 'name' du 'namespace'</div>
+					<div class="alert alert-danger">Erreur 404 si aucun contexte</div>
+					<pre>
+{
+	hesnamespace: xxx,
+	name: xxx,
+	key_values: [
+		{
+			name: xxx,
+			comment: xxx,
+			value: xxx
+		}, ...
+	]
+}
+					</pre>
+				</div> 
+			</div>
+		</div>
+		
+		<div new-child-scope>
+			<blockquote>
+				<h5><a href="" ng-click="isCollapsed = !isCollapsed">GET</a>/rest/contexts/model/{namespace}</h5>
+			</blockquote>
+			
+			<div collapse="!isCollapsed">
+				<div style="padding-left: 50px;">
+					<div class="alert alert-info">Retourne un patron pour les contextes du namespace
+												<br />Ce patron est construit à partir de l'évaluation de toutes les properties enregistrées sous le namespace indiqué dans l'url</div>
+					<pre>
+{
+	key_values: [
+		{
+			name: xxx,
+			comment: xxx
+		}, ...
+	]
+}
+					</pre>
+				</div> 
+			</div>
+		</div>
+		
+		<div new-child-scope>
+			<blockquote>
+				<h5><a href="" ng-click="isCollapsed = !isCollapsed">POST</a>/rest/contexts/{namespace}/{name}</h5>
+			</blockquote>
+			
+			<div collapse="!isCollapsed">
+				<div style="padding-left: 50px;">
+					<div class="alert alert-info">Créer le contexte fourni dans le body. Les champs namespace et name sont réécris pour correspondre à ceux indiqués dans l'url</div>
+				</div> 
+			</div>
+		</div>
+		
+		<div new-child-scope>
+			<blockquote>
+				<h5><a href="" ng-click="isCollapsed = !isCollapsed">PUT</a>/rest/contexts/{namespace}/{name}</h5>
+			</blockquote>
+			
+			<div collapse="!isCollapsed">
+				<div style="padding-left: 50px;">
+					<div class="alert alert-info">Met à jour le contexte fourni dans le body. Les champs namespace et name sont réécris pour correspondre à ceux indiqués dans l'url</div>
+				</div> 
+			</div>
+		</div>
+		
+		<div new-child-scope>
+			<blockquote>
+				<h5><a href="" ng-click="isCollapsed = !isCollapsed">GET</a>/rest/contexts/{namespace}/{name}</h5>
+			</blockquote>
+			
+			<div collapse="!isCollapsed">
+				<div style="padding-left: 50px;">
+					<div class="alert alert-info">Supprime le contexte 'name' du 'namespace'</div>
+				</div> 
+			</div>
+		</div>
+		
+	</accordion-group>
+	<accordion-group heading="Applications">
+		
+		<div new-child-scope>
+			<blockquote>
+				<h5><a href="" ng-click="isCollapsed = !isCollapsed">GET</a>/rest/applications/{name}/{version}</h5>
+			</blockquote>
+			
+			<div collapse="!isCollapsed">
+				<div style="padding-left: 50px;">
+					<div class="alert alert-info">Retourne la description de l'application 'name' dans la version 'version'</div>
+					<div class="alert alert-danger">Erreur 404 si aucune application n'existe</div>
+					<pre>
+{
+	name: xxx,
+	version: xxx,
+	units: [
+		{
+			name: xxx,
+			technos: [
+				"namespace_techno_1",
+				"namespace_techno_2",
+				...
+			]
+		},...
+	]
+}
+					</pre>
+				</div> 
+			</div>
+		</div>
+		
+		<div new-child-scope>
+			<blockquote>
+				<h5><a href="" ng-click="isCollapsed = !isCollapsed">GET</a>/rest/applications/search/{name}</h5>
+			</blockquote>
+			
+			<div collapse="!isCollapsed">
+				<div style="padding-left: 50px;">
+					<div class="alert alert-info">Retourne la liste des applications dont le nom "match" (au sens elastic search) 'name'</div>
+				</div> 
+			</div>
+		</div>
+		
+		<div new-child-scope>
+			<blockquote>
+				<h5><a href="" ng-click="isCollapsed = !isCollapsed">POST</a>/rest/applications/{name}/{version}</h5>
+			</blockquote>
+			
+			<div collapse="!isCollapsed">
+				<div style="padding-left: 50px;">
+					<div class="alert alert-info">Créer l'application fournie dans le body. Les champs name et version sont réécris pour correspondre à ceux indiqués dans l'url</div>
+				</div> 
+			</div>
+		</div>
+		
+		<div new-child-scope>
+			<blockquote>
+				<h5><a href="" ng-click="isCollapsed = !isCollapsed">PUT</a>/rest/applications/{name}/{version}</h5>
+			</blockquote>
+			
+			<div collapse="!isCollapsed">
+				<div style="padding-left: 50px;">
+					<div class="alert alert-info">Met à jour l'application fournie dans le body. Les champs name et version sont réécris pour correspondre à ceux indiqués dans l'url</div>
+				</div> 
+			</div>
+		</div>
+		
+		<div new-child-scope>
+			<blockquote>
+				<h5><a href="" ng-click="isCollapsed = !isCollapsed">DELETE</a>/rest/applications/{name}/{version}</h5>
+			</blockquote>
+			
+			<div collapse="!isCollapsed">
+				<div style="padding-left: 50px;">
+					<div class="alert alert-info">Supprime l'application 'name' 'version'</div>
+				</div> 
+			</div>
+		</div>
+		
+	</accordion-group>
+	<accordion-group heading="Files">
+		
+		<div new-child-scope>
+			<blockquote>
+				<h5><a href="" ng-click="isCollapsed = !isCollapsed">GET</a>/rest/files/{application}/{version}/{pltfm}/{brique}/{context}</h5>
+			</blockquote>
+			
+			<div collapse="!isCollapsed">
+				<div style="padding-left: 50px;">
+					<div class="alert alert-info">Retourne la liste des fichiers pour la brique 'brique' de l'application' en 'version' sur la plateforme 'pltfm', pour le 'context' donné (context = instance ?)</div>
+					<pre>
+[
+	{
+		location: "l'emplacement du ficheir sur le serveur final",
+		url: "l'url vers le contenu du fichier"
+	}, ...
+]					
+					</pre>
+				</div> 
+			</div>
+		</div>
+		
+		<div new-child-scope>
+			<blockquote>
+				<h5><a href="" ng-click="isCollapsed = !isCollapsed">GET</a>/rest/files/{template_namespace}/{template_name}?properties_namespace={properties_namespace}&context_namespace={context_namespace}&context_name="{context_name}</h5>
+			</blockquote>
+			
+			<div collapse="!isCollapsed">
+				<div style="padding-left: 50px;">
+					<div class="alert alert-info">Retourne le contenu du template valorisé avec le contexte et les properties indiquées </div>
+				</div> 
+			</div>
+		</div>
+	
+	</accordion-group>
+</accordion>

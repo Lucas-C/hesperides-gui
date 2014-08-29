@@ -57,6 +57,9 @@ angular.module('Hesperides', [
 				templateUrl: 'partials/technos.html',
 				controller: 'TechnosCtrl'
 			}).
+			when('/help/api', {
+				templateUrl: 'partials/help_api.html',
+			}).
             otherwise({
                 redirectTo: '/search'
             });

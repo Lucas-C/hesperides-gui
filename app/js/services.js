@@ -97,13 +97,13 @@ hesperidesServices.factory('Context', ['$http', function ($http) {
 				}).then(function(context) {
 					/* Mark key/values that are in the model */
 					_.each(context.key_values, function(key_value){
-						key_value.inModel = _.some(model.key_values, function(model_key_value){
+						key_value.inModel = _.some(model.keys, function(model_key_value){
 							return model_key_value.name === key_value.name;
 						});					
 					});
 					
 					/* Add key_values that are only in the model */
-					_(model.key_values).filter(function(model_key_value){
+					_(model.keys).filter(function(model_key_value){
 						return !_.some(context.key_values, function(key_value){
 							return key_value.name === model_key_value.name;
 						});

@@ -44,7 +44,7 @@
 		</div>
 	</div>
 </div>
-<div class="row" ng-show="is_context_chosen()">
+<div class="row" ng-show="display_context()">
 	<div class="col-md-12">
 		<form class="form-horizontal narrow" role="form">
 			<div class="form-group" ng-class="{'property-not-used': !key_value.inModel}" ng-repeat="key_value in context.key_values | orderBy:'name' track by $index">

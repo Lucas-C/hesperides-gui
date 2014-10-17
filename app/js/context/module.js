@@ -3,7 +3,7 @@
  */
 var contextModule = angular.module('hesperides.context', []);
 
-contextModule.controller('ContextCtrl', ['$scope', '$routeParams', '$location', 'ApplicationService', 'PlatformService', 'ContextService', 'Page', function ($scope, $routeParams, $location, Application, Platform, Context, Page) {
+contextModule.controller('ContextCtrl', ['$scope', '$routeParams', '$location', 'ApplicationService', 'PlatformService', 'ContextService', 'Page', function ($scope, $routeParams, $location, ApplicationService, PlatformService, ContextService, Page) {
     Page.setTitle("Instances");
 
     $scope.platforms = []
@@ -37,18 +37,24 @@ contextModule.controller('ContextCtrl', ['$scope', '$routeParams', '$location', 
 
     $scope.display_context = function () {
         return !(_.isNull($scope.context) || _.isUndefined($scope.context));
-    }
+    };
 
+    /* This function is used to change scope when a platform is chosen */
+    //When we choose a platform we have to cancel the unit and the context
     $scope.choose_platform = function (platform_name) {
         $scope.chosen_platform = platform_name;
         $scope.chosen_unit = undefined;
         $scope.chosen_context = undefined;
     };
 
+    /* This function is used to change scope when a unit is chosen */
+    //When we choose a unit we have to cancel the context
     $scope.choose_unit = function (unit_name) {
         $scope.chosen_unit = unit_name;
         $scope.chosen_context = undefined;
     };
+
+    /* This function is used to change scope when a context is chosen */
     $scope.choose_context = function (context_name) {
         return $scope.load_context(context_name).then(function (context) {
             $scope.chosen_context = context;
@@ -56,10 +62,10 @@ contextModule.controller('ContextCtrl', ['$scope', '$routeParams', '$location', 
         });
     };
 
-    Application.get({name: $routeParams.application, version: $routeParams.version}).$promise.then(function (application) {
+    ApplicationService.get($routeParams.application, $routeParams.version).then(function (application) {
         $scope.application = application;
         /* If unit was mentionned in the route, try to find it */
-        /* If it does not exist show error */
+        /* and if it does not exist show error */
         if ($routeParams.unit) {
             var actual_unit = _.find(application.units, function (unit) {
                 return unit.name === $routeParams.unit;

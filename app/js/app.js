@@ -44,7 +44,7 @@ angular.module('hesperides', [
                 controller: 'PropertiesCtrl'
             }).
             when('/contexts/:application/:version', {
-                templateUrl: 'partials/context.html',
+                templateUrl: 'js/context/context.html',
                 controller: 'ContextCtrl'
             }).
             when('/technos', {

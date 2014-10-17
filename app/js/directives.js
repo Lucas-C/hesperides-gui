@@ -2,7 +2,7 @@
 
 /* Directives */
 
-angular.module('Hesperides.directives', [])
+angular.module('hesperides.directives', [])
 	.directive('ngReallyClick', [function() {
 		return {
 			restrict: 'A',

@@ -1,0 +1,95 @@
+<div class="row">
+    <div class="col-md-12">
+        <blockquote>
+            <h3>Techno <strong>{{techno}}</strong>, Version <strong>{{version}}</strong></h3>
+        </blockquote>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <div class="bg-light">
+            <h3>Les fichiers associes a la techno</h3>
+            <blockquote>
+                <p ng-repeat="template_entry in templateEntries | orderBy:['location', 'name']"
+                   style="font-size: 14px;margin-bottom: 0px;" ng-class="{'text-stroke': hover}">
+                    <button ng-really-message="Etes-vous sur de vouloir supprimer le template '{{template_entry.name}}'"
+                            ng-really-click="delete_template(template_entry.namespace, template_entry.name)"
+                            class="btn btn-link btn-red btn-no-padding" ng-mouseenter="hover = true"
+                            ng-mouseleave="hover = false"><span class="glyphicon glyphicon-remove"></span></button>
+                    {{template_entry.location}}/<a href=""
+                                                   ng-click="edit_template(template_entry.namespace, template_entry.name)">{{template_entry.filename}}</a><em
+                        style="font-size: 12px;margin-left: 5px;">{{template_entry.name}}</em>
+                </p>
+            </blockquote>
+            <button ng-click="add_template(namespace)" class="btn">Ajouter un template</button>
+        </div>
+    </div>
+
+    <div class="col-md-6">
+        <div class="bg-light">
+            <h3>Les properties associees a la techno
+                <button ng-click="refresh_properties()" class="btn btn-info btn-xs">Forcer un recalcul</button>
+            </h3>
+            <dl class="dl-horizontal text-overflow" style="margin-bottom:0"
+                ng-repeat="keyValueProperty in propertiesModel.key_value_properties | orderBy:'name' track by $index">
+                <dt>{{ keyValueProperty.name }}</dt>
+                <dd>
+                    <small><em>{{ keyValueProperty.comment }}</em></small>
+                </dd>
+            </dl>
+            <h3 ng-show="propertiesModel.iterable_properties.length > 0">Proprietes multiples :</h3>
+            <dl class="dl-horizontal text-overflow" style="margin-bottom:0"
+                ng-repeat="iterableProperty in propertiesModel.iterable_properties | orderBy:'name' track by $index">
+                <dt>{{ iterableProperty.name }}</dt>
+                <dd ng-repeat="field in iterableProperty.fields | orderBy:'name' track by $index">{{ field.name }}
+                    <small style="padding-left: 10px;"><em>{{ field.comment }}</em></small>
+                </dd>
+            </dl>
+        </div>
+    </div>
+</div>
+
+<script type="text/ng-template" id="edit-template-modal.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Ajout/Edition de template</h3>
+    </div>
+    <div class="modal-body">
+        <form name="templateForm" role="form">
+            <div class="form-group">
+                <label for="templateName">Titre</label>
+                <input type="text" class="form-control" required ng-trim="true" ng-model="template.name"
+                       id="templateName" placeholder="Donner un titre au template"/>
+            </div>
+            <div class="form-group">
+                <label for="templateFilename">Nom du fichier final</label>
+                <input type="text" class="form-control" required ng-trim="true" ng-model="template.filename"
+                       id="templateFilename"
+                       placeholder="Indiquer le nom qu'aura le fichier sur le serveur. On peut utiliser des proprietes dans ce champ"/>
+            </div>
+            <div class="form-group">
+                <label for="templateLocation">Dossier de destination</label>
+                <input type="text" class="form-control" required ng-trim="true" ng-model="template.location"
+                       id="templateLocation"
+                       placeholder="Indiquer le dossier dans lequel sera copie le fichier sur le serveur. On peut utiliser des proprietes dans ce champ"/>
+            </div>
+            <div class="form-group" id="templateContentParent">
+                <label for="templateContent" style="width: 100%">Contenu du fichier
+                    <small class="text-right" style="padding-left: 10px; color: grey;font-weight:normal"><kbd>F11</kbd>
+                        Activer / <kbd>Esc</kbd> Desactiver l'edtion en plein ecran
+                    </small>
+                </label>
+                <ui-codemirror id="templateContent" ui-codemirror-opts="codeMirrorOptions"
+                               ng-model="template.content"></ui-codemirror>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-disabled="templateForm.$invalid" ng-click="save_template(template)">Sauver le
+            template
+        </button>
+        <button class="btn btn-success" ng-disabled="templateForm.$invalid" ng-click="$close(template)">Sauver et
+            Fermer
+        </button>
+        <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
+    </div>
+</script>

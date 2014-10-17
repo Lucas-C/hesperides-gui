@@ -1,178 +1,235 @@
 <!doctype html>
-<html lang="fr" ng-app="Hesperides" ng-controller="TitleCtrl">
+<html lang="fr" ng-app="hesperides" ng-controller="TitleCtrl">
 <head>
-  <meta charset="utf-8">
-  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <meta http-equiv="cache-control" content="max-age=0" />
-  <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT" />
-  <meta http-equiv="pragma" content="no-cache" />
-  <title>{{ Page.title() }}</title>
-  <link rel="stylesheet" href="css/bootstrap.css" />
-  <link rel="stylesheet" href="css/hesperides.css"/>
-  <link rel="stylesheet" href="bower_components/codemirror/lib/codemirror.css"/>
-  <link rel="stylesheet" href="bower_components/codemirror/addon/display/fullscreen.css"/>
-  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet"/>
-  
-  <script src="bower_components/angular/angular.js"></script>
-  <script src="bower_components/angular-route/angular-route.js"></script>
-  <script src="bower_components/angular-resource/angular-resource.js"></script>
-  <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
-  <link href="bower_components/angular-xeditable/dist/css/xeditable.css" rel="stylesheet">
-  <script src="bower_components/angular-xeditable/dist/js/xeditable.js"></script>
-  <script src="bower_components/jquery/dist/jquery.min.js"></script>
-  <script src="js/lodash.js"></script>
-  <script src="js/app.js"></script>
-  <script src="js/notify.js"></script>
-  <script src="js/services.js"></script>
-  <script src="js/controllers.js"></script>
-  <script src="js/filters.js"></script>
-  <script src="js/directives.js"></script>
-  <script src="js/commons.js"></script>
-  <script src="js/search-controller.js"></script>
-  <script src="js/instances-controller.js"></script>
-  <script src="js/enc-controller.js"></script>
-  <script src="js/application-controller.js"></script>
-  <script src="js/properties-controller.js"></script>
-  <script src="js/template-controller.js"></script>
-  <script src="js/technos-controller.js"></script>
-  <script src="js/technos-search-controller.js"></script>
-  <script src="js/context-controller.js"></script>
-  <script src="js/menu-controller.js"></script>
-  <script src="js/enc-controller.js"></script>
-  <script src="js/lib/esprima.js"></script>
-  <script src="js/lib/js-yaml.js"></script>
-  <script src="bower_components/codemirror/lib/codemirror.js"></script>
-  <script src="bower_components/codemirror/mode/yaml/yaml.js"></script>
-  <script src="bower_components/codemirror/addon/display/fullscreen.js"></script>
-  <script src="bower_components/angular-ui-codemirror/ui-codemirror.js"></script>
-  <script src="js/lib/utils.js"></script>    
+    <meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <meta http-equiv="cache-control" content="max-age=0"/>
+    <meta http-equiv="expires" content="Tue, 01 Jan 1980 1:00:00 GMT"/>
+    <meta http-equiv="pragma" content="no-cache"/>
+    <title>{{ Page.title() }}</title>
+
+    <link rel="stylesheet" href="css/bootstrap.css"/>
+    <link rel="stylesheet" href="css/hesperides.css"/>
+    <link rel="stylesheet" href="bower_components/codemirror/lib/codemirror.css"/>
+    <link rel="stylesheet" href="bower_components/codemirror/addon/display/fullscreen.css"/>
+    <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.1/css/font-awesome.css" rel="stylesheet"/>
+
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/angular-route/angular-route.js"></script>
+    <script src="bower_components/angular-resource/angular-resource.js"></script>
+    <script src="bower_components/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <link href="bower_components/angular-xeditable/dist/css/xeditable.css" rel="stylesheet">
+    <script src="bower_components/angular-xeditable/dist/js/xeditable.js"></script>
+    <script src="bower_components/jquery/dist/jquery.min.js"></script>
+    <script src="js/lib/lodash.js"></script>
+    <script src="js/lib/notify.js"></script>
+    <script src="js/lib/esprima.js"></script>
+    <script src="js/lib/js-yaml.js"></script>
+    <script src="bower_components/codemirror/lib/codemirror.js"></script>
+    <script src="bower_components/codemirror/mode/yaml/yaml.js"></script>
+    <script src="bower_components/codemirror/addon/display/fullscreen.js"></script>
+    <script src="bower_components/angular-ui-codemirror/ui-codemirror.js"></script>
+    <script src="js/lib/utils.js"></script>
+
+    <!-- Main App -->
+    <script src="js/app.js"></script>
+    <script src="js/commons.js"></script>
+    <script src="js/directives.js"></script>
+    <script src="js/filters.js"></script>
+
+    <!-- Module menu -->
+    <script src="js/menu/module.js"></script>
+
+    <!-- Module application -->
+    <script src="js/application/module.js"></script>
+
+    <!-- Module context -->
+    <script src="js/context/module.js"></script>
+
+    <!-- Module file -->
+    <script src="js/file/module.js"></script>
+
+    <!-- Module platform -->
+    <script src="js/platform/module.js"></script>
+
+    <!-- Module properties -->
+    <script src="js/properties/module.js"></script>
+
+    <!-- Module techno -->
+    <script src="js/techno/module.js"></script>
+
+    <!-- Module template -->
+    <script src="modules/template/module.js"></script>
+
 </head>
 <body>
 
 <div id="header" ng-controller="MenuCtrl">
 
-	<nav class="navbar navbar-default" role="navigation">
-		<div class="container-fluid">
-			<div class="navbar-header">
-				<a class="navbar-brand" href="#">{{ Page.title() }}</a>
-			</div>
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">{{ Page.title() }}</a>
+            </div>
 
-			<div class="collapse navbar-collapse">
-				<ul class="nav navbar-nav navbar-left">
-					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Technos <span class="caret"></span></a>
-						<ul class="dropdown-menu" role="menu" ng-click="$event.stopPropagation()">
-							<li><a href="" ng-click="open_create_techno_dialog()" >Creer une nouvelle techno</a></li>
-							<li class="divider"></li>
-							<li><a href=""><input style="border: none;background:transparent" type="text" ng-model="technoSearched" ng-blur="technoSearched=''" placeholder="Rechercher" typeahead="techno as techno.title for techno in get_technos($viewValue)" typeahead-on-select="open_techno_page($item.name, $item.version)" /></a></li>
-						</ul>
-					</li>
-			
-					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Applications <span class="caret"></span></a>
-						<ul class="dropdown-menu" role="menu" ng-click="$event.stopPropagation()">
-							<li><a href="" ng-click="open_create_application_dialog()" >Creer une nouvelle application</a></li>
-							<li class="divider"></li>
-							<li><a href=""><input style="border: none;background:transparent" type="text" ng-model="applicationSearched" ng-blur="applicationSearched=''" placeholder="Rechercher" typeahead="application as application.title for application in get_applications($viewValue)" typeahead-on-select="open_application_page($item.name, $item.version)" /></a></li>
-						</ul>
-					</li>
-					
-					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Properties <span class="caret"></span></a>
-						<ul class="dropdown-menu" role="menu" ng-click="$event.stopPropagation()" style="width: 450px !important">
-							<li><a href="" ng-click="open_create_properties_dialog()" >Creer</a></li>
-							<li class="divider"></li>
-							<li><a href=""><input style="border: none;background:transparent;width: 420px !important" type="text" ng-model="applicationSearched" ng-blur="applicationSearched=''" placeholder="Rechercher une application pour y éditer/ajouter des properties" typeahead="application as application.title for application in get_applications($viewValue)" typeahead-on-select="open_properties_page($item.name, $item.version)" /></a></li>
-						</ul>
-					</li>
-					
-					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Instances <span class="caret"></span></a>
-						<ul class="dropdown-menu" role="menu" ng-click="$event.stopPropagation()" style="width: 450px !important">
-							<li><a href=""><input style="border: none;background:transparent;width: 420px !important" type="text" ng-model="applicationSearched" ng-blur="applicationSearched=''" placeholder="Rechercher une application pour y éditer/ajouter des instances" typeahead="application as application.title for application in get_applications($viewValue)" typeahead-on-select="open_context_page($item.name, $item.version)" /></a></li>
-						</ul>
-					</li>
-					
-				</ul>
-				<ul class="nav navbar-nav navbar-right">
-					
-					<li class="dropdown">
-						<a href="#" class="dropdown-toggle" data-toggle="dropdown">Aide <span class="caret"></span></a>
-						<ul class="dropdown-menu" role="menu" ng-click="$event.stopPropagation()">
-							<li><a href="#/help/api">API</a></li>
-						</ul>
-					</li>
-					
-				</ul>
-			</div>
-		</div>
-	</nav>
-	
-	<script type="text/ng-template" id="techno-menu-modal.html">
-		<div class="modal-header">
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-left">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Technos <span
+                                class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu" ng-click="$event.stopPropagation()">
+                            <li><a href="" ng-click="open_create_techno_dialog()">Creer une nouvelle techno</a></li>
+                            <li class="divider"></li>
+                            <li><a href=""><input style="border: none;background:transparent" type="text"
+                                                  ng-model="technoSearched" ng-blur="technoSearched=''"
+                                                  placeholder="Rechercher"
+                                                  typeahead="techno as techno.title for techno in get_technos($viewValue)"
+                                                  typeahead-on-select="open_techno_page($item.name, $item.version)"/></a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Applications <span
+                                class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu" ng-click="$event.stopPropagation()">
+                            <li><a href="" ng-click="open_create_application_dialog()">Creer une nouvelle
+                                application</a></li>
+                            <li class="divider"></li>
+                            <li><a href=""><input style="border: none;background:transparent" type="text"
+                                                  ng-model="applicationSearched" ng-blur="applicationSearched=''"
+                                                  placeholder="Rechercher"
+                                                  typeahead="application as application.title for application in get_applications($viewValue)"
+                                                  typeahead-on-select="open_application_page($item.name, $item.version)"/></a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Properties <span
+                                class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu" ng-click="$event.stopPropagation()"
+                            style="width: 450px !important">
+                            <li><a href="" ng-click="open_create_properties_dialog()">Creer</a></li>
+                            <li class="divider"></li>
+                            <li><a href=""><input style="border: none;background:transparent;width: 420px !important"
+                                                  type="text" ng-model="applicationSearched"
+                                                  ng-blur="applicationSearched=''"
+                                                  placeholder="Rechercher une application pour y éditer/ajouter des properties"
+                                                  typeahead="application as application.title for application in get_applications($viewValue)"
+                                                  typeahead-on-select="open_properties_page($item.name, $item.version)"/></a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Instances <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu" ng-click="$event.stopPropagation()"
+                            style="width: 450px !important">
+                            <li><a href=""><input style="border: none;background:transparent;width: 420px !important"
+                                                  type="text" ng-model="applicationSearched"
+                                                  ng-blur="applicationSearched=''"
+                                                  placeholder="Rechercher une application pour y éditer/ajouter des instances"
+                                                  typeahead="application as application.title for application in get_applications($viewValue)"
+                                                  typeahead-on-select="open_context_page($item.name, $item.version)"/></a>
+                            </li>
+                        </ul>
+                    </li>
+
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Aide <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu" ng-click="$event.stopPropagation()">
+                            <li><a href="#/help/api">API</a></li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <script type="text/ng-template" id="techno-menu-modal.html">
+        <div class="modal-header">
             <h3 class="modal-title">Nouvelle techno</h3>
         </div>
-		<div class="modal-body">
+        <div class="modal-body">
             <form name="technoForm" role="form">
-				<div class="form-group">
-					<label for="technoName">Nom</label>
-					<input type="text" class="form-control" required ng-trim="true" ng-model="new_techno.name" id="technoName" placeholder="Entrer un nom"/>
-				</div>
-				<div class="form-group">
-					<label for="technoVersion">Version</label>
-					<input type="text" class="form-control" required ng-trim="true" ng-model="new_techno.version" id="technoVersion" placeholder="Entrer un numero de version"/>
-				</div>
-			</form>
+                <div class="form-group">
+                    <label for="technoName">Nom</label>
+                    <input type="text" class="form-control" required ng-trim="true" ng-model="new_techno.name"
+                           id="technoName" placeholder="Entrer un nom"/>
+                </div>
+                <div class="form-group">
+                    <label for="technoVersion">Version</label>
+                    <input type="text" class="form-control" required ng-trim="true" ng-model="new_techno.version"
+                           id="technoVersion" placeholder="Entrer un numero de version"/>
+                </div>
+            </form>
         </div>
         <div class="modal-footer">
-			<button class="btn btn-primary" ng-disabled="technoForm.$invalid" ng-click="open_techno_page(new_techno.name, new_techno.version)" >Creer</button>
+            <button class="btn btn-primary" ng-disabled="technoForm.$invalid"
+                    ng-click="open_techno_page(new_techno.name, new_techno.version)">Creer
+            </button>
             <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
         </div>
-	</script>
-	
-	<script type="text/ng-template" id="application-menu-modal.html">
-		<div class="modal-header">
+    </script>
+
+    <script type="text/ng-template" id="application-menu-modal.html">
+        <div class="modal-header">
             <h3 class="modal-title">Nouvelle application</h3>
         </div>
-		<div class="modal-body">
+        <div class="modal-body">
             <form name="applicationForm" role="form">
-				<div class="form-group">
-					<label for="applicationName">Nom</label>
-					<input type="text" class="form-control" required ng-trim="true" ng-model="new_application.name" id="applicationName" placeholder="Entrer un nom"/>
-				</div>
-				<div class="form-group">
-					<label for="applicationVersion">Version</label>
-					<input type="text" class="form-control" required ng-trim="true" ng-model="new_application.version" id="applicationVersion" placeholder="Entrer un numero de version"/>
-				</div>
-			</form>
+                <div class="form-group">
+                    <label for="applicationName">Nom</label>
+                    <input type="text" class="form-control" required ng-trim="true" ng-model="new_application.name"
+                           id="applicationName" placeholder="Entrer un nom"/>
+                </div>
+                <div class="form-group">
+                    <label for="applicationVersion">Version</label>
+                    <input type="text" class="form-control" required ng-trim="true" ng-model="new_application.version"
+                           id="applicationVersion" placeholder="Entrer un numero de version"/>
+                </div>
+            </form>
         </div>
         <div class="modal-footer">
-			<button class="btn btn-primary" ng-disabled="applicationForm.$invalid" ng-click="open_application_page(new_application.name, new_application.version)" >Creer</button>
+            <button class="btn btn-primary" ng-disabled="applicationForm.$invalid"
+                    ng-click="open_application_page(new_application.name, new_application.version)">Creer
+            </button>
             <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
         </div>
-	</script>
-	
-		<script type="text/ng-template" id="properties-menu-modal.html">
-		<div class="modal-header">
+    </script>
+
+    <script type="text/ng-template" id="properties-menu-modal.html">
+        <div class="modal-header">
             <h3 class="modal-title">Nouvelles properties</h3>
         </div>
-		<div class="modal-body">
+        <div class="modal-body">
             <form name="propertiesForm" role="form">
-				<div class="form-group">
-					<label for="propertiesApplication">Application</label>
-					<input type="text" class="form-control" required ng-trim="true" ng-model="new_properties.application" typeahead-editable="false" typeahead="application as application.title for application in get_applications($viewValue)" />
-				</div>
-				<div class="form-group">
-					<label for="propertiesPlatform">Plateforme</label>
-					<input type="text" class="form-control" required ng-trim="true" ng-model="new_properties.platform" id="propertiesPlatform" placeholder="Indiquer la plateforme"/>
-				</div>
-			</form>
+                <div class="form-group">
+                    <label for="propertiesApplication">Application</label>
+                    <input type="text" class="form-control" required ng-trim="true"
+                           ng-model="new_properties.application" typeahead-editable="false"
+                           typeahead="application as application.title for application in get_applications($viewValue)"/>
+                </div>
+                <div class="form-group">
+                    <label for="propertiesPlatform">Plateforme</label>
+                    <input type="text" class="form-control" required ng-trim="true" ng-model="new_properties.platform"
+                           id="propertiesPlatform" placeholder="Indiquer la plateforme"/>
+                </div>
+            </form>
         </div>
         <div class="modal-footer">
-			<button class="btn btn-primary" ng-disabled="propertiesForm.$invalid" ng-click="open_properties_page(new_properties.application.name, new_properties.application.version, new_properties.platform)" >Creer</button>
+            <button class="btn btn-primary" ng-disabled="propertiesForm.$invalid"
+                    ng-click="open_properties_page(new_properties.application.name, new_properties.application.version, new_properties.platform)">
+                Creer
+            </button>
             <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
         </div>
-	</script>
+    </script>
 
 
 </div>

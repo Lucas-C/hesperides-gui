@@ -1,0 +1,170 @@
+<div id="header">
+
+    <nav class="navbar navbar-default" role="navigation">
+        <div class="container-fluid">
+            <div class="navbar-header">
+                <a class="navbar-brand" href="#">{{ Page.title() }}</a>
+            </div>
+
+            <div class="collapse navbar-collapse">
+                <ul class="nav navbar-nav navbar-left">
+
+                    <li class="dropdown" ng-controller="MenuTechnoCtrl">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Technos <span
+                                class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu" ng-click="$event.stopPropagation()">
+                            <li><a href="" ng-click="open_create_techno_dialog()">Creer une nouvelle techno</a></li>
+                            <li class="divider"></li>
+                            <li><a href=""><input style="border: none;background:transparent" type="text"
+                                                  ng-model="technoSearched" ng-blur="technoSearched=''"
+                                                  placeholder="Rechercher"
+                                                  typeahead="techno as techno.title for techno in find_technos_by_name($viewValue)"
+                                                  typeahead-on-select="open_techno_page($item.name, $item.version)"/></a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="dropdown" ng-controller="MenuApplicationCtrl">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Applications <span
+                                class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu" ng-click="$event.stopPropagation()">
+                            <li><a href="" ng-click="open_create_application_dialog()">Creer une nouvelle application</a></li>
+                            <li class="divider"></li>
+                            <li><a href=""><input style="border: none;background:transparent" type="text"
+                                                  ng-model="applicationSearched" ng-blur="applicationSearched=''"
+                                                  placeholder="Rechercher"
+                                                  typeahead="application as application.title for application in find_applications_by_name($viewValue)"
+                                                  typeahead-on-select="open_application_page($item.name, $item.version)"/></a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="dropdown" ng-controller="MenuPropertiesCtrl">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Properties <span
+                                class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu" ng-click="$event.stopPropagation()"
+                            style="width: 450px !important">
+                            <li><a href="" ng-click="open_create_properties_dialog()">Creer</a></li>
+                            <li class="divider"></li>
+                            <li><a href=""><input style="border: none;background:transparent;width: 420px !important"
+                                                  type="text" ng-model="applicationSearched"
+                                                  ng-blur="applicationSearched=''"
+                                                  placeholder="Rechercher une application pour y éditer/ajouter des properties"
+                                                  typeahead="application as application.title for application in get_applications($viewValue)"
+                                                  typeahead-on-select="open_properties_page($item.name, $item.version)"/></a>
+                            </li>
+                        </ul>
+                    </li>
+
+                    <li class="dropdown" ng-controller="MenuContextCtrl">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Instances <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu" ng-click="$event.stopPropagation()"
+                            style="width: 450px !important">
+                            <li><a href=""><input style="border: none;background:transparent;width: 420px !important"
+                                                  type="text" ng-model="applicationSearched"
+                                                  ng-blur="applicationSearched=''"
+                                                  placeholder="Rechercher une application pour y éditer/ajouter des instances"
+                                                  typeahead="application as application.title for application in get_applications($viewValue)"
+                                                  typeahead-on-select="open_context_page($item.name, $item.version)"/></a>
+                            </li>
+                        </ul>
+                    </li>
+
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right">
+
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Aide <span class="caret"></span></a>
+                        <ul class="dropdown-menu" role="menu" ng-click="$event.stopPropagation()">
+                            <li><a href="#/help/api">API</a></li>
+                        </ul>
+                    </li>
+
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+</div>
+
+<script type="text/ng-template" id="techno-menu-modal.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Nouvelle techno</h3>
+    </div>
+    <div class="modal-body">
+        <form name="technoForm" role="form">
+            <div class="form-group">
+                <label for="technoName">Nom</label>
+                <input type="text" class="form-control" required ng-trim="true" ng-model="new_techno.name"
+                       id="technoName" placeholder="Entrer un nom"/>
+            </div>
+            <div class="form-group">
+                <label for="technoVersion">Version</label>
+                <input type="text" class="form-control" required ng-trim="true" ng-model="new_techno.version"
+                       id="technoVersion" placeholder="Entrer un numero de version"/>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-disabled="technoForm.$invalid"
+                ng-click="open_techno_page(new_techno.name, new_techno.version)">Creer
+        </button>
+        <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="application-menu-modal.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Nouvelle application</h3>
+    </div>
+    <div class="modal-body">
+        <form name="applicationForm" role="form">
+            <div class="form-group">
+                <label for="applicationName">Nom</label>
+                <input type="text" class="form-control" required ng-trim="true" ng-model="new_application.name"
+                       id="applicationName" placeholder="Entrer un nom"/>
+            </div>
+            <div class="form-group">
+                <label for="applicationVersion">Version</label>
+                <input type="text" class="form-control" required ng-trim="true" ng-model="new_application.version"
+                       id="applicationVersion" placeholder="Entrer un numero de version"/>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-disabled="applicationForm.$invalid"
+                ng-click="open_application_page(new_application.name, new_application.version)">Creer
+        </button>
+        <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="properties-menu-modal.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Nouvelles properties</h3>
+    </div>
+    <div class="modal-body">
+        <form name="propertiesForm" role="form">
+            <div class="form-group">
+                <label for="propertiesApplication">Application</label>
+                <input type="text" class="form-control" required ng-trim="true"
+                       ng-model="new_properties.application" typeahead-editable="false"
+                       id="propertiesApplication"
+                       typeahead="application as application.title for application in get_applications($viewValue)"/>
+            </div>
+            <div class="form-group">
+                <label for="propertiesPlatform">Plateforme</label>
+                <input type="text" class="form-control" required ng-trim="true" ng-model="new_properties.platform"
+                       id="propertiesPlatform" placeholder="Indiquer la plateforme"/>
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-disabled="propertiesForm.$invalid"
+                ng-click="open_properties_page(new_properties.application.name, new_properties.application.version, new_properties.platform)">
+            Creer
+        </button>
+        <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
+    </div>
+</script>

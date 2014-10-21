@@ -9,20 +9,10 @@ technoModule.controller('TechnoCtrl', ['$scope', '$routeParams', 'Techno', 'Page
     var namespace = "technos." + $routeParams.name + '.' + $routeParams.version;
     $scope.techno = new Techno(namespace);
 
-    $scope.$on("HesperidesTemplateListLoaded", function(event){
-        $scope.$emit('hesperidesModelRefresh');
-    });
-
-    $scope.$on("HesperidesTemplateCreated", function(event){
-        $scope.$emit('hesperidesModelRefresh');
-    });
-
-    $scope.$on("HesperidesTemplateUpdated", function(event){
-        $scope.$emit('hesperidesModelRefresh');
-    });
-
-    $scope.$on("HesperidesTemplateDeleted", function(event){
-        $scope.$emit('hesperidesModelRefresh');
+    $scope.$on("hesperidesTemplateChanged", function(event){
+        setTimeout(function(){
+            $scope.$broadcast('hesperidesModelRefresh');
+        }, 1000);
     });
 
 }]);

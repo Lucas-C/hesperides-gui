@@ -21,9 +21,9 @@ modelModule.directive('hesperidesModel', ['PropertiesService', function(Properti
                 PropertiesService.getModel(scope.namespace).then(function (propertiesModel) {
                     scope.model = propertiesModel;
                     /* Force refresh, that might be needed */
-                    if (!scope.$$phase) {
-                        scope.$apply();
-                    }
+                    //if (!scope.$$phase) {
+                    //    scope.$apply();
+                    //}
                 });
             };
 
@@ -31,6 +31,9 @@ modelModule.directive('hesperidesModel', ['PropertiesService', function(Properti
             scope.$on('hesperidesModelRefresh', function(event){
                 scope.refresh();
             });
+
+            //For the loading of the component
+            scope.refresh();
 
         }
     }

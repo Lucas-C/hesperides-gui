@@ -3,10 +3,9 @@
  */
 var templateModule = angular.module('hesperides.template', []);
 
-templateModule.factory('HesperidesTemplateModal', ['TemplateService', '$modal', '$rootScope', function (TemplateService, $modal, $rootScope) {
+templateModule.factory('HesperidesTemplateModal', ['TemplateService', '$modal', function (TemplateService, $modal) {
 
     var defaultScope = {
-        me: this,
         codeMirrorOptions: {
             mode: 'text',
             lineNumbers: true,
@@ -25,19 +24,21 @@ templateModule.factory('HesperidesTemplateModal', ['TemplateService', '$modal', 
             }
         },
         $save: function (template) {
-            TemplateService.save(template).then(function(template){
-                this.template = template; //Refresh the template kept in scope
+            var me = this;
+            TemplateService.save(template).then(function (savedTemplate) {
+                me.template = savedTemplate; //Refresh the template kept in scope
+                me.$emit("hesperidesTemplateChanged", template);
             });
         }
     }
 
     return {
-        edit_template: function (template) {
+        edit_template: function (options) {
 
-            var modalScope = $rootScope.$new();
+            var modalScope = options.scope;
 
             angular.extend(modalScope, {
-                template: template
+                template: options.template
             }, defaultScope);
 
             var modal = $modal.open({
@@ -69,15 +70,17 @@ templateModule.directive('hesperidesTemplateList', ['HesperidesTemplateModal', '
 
             scope.templateEntries = [];
 
-            // Load template list matching namespace
-            // If no template exists (404), just create an empty list
-            TemplateService.all(scope.namespace).then(function (templateEntries) {
-                scope.templateEntries = templateEntries;
-                scope.$emit('HesperidesTemplateListLoaded');
-            });
+            var reload = function(){
+                TemplateService.all(scope.namespace).then(function (templateEntries) {
+                    scope.templateEntries = templateEntries;
+                });
+            };
 
             scope.add_template = function (namespace) {
-                HesperidesTemplateModal.edit_template(new Template({namespace: namespace}));
+                HesperidesTemplateModal.edit_template({
+                    scope: scope,
+                    template: new Template({namespace: namespace})
+                });
             };
 
             scope.delete_template = function (namespace, name) {
@@ -90,9 +93,19 @@ templateModule.directive('hesperidesTemplateList', ['HesperidesTemplateModal', '
 
             scope.edit_template = function (namespace, name) {
                 TemplateService.get(namespace, name).then(function (template) {
-                    HesperidesTemplateModal.edit_template(template);
+                    HesperidesTemplateModal.edit_template({
+                        scope: scope,
+                        template: template
+                    });
                 });
             };
+
+            scope.$on('hesperidesTemplateChanged', function (event, data) {
+                //Reload with timeout -> time to index data
+                setTimeout(reload, 1000);
+            });
+
+            reload();
         }
     };
 }]);
@@ -131,7 +144,7 @@ templateModule.factory('TemplateEntry', function () {
     return TemplateEntry;
 });
 
-templateModule.factory('TemplateService', ['$http', '$rootScope', 'Template', 'TemplateEntry', function ($http, $rootScope, Template, TemplateEntry) {
+templateModule.factory('TemplateService', ['$http', 'Template', 'TemplateEntry', function ($http, Template, TemplateEntry) {
 
     return {
         get: function (namespace, name) {
@@ -145,7 +158,6 @@ templateModule.factory('TemplateService', ['$http', '$rootScope', 'Template', 'T
             if (template.versionID < 0) {
                 return $http.post('rest/templates/' + template.namespace + '/' + template.name, template).then(function (response) {
                     $.notify("Le template bien ete cree", "success");
-                    $rootScope.$broadcast("HesperidesTemplateCreated", template);
                     return new Template(response.data);
                 }, function (error) {
                     if (error.status === 409) {
@@ -157,17 +169,15 @@ templateModule.factory('TemplateService', ['$http', '$rootScope', 'Template', 'T
             } else {
                 return $http.put('rest/templates/' + template.namespace + '/' + template.name, template).then(function (response) {
                     $.notify("Le template a ete mis a jour", "success");
-                    $rootScope.$broadcast("HesperidesTemplateUpdated", template);
                     return new Template(response.data);
                 }, function (error) {
                     $.notify(error.data, "error");
                 });
             }
         },
-        delete: function(namespace, name){
+        delete: function (namespace, name) {
             return $http.delete('rest/templates/' + namespace + '/' + name).then(function (response) {
                 $.notify("Le template a bien ete supprime", "success");
-                $rootScope.$broadcast("HesperidesTemplateDeleted", {namespace: namespace, name: name});
                 return response;
             }, function (error) {
                 $.notify(error.data, "error");

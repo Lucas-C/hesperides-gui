@@ -63,6 +63,7 @@ templateModule.directive('hesperidesTemplateList', ['HesperidesTemplateModal', '
     return {
         restrict: 'E',
         scope: {
+            title: '=',
             namespace: '='
         },
         templateUrl: "template/template-list.html",

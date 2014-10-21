@@ -7,26 +7,13 @@
 </div>
 <div class="row">
     <div class="col-md-12">
-        <div class="bg-light">
-            <h3>BRIQUES APPLICATIVES</h3>
-            <ul class="list-inline">
-                <li ng-repeat="unit in application.units track by $index">
-                    <button ng-click="edit_unit(unit)" ng-mouseenter="hover = true" ng-mouseleave="hover = false"
-                            class="btn btn-info">{{unit.name}}
-                    </button>
-                    <button ng-mouseenter="hover = true" ng-mouseleave="hover = false" ng-show="hover"
-                            ng-really-message="Etes-vous sur de vouloir supprimer la brique '{{unit.name}}'"
-                            ng-really-click="del_unit(unit, application)" class="btn btn-danger"
-                            style="padding-left: 2px; padding-right: 2px"><span
-                            class="glyphicon glyphicon-trash"></span></button>
-                </li>
-                <li>
-                    <button ng-click="add_unit('Change me !')" class="btn btn-success"><span
-                            class="glyphicon glyphicon-plus"></span></button>
-                </li>
-            </ul>
-            <button ng-click="save(application)" class="btn btn-primary">Sauver</button>
-        </div>
+        <list-of-items title="'BRIQUES APPLICATIVES'"
+                       items="application.units"
+                       label="$item.name"
+                       onedit="edit_unit($item)"
+                       ondelete="del_unit($item)"
+                       onadd="add_unit($name)"></list-of-items>
+        <button ng-click="save(application)" class="btn btn-primary">Sauver</button>
     </div>
 </div>
 
@@ -35,142 +22,45 @@
     </div>
 </div>
 
-<div class="row voffset1" ng-show="is_editing()">
+<div class="row voffset1" ng-if="false">
     <div class="col-md-6">
         <div style="margin-top: 30px" class="row">
             <div class="col-md-12">
                 <div class="bg-light">
-                    <h3 class="app-unit"><strong><a href="" editable-text="editing_unit.name"
-                                                    onbeforesave="update_unit_title($data)">{{editing_unit.name}}</a></strong>
+                    <h3 class="app-unit"><strong><a href="" editable-text="unit.name"
+                                                    onbeforesave="update_unit_title($data)">{{unit.name}}</a></strong>
                     </h3>
                 </div>
             </div>
         </div>
         <div class="row">
             <div class="col-md-12">
-                <div class="bg-light">
-                    <h4>Technos:</h4>
-                    <ul class="list-inline" style="padding-left: 20px;">
-                        <li ng-repeat="techno in editing_unit.technos track by $index">
-                            <button class="btn btn-default btn-sm" ng-mouseenter="hover = true"
-                                    ng-mouseleave="hover = false">{{techno.split('.')[1]}}, version
-                                {{techno.split('.')[2]}}
-                            </button>
-                            <button ng-mouseenter="hover = true" ng-mouseleave="hover = false" ng-show="hover"
-                                    ng-really-message="Supprimer la techno '{{techno.name}}'"
-                                    ng-really-click="del_techno(techno, editing_unit)" class="btn btn-danger btn-sm"
-                                    style="padding-left: 2px; padding-right: 2px"><span
-                                    class="glyphicon glyphicon-trash"></span></button>
-                        </li>
-                        <li style="vertical-align: middle">
-                            <button ng-click="show_input = true;focus_choose_techno()" ng-hide="show_input"
-                                    class="btn btn-success btn-sm"><span class="glyphicon glyphicon-plus"></span>
-                            </button>
-                            <input id="chooseTechnoInput" type="text" class="form-control" style="height: 31px"
-                                   ng-show="show_input" ng-blur="show_input=false; asyncTechnoSelected=''"
-                                   ng-model="asyncTechnoSelected" placeholder="Rechercher une techno"
-                                   typeahead-on-select="add_techno(asyncTechnoSelected, editing_unit); asyncTechnoSelected=''; show_input=false"
-                                   typeahead="techno as techno.title for techno in get_technos($viewValue, editing_unit.technos)"/>
-                        </li>
-                    </ul>
-                </div>
+                <list-of-items title="'Technos'"
+                               items="unit.technos"
+                               onedit=""
+                               ondelete="del_techno($item, unit)"
+                               onadd="add_techno($item, unit)"
+                               size="small"
+                               typeaheadExpression="techno as techno.title for techno in get_technos($viewValue, unit.technos)"
+                        ></list-of-items>
             </div>
         </div>
         <div class="row">
             <div class="col-md-12">
-                <div class="bg-light">
-                    <h4>Les fichiers specifiques de cette brique applicative</h4>
-                    <blockquote>
-                        <p ng-repeat="template_entry in templateEntries | orderBy:['location', 'name']"
-                           style="font-size: 14px;margin-bottom: 0px;" ng-class="{'text-stroke': hover}">
-                            <button class="btn btn-link btn-red btn-no-padding" ng-mouseenter="hover = true"
-                                    ng-mouseleave="hover = false"><span class="glyphicon glyphicon-remove"></span>
-                            </button>
-                            {{template_entry.location}}/<a href=""
-                                                           ng-click="edit_template(template_entry.namespace, template_entry.name)">{{template_entry.filename}}</a><em
-                                style="font-size: 12px;margin-left: 5px;">{{template_entry.name}}</em>
-                        </p>
-                    </blockquote>
-                    <button ng-click="add_template()" class="btn">Ajouter un template</button>
-                </div>
+                <hesperides-template-list title="'Les fichiers specifiques de cette brique applicative'"
+                                          namespace="application.namespaceOfUnit(unit)"></hesperides-template-list>
             </div>
         </div>
     </div>
     <div class="col-md-1">
-        <div class="bd-light" style="height: 200px;margin-top: 80px;"><span
-                class="glyphicon glyphicon-chevron-right"></span></div>
+        <div class="bd-light" style="height: 200px;margin-top: 80px;">
+            <span class="glyphicon glyphicon-chevron-right"></span>
+        </div>
     </div>
     <div class="col-md-5">
-        <h3>Les properties associees a '{{editing_unit.name}}'
-            <button ng-click="refresh_unit_properties(0)" style="margin-left:10px;" class="btn btn-info btn-xs">Forcer
-                un recalcul
-            </button>
-        </h3>
-        <span class="glyphicon glyphicon-refresh animate" ng-show="loading_properties"></span>
-
-        <div ng-hide="loading_properties">
-            <dl class="dl-horizontal text-overflow" style="margin-bottom:0"
-                ng-repeat="keyValueProperty in propertiesModel.key_value_properties | orderBy:'name' track by $index">
-                <dt>{{ keyValueProperty.name }}</dt>
-                <dd>
-                    <small><em>{{ keyValueProperty.comment }}</em></small>
-                </dd>
-            </dl>
-            <h3 ng-show="propertiesModel.iterable_properties.length > 0">Proprietes multiples :</h3>
-            <dl class="dl-horizontal text-overflow" style="margin-bottom:0"
-                ng-repeat="iterableProperty in propertiesModel.iterable_properties | orderBy:'name' track by $index">
-                <dt>{{ iterableProperty.name }}</dt>
-                <dd ng-repeat="field in iterableProperty.fields | orderBy:'name' track by $index">{{ field.name }}
-                    <small style="padding-left: 10px;"><em>{{ field.comment }}</em></small>
-                </dd>
-            </dl>
-        </div>
+        <hesperides-model title="'Les properties associees a {{unit.name}}'"
+                          namespaces="application.modelNamespacesOfUnit(unit)"></hesperides-model>
     </div>
 </div>
 
-
-<script type="text/ng-template" id="edit-template-modal.html">
-    <div class="modal-header">
-        <h3 class="modal-title">Ajout/Edition de template</h3>
-    </div>
-    <div class="modal-body">
-        <form name="templateForm" role="form">
-            <div class="form-group">
-                <label for="templateName">Titre</label>
-                <input type="text" class="form-control" required ng-trim="true" ng-model="template.name"
-                       id="templateName" placeholder="Donner un titre au template"/>
-            </div>
-            <div class="form-group">
-                <label for="templateFilename">Nom du fichier final</label>
-                <input type="text" class="form-control" required ng-trim="true" ng-model="template.filename"
-                       id="templateFilename"
-                       placeholder="Indiquer le nom qu'aura le fichier sur le serveur. On peut utiliser des proprietes dans ce champ"/>
-            </div>
-            <div class="form-group">
-                <label for="templateLocation">Dossier de destination</label>
-                <input type="text" class="form-control" required ng-trim="true" ng-model="template.location"
-                       id="templateLocation"
-                       placeholder="Indiquer le dossier dans lequel sera copie le fichier sur le serveur. On peut utiliser des proprietes dans ce champ"/>
-            </div>
-            <div class="form-group" id="templateContentParent">
-                <label for="templateContent" style="width: 100%">Contenu du fichier
-                    <small class="text-right" style="padding-left: 10px; color: grey;font-weight:normal"><kbd>F11</kbd>
-                        Activer / <kbd>Esc</kbd> Desactiver l'edition en plein ecran
-                    </small>
-                </label>
-                <ui-codemirror id="templateContent" ui-codemirror-opts="codeMirrorOptions"
-                               ng-model="template.content"></ui-codemirror>
-            </div>
-        </form>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-primary" ng-disabled="templateForm.$invalid" ng-click="save_template(template)">Sauver le
-            template
-        </button>
-        <button class="btn btn-success" ng-disabled="templateForm.$invalid" ng-click="$close(template)">Sauver et
-            Fermer
-        </button>
-        <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
-    </div>
-</script>
 

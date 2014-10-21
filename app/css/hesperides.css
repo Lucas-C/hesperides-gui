@@ -8,36 +8,6 @@
 
 
 /*
- * Search
- */
-
- #search-inputs {
-	width: 100%;
- }
- 
- #search-inputs input{
-	width: 100%;
- }
- 
-#search-left {
-	float: left;
-	width: 50%;
-	text-align: left;
-}
-
-#search-right {
-	float: right;
-	width: 40%;
-} 
-
-#search-results {
-	text-align: left;
-	padding-left: 30px;
-	padding-top: 95px;
-	width: 100%;
-}
-
-/* 
  * CodeMirror
  */ 
 
@@ -174,4 +144,8 @@ h4.app-unit button {
 @-webkit-keyframes rotateThis {
     from {-webkit-transform: rotate(0deg);}
     to   {-webkit-transform: rotate(359deg);}
+}
+
+.input-sm {
+    height: 31px;
 }

@@ -86,11 +86,11 @@ templateModule.directive('hesperidesTemplateList', ['HesperidesTemplateModal', '
 
             scope.delete_template = function (namespace, name) {
                 TemplateService.delete(namespace, name).then(function () {
-                    scope.templateEntries = scope.templateEntries.reject(function (templateEntry) {
+                    scope.templateEntries = _.reject(scope.templateEntries, function (templateEntry) {
                         return (templateEntry.name === name && templateEntry.namespace === namespace);
                     });
                 });
-            }
+            };
 
             scope.edit_template = function (namespace, name) {
                 TemplateService.get(namespace, name).then(function (template) {
@@ -191,6 +191,8 @@ templateModule.factory('TemplateService', ['$http', 'Template', 'TemplateEntry',
                 }, function (error) {
                     if (error.status != 404) {
                         $.notify(error.data, "error");
+                    } else {
+                        return [];
                     }
                 });
             });

@@ -10,6 +10,7 @@ technoModule.controller('TechnoCtrl', ['$scope', '$routeParams', 'Techno', 'Page
     $scope.techno = new Techno(namespace);
 
     $scope.$on("hesperidesTemplateChanged", function(event){
+        //Use timeout because of elasticsearch indexation
         setTimeout(function(){
             $scope.$broadcast('hesperidesModelRefresh');
         }, 1000);

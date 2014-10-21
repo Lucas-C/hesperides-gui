@@ -15,6 +15,7 @@ var hesperidesModule = angular.module('hesperides', [
     'hesperides.properties',
     'hesperides.techno',
     'hesperides.template',
+    'hesperides.components',
     'ui.bootstrap',
     'xeditable',
     'ui.codemirror'

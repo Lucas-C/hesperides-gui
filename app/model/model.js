@@ -11,14 +11,16 @@ modelModule.directive('hesperidesModel', ['PropertiesService', function(Properti
         templateUrl: 'model/model.html',
         scope: {
             title: '=',
-            namespace: '='
+            namespaces: '='
         },
         link: function(scope, element, attr){
 
             // This function is used to parse the templates and retreived the model associated
             // ie. the properties parsed in the templates
             scope.refresh = function () {
-                PropertiesService.getModel(scope.namespace).then(function (propertiesModel) {
+                scope.loading_properties = true;
+                PropertiesService.getModel(scope.namespaces).then(function (propertiesModel) {
+                    scope.loading_properties = false;
                     scope.model = propertiesModel;
                     /* Force refresh, that might be needed */
                     //if (!scope.$$phase) {

@@ -87,6 +87,7 @@ templateModule.directive('hesperidesTemplateList', ['HesperidesTemplateModal', '
             scope.delete_template = function (namespace, name) {
                 TemplateService.delete(namespace, name).then(function () {
                     scope.templateEntries = _.reject(scope.templateEntries, function (templateEntry) {
+                        scope.$emit("hesperidesTemplateChanged", templateEntry);
                         return (templateEntry.name === name && templateEntry.namespace === namespace);
                     });
                 });

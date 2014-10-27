@@ -1,24 +1,20 @@
-<div class="bg-light">
-    <h3>{{title}}
-        <button ng-click="refresh()" style="margin-left:10px;" class="btn btn-info btn-xs">Forcer un recalcul</button>
-    </h3>
-    <span class="glyphicon glyphicon-refresh animate" ng-show="loading_properties"></span>
+<button ng-click="refresh()" style="margin-left:10px;" class="btn btn-info btn-xs">Forcer un recalcul</button>
+<span class="glyphicon glyphicon-refresh animate" ng-show="loading_properties"></span>
 
-    <div ng-hide="loading_properties">
-        <dl class="dl-horizontal text-overflow" style="margin-bottom:0"
-            ng-repeat="keyValueProperty in model.key_value_properties | orderBy:'name' track by $index">
-            <dt>{{ keyValueProperty.name }}</dt>
-            <dd>
-                <small><em>{{ keyValueProperty.comment }}</em></small>
-            </dd>
-        </dl>
-        <h3 ng-show="model.iterable_properties.length > 0">Proprietes multiples :</h3>
-        <dl class="dl-horizontal text-overflow" style="margin-bottom:0"
-            ng-repeat="iterableProperty in model.iterable_properties | orderBy:'name' track by $index">
-            <dt>{{ iterableProperty.name }}</dt>
-            <dd ng-repeat="field in iterableProperty.fields | orderBy:'name' track by $index">{{ field.name }}
-                <small style="padding-left: 10px;"><em>{{ field.comment }}</em></small>
-            </dd>
-        </dl>
-    </div>
+<div ng-hide="loading_properties">
+    <dl class="dl-horizontal text-overflow" style="margin-bottom:0"
+        ng-repeat="keyValueProperty in model.key_value_properties | orderBy:'name' track by $index">
+        <dt>{{ keyValueProperty.name }}</dt>
+        <dd>
+            <small><em>{{ keyValueProperty.comment }}</em></small>
+        </dd>
+    </dl>
+    <h3 ng-show="model.iterable_properties.length > 0">Proprietes multiples :</h3>
+    <dl class="dl-horizontal text-overflow" style="margin-bottom:0"
+        ng-repeat="iterableProperty in model.iterable_properties | orderBy:'name' track by $index">
+        <dt>{{ iterableProperty.name }}</dt>
+        <dd ng-repeat="field in iterableProperty.fields | orderBy:'name' track by $index">{{ field.name }}
+            <small style="padding-left: 10px;"><em>{{ field.comment }}</em></small>
+        </dd>
+    </dl>
 </div>

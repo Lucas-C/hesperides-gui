@@ -9,14 +9,14 @@ components.directive('listOfItems', ['$parse', function ($parse) {
     return {
         restrict: 'E',
         scope: {
-            title: '=',
             items: '=',
-            selectedItem: '='
+            selectedItem: '=',
+            selectable: '='
         },
         templateUrl: 'shared/list-of-items.html',
         link: function (scope, element, attrs) {
 
-            scope.typeahead = attrs.typeaheadExpression;
+            scope.typeahead = attrs.typeaheadexpression;
             if (!_.isUndefined(scope.typeahead)) {
                 scope.type = 'search';
             }
@@ -28,12 +28,13 @@ components.directive('listOfItems', ['$parse', function ($parse) {
             };
 
             scope.selfEdit = function (item) {
-                $parse(attrs.onedit)(scope.$parent, {$item: item});
-                scope.selectedItem = item;
+                if(scope.selectable){
+                    $parse(attrs.onedit)(scope.$parent, {$item: item});
+                    scope.selectedItem = item;
+                }
             };
 
             scope.selfDelete = function (item) {
-                _.remove(scope.items, item);
                 scope.selectedItem = undefined;
                 $parse(attrs.ondelete)(scope.$parent, {$item: item});
             };
@@ -42,7 +43,6 @@ components.directive('listOfItems', ['$parse', function ($parse) {
                 if (name) {
                     var item = $parse(attrs.createfunction)(scope.$parent, {$name: name});
                     if (item) {
-                        scope.items.push(item);
                         scope.selectedItem = item;
                         scope.resetAndHideInput();
                     }

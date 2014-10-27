@@ -1,32 +1,34 @@
-<div class="bg-light">
-    <h3 ng-if="size != 'small'">{{title}}</h3>
-    <h4 ng-if="size === 'small'">{{title}}</h4>
-    <ul class="list-inline" style="padding-left: 20px;">
-        <li ng-repeat="item in items track by $index">
-            <button ng-click="selfEdit(item)" ng-mouseenter="hover = true" ng-mouseleave="hover = false"
-                    class="btn"
-                    ng-class="{'btn-info': (!item === selectedItem), 'btn-warning': (item === selectedItem), 'btn-sm': size === 'small'}"
-                    >{{selfLabel(item)}}
-            </button>
-            <button ng-mouseenter="hover = true" ng-mouseleave="hover = false" ng-show="hover"
-                    ng-really-message="Etes-vous sur de vouloir supprimer '{{selfLabel(item)}}' ?"
-                    ng-really-click="selfDelete(item)" class="btn btn-danger"
-                    style="margin-left: -3px; padding-left: 2px; padding-right: 2px"><span
-                    class="glyphicon glyphicon-trash"></span></button>
-        </li>
-        <li style="vertical-align: middle">
-            <button ng-click="showInput()" ng-hide="show_input" class="btn btn-success" ng-class="{'btn-sm': size === 'small'}">
-                <span class="glyphicon glyphicon-plus"></span></button>
-            <input ng-if="type != 'search'"
-                   id="nameInput" type="text" class="form-control" ng-show="show_input" ng-class="{'input-sm': size === 'small'}"
-                   ng-blur="resetAndHideInput()" ng-model="input.inputText" placeholder="Entrer un nom"
-                   ng-enter="selfAdd(input.inputText)"/>
-            <input ng-if="type === 'search'"
-                   id="nameInput" type="text" class="form-control" ng-show="show_input" ng-class="{'input-sm': size === 'small'}"
-                   ng-blur="resetAndHideInput()"
-                   ng-model="input.inputText" placeholder="Rechercher"
-                   typeahead-on-select="selfAdd(input.inputText)"
-                   typeahead="typeahead"/>
-        </li>
-    </ul>
-</div>
+<ul class="list-inline" style="padding-left: 20px;">
+    <li ng-repeat="item in items track by $index">
+        <button ng-click="selfEdit(item)" ng-mouseenter="hover = true" ng-mouseleave="hover = false"
+                class="btn"
+                ng-class="{'btn-info': (!item === selectedItem), 'btn-warning': (item === selectedItem), 'btn-sm': size === 'small'}"
+                >{{selfLabel(item)}}
+        </button>
+        <button ng-mouseenter="hover = true" ng-mouseleave="hover = false" ng-show="hover"
+                ng-really-message="Etes-vous sur de vouloir supprimer '{{selfLabel(item)}}' ?"
+                ng-really-click="selfDelete(item)" class="btn btn-danger"
+                ng-class="{'btn-sm': size === 'small'}"
+                style="margin-left: -5px; padding-left: 2px; padding-right: 2px"><span
+                class="glyphicon glyphicon-trash"></span></button>
+    </li>
+    <li style="vertical-align: middle">
+        <button ng-click="showInput()" ng-hide="show_input" class="btn btn-success"
+                ng-class="{'btn-sm': size === 'small'}">
+            <span class="glyphicon glyphicon-plus"></span></button>
+        <input ng-if="type != 'search'"
+               id="nameInput" type="text" class="form-control" ng-show="show_input"
+               ng-class="{'input-sm': size === 'small'}"
+               ng-blur="resetAndHideInput()" ng-model="input.inputText" placeholder="Entrer un nom"
+               ng-enter="selfAdd(input.inputText)"/>
+        <ng-transclude>
+        <input ng-if="type === 'search'"
+               id="nameInput" type="text" class="form-control" ng-show="show_input"
+               ng-class="{'input-sm': size === 'small'}"
+               ng-blur="resetAndHideInput()"
+               ng-model="input.inputText" placeholder="Rechercher"
+               typeahead-on-select="selfAdd(input.inputText)"
+               typeahead="{{typeahead}}"/>
+        </ng-transclude>
+    </li>
+</ul>

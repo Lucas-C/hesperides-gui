@@ -7,12 +7,17 @@
 </div>
 <div class="row">
     <div class="col-md-12">
-        <list-of-items title="'BRIQUES APPLICATIVES'"
-                       items="application.units"
-                       label="$item.name"
-                       selected-item="unit"
-                       createfunction="create_unit($name)"></list-of-items>
-        <button ng-click="save(application)" class="btn btn-primary">Sauver</button>
+        <div class="bg-light">
+            <h3>BRIQUES APPLICATIVES</h3>
+            <list-of-items items="application.units"
+                           label="$item.name"
+                           selected-item="unit"
+                           createfunction="create_unit($name)"
+                           ondelete="delete_unit($item)"
+                           selectable="true">
+            </list-of-items>
+            <button ng-click="save(application)" class="btn btn-primary">Sauver</button>
+        </div>
     </div>
 </div>
 
@@ -21,7 +26,7 @@
     </div>
 </div>
 
-<div class="row voffset1" ng-if="false">
+<div class="row voffset1" ng-if="is_unit_selected()">
     <div class="col-md-6">
         <div style="margin-top: 30px" class="row">
             <div class="col-md-12">
@@ -34,20 +39,26 @@
         </div>
         <div class="row">
             <div class="col-md-12">
-                <list-of-items title="'Technos'"
-                               items="unit.technos"
-                               onedit=""
-                               ondelete="del_techno($item, unit)"
-                               createfunction="add_techno($name, unit)"
-                               size="small"
-                               typeaheadExpression="techno as techno.title for techno in search_technos($viewValue, unit.technos)"
-                        ></list-of-items>
+                <div class="bg-light">
+                    <h4>Technos :</h4>
+                    <list-of-items items="unit.technos"
+                                   createfunction="create_techno($name)"
+                                   ondelete="delete_techno($item)"
+                                   size="small"
+                                   label="$item"
+                                   selected-item="techno"
+                                   selectable="false"
+                                   typeaheadexpression="techno as techno.title for techno in $parent.$parent.search_technos($viewValue, $parent.$parent.unit.technos)"
+                            ></list-of-items>
+                </div>
             </div>
         </div>
         <div class="row">
             <div class="col-md-12">
-                <hesperides-template-list title="'Les fichiers specifiques de cette brique applicative'"
-                                          namespace="application.namespaceOfUnit(unit)"></hesperides-template-list>
+                <div class="bg-light">
+                    <h4>Les fichiers specifiques de cette brique applicative</h4>
+                    <hesperides-template-list namespace="unit.namespace"></hesperides-template-list>
+                </div>
             </div>
         </div>
     </div>
@@ -57,8 +68,8 @@
         </div>
     </div>
     <div class="col-md-5">
-        <hesperides-model title="'Les properties associees a {{unit.name}}'"
-                          namespaces="application.modelNamespacesOfUnit(unit)"></hesperides-model>
+        <h3>Les properties associees a '{{unit.name}}'</h3>
+        <hesperides-model namespaces="unit.modelNamespaces"></hesperides-model>
     </div>
 </div>
 

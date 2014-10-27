@@ -10,9 +10,8 @@
         <list-of-items title="'BRIQUES APPLICATIVES'"
                        items="application.units"
                        label="$item.name"
-                       onedit="edit_unit($item)"
-                       ondelete="del_unit($item)"
-                       onadd="add_unit($name)"></list-of-items>
+                       selected-item="unit"
+                       createfunction="create_unit($name)"></list-of-items>
         <button ng-click="save(application)" class="btn btn-primary">Sauver</button>
     </div>
 </div>
@@ -39,9 +38,9 @@
                                items="unit.technos"
                                onedit=""
                                ondelete="del_techno($item, unit)"
-                               onadd="add_techno($item, unit)"
+                               createfunction="add_techno($name, unit)"
                                size="small"
-                               typeaheadExpression="techno as techno.title for techno in get_technos($viewValue, unit.technos)"
+                               typeaheadExpression="techno as techno.title for techno in search_technos($viewValue, unit.technos)"
                         ></list-of-items>
             </div>
         </div>

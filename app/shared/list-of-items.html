@@ -5,7 +5,7 @@
         <li ng-repeat="item in items track by $index">
             <button ng-click="selfEdit(item)" ng-mouseenter="hover = true" ng-mouseleave="hover = false"
                     class="btn"
-                    ng-class="{'btn-info': (!item === selected), 'btn-warning': (item === selected), 'btn-sm': size === 'small'}"
+                    ng-class="{'btn-info': (!item === selectedItem), 'btn-warning': (item === selectedItem), 'btn-sm': size === 'small'}"
                     >{{selfLabel(item)}}
             </button>
             <button ng-mouseenter="hover = true" ng-mouseleave="hover = false" ng-show="hover"
@@ -15,17 +15,17 @@
                     class="glyphicon glyphicon-trash"></span></button>
         </li>
         <li style="vertical-align: middle">
-            <button ng-click="show_input = true;focus_name_input()" ng-hide="show_input" class="btn btn-success" ng-class="{'btn-sm': size === 'small'}">
+            <button ng-click="showInput()" ng-hide="show_input" class="btn btn-success" ng-class="{'btn-sm': size === 'small'}">
                 <span class="glyphicon glyphicon-plus"></span></button>
             <input ng-if="type != 'search'"
                    id="nameInput" type="text" class="form-control" ng-show="show_input" ng-class="{'input-sm': size === 'small'}"
-                   ng-blur="show_input=false; name= ''" ng-model="name" placeholder="Entrer un nom"
-                   ng-enter="selfAdd(name); name=''; show_input=false"/>
+                   ng-blur="resetAndHideInput()" ng-model="input.inputText" placeholder="Entrer un nom"
+                   ng-enter="selfAdd(input.inputText)"/>
             <input ng-if="type === 'search'"
                    id="nameInput" type="text" class="form-control" ng-show="show_input" ng-class="{'input-sm': size === 'small'}"
-                   ng-blur="show_input=false; searched=''"
-                   ng-model="selected" placeholder="Rechercher"
-                   typeahead-on-select="selfAddSearched(selected); searched=''; show_input=false"
+                   ng-blur="resetAndHideInput()"
+                   ng-model="input.inputText" placeholder="Rechercher"
+                   typeahead-on-select="selfAdd(input.inputText)"
                    typeahead="typeahead"/>
         </li>
     </ul>

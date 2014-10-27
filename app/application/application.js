@@ -4,7 +4,7 @@
 var applicationModule = angular.module('hesperides.application', []);
 
 
-applicationModule.controller('ApplicationCtrl', ['$scope', '$routeParams', '$modal', 'TechnoService', 'TemplateService', 'ApplicationService', 'PropertiesService', 'Page', '$q', function($scope, $routeParams, $modal, TechnoService, TemplateService, ApplicationService, PropertiesService, Page, $q) {
+applicationModule.controller('ApplicationCtrl', ['$scope', '$routeParams', '$modal', 'TechnoService', 'TemplateService', 'ApplicationService', 'PropertiesService', 'Unit', 'Page', '$q', function($scope, $routeParams, $modal, TechnoService, TemplateService, ApplicationService, PropertiesService, Unit, Page, $q) {
 
     Page.setTitle('Applications');
 
@@ -19,15 +19,10 @@ applicationModule.controller('ApplicationCtrl', ['$scope', '$routeParams', '$mod
     };
 
     // This function is used to add a new unit to the application
-    $scope.add_unit = function(name) {
-        var unit = $scope.application.add_new_empty_unit(name);
-        $scope.edit_unit(unit);
-    };
-
-    //This function is used to remove a unit from the application
-    $scope.del_unit = function(unit) {
-        $scope.application.remove_unit(unit);
-        $scope.unit = undefined;
+    $scope.create_unit = function(name) {
+        if(!$scope.application.hasUnit(name)){
+            return new Unit({name:name, technos: []});
+        }
     };
 
     //TODO this should be done server side
@@ -73,16 +68,12 @@ applicationModule.controller('ApplicationCtrl', ['$scope', '$routeParams', '$mod
 
     };
 
-    $scope.edit_unit = function(unit) {
-        $scope.unit = unit;
-    };
-
     $scope.is_editing = function() {
         return !_.isUndefined($scope.unit);
     };
 
     /* This function is used to find technos not already chosen */
-    $scope.get_technos = function(name, chosenTechnos) {
+    $scope.search_technos = function(name, chosenTechnos) {
         return TechnoService.with_name_like(name).then(function(technosByName){
             return _(technosByName).flatten().reject(function(techno) {
                 return  _.contains(chosenTechnos, techno.namespace);
@@ -90,16 +81,8 @@ applicationModule.controller('ApplicationCtrl', ['$scope', '$routeParams', '$mod
         });
     };
 
-    $scope.add_techno = function(techno, unit) {
-        if(!_.contains(unit.technos, techno.namespace)){
-            unit.technos.push(techno.namespace);
-            //$scope.refresh_unit_properties(1000);
-        }
-    };
-
-    $scope.del_techno = function(techno, unit) {
-        unit.technos = _.without(unit.technos, techno.namespace);
-        //$scope.refresh_unit_properties(1000);
+    $scope.create_techno = function(techno) {
+        return techno;
     };
 
     $scope.$on("hesperidesTemplateChanged", function(event){
@@ -145,9 +128,30 @@ applicationModule.factory('Application', function(){
             return "app."+this.name+"."+this.version+"."+unit.name;
         };
 
+        this.hasUnit = function(name){
+            return _.some(this.units, function(unit){
+               return unit.name === name;
+            });
+        }
+
     };
 
     return Application;
+
+});
+
+applicationModule.factory('Unit', function(){
+
+    var Unit = function(data){
+
+        angular.extend(this, {
+            name: "",
+            technos: []
+        }, data);
+
+    };
+
+    return Unit;
 
 });
 

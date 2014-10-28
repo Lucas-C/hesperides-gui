@@ -56,7 +56,7 @@ hesperidesModule.config(['$routeProvider', function ($routeProvider) {
             controller: 'ContextCtrl'
         }).
         when('/technos', {
-            templateUrl: 'partials/technos-search.html',
+            templateUrl: 'techno/all-technos.html',
             controller: 'TechnoSearchCtrl'
         }).
         when('/techno/:name/:version', {
@@ -64,10 +64,10 @@ hesperidesModule.config(['$routeProvider', function ($routeProvider) {
             controller: 'TechnoCtrl'
         }).
         when('/help/api', {
-            templateUrl: 'partials/help_api.html'
+            templateUrl: 'help/help_api.html'
         }).
         otherwise({
-            templateUrl: 'partials/welcome_screen.html'
+            templateUrl: 'welcome_screen.html'
         });
 }]);
 

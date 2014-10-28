@@ -5,14 +5,14 @@
                 ng-class="{'btn-info': (!item === selectedItem), 'btn-warning': (item === selectedItem), 'btn-sm': size === 'small'}"
                 >{{selfLabel(item)}}
         </button>
-        <button ng-mouseenter="hover = true" ng-mouseleave="hover = false" ng-show="hover"
+        <button ng-if="editable" ng-mouseenter="hover = true" ng-mouseleave="hover = false" ng-show="hover"
                 ng-really-message="Etes-vous sur de vouloir supprimer '{{selfLabel(item)}}' ?"
                 ng-really-click="selfDelete(item)" class="btn btn-danger"
                 ng-class="{'btn-sm': size === 'small'}"
                 style="margin-left: -5px; padding-left: 2px; padding-right: 2px"><span
                 class="glyphicon glyphicon-trash"></span></button>
     </li>
-    <li style="vertical-align: middle">
+    <li style="vertical-align: middle" ng-if="editable">
         <button ng-click="showInput()" ng-hide="show_input" class="btn btn-success"
                 ng-class="{'btn-sm': size === 'small'}">
             <span class="glyphicon glyphicon-plus"></span></button>

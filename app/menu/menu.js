@@ -57,9 +57,18 @@ menuModule.controller('MenuApplicationCtrl', ['$scope', '$modal', '$location', '
 
 }]);
 
-menuModule.controller('MenuPropertiesCtrl', ['$scope', '$modal', '$location', function ($scope, $modal, $location) {
+menuModule.controller('MenuPropertiesCtrl', ['$scope', '$modal', '$location', 'ApplicationService', function ($scope, $modal, $location, ApplicationService) {
 
     var modal;
+
+    $scope.find_applications_by_name = function (name) {
+        return ApplicationService.with_name_like(name).then(function (applicationsByName) {
+            return _(applicationsByName).flatten().map(function (application) {
+                application.title = application.name + ", " + application.version //Display purposes
+                return application;
+            }).value();
+        });
+    };
 
     $scope.open_properties_page = function (name, version, platform) {
         var path = '/properties/' + name + '/' + version;

@@ -50,7 +50,7 @@
                                                   type="text" ng-model="applicationSearched"
                                                   ng-blur="applicationSearched=''"
                                                   placeholder="Rechercher une application pour y éditer/ajouter des properties"
-                                                  typeahead="application as application.title for application in get_applications($viewValue)"
+                                                  typeahead="application as application.title for application in find_applications_by_name($viewValue)"
                                                   typeahead-on-select="open_properties_page($item.name, $item.version)"/></a>
                             </li>
                         </ul>
@@ -64,7 +64,7 @@
                                                   type="text" ng-model="applicationSearched"
                                                   ng-blur="applicationSearched=''"
                                                   placeholder="Rechercher une application pour y éditer/ajouter des instances"
-                                                  typeahead="application as application.title for application in get_applications($viewValue)"
+                                                  typeahead="application as application.title for application in find_applications_by_name($viewValue)"
                                                   typeahead-on-select="open_context_page($item.name, $item.version)"/></a>
                             </li>
                         </ul>
@@ -151,7 +151,7 @@
                 <input type="text" class="form-control" required ng-trim="true"
                        ng-model="new_properties.application" typeahead-editable="false"
                        id="propertiesApplication"
-                       typeahead="application as application.title for application in get_applications($viewValue)"/>
+                       typeahead="application as application.title for application in find_applications_by_name($viewValue)"/>
             </div>
             <div class="form-group">
                 <label for="propertiesPlatform">Plateforme</label>

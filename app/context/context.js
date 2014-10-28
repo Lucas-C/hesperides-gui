@@ -204,7 +204,7 @@ contextModule.factory('ContextService', ['$http', 'Context', function ($http, Co
     return {
         getModel: function (namespace) {
             return $http.get('rest/contexts/model/' + namespace).then(function (response) {
-                return new ContextModel(response.data);
+                return new Context(response.data);
             }, function (error) {
                 $.notify(error.data, "error");
             });
@@ -219,14 +219,9 @@ contextModule.factory('ContextService', ['$http', 'Context', function ($http, Co
         getContextMergedWithModel: function (model_namespace, namespace, name) {
             var model = this.getModel(model_namespace);
 
-            return $http.get('rest/contexts/' + namespace + '/' + name).then(function (response) {
-                return response.data;
-            }, function (error) {
-                return {hesnamespace: namespace, name: name, key_values: []};
-            }).then(function (context) {
+            return this.get(namespace,name).then(function (context) {
                 return context.mergeWithModel(model);
             });
-
         },
         save: function (context) {
             if (context.versionID < 0) {

@@ -48,7 +48,7 @@ hesperidesModule.config(['$routeProvider', function ($routeProvider) {
             controller: 'ApplicationCtrl'
         }).
         when('/properties/:application/:version', {
-            templateUrl: 'partials/properties.html',
+            templateUrl: 'properties/properties.html',
             controller: 'PropertiesCtrl'
         }).
         when('/contexts/:application/:version', {

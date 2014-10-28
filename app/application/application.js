@@ -35,21 +35,21 @@ applicationModule.controller('ApplicationCtrl', ['$scope', '$routeParams', '$mod
          Then save the application with the new unit name
          Then delete the ones with the old namespace
          Proceding in this order guaranties no loss of data		   */
-        if(new_title === $scope.editing_unit.name){
+        if(new_title === $scope.unit.name){
             return true; /* Display no error but do nothing */
         }
 
         var new_namespace = "app."+$routeParams.application+"."+$routeParams.version+"."+new_title;
 
         return _.reduce($scope.templateEntries, function(promise, tEntry) {
-            return promise.then(function(){ return Template.get({namespace: tEntry.namespace, name: tEntry.name}).$promise; })
+            return promise.then(function(){ return TemplateService.get({namespace: tEntry.namespace, name: tEntry.name}).$promise; })
                 .then(function(template){
                     template.hesnamespace = new_namespace;
                     return template.$create();
                 })
         }, $q.when()).then(function(){
             /* Update or create the app */
-            $scope.editing_unit.name = new_title;
+            $scope.unit.name = new_title;
             if($scope.application.id){
                 return $scope.application.$update();
             } else {
@@ -58,7 +58,7 @@ applicationModule.controller('ApplicationCtrl', ['$scope', '$routeParams', '$mod
         }).then(function(){
             /* Construct the chain of deletion */
             return _.reduce($scope.templateEntries, function(promise, tEntry) {
-                return promise.then(function() { return Template.delete({namespace: tEntry.namespace, name: tEntry.name}).$promise; });
+                return promise.then(function() { return TemplateService.delete({namespace: tEntry.namespace, name: tEntry.name}).$promise; });
             }, $q.when());
 
         }).then(function(){

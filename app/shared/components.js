@@ -11,7 +11,8 @@ components.directive('listOfItems', ['$parse', function ($parse) {
         scope: {
             items: '=',
             selectedItem: '=',
-            selectable: '='
+            selectable: '=',
+            editable: '='
         },
         templateUrl: 'shared/list-of-items.html',
         link: function (scope, element, attrs) {

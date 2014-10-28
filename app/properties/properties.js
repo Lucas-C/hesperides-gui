@@ -42,6 +42,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', 'Proper
                 $.notify("La brique technique mentionee dans l'url n'existe pas", "error");
             } else {
                 $scope.unit = actual_unit;
+                $scope.on_edit_unit(actual_unit);
             }
         };
 

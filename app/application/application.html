@@ -14,6 +14,7 @@
                            selected-item="unit"
                            createfunction="create_unit($name)"
                            ondelete="delete_unit($item)"
+                           editable="true"
                            selectable="true">
             </list-of-items>
             <button ng-click="save(application)" class="btn btn-primary">Sauver</button>
@@ -48,6 +49,7 @@
                                    label="$item"
                                    selected-item="techno"
                                    selectable="false"
+                                   editable="true"
                                    typeaheadexpression="techno as techno.title for techno in $parent.$parent.search_technos($viewValue, $parent.$parent.unit.technos)"
                             ></list-of-items>
                 </div>

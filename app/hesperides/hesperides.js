@@ -66,6 +66,9 @@ hesperidesModule.config(['$routeProvider', function ($routeProvider) {
         when('/help/api', {
             templateUrl: 'help/help_api.html'
         }).
+        when('/help/swagger', {
+            templateUrl: 'swagger/swagger.html'
+        }).
         otherwise({
             templateUrl: 'welcome_screen.html'
         });

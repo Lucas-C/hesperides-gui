@@ -162,7 +162,7 @@ propertiesModule.factory('PropertiesService', ['$http', 'Properties', function (
             return $http.get('rest/properties/model/'+namespaces_as_string).then(function(response){
                 return new Properties(response.data);
             }, function (error) {
-                $.notify(error.data, "error");
+                return new Properties({});
             });
         },
         get: function (namespace) {
@@ -170,6 +170,7 @@ propertiesModule.factory('PropertiesService', ['$http', 'Properties', function (
                 return new Properties(response.data);
             }, function (error) {
                 $.notify(error.data, "error");
+                throw error;
             });
         },
         getPropertiesMergedWithModel: function(properties_namespace, model_namespaces) {
@@ -179,7 +180,7 @@ propertiesModule.factory('PropertiesService', ['$http', 'Properties', function (
                 return me.get(properties_namespace).then(function(properties){
                     return properties.mergeWithModel(model);
                 }, function(error){
-                    var properties = new Properties({hesnamespace: properties_namespace});
+                    var properties = new Properties({namespace: properties_namespace});
                     return properties.mergeWithModel(model);
                 });
 
@@ -187,14 +188,14 @@ propertiesModule.factory('PropertiesService', ['$http', 'Properties', function (
         },
         save: function(properties){
             if(properties.versionID < 0){
-                return $http.post('rest/properties/'+properties.hesnamespace, properties).then(function(response) {
+                return $http.post('rest/properties/'+properties.namespace, properties).then(function(response) {
                     $.notify("Les proprietes ont bien ete crees", "success");
                     return new Properties(response.data);
                 }, function(error) {
                     $.notify(error.data, "error");
                 });
             } else {
-                return $http.put('rest/properties/'+properties.hesnamespace, properties).then(function(response) {
+                return $http.put('rest/properties/'+properties.namespace, properties).then(function(response) {
                     $.notify("Les proprietes ont bien ete mises a jour", "success");
                     return new Properties(response.data)
                 }, function(error) {

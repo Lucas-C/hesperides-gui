@@ -116,9 +116,8 @@ templateModule.factory('Template', function () {
 
     var Template = function (data) {
 
-        this.namespace = data.hesnamespace;
-
         angular.extend(this, {
+            namespace: "",
             name: "",
             filename: "",
             location: "",

@@ -126,7 +126,7 @@ applicationModule.factory('Application', ['Unit', function(Unit){
             return new Unit({
                 name: data.name,
                 technos: data.technos,
-                namespace: "app."+me.name+"."+me.version+"."+data.name
+                namespace: "app#"+me.name+"#"+me.version+"#"+data.name
             });
         });
 
@@ -144,7 +144,7 @@ applicationModule.factory('Application', ['Unit', function(Unit){
             var unit = new Unit({
                 name:name,
                 technos: [],
-                namespace: "app."+this.name+"."+this.version+"."+name
+                namespace: "app#"+this.name+"#"+this.version+"#"+name
             });
             if(!this.hasUnit(name)){
               this.units.push(unit);
@@ -200,7 +200,7 @@ applicationModule.factory('ApplicationService', ['$http', 'Application', functio
 
     return{
         get: function(name, version) {
-            return $http.get('rest/applications/'+name+'/'+version).then(function(response) {
+            return $http.get('rest/applications/'+encodeURIComponent(name)+'/'+encodeURIComponent(version)).then(function(response) {
                 return new Application(response.data);
             }, function(error){
                 if(error.status != 404){
@@ -213,14 +213,14 @@ applicationModule.factory('ApplicationService', ['$http', 'Application', functio
         },
         save: function(application) {
             if(application.versionID < 0){
-                return $http.post('rest/applications/'+application.name+'/'+application.version, application).then(function(response) {
+                return $http.post('rest/applications/'+encodeURIComponent(application.name)+'/'+encodeURIComponent(application.version), application).then(function(response) {
                     $.notify("L'application a bien ete creee", "success");
                     return new Application(response.data);
                 }, function(error) {
                     $.notify(error.data, "error");
                 });
             } else {
-                return $http.put('rest/applications/'+application.name+'/'+application.version, application).then(function(response) {
+                return $http.put('rest/applications/'+encodeURIComponent(application.name)+'/'+encodeURIComponent(application.version), application).then(function(response) {
                     $.notify("L'application a bien ete mise a jour", "success");
                     return new Application(response.data);
                 }, function(error) {
@@ -229,7 +229,7 @@ applicationModule.factory('ApplicationService', ['$http', 'Application', functio
             }
         },
         with_name_like: function(name) {
-            return $http.get('rest/applications/search/*'+name+'*').then(function(response) {
+            return $http.get('rest/applications/search/'+encodeURIComponent('*'+name+'*')).then(function(response) {
                 return _(response.data)
                     .map(function(data){ return new Application(data); })
                     .groupBy("name")

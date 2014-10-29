@@ -26,7 +26,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', 'Proper
     };
 
     $scope.on_edit_unit = function(unit){
-        PropertiesService.getPropertiesMergedWithModel("properties."+$scope.application.name+"."+$scope.application.version+"."+$scope.platform+"."+unit.name, unit.modelNamespaces).then(function(properties){
+        PropertiesService.getPropertiesMergedWithModel("properties#"+$scope.application.name+"#"+$scope.application.version+"#"+$scope.platform+"#"+unit.name, unit.modelNamespaces).then(function(properties){
             $scope.properties = properties;
         });
     };
@@ -159,14 +159,14 @@ propertiesModule.factory('PropertiesService', ['$http', 'Properties', function (
     return {
         getModel: function(namespaces) {
             var namespaces_as_string = _.isArray(namespaces) ? namespaces.join(",")  : namespaces;
-            return $http.get('rest/properties/model/'+namespaces_as_string).then(function(response){
+            return $http.get('rest/properties/model/'+encodeURIComponent(namespaces_as_string)).then(function(response){
                 return new Properties(response.data);
             }, function (error) {
                 return new Properties({});
             });
         },
         get: function (namespace) {
-            return $http.get('rest/properties/'+namespace).then(function (response) {
+            return $http.get('rest/properties/'+encodeURIComponent(namespace)).then(function (response) {
                 return new Properties(response.data);
             }, function (error) {
                 $.notify(error.data, "error");
@@ -188,14 +188,14 @@ propertiesModule.factory('PropertiesService', ['$http', 'Properties', function (
         },
         save: function(properties){
             if(properties.versionID < 0){
-                return $http.post('rest/properties/'+properties.namespace, properties).then(function(response) {
+                return $http.post('rest/properties/'+encodeURIComponent(properties.namespace), properties).then(function(response) {
                     $.notify("Les proprietes ont bien ete crees", "success");
                     return new Properties(response.data);
                 }, function(error) {
                     $.notify(error.data, "error");
                 });
             } else {
-                return $http.put('rest/properties/'+properties.namespace, properties).then(function(response) {
+                return $http.put('rest/properties/'+encodeURIComponent(properties.namespace), properties).then(function(response) {
                     $.notify("Les proprietes ont bien ete mises a jour", "success");
                     return new Properties(response.data)
                 }, function(error) {

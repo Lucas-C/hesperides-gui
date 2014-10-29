@@ -6,7 +6,7 @@ var technoModule = angular.module('hesperides.techno', ['hesperides.template', '
 technoModule.controller('TechnoCtrl', ['$scope', '$routeParams', 'Techno', 'Page', function ($scope, $routeParams, Techno, Page) {
     Page.setTitle("Technos");
 
-    var namespace = "technos." + $routeParams.name + '.' + $routeParams.version;
+    var namespace = "technos#" + $routeParams.name + '#' + $routeParams.version;
     $scope.techno = new Techno(namespace);
 
     $scope.$on("hesperidesTemplateChanged", function(event){
@@ -31,7 +31,7 @@ technoModule.controller('TechnoSearchCtrl', ['$scope', '$routeParams', 'TechnoSe
 technoModule.factory('Techno', function(){
 
     var Techno = function (namespace) {
-        var namespaceTokens = namespace.split(".");
+        var namespaceTokens = namespace.split("#");
         this.name = namespaceTokens[1];
         this.version = namespaceTokens[2];
         this.namespace = namespace;
@@ -60,7 +60,7 @@ technoModule.factory('TechnoService', ['$http', 'Techno', function ($http, Techn
         },
         with_name_like: function (name) {
             /* NB this is slow and should be improved server side */
-            return $http.get('rest/templates/search/namespace/technos.*' + name + '*').then(function (response) {
+            return $http.get('rest/templates/search/namespace/'+encodeURIComponent('technos#*' + name + '*')).then(function (response) {
                 return _.chain(response.data)
                     .groupBy("namespace")
                     .map(function (templateList) {

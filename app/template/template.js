@@ -149,7 +149,7 @@ templateModule.factory('TemplateService', ['$http', 'Template', 'TemplateEntry',
 
     return {
         get: function (namespace, name) {
-            return $http.get('rest/templates/' + namespace + '/' + name).then(function (response) {
+            return $http.get('rest/templates/' + encodeURIComponent(namespace) + '/' + encodeURIComponent(name)).then(function (response) {
                 return new Template(response.data);
             }, function (error) {
                 $.notify(error.data, "error");
@@ -157,7 +157,7 @@ templateModule.factory('TemplateService', ['$http', 'Template', 'TemplateEntry',
         },
         save: function (template) {
             if (template.versionID < 0) {
-                return $http.post('rest/templates/' + template.namespace + '/' + template.name, template).then(function (response) {
+                return $http.post('rest/templates/' + encodeURIComponent(template.namespace) + '/' + encodeURIComponent(template.name), template).then(function (response) {
                     $.notify("Le template bien ete cree", "success");
                     return new Template(response.data);
                 }, function (error) {
@@ -168,7 +168,7 @@ templateModule.factory('TemplateService', ['$http', 'Template', 'TemplateEntry',
                     }
                 });
             } else {
-                return $http.put('rest/templates/' + template.namespace + '/' + template.name, template).then(function (response) {
+                return $http.put('rest/templates/' + encodeURIComponent(template.namespace) + '/' + encodeURIComponent(template.name), template).then(function (response) {
                     $.notify("Le template a ete mis a jour", "success");
                     return new Template(response.data);
                 }, function (error) {
@@ -177,7 +177,7 @@ templateModule.factory('TemplateService', ['$http', 'Template', 'TemplateEntry',
             }
         },
         delete: function (namespace, name) {
-            return $http.delete('rest/templates/' + namespace + '/' + name).then(function (response) {
+            return $http.delete('rest/templates/' + encodeURIComponent(namespace) + '/' + encodeURIComponent(name)).then(function (response) {
                 $.notify("Le template a bien ete supprime", "success");
                 return response;
             }, function (error) {
@@ -185,7 +185,7 @@ templateModule.factory('TemplateService', ['$http', 'Template', 'TemplateEntry',
             });
         },
         all: function (namespace) {
-            return $http.get('rest/templates/' + namespace).then(function (response) {
+            return $http.get('rest/templates/' + encodeURIComponent(namespace)).then(function (response) {
                 return response.data.map(function (data) {
                     return new TemplateEntry(data);
                 }, function (error) {

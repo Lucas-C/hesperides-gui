@@ -7,7 +7,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', 'Proper
     Page.setTitle("Properties");
 
     $scope.platform = $routeParams.platform;
-    $scope.platforms = []
+    $scope.platforms = [];
 
     $scope.on_edit_platform = function(platform_name){
         /* Reset unit choice */
@@ -28,6 +28,14 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', 'Proper
     $scope.on_edit_unit = function(unit){
         PropertiesService.getPropertiesMergedWithModel("properties#"+$scope.application.name+"#"+$scope.application.version+"#"+$scope.platform+"#"+unit.name, unit.modelNamespaces).then(function(properties){
             $scope.properties = properties;
+        });
+    };
+
+    $scope.save_properties = function(properties) {
+        PropertiesService.save(properties).then(function(properties){
+            PropertiesService.getModel($scope.unit.modelNamespaces).then(function(model){
+                $scope.properties = properties.mergeWithModel(model);
+            });
         });
     };
 
@@ -58,14 +66,6 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', 'Proper
         if($scope.platform) $scope.add_platform($scope.platform);
     });
 
-
-    $scope.save_properties = function(properties) {
-        PropertiesService.save(properties).then(function(properties){
-           PropertiesService.getModel($scope.unit.modelNamespaces).then(function(model){
-               $scope.properties = properties.mergeWithModel(model);
-           });
-        });
-    };
 
 }]);
 

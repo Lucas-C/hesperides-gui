@@ -6,60 +6,48 @@ var contextModule = angular.module('hesperides.context', []);
 contextModule.controller('ContextCtrl', ['$scope', '$routeParams', '$location', 'ApplicationService', 'PlatformService', 'ContextService', 'Page', function ($scope, $routeParams, $location, ApplicationService, PlatformService, ContextService, Page) {
     Page.setTitle("Instances");
 
-    $scope.platforms = []
+    $scope.platforms = [];
 
-    $scope.contextNamespace = "contexts." + $scope.application.name + "." + $scope.application.version + "." + $scope.chosen_platform + "." + $scope.chosen_unit.name;
+    $scope.on_edit_platform = function (platform_name) {
+        $scope.unit = undefined;
+        $scope.context = undefined;
+    };
 
-    /* This function is used to regularly refresh the screen and load the appropriate contexts */
-    $scope.$watch('chosen_unit', function () {
-        /* We need to load contexts only if a platform and a unit is chosen */
-        if ($scope.is_platform_chosen() && $scope.is_unit_chosen()) {
-            Context.all($scope.contextNamespace).then(function (contexts) {
-                $scope.contexts = contexts;
+    $scope.on_edit_unit = function (unit) {
+        $scope.context = undefined;
+    };
+
+    $scope.add_context = function (name) {
+        if (!_.some($scope.contexts, function (context) {
+            return context.name === name;
+        })) {
+            /* To add a context just try to load it, it will be merged with the model whatever even if there is no existing context resulting in a new fresh ready to use context */
+            ContextService.getContextMergedWithModel($scope.propertiesNamespaceModel(), $scope.contextNamespace(), name).resolve(function (context) {
+                return context;
             });
-        } else {
-            $scope.contexts = undefined;
-            $scope.context = undefined;
         }
-    });
-
-    $scope.is_platform_chosen = function () {
-        return !(_.isNull($scope.chosen_platform) || _.isUndefined($scope.chosen_platform));
     };
 
-    $scope.is_unit_chosen = function () {
-        return !(_.isNull($scope.chosen_unit) || _.isUndefined($scope.chosen_unit));
-    };
-
-    $scope.is_context_chosen = function () {
-        return !(_.isNull($scope.chosen_context) || _.isUndefined($scope.chosen_context));
-    };
-
-    $scope.display_context = function () {
-        return !(_.isNull($scope.context) || _.isUndefined($scope.context));
-    };
-
-    /* This function is used to change scope when a platform is chosen */
-    //When we choose a platform we have to cancel the unit and the context
-    $scope.choose_platform = function (platform_name) {
-        $scope.chosen_platform = platform_name;
-        $scope.chosen_unit = undefined;
-        $scope.chosen_context = undefined;
-    };
-
-    /* This function is used to change scope when a unit is chosen */
-    //When we choose a unit we have to cancel the context
-    $scope.choose_unit = function (unit_name) {
-        $scope.chosen_unit = unit_name;
-        $scope.chosen_context = undefined;
-    };
-
-    /* This function is used to change scope when a context is chosen */
-    $scope.choose_context = function (context_name) {
-        return $scope.load_context(context_name).then(function (context) {
-            $scope.chosen_context = context;
-            return context;
+    $scope.on_edit_context = function (name) {
+        ContextService.getContextMergedWithModel($scope.propertiesNamespaceModel(), $scope.contextNamespace(), name).then(function (context) {
+            $scope.context = context;
         });
+    };
+
+    $scope.save_context = function (context) {
+        ContextService.save(context).then(function (context) {
+            ContextService.getModel($scope.propertiesNamespaceModel()).then(function (model) {
+                $scope.context = context.mergeWithModel(model);
+            });
+        });
+    };
+
+    $scope.propertiesNamespaceModel = function () {
+        return "properties#" + $scope.application.name + "#" + $scope.application.version + "#" + $scope.platform + "#" + $scope.unit.name;
+    };
+
+    $scope.contextNamespace = function () {
+        return "contexts#" + $scope.application.name + "#" + $scope.application.version + "#" + $scope.platform + "#" + $scope.unit.name;
     };
 
     ApplicationService.get($routeParams.application, $routeParams.version).then(function (application) {
@@ -73,7 +61,8 @@ contextModule.controller('ContextCtrl', ['$scope', '$routeParams', '$location', 
             if (_.isUndefined(actual_unit)) {
                 $.notify("La brique technique mentionee ddans l'url n'existe pas", "error");
             } else {
-                $scope.chosen_unit = actual_unit;
+                $scope.unit = actual_unit;
+                $scope.on_edit_unit(actual_unit);
             }
         }
         ;
@@ -81,56 +70,13 @@ contextModule.controller('ContextCtrl', ['$scope', '$routeParams', '$location', 
         $.notify(error.data, "error");
     });
 
-    /* Find all the platforms */
-    Platform.get($routeParams.application, $routeParams.version).then(function (platforms) {
+    /* Find all the platforms and try to select the one in the url */
+    PlatformService.get($routeParams.application, $routeParams.version).then(function (platforms) {
         $scope.platforms = platforms;
         if (_.contains($scope.platforms, $routeParams.platform)) {
-            $scope.chosen_platform = $routeParams.platform;
+            $scope.platform = $routeParams.platform;
         }
     });
-
-    $scope.focus_name_context = function () {
-        window.setTimeout(function () {
-            $('#nameContextInput').focus();
-        }, 80);
-    };
-
-    $scope.add_context = function (name) {
-        if (!_.some($scope.contexts, function (context) {
-            return context.name === name;
-        })) {
-            $scope.choose_context(name).then(function (context) {
-                $scope.contexts.push(context);
-            });
-        }
-    };
-
-    $scope.load_context = function (name) {
-        return Context.get("properties." + $scope.application.name + "." + $scope.application.version + "." + $scope.chosen_platform + "." + $scope.chosen_unit.name,
-                "contexts." + $scope.application.name + "." + $scope.application.version + "." + $scope.chosen_platform + "." + $scope.chosen_unit.name,
-            name).then(function (context) {
-                $scope.context = context;
-                return context;
-            });
-    };
-
-    $scope.save_context = function (context) {
-        if (_.isUndefined(context.id)) {
-            Context.create(context).then(function () {
-                $scope.context = context;
-                $.notify("Le contexte a bien ete cree", "success");
-            }, function (error) {
-                $.notify(error.data, "error");
-            });
-        } else {
-            Context.update(context).then(function () {
-                $scope.context = context;
-                $.notify("Le contexte a bien ete mises a jour", "success");
-            }, function (error) {
-                $.notify(error.data, "error");
-            });
-        }
-    };
 
 }]);
 
@@ -166,23 +112,24 @@ contextModule.factory('Context', function () {
         }, data);
 
         this.hasKey = function (name) {
-            return this.key_values.some(function (key) {
+            return _.some(this.key_values, function (key) {
                 return key.name === name;
             });
         };
 
         this.mergeWithModel = function (model) {
+            var me = this;
 
             /* Mark key_values that are in the model */
-            this.key_values.each(function (key_value) {
+            _.each(this.key_value_properties, function (key_value) {
                 key_value.inModel = model.hasKey(key_value.name);
             });
 
             /* Add key_values that are only in the model */
-            model.keys.filter(function (model_key_value) {
-                return !this.hasKey(model_key_value.name);
+            _(model.key_values).filter(function (model_key_value) {
+                return !me.hasKey(model_key_value.name);
             }).each(function (model_key_value) {
-                this.key_values.push({
+                me.key_values.push({
                     name: model_key_value.name,
                     comment: model_key_value.comment,
                     value: "",
@@ -192,6 +139,21 @@ contextModule.factory('Context', function () {
 
             return this;
         };
+
+        this.toHesperidesEntity = function () {
+            return {
+                namespace: this.namespace,
+                name: this.name,
+                versionID: this.versionID,
+                key_values: _.map(this.key_values, function (kv) {
+                    return {
+                        name: kv.name,
+                        comment: kv.comment,
+                        value: kv.value
+                    }
+                })
+            }
+        }
 
     };
 
@@ -203,27 +165,35 @@ contextModule.factory('ContextService', ['$http', 'Context', function ($http, Co
 
     return {
         getModel: function (namespace) {
-            return $http.get('rest/contexts/model/' + namespace).then(function (response) {
+            return $http.get('rest/contexts/model/' + encodeURIComponent(namespace)).then(function (response) {
                 return new Context(response.data);
             }, function (error) {
-                $.notify(error.data, "error");
+                return new Context();
             });
         },
         get: function (namespace, name) {
-            return $http.get('rest/contexts/' + namespace + '/' + name).then(function (response) {
+            return $http.get('rest/contexts/' + encodeURIComponent(namespace) + '/' + encodeURIComponent(name)).then(function (response) {
                 return new Context(response.data);
             }, function (error) {
                 $.notify(error.data, "error");
+                throw error;
             });
         },
         getContextMergedWithModel: function (model_namespace, namespace, name) {
-            var model = this.getModel(model_namespace);
+            var me = this;
+            return this.getModel(model_namespace).then(function (model) {
 
-            return this.get(namespace,name).then(function (context) {
-                return context.mergeWithModel(model);
+                return me.get(namespace, name).then(function (context) {
+                    return context.mergeWithModel(model);
+                }, function (error) {
+                    var context = new Context({namespace: namespace, name: name});
+                    return context.mergeWithModel(model);
+                });
+
             });
         },
         save: function (context) {
+            context = context.toHesperidesEntity();
             if (context.versionID < 0) {
                 return $http.post('rest/contexts/' + context.namespace + '/' + context.name, context).then(function (response) {
                     return new Context(response.data);

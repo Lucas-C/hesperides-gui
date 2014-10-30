@@ -9,11 +9,14 @@
 	<div class="col-md-12">
 		<div class="bg-light">
 			<h5>PLATEFORMES</h5>
-			<ul class="list-inline">
-				<li ng-repeat="platform in platforms track by $index">
-					<button class="btn btn-xs" ng-click="choose_platform(platform)" ng-class="{'btn-info': !(chosen_platform === platform), 'btn-warning': chosen_platform === platform}">{{platform}}</button>
-				</li>
-			</ul>
+            <list-of-items  items="platforms"
+                            label="$item"
+                            selected-item="platform"
+                            onedit="on_edit_platform($item)"
+                            selectable="true"
+                            editable="false"
+                            size="small">
+            </list-of-items>
 		</div>
 	</div>
 </div>
@@ -21,39 +24,38 @@
 	<div class="col-md-12">
 		<div class="bg-light">
 			<h5>BRIQUES APPLICATIVES</h5>
-			<ul class="list-inline">
-				<li ng-repeat="unit in application.units track by $index">
-					<button class="btn btn-info btn-xs" ng-click="choose_unit(unit)" ng-disabled="!is_platform_chosen()" ng-class="{'btn-info': !(chosen_unit === unit), 'btn-warning': chosen_unit === unit}">{{unit.name}}</button>			
-				</li>
-			</ul>
+            <list-of-items  items="application.units"
+                            label="$item.name"
+                            onedit="on_edit_unit($item)"
+                            selected-item="unit"
+                            selectable="true"
+                            editable="false"
+                            size="small">
+            </list-of-items>
 		</div>
 	</div>
 </div>
-<div class="row" ng-show="is_unit_chosen()">
+<div class="row" ng-show="unit">
 	<div class="col-md-12">
 		<div class="bg-light">
 			<h5>INSTANCES</h5>
-			<ul class="list-inline">
-				<li ng-repeat="context in contexts track by $index">
-					<button class="btn btn-info btn-xs" ng-click="choose_context(context.name)" ng-class="{'btn-info': !(chosen_context.name === context.name), 'btn-warning': chosen_context.name === context.name}">{{context.name}}</button>			
-				</li>
-				<li style="vertical-align: middle"><button ng-click="show_input = true;focus_name_context()" ng-hide="show_input" class="btn btn-success btn-xs"><span class="glyphicon glyphicon-plus"></span></button>
-					<input id="nameContextInput" type="text" class="form-control" ng-show="show_input" ng-blur="show_input=false; new_context= ''" ng-model="new_context" placeholder="Entrer un nom" ng-enter="add_context(new_context); new_context=''; show_input=false"  />
-				</li>
-			</ul>
+            <list-of-items  items="contexts"
+                            label="$item.name"
+                            selected-item="context"
+                            selectable="true"
+                            onedit="on_edit_context($item)"
+                            createfunction="add_context($name)"
+                            ondelete="delete_context($item)"
+                            editable="true"
+                            size="small">
+            </list-of-items>
 		</div>
 	</div>
 </div>
-<div class="row" ng-show="display_context()">
+<div class="row" ng-show="context">
 	<div class="col-md-12">
-		<form class="form-horizontal narrow" role="form">
-			<div class="form-group" ng-class="{'property-not-used': !key_value.inModel}" ng-repeat="key_value in context.key_values | orderBy:'name' track by $index">
-				<label for="input-{{ key_value.name }}" class="col-md-1 control-label">{{ key_value.name }}</label>
-				<div class="col-md-11">
-					<input id="input-{{ key_value.name }}" type="text" class="form-control" placeholder="{{key_value.comment}}" ng-model="key_value.value" tooltip="{{key_value.comment}}" tooltip-trigger="focus" tooltip-placement="right" />
-				</div>
-			</div>
-		</form>
-		<button ng-click="save_context(context)" class="btn btn-primary">Sauver</button>
+        <button ng-click="save_context(context)" class="btn btn-primary">Sauver</button>
+        <properties-list properties="context">
+        </properties-list>
 	</div>
 </div>

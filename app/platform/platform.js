@@ -9,9 +9,9 @@ platformModule.factory('PlatformService', ['$http', function ($http) {
         get: function(application, version) {
             application = application.toLowerCase();
             version = version.toLowerCase();//Put this server side
-            return $http.get('rest/properties/search/namespace/'+encodeURIComponent('properties#*'+application+'*.'+'*'+version+'*')).then(function(response) {
+            return $http.get('rest/properties/search/namespace/'+encodeURIComponent('properties#*'+application+'*#'+'*'+version+'*')).then(function(response) {
                 return _(response.data).map(function(properties){
-                    var splittedNamespace = properties.namespace.split(".");
+                    var splittedNamespace = properties.namespace.split("#");
                     return splittedNamespace[3];
                 }).groupBy().keys().value();
             });

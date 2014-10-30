@@ -80,7 +80,9 @@ applicationModule.controller('ApplicationCtrl', ['$scope', '$routeParams', '$mod
     $scope.search_technos = function(name, chosenTechnos) {
         return TechnoService.with_name_like(name).then(function(technosByName){
             return _(technosByName).flatten().reject(function(techno) {
-                return  _.contains(chosenTechnos, techno.namespace);
+                return  _.some(chosenTechnos, function(chosenTechno){
+                    return chosenTechno.namespace = techno.namespace;
+                });
             }).value();
         });
     };
@@ -152,13 +154,30 @@ applicationModule.factory('Application', ['Unit', function(Unit){
             return unit;
         };
 
+        /* Convert this object to the hesperides model */
+        this.toHesperidesEntity = function() {
+            return {
+                name: this.name,
+                version: this.version,
+                versionID: this.versionID,
+                units: _.map(this.units, function(unit){
+                    return {
+                        name: unit.name,
+                        technos: _.map(unit.technos, function(techno){
+                            return techno.namespace;
+                        })
+                    }
+                })
+            }
+        }
+
     };
 
     return Application;
 
 }]);
 
-applicationModule.factory('Unit', function(){
+applicationModule.factory('Unit', ['Techno', function(Techno){
 
     var Unit = function(data){
 
@@ -170,19 +189,23 @@ applicationModule.factory('Unit', function(){
             technos: []
         }, data);
 
+        /* Object casting when instance is created */
+        this.technos = _.map(this.technos, function(namespace){
+            return new Techno(namespace);
+        });
 
         this.modelNamespaces = [];
         this.modelNamespaces.push(this.namespace);
         _.each(this.technos, function(techno){
-            me.modelNamespaces.push(techno);
+            me.modelNamespaces.push(techno.namespace);
         });
 
         this.add_techno = function(techno){
-            if(!_.contains(this.technos, techno.namespace)){
-                this.technos.push(techno.namespace);
-                this.modelNamespaces.push(techno.namespace);
+            if(!_.contains(this.technos, techno)){
+                this.technos.push(techno);
+                this.modelNamespaces.push(techno);
             }
-            return techno.namespace;
+            return techno;
         };
 
         this.remove_techno = function(techno){
@@ -194,7 +217,7 @@ applicationModule.factory('Unit', function(){
 
     return Unit;
 
-});
+}]);
 
 applicationModule.factory('ApplicationService', ['$http', 'Application', function ($http, Application) {
 
@@ -212,6 +235,7 @@ applicationModule.factory('ApplicationService', ['$http', 'Application', functio
             });
         },
         save: function(application) {
+            application = application.toHesperidesEntity();
             if(application.versionID < 0){
                 return $http.post('rest/applications/'+encodeURIComponent(application.name)+'/'+encodeURIComponent(application.version), application).then(function(response) {
                     $.notify("L'application a bien ete creee", "success");

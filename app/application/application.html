@@ -46,11 +46,11 @@
                                    createfunction="create_techno($name)"
                                    ondelete="delete_techno($item)"
                                    size="small"
-                                   label="$item"
+                                   label="$item.title"
                                    selected-item="techno"
                                    selectable="false"
                                    editable="true"
-                                   typeaheadexpression="techno as techno.title for techno in $parent.$parent.search_technos($viewValue, $parent.$parent.unit.technos)"
+                                   typeaheadexpression="techno as techno.title for techno in $parent.$parent.$parent.search_technos($viewValue, $parent.$parent.$parent.unit.technos)"
                             ></list-of-items>
                 </div>
             </div>

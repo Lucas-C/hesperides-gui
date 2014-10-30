@@ -125,6 +125,17 @@ templateModule.factory('Template', function () {
             versionID: -1
         }, data);
 
+        this.toHesperidesEntity = function(){
+          return {
+            namespace: this.namespace,
+              name: this.name,
+              filename: this.filename,
+              location: this.location,
+              content: this.content,
+              versionID: this.versionID
+          }
+        };
+
     };
 
     return Template;
@@ -156,6 +167,7 @@ templateModule.factory('TemplateService', ['$http', 'Template', 'TemplateEntry',
             });
         },
         save: function (template) {
+            template = template.toHesperidesEntity();
             if (template.versionID < 0) {
                 return $http.post('rest/templates/' + encodeURIComponent(template.namespace) + '/' + encodeURIComponent(template.name), template).then(function (response) {
                     $.notify("Le template bien ete cree", "success");

@@ -148,6 +148,27 @@ propertiesModule.factory('Properties', function(){
             return this;
         };
 
+        this.toHesperidesEntity = function(){
+            return {
+                namespace: this.namespace,
+                versionID: this.versionID,
+                key_value_properties: _.map(this.key_value_properties, function(kvp){
+                    return {
+                        name: kvp.name,
+                        comment: kvp.comment,
+                        value: kvp.value
+                    }
+                }),
+                iterable_properties: _.map(this.iterable_properties, function(ip){
+                    return {
+                        name: ip.name,
+                        comment: ip.comment,
+                        fields: ip.fields
+                    }
+                })
+            }
+        }
+
     };
 
     return Properties;
@@ -187,6 +208,7 @@ propertiesModule.factory('PropertiesService', ['$http', 'Properties', function (
             });
         },
         save: function(properties){
+            properties = properties.toHesperidesEntity();
             if(properties.versionID < 0){
                 return $http.post('rest/properties/'+encodeURIComponent(properties.namespace), properties).then(function(response) {
                     $.notify("Les proprietes ont bien ete crees", "success");

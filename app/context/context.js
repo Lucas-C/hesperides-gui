@@ -7,14 +7,24 @@ contextModule.controller('ContextCtrl', ['$scope', '$routeParams', '$location', 
     Page.setTitle("Instances");
 
     $scope.platforms = [];
+    $scope.contexts = [];
+    $scope.selected = {};
 
     $scope.on_edit_platform = function (platform_name) {
-        $scope.unit = undefined;
-        $scope.context = undefined;
+        $scope.selected.unit = undefined;
+        $scope.selected.context = undefined;
     };
 
     $scope.on_edit_unit = function (unit) {
-        $scope.context = undefined;
+        $scope.selected.context = undefined;
+        /* Load contexts */
+        ContextService.all($scope.contextNamespace($scope.application, $scope.selected.platform, unit)).then(function (contexts) {
+            ContextService.getModel($scope.propertiesNamespaceModel($scope.application, $scope.selected.platform, unit)).then(function(model){
+                $scope.contexts = _.map(contexts, function(context){
+                    return context.mergeWithModel(model);
+                });
+            });
+        });
     };
 
     $scope.add_context = function (name) {
@@ -22,32 +32,27 @@ contextModule.controller('ContextCtrl', ['$scope', '$routeParams', '$location', 
             return context.name === name;
         })) {
             /* To add a context just try to load it, it will be merged with the model whatever even if there is no existing context resulting in a new fresh ready to use context */
-            ContextService.getContextMergedWithModel($scope.propertiesNamespaceModel(), $scope.contextNamespace(), name).resolve(function (context) {
-                return context;
+            ContextService.getContextMergedWithModel($scope.propertiesNamespaceModel($scope.application, $scope.selected.platform, $scope.selected.unit), $scope.contextNamespace($scope.application, $scope.selected.platform, $scope.selected.unit), name).then(function (context) {
+                $scope.selected.context = context;
+                $scope.contexts.push(context);
             });
         }
     };
 
-    $scope.on_edit_context = function (name) {
-        ContextService.getContextMergedWithModel($scope.propertiesNamespaceModel(), $scope.contextNamespace(), name).then(function (context) {
-            $scope.context = context;
-        });
-    };
-
     $scope.save_context = function (context) {
         ContextService.save(context).then(function (context) {
-            ContextService.getModel($scope.propertiesNamespaceModel()).then(function (model) {
-                $scope.context = context.mergeWithModel(model);
+            ContextService.getModel($scope.propertiesNamespaceModel($scope.application, $scope.selected.platform, $scope.selected.unit)).then(function (model) {
+                $scope.selected.context = context.mergeWithModel(model);
             });
         });
     };
 
-    $scope.propertiesNamespaceModel = function () {
-        return "properties#" + $scope.application.name + "#" + $scope.application.version + "#" + $scope.platform + "#" + $scope.unit.name;
+    $scope.propertiesNamespaceModel = function (application, platform, unit) {
+        return "properties#" + application.name + "#" + application.version + "#" + platform + "#" + unit.name;
     };
 
-    $scope.contextNamespace = function () {
-        return "contexts#" + $scope.application.name + "#" + $scope.application.version + "#" + $scope.platform + "#" + $scope.unit.name;
+    $scope.contextNamespace = function (application, platform, unit) {
+        return "contexts#" + application.name + "#" + application.version + "#" + platform + "#" + unit.name;
     };
 
     ApplicationService.get($routeParams.application, $routeParams.version).then(function (application) {
@@ -61,7 +66,7 @@ contextModule.controller('ContextCtrl', ['$scope', '$routeParams', '$location', 
             if (_.isUndefined(actual_unit)) {
                 $.notify("La brique technique mentionee ddans l'url n'existe pas", "error");
             } else {
-                $scope.unit = actual_unit;
+                $scope.selected.unit = actual_unit;
                 $scope.on_edit_unit(actual_unit);
             }
         }
@@ -74,11 +79,27 @@ contextModule.controller('ContextCtrl', ['$scope', '$routeParams', '$location', 
     PlatformService.get($routeParams.application, $routeParams.version).then(function (platforms) {
         $scope.platforms = platforms;
         if (_.contains($scope.platforms, $routeParams.platform)) {
-            $scope.platform = $routeParams.platform;
+            $scope.selected.platform = $routeParams.platform;
         }
     });
 
 }]);
+
+contextModule.directive('contextView', function(){
+
+    return {
+        restrict: 'E',
+        scope: {
+            context: '='
+        },
+        templateUrl: "context/context-view.html",
+        link: function(scope, element, attrs){
+
+        }
+    };
+
+
+});
 
 contextModule.factory('ContextModel', function () {
 
@@ -121,7 +142,7 @@ contextModule.factory('Context', function () {
             var me = this;
 
             /* Mark key_values that are in the model */
-            _.each(this.key_value_properties, function (key_value) {
+            _.each(this.key_values, function (key_value) {
                 key_value.inModel = model.hasKey(key_value.name);
             });
 
@@ -161,14 +182,14 @@ contextModule.factory('Context', function () {
 
 });
 
-contextModule.factory('ContextService', ['$http', 'Context', function ($http, Context) {
+contextModule.factory('ContextService', ['$http', 'Context', 'ContextModel', function ($http, Context, ContextModel) {
 
     return {
         getModel: function (namespace) {
             return $http.get('rest/contexts/model/' + encodeURIComponent(namespace)).then(function (response) {
-                return new Context(response.data);
+                return new ContextModel(response.data);
             }, function (error) {
-                return new Context();
+                return new ContextModel();
             });
         },
         get: function (namespace, name) {
@@ -195,13 +216,13 @@ contextModule.factory('ContextService', ['$http', 'Context', function ($http, Co
         save: function (context) {
             context = context.toHesperidesEntity();
             if (context.versionID < 0) {
-                return $http.post('rest/contexts/' + context.namespace + '/' + context.name, context).then(function (response) {
+                return $http.post('rest/contexts/' + encodeURIComponent(context.namespace) + '/' + encodeURIComponent(context.name), context).then(function (response) {
                     return new Context(response.data);
                 }, function (error) {
                     $.notify(error.data, "error");
                 });
             } else {
-                return $http.put('rest/contexts/' + context.namespace + '/' + context.name, context).then(function (response) {
+                return $http.put('rest/contexts/' + encodeURIComponent(context.namespace) + '/' + encodeURIComponent(context.name), context).then(function (response) {
                     return new Context(response.data);
                 }, function (error) {
                     $.notify(error.data, "error");
@@ -209,7 +230,7 @@ contextModule.factory('ContextService', ['$http', 'Context', function ($http, Co
             }
         },
         all: function (namespace) {
-            return $http.get('rest/contexts/' + namespace).then(function (response) {
+            return $http.get('rest/contexts/' + encodeURIComponent(namespace)).then(function (response) {
                 return response.data.map(function (data) {
                     return new Context(data);
                 });

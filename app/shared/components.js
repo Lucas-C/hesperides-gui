@@ -42,11 +42,8 @@ components.directive('listOfItems', ['$parse', function ($parse) {
 
             scope.selfAdd = function (name) {
                 if (name) {
-                    var item = $parse(attrs.createfunction)(scope.$parent, {$name: name});
-                    if (item) {
-                        scope.selectedItem = item;
-                        scope.resetAndHideInput();
-                    }
+                    $parse(attrs.createfunction)(scope.$parent, {$name: name});
+                    scope.resetAndHideInput();
                 }
             };
 

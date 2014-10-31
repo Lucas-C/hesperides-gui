@@ -88,7 +88,7 @@ applicationModule.controller('ApplicationCtrl', ['$scope', '$routeParams', '$mod
     };
 
     $scope.create_techno = function(techno) {
-        return $scope.unit.add_techno(techno);
+        $scope.unit.add_techno(techno);
     };
 
     $scope.delete_techno = function(techno){

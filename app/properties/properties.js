@@ -17,7 +17,6 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', 'Proper
     $scope.add_platform = function(platform_name) {
         if(!_.contains($scope.platforms, platform_name)){
              $scope.platforms.push(platform_name);
-            return platform_name;
         }
     };
 

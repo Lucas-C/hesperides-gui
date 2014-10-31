@@ -11,7 +11,7 @@
 			<h5>PLATEFORMES</h5>
             <list-of-items  items="platforms"
                             label="$item"
-                            selected-item="platform"
+                            selected-item="selected.platform"
                             onedit="on_edit_platform($item)"
                             selectable="true"
                             editable="false"
@@ -27,7 +27,7 @@
             <list-of-items  items="application.units"
                             label="$item.name"
                             onedit="on_edit_unit($item)"
-                            selected-item="unit"
+                            selected-item="selected.unit"
                             selectable="true"
                             editable="false"
                             size="small">
@@ -35,15 +35,14 @@
 		</div>
 	</div>
 </div>
-<div class="row" ng-show="unit">
+<div class="row" ng-show="selected.unit">
 	<div class="col-md-12">
 		<div class="bg-light">
 			<h5>INSTANCES</h5>
             <list-of-items  items="contexts"
                             label="$item.name"
-                            selected-item="context"
+                            selected-item="selected.context"
                             selectable="true"
-                            onedit="on_edit_context($item)"
                             createfunction="add_context($name)"
                             ondelete="delete_context($item)"
                             editable="true"
@@ -52,10 +51,10 @@
 		</div>
 	</div>
 </div>
-<div class="row" ng-show="context">
+<div class="row" ng-show="selected.context">
 	<div class="col-md-12">
-        <button ng-click="save_context(context)" class="btn btn-primary">Sauver</button>
-        <properties-list properties="context">
-        </properties-list>
+        <button ng-click="save_context(selected.context)" class="btn btn-primary">Sauver</button>
+        <context-view context="selected.context">
+        </context-view>
 	</div>
 </div>

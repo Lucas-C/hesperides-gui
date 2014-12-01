@@ -3,7 +3,7 @@
  */
 var templateModule = angular.module('hesperides.template', []);
 
-templateModule.factory('HesperidesTemplateModal', ['TemplateService', '$modal', function (TemplateService, $modal) {
+templateModule.factory('HesperidesTemplateModal', ['TemplateService', '$modal', '$rootScope', function (TemplateService, $modal, $rootScope) {
 
     var defaultScope = {
         codeMirrorOptions: {
@@ -22,24 +22,23 @@ templateModule.factory('HesperidesTemplateModal', ['TemplateService', '$modal', 
                     cm.focus();
                 }
             }
-        },
-        $save: function (template) {
-            var me = this;
-            TemplateService.save(template).then(function (savedTemplate) {
-                me.template = savedTemplate; //Refresh the template kept in scope
-                me.$emit("hesperidesTemplateChanged", template);
-            });
         }
-    }
+    };
 
     return {
         edit_template: function (options) {
 
-            var modalScope = options.scope;
+            var modalScope = $rootScope.$new(true);
 
-            angular.extend(modalScope, {
-                template: options.template
-            }, defaultScope);
+            modalScope.template = options.template;
+
+            modalScope.save = options.onSave;
+
+            modalScope.isReadOnly = options.isReadOnly;
+
+            defaultScope.codeMirrorOptions.readOnly = options.isReadOnly;
+
+            angular.extend(modalScope, defaultScope);
 
             var modal = $modal.open({
                 templateUrl: 'template/template-modal.html',
@@ -48,6 +47,12 @@ templateModule.factory('HesperidesTemplateModal', ['TemplateService', '$modal', 
                 keyboard: false,
                 scope: modalScope
             });
+
+            modalScope.$save = function(template){
+                modalScope.save(template).then(function(savedTemplate){
+                    modalScope.template = savedTemplate;
+                });
+            };
 
             //If everything went well (using $close to close the modal), then save the template
             //If we use $dismiss to close the modal, this will not be called
@@ -59,65 +64,40 @@ templateModule.factory('HesperidesTemplateModal', ['TemplateService', '$modal', 
 
 }]);
 
-templateModule.directive('hesperidesTemplateList', ['HesperidesTemplateModal', 'TemplateService', 'Template', function (HesperidesTemplateModal, TemplateService, Template) {
+templateModule.directive('hesperidesTemplateList', function () {
     return {
         restrict: 'E',
         scope: {
-            title: '=',
-            namespace: '='
+            templateEntries: '=',
+            add: '&',
+            delete: '&',
+            edit: '&',
+            isReadOnly: '='
         },
         templateUrl: "template/template-list.html",
         link: function (scope, element, attr) {
 
-            scope.templateEntries = [];
-
-            var reload = function(){
-                TemplateService.all(scope.namespace).then(function (templateEntries) {
-                    scope.templateEntries = templateEntries;
-                });
+            scope.add_template = function () {
+                scope.add()();
             };
 
-            scope.add_template = function (namespace) {
-                HesperidesTemplateModal.edit_template({
-                    scope: scope,
-                    template: new Template({namespace: namespace})
-                });
+            scope.delete_template = function (name) {
+                scope.delete()(name);
             };
 
-            scope.delete_template = function (namespace, name) {
-                TemplateService.delete(namespace, name).then(function () {
-                    scope.templateEntries = _.reject(scope.templateEntries, function (templateEntry) {
-                        scope.$emit("hesperidesTemplateChanged", templateEntry);
-                        return (templateEntry.name === name && templateEntry.namespace === namespace);
-                    });
-                });
+            scope.edit_template = function (name) {
+                scope.edit()(name);
             };
 
-            scope.edit_template = function (namespace, name) {
-                TemplateService.get(namespace, name).then(function (template) {
-                    HesperidesTemplateModal.edit_template({
-                        scope: scope,
-                        template: template
-                    });
-                });
-            };
-
-            scope.$on('hesperidesTemplateChanged', function (event, data) {
-                //Reload with timeout -> time to index data
-                setTimeout(reload, 1000);
-            });
-
-            reload();
         }
     };
-}]);
+});
 
 templateModule.factory('Template', function () {
 
     var Template = function (data) {
 
         angular.extend(this, {
-            namespace: "",
             name: "",
             filename: "",
             location: "",
@@ -127,7 +107,6 @@ templateModule.factory('Template', function () {
 
         this.toHesperidesEntity = function(){
           return {
-            namespace: this.namespace,
               name: this.name,
               filename: this.filename,
               location: this.location,

@@ -6,17 +6,17 @@
         <div class="form-group">
             <label for="templateName">Titre</label>
             <input type="text" class="form-control" required ng-trim="true" ng-model="template.name"
-                   id="templateName" placeholder="Donner un titre au template"/>
+                   id="templateName" placeholder="Donner un titre au template" ng-disabled="isReadOnly"/>
         </div>
         <div class="form-group">
             <label for="templateFilename">Nom du fichier final</label>
-            <input type="text" class="form-control" required ng-trim="true" ng-model="template.filename"
+            <input type="text" class="form-control" required ng-trim="true" ng-model="template.filename" ng-disabled="isReadOnly"
                    id="templateFilename"
                    placeholder="Indiquer le nom qu'aura le fichier sur le serveur. On peut utiliser des proprietes dans ce champ"/>
         </div>
         <div class="form-group">
             <label for="templateLocation">Dossier de destination</label>
-            <input type="text" class="form-control" required ng-trim="true" ng-model="template.location"
+            <input type="text" class="form-control" required ng-trim="true" ng-model="template.location" ng-disabled="isReadOnly"
                    id="templateLocation"
                    placeholder="Indiquer le dossier dans lequel sera copie le fichier sur le serveur. On peut utiliser des proprietes dans ce champ"/>
         </div>
@@ -32,10 +32,10 @@
     </form>
 </div>
 <div class="modal-footer">
-    <button class="btn btn-primary" ng-disabled="templateForm.$invalid" ng-click="$save(template)">Sauver le
+    <button class="btn btn-primary" ng-disabled="templateForm.$invalid" ng-click="$save(template)" ng-hide="isReadOnly">Sauver le
         template
     </button>
-    <button class="btn btn-success" ng-disabled="templateForm.$invalid" ng-click="$close(template)">Sauver et
+    <button class="btn btn-success" ng-disabled="templateForm.$invalid" ng-click="$close(template)" ng-hide="isReadOnly">Sauver et
         Fermer
     </button>
     <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>

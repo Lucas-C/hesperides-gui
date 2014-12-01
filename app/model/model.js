@@ -10,8 +10,7 @@ modelModule.directive('hesperidesModel', ['PropertiesService', function(Properti
         restrict: 'E',
         templateUrl: 'model/model.html',
         scope: {
-            title: '=',
-            namespaces: '='
+            model: '='
         },
         link: function(scope, element, attr){
 
@@ -28,14 +27,6 @@ modelModule.directive('hesperidesModel', ['PropertiesService', function(Properti
                     //}
                 });
             };
-
-            //This is used to refresh the model display from outside the directive
-            scope.$on('hesperidesModelRefresh', function(event){
-                scope.refresh();
-            });
-
-            //For the loading of the component
-            scope.refresh();
 
         }
     }

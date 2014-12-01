@@ -3,18 +3,102 @@
  */
 var technoModule = angular.module('hesperides.techno', ['hesperides.template', 'hesperides.properties', 'hesperides.model']);
 
-technoModule.controller('TechnoCtrl', ['$scope', '$routeParams', 'Techno', 'Page', function ($scope, $routeParams, Techno, Page) {
+technoModule.controller('TechnoCtrl', ['$scope', '$location', '$routeParams', 'Techno', 'Page', 'TechnoService', 'HesperidesTemplateModal', 'Template', function ($scope, $location, $routeParams, Techno, Page, TechnoService, HesperidesTemplateModal, Template) {
     Page.setTitle("Technos");
 
-    var namespace = "technos#" + $routeParams.name + '#' + $routeParams.version;
-    $scope.techno = new Techno(namespace);
+    $scope.isWorkingCopy = ($routeParams.type === "workingcopy") ? true : false;
+    $scope.isRelease = !$scope.isWorkingCopy;
+    $scope.techno = new Techno($routeParams.name, $routeParams.version);
+    $scope.templateEntries = [];
 
-    $scope.$on("hesperidesTemplateChanged", function(event){
-        //Use timeout because of elasticsearch indexation
-        setTimeout(function(){
-            $scope.$broadcast('hesperidesModelRefresh');
-        }, 1000);
-    });
+    if ($scope.isWorkingCopy) {
+        TechnoService.get_all_templates_from_workingcopy($scope.techno.name, $scope.techno.version).then(function (templateEntries) {
+            $scope.templateEntries = templateEntries;
+            if (!$scope.$$phase) {
+                    $scope.$apply();
+                }
+        });
+    } else {
+        TechnoService.get_all_templates_from_release($scope.techno.name, $scope.techno.version).then(function (templateEntries) {
+            $scope.templateEntries = templateEntries;
+        });
+    }
+
+    $scope.refreshModel = function(){
+        TechnoService.get_model($scope.techno.name, $scope.techno.version, $scope.isWorkingCopy).then(function(model){
+            $scope.model = model;
+        });
+    };
+
+    $scope.refreshModel();
+
+    $scope.add_template = function () {
+        HesperidesTemplateModal.edit_template({
+            template: new Template(),
+            isReadOnly: false,
+            onSave: $scope.save_template
+        });
+    };
+
+    $scope.edit_template = function (name) {
+        if ($scope.isWorkingCopy) {
+            TechnoService.get_template_from_workingcopy($scope.techno.name, $scope.techno.version, name).then(function (template) {
+                HesperidesTemplateModal.edit_template({
+                    template: template,
+                    isReadOnly: false,
+                    onSave: $scope.save_template
+                });
+                $scope.refreshModel();
+            });
+        } else {
+            TechnoService.get_template_from_release($scope.techno.name, $scope.techno.version, name).then(function (template) {
+                HesperidesTemplateModal.edit_template({
+                    template: template,
+                    isReadOnly: true,
+                    onSave: $scope.save_template
+                });
+                $scope.refreshModel();
+            });
+        }
+    };
+
+    $scope.save_template = function(template){
+        return TechnoService.save_template_in_workingcopy($scope.techno.name, $scope.techno.version, template).then(function(savedTemplate){
+           //MAJ liste de templates
+            var entry = _.find($scope.templateEntries, function (templateEntry) {
+                return (templateEntry.name === savedTemplate.name);
+            });
+            if(entry) { //It was an update
+                entry.name = savedTemplate.name;
+                entry.location = savedTemplate.location;
+                entry.filename = savedTemplate.filename;
+            } else {
+                var entry = {
+                    name: savedTemplate.name,
+                    location: savedTemplate.location,
+                    filename: savedTemplate.filename
+                }
+                $scope.templateEntries.push(entry);
+            }
+            $scope.refreshModel();
+            return savedTemplate;
+        });
+    };
+
+    $scope.delete_template = function (name) {
+        TechnoService.delete_template_in_workingcopy($scope.techno.name, $scope.techno.version, name).then(function () {
+            $scope.templateEntries = _.reject($scope.templateEntries, function (templateEntry) {
+                return (templateEntry.name === name); //MAJ de la liste de templates
+            });
+            $scope.refreshModel();
+        });
+    };
+
+    $scope.create_release = function(r_name, r_version) {
+        TechnoService.create_release(r_name, r_version).then(function(){
+            $location.path('/techno/' + r_name + '/' + r_version).search({});
+        });
+    }
 
 }]);
 
@@ -28,20 +112,26 @@ technoModule.controller('TechnoSearchCtrl', ['$scope', '$routeParams', 'TechnoSe
 
 }]);
 
-technoModule.factory('Techno', function(){
+technoModule.factory('Techno', function () {
 
-    var Techno = function (namespace) {
-        var namespaceTokens = namespace.split("#");
-        this.name = namespaceTokens[1];
-        this.version = namespaceTokens[2];
-        this.namespace = namespace;
+    //var Techno = function (namespace) {
+    //    var namespaceTokens = namespace.split("#");
+    //    this.name = namespaceTokens[1];
+    //    this.version = namespaceTokens[2];
+    //    this.namespace = namespace;
+    //    this.title = this.name + ", version " + this.version;
+    //};
+
+    var Techno = function (name, version) {
+        this.name = name;
+        this.version = version;
         this.title = this.name + ", version " + this.version;
     };
 
     return Techno;
 });
 
-technoModule.factory('TechnoService', ['$http', 'Techno', function ($http, Techno) {
+technoModule.factory('TechnoService', ['$http', 'Techno', 'Template', 'TemplateEntry', 'Properties', function ($http, Techno, Template, TemplateEntry, Properties) {
 
     return {
         all: function () {
@@ -58,9 +148,114 @@ technoModule.factory('TechnoService', ['$http', 'Techno', function ($http, Techn
                     .value();
             });
         },
+        get_model: function (name, version, isWorkingCopy){
+            var namespace = "packages#"+name+"#"+version+"#"+ (isWorkingCopy ? "WORKINGCOPY":"RELEASE");
+            return $http.get('rest/properties/model/'+encodeURIComponent(namespace)).then(function(response){
+                return new Properties(response.data);
+            }, function (error) {
+                return new Properties({});
+            });
+        },
+        get_template_from_workingcopy: function (wc_name, wc_version, template_name) {
+            return $http.get('rest/templates/packages/' + encodeURIComponent(wc_name) + '/' + encodeURIComponent(wc_version) + '/workingcopy/templates/' + encodeURIComponent(template_name)).then(function (response) {
+                return new Template(response.data);
+            }, function (error) {
+                $.notify(error.data, "error");
+                throw error;
+            });
+        },
+        get_template_from_release: function (wc_name, wc_version, template_name) {
+            return $http.get('rest/templates/packages/' + encodeURIComponent(wc_name) + '/' + encodeURIComponent(wc_version) + '/release/templates/' + encodeURIComponent(template_name)).then(function (response) {
+                return new Template(response.data);
+            }, function (error) {
+                $.notify(error.data, "error");
+                throw error;
+            });
+        },
+        get_all_templates_from_workingcopy: function (wc_name, wc_version) {
+            return $http.get('rest/templates/packages/' + encodeURIComponent(wc_name) + '/' + encodeURIComponent(wc_version) + '/workingcopy/templates').then(function (response) {
+                return response.data.map(function (data) {
+                    return new TemplateEntry(data);
+                }, function (error) {
+                    if (error.status != 404) {
+                        $.notify(error.data, "error");
+                        throw error;
+                    } else {
+                        return [];
+                    }
+                });
+            });
+        },
+        get_all_templates_from_release: function (r_name, r_version) {
+            return $http.get('rest/templates/packages/' + encodeURIComponent(r_name) + '/' + encodeURIComponent(r_version) + '/release/templates').then(function (response) {
+                return response.data.map(function (data) {
+                    return new TemplateEntry(data);
+                }, function (error) {
+                    if (error.status != 404) {
+                        $.notify(error.data, "error");
+                        throw error;
+                    } else {
+                        return [];
+                    }
+                });
+            });
+        },
+        save_template_in_workingcopy: function (wc_name, wc_version, template) {
+            template = template.toHesperidesEntity();
+            if (template.versionID < 0) {
+                return $http.post('rest/templates/packages/' + encodeURIComponent(wc_name) + '/' + encodeURIComponent(wc_version) + '/workingcopy/templates', template).then(function (response) {
+                    $.notify("Le template bien ete cree", "success");
+                    return new Template(response.data);
+                }, function (error) {
+                    if (error.status === 409) {
+                        $.notify("Impossible de creer le template car il existe deja un template avec ce nom", "error");
+                    } else {
+                        $.notify(error.data, "error");
+                    }
+                    throw error;
+                });
+            } else {
+                return $http.put('rest/templates/packages/' + encodeURIComponent(wc_name) + '/' + encodeURIComponent(wc_version) + '/workingcopy/templates', template).then(function (response) {
+                    $.notify("Le template a ete mis a jour", "success");
+                    return new Template(response.data);
+                }, function (error) {
+                    $.notify(error.data, "error");
+                    throw error;
+                });
+            }
+        },
+        delete_template_in_workingcopy: function (wc_name, wc_version, template_name) {
+            return $http.delete('rest/templates/packages/' + encodeURIComponent(wc_name) + '/' + encodeURIComponent(wc_version) + '/workingcopy/templates/' + encodeURIComponent(template_name)).then(function (response) {
+                $.notify("Le template a bien ete supprime", "success");
+                return response;
+            }, function (error) {
+                $.notify(error.data, "error");
+                throw error;
+            });
+        },
+        create_release: function (r_name, r_version) {
+            return $http.post('rest/templates/packages/' + encodeURIComponent(r_name) + '/' + encodeURIComponent(r_version) + '/release').then(function (response) {
+                $.notify("La release " + r_name + ", " + r_version + " a bien ete creee", "success");
+            }, function (error) {
+                $.notify(error.data, "error");
+                throw error;
+            });
+        },
+        create_workingcopy: function (wc_name, wc_version, from_name, from_version, is_from_workingcopy) {
+            return $http.post('rest/templates/packages/' + encodeURIComponent(wc_name) + '/' + encodeURIComponent(wc_version) + '/workingcopy?from_package_name=' + encodeURIComponent(from_name) + '&from_package_version=' + encodeURIComponent(from_version) + '&from_is_working_copy=' + is_from_workingcopy).then(function (response) {
+                if (response.status === 201) {
+                    $.notify("La working copy a bien ete creee", "success");
+                } else {
+                    $.notify(response.data, "warning");
+                }
+            }, function (error) {
+                $.notify(error.data, "error");
+                throw error;
+            });
+        },
         with_name_like: function (name) {
             /* NB this is slow and should be improved server side */
-            return $http.get('rest/templates/search/namespace/'+encodeURIComponent('technos#*' + name + '*')).then(function (response) {
+            return $http.get('rest/templates/search/namespace/' + encodeURIComponent('technos#*' + name + '*')).then(function (response) {
                 return _.chain(response.data)
                     .groupBy("namespace")
                     .map(function (templateList) {

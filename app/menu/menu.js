@@ -8,9 +8,7 @@ menuModule.controller('MenuTechnoCtrl', ['$scope', '$modal', '$location', 'Techn
     var modal;
 
     $scope.find_technos_by_name = function (name) {
-        return TechnoService.with_name_like(name).then(function (technosByName) {
-            return _.flatten(technosByName);
-        });
+        return TechnoService.with_name_like(name);
     };
 
     $scope.open_create_techno_dialog = function () {

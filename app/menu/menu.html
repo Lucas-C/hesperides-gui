@@ -146,28 +146,18 @@
                        id="technoVersion" placeholder="Entrer un numero de version"/>
             </div>
             <div class="form-group">
-                <label for="fromTechnoName">A partir de</label>
-                <input type="text" class="form-control" required ng-trim="true" ng-model="new_techno.fromName"
-                       id="fromTechnoName" placeholder="Entrer un nom"/>
-            </div>
-            <div class="form-group">
-                <label for="fromTechnoVersion">Version</label>
-                <input type="text" class="form-control" required ng-trim="true" ng-model="new_techno.fromVersion"
-                       id="fromTechnoVersion" placeholder="Entrer un numero de version"/>
-            </div>
-            <div class="form-group">
-                    <input type="radio" required ng-model="new_techno.isFromWorkingCopy"
-                       value="true">
-                    Working Copy <br/>
-                    <input type="radio" required ng-model="new_techno.isFromWorkingCopy"
-                           value="false">
-                    Release <br/>
+                <label for="fromTechno">A partir de</label>
+                <input type="text" class="form-control" id="fromTechno"
+                       ng-model="technoSearched"
+                       placeholder="Rechercher"
+                       typeahead="techno as techno.title for techno in find_technos_by_name($viewValue)"
+                       />
             </div>
         </form>
     </div>
     <div class="modal-footer">
         <button class="btn btn-primary" ng-disabled="technoForm.$invalid"
-                ng-click="create_techno_from(new_techno.name, new_techno.version, new_techno.fromName, new_techno.fromVersion, new_techno.isFromWorkingCopy)">Creer
+                ng-click="create_techno_from(new_techno.name, new_techno.version, technoSearched.name, technoSearched.version, technoSearched.is_working_copy)">Creer
         </button>
         <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
     </div>

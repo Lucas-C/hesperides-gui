@@ -241,12 +241,13 @@ technoModule.factory('TechnoService', ['$http', 'Techno', 'Template', 'TemplateE
             });
         },
         with_name_like: function (name) {
-            /* NB this is slow and should be improved server side */
-            return $http.get('rest/templates/packages?q=' + encodeURIComponent(name.replace(' ', '#'))).then(function (response) {
-                return _.map(response.data, function(techno){
-                    return new Techno(techno.name, techno.version, techno.working_copy);
+            if(name.length > 2) { //prevent search with too few characters
+                return $http.get('rest/templates/packages?q=' + encodeURIComponent(name.replace(' ', '#'))).then(function (response) {
+                    return _.map(response.data, function (techno) {
+                        return new Techno(techno.name, techno.version, techno.working_copy);
+                    });
                 });
-            });
+            } else return [];
         }
     }
 

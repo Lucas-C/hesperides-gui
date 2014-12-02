@@ -8,10 +8,10 @@ technoModule.controller('TechnoCtrl', ['$scope', '$location', '$routeParams', 'T
 
     $scope.isWorkingCopy = ($routeParams.type === "workingcopy") ? true : false;
     $scope.isRelease = !$scope.isWorkingCopy;
-    $scope.techno = new Techno($routeParams.name, $routeParams.version);
+    $scope.techno = new Techno($routeParams.name, $routeParams.version, ($routeParams.type === "workingcopy") ? true : false);
     $scope.templateEntries = [];
 
-    if ($scope.isWorkingCopy) {
+    if ($scope.techno.is_working_copy) {
         TechnoService.get_all_templates_from_workingcopy($scope.techno.name, $scope.techno.version).then(function (templateEntries) {
             $scope.templateEntries = templateEntries;
             if (!$scope.$$phase) {
@@ -25,7 +25,7 @@ technoModule.controller('TechnoCtrl', ['$scope', '$location', '$routeParams', 'T
     }
 
     $scope.refreshModel = function(){
-        TechnoService.get_model($scope.techno.name, $scope.techno.version, $scope.isWorkingCopy).then(function(model){
+        TechnoService.get_model($scope.techno.name, $scope.techno.version, $scope.techno.is_working_copy).then(function(model){
             $scope.model = model;
         });
     };
@@ -41,7 +41,7 @@ technoModule.controller('TechnoCtrl', ['$scope', '$location', '$routeParams', 'T
     };
 
     $scope.edit_template = function (name) {
-        if ($scope.isWorkingCopy) {
+        if ($scope.techno.is_working_copy) {
             TechnoService.get_template_from_workingcopy($scope.techno.name, $scope.techno.version, name).then(function (template) {
                 HesperidesTemplateModal.edit_template({
                     template: template,
@@ -122,10 +122,11 @@ technoModule.factory('Techno', function () {
     //    this.title = this.name + ", version " + this.version;
     //};
 
-    var Techno = function (name, version) {
+    var Techno = function (name, version, is_working_copy) {
         this.name = name;
         this.version = version;
-        this.title = this.name + ", version " + this.version;
+        this.is_working_copy = is_working_copy;
+        this.title = this.name + ", " + this.version + (this.is_working_copy ? " (working copy)" : "");
     };
 
     return Techno;
@@ -134,20 +135,6 @@ technoModule.factory('Techno', function () {
 technoModule.factory('TechnoService', ['$http', 'Techno', 'Template', 'TemplateEntry', 'Properties', function ($http, Techno, Template, TemplateEntry, Properties) {
 
     return {
-        all: function () {
-            /* NB this is very slow and should be improved server side */
-            return $http.get('rest/templates/search/namespace/technos').then(function (response) {
-                return _(response.data)
-                    .groupBy("namespace")
-                    .map(function (templateList) {
-                        var template = templateList[0];
-                        return new Techno(template.namespace);
-                    })
-                    .groupBy("name")
-                    .sortBy("version")
-                    .value();
-            });
-        },
         get_model: function (name, version, isWorkingCopy){
             var namespace = "packages#"+name+"#"+version+"#"+ (isWorkingCopy ? "WORKINGCOPY":"RELEASE");
             return $http.get('rest/properties/model/'+encodeURIComponent(namespace)).then(function(response){
@@ -255,16 +242,10 @@ technoModule.factory('TechnoService', ['$http', 'Techno', 'Template', 'TemplateE
         },
         with_name_like: function (name) {
             /* NB this is slow and should be improved server side */
-            return $http.get('rest/templates/search/namespace/' + encodeURIComponent('technos#*' + name + '*')).then(function (response) {
-                return _.chain(response.data)
-                    .groupBy("namespace")
-                    .map(function (templateList) {
-                        var template = templateList[0];
-                        return new Techno(template.namespace);
-                    })
-                    .groupBy("name")
-                    .sortBy("version")
-                    .value();
+            return $http.get('rest/templates/packages?q=' + encodeURIComponent(name.replace(' ', '#'))).then(function (response) {
+                return _.map(response.data, function(techno){
+                    return new Techno(techno.name, techno.version, techno.working_copy);
+                });
             });
         }
     }

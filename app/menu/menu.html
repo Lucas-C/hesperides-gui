@@ -25,7 +25,7 @@
                                                   ng-model="technoSearched" ng-blur="technoSearched=''"
                                                   placeholder="Rechercher"
                                                   typeahead="techno as techno.title for techno in find_technos_by_name($viewValue)"
-                                                  typeahead-on-select="open_techno_page($item.name, $item.version)"/></a>
+                                                  typeahead-on-select="open_techno_page($item.name, $item.version, $item.is_working_copy)"/></a>
                             </li>
                         </ul>
                     </li>
@@ -123,7 +123,7 @@
     </div>
     <div class="modal-footer">
         <button class="btn btn-primary" ng-disabled="technoForm.$invalid"
-                ng-click="open_techno_page(new_techno.name, new_techno.version)">Creer
+                ng-click="open_techno_page(new_techno.name, new_techno.version, true)">Creer
         </button>
         <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
     </div>

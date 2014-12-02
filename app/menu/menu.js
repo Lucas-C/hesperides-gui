@@ -29,12 +29,16 @@ menuModule.controller('MenuTechnoCtrl', ['$scope', '$modal', '$location', 'Techn
 
     $scope.create_techno_from = function (name, version, fromName, fromVersion, isFromWorkingCopy) {
         TechnoService.create_workingcopy(name, version, fromName, fromVersion, isFromWorkingCopy).then(function(){
-            $scope.open_techno_page(name, version);
+            $scope.open_techno_page(name, version, true);
         });
     };
 
-    $scope.open_techno_page = function (name, version) {
-        $location.path('/techno/' + name + '/' + version).search({type : "workingcopy"});
+    $scope.open_techno_page = function (name, version, is_working_copy) {
+        if(is_working_copy) {
+            $location.path('/techno/' + name + '/' + version).search({type : "workingcopy"});
+        } else {
+            $location.path('/techno/' + name + '/' + version).search({});
+        }
         $scope.technoSearched = "";
         if (modal) modal.close();
     }

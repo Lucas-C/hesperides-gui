@@ -3,10 +3,8 @@
 <div ng-hide="loading_properties">
     <dl class="dl-horizontal text-overflow" style="margin-bottom:0"
         ng-repeat="keyValueProperty in model.key_value_properties | orderBy:'name' track by $index">
-        <dt>{{ keyValueProperty.name }}</dt>
-        <dd>
-            <small><em>{{ keyValueProperty.comment }}</em></small>
-        </dd>
+        <dt style="width: 100%; text-align: left" ng-if="keyValueProperty.comment"><a href="#" tooltip="{{keyValueProperty.comment}}">{{ keyValueProperty.name }}</a></dt>
+        <dt style="width: 100%; text-align: left" ng-if="!keyValueProperty.comment">{{ keyValueProperty.name }}</dt>
     </dl>
     <h3 ng-show="model.iterable_properties.length > 0">Proprietes multiples :</h3>
     <dl class="dl-horizontal text-overflow" style="margin-bottom:0"

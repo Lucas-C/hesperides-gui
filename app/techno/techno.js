@@ -221,7 +221,7 @@ technoModule.factory('TechnoService', ['$http', 'Techno', 'Template', 'TemplateE
             });
         },
         create_release: function (r_name, r_version) {
-            return $http.post('rest/templates/packages/' + encodeURIComponent(r_name) + '/' + encodeURIComponent(r_version) + '/release').then(function (response) {
+            return $http.post('rest/templates/packages/create_release?package_name=' + encodeURIComponent(r_name) + '&package_version=' + encodeURIComponent(r_version)).then(function (response) {
                 $.notify("La release " + r_name + ", " + r_version + " a bien ete creee", "success");
             }, function (error) {
                 $.notify(error.data, "error");
@@ -229,7 +229,7 @@ technoModule.factory('TechnoService', ['$http', 'Techno', 'Template', 'TemplateE
             });
         },
         create_workingcopy: function (wc_name, wc_version, from_name, from_version, is_from_workingcopy) {
-            return $http.post('rest/templates/packages/' + encodeURIComponent(wc_name) + '/' + encodeURIComponent(wc_version) + '/workingcopy?from_package_name=' + encodeURIComponent(from_name) + '&from_package_version=' + encodeURIComponent(from_version) + '&from_is_working_copy=' + is_from_workingcopy).then(function (response) {
+            return $http.post('rest/templates/packages?from_package_name=' + encodeURIComponent(from_name) + '&from_package_version=' + encodeURIComponent(from_version) + '&from_is_working_copy=' + is_from_workingcopy, {name:encodeURIComponent(wc_name), version: encodeURIComponent(wc_version), working_copy:true}).then(function (response) {
                 if (response.status === 201) {
                     $.notify("La working copy a bien ete creee", "success");
                 } else {
@@ -242,7 +242,7 @@ technoModule.factory('TechnoService', ['$http', 'Techno', 'Template', 'TemplateE
         },
         with_name_like: function (name) {
             if(name.length > 2) { //prevent search with too few characters
-                return $http.get('rest/templates/packages?q=' + encodeURIComponent(name.replace(' ', '#'))).then(function (response) {
+                return $http.post('rest/templates/packages/perform_search?terms=' + encodeURIComponent(name.replace(' ', '#'))).then(function (response) {
                     return _.map(response.data, function (techno) {
                         return new Techno(techno.name, techno.version, techno.working_copy);
                     });

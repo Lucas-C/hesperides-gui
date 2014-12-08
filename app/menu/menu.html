@@ -30,14 +30,14 @@
                         </ul>
                     </li>
 
-                    <li class="dropdown" ng-controller="MenuApplicationCtrl">
+                    <li class="dropdown" ng-controller="MenuModuleCtrl">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">En module<span
                                 class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu" ng-click="$event.stopPropagation()">
-                            <li><a href="" ng-click="open_create_application_dialog()">Creer une nouvelle application</a></li>
+                            <li><a href="" ng-click="open_create_module_dialog()">Creer un nouveau module</a></li>
                             <li class="divider"></li>
                             <li><a href=""><input style="border: none;background:transparent" type="text"
-                                                  ng-model="applicationSearched" ng-blur="applicationSearched=''"
+                                                  ng-model="moduleSearched" ng-blur="applicationSearched=''"
                                                   placeholder="Rechercher"
                                                   typeahead="application as application.title for application in find_applications_by_name($viewValue)"
                                                   typeahead-on-select="open_application_page($item.name, $item.version)"/></a>
@@ -163,27 +163,27 @@
     </div>
 </script>
 
-<script type="text/ng-template" id="application-menu-modal.html">
+<script type="text/ng-template" id="module-menu-modal.html">
     <div class="modal-header">
-        <h3 class="modal-title">Nouvelle application</h3>
+        <h3 class="modal-title">Nouveau module (working copy)</h3>
     </div>
     <div class="modal-body">
-        <form name="applicationForm" role="form">
+        <form name="moduleForm" role="form">
             <div class="form-group">
-                <label for="applicationName">Nom</label>
-                <input type="text" class="form-control" required ng-trim="true" ng-model="new_application.name"
-                       id="applicationName" placeholder="Entrer un nom"/>
+                <label for="moduleName">Nom</label>
+                <input type="text" class="form-control" required ng-trim="true" ng-model="new_module.name"
+                       id="moduleName" placeholder="Entrer un nom"/>
             </div>
             <div class="form-group">
-                <label for="applicationVersion">Version</label>
-                <input type="text" class="form-control" required ng-trim="true" ng-model="new_application.version"
-                       id="applicationVersion" placeholder="Entrer un numero de version"/>
+                <label for="moduleVersion">Version</label>
+                <input type="text" class="form-control" required ng-trim="true" ng-model="new_module.version"
+                       id="moduleVersion" placeholder="Entrer un numero de version"/>
             </div>
         </form>
     </div>
     <div class="modal-footer">
         <button class="btn btn-primary" ng-disabled="applicationForm.$invalid"
-                ng-click="open_application_page(new_application.name, new_application.version)">Creer
+                ng-click="create_module(new_module.name, new_module.version)">Creer
         </button>
         <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
     </div>

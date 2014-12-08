@@ -5,7 +5,7 @@
                 ng-class="{'btn-info': (!item === selectedItem), 'btn-warning': (item === selectedItem), 'btn-sm': size === 'small'}"
                 >{{selfLabel(item)}}
         </button>
-        <button ng-if="editable" ng-mouseenter="hover = true" ng-mouseleave="hover = false" ng-show="hover"
+        <button ng-if="editable"
                 ng-really-message="Etes-vous sur de vouloir supprimer '{{selfLabel(item)}}' ?"
                 ng-really-click="selfDelete(item)" class="btn btn-danger"
                 ng-class="{'btn-sm': size === 'small'}"

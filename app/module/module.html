@@ -1,0 +1,54 @@
+<div class="row">
+    <div class="col-md-12">
+        <blockquote>
+            <h3>Module <strong>{{module.name}}</strong>, Version <strong>{{module.version}} <span ng-show="is_workingcopy">(Working Copy)</span></span></strong></h3>
+            <button ng-really-message="Etes-vous sur de vouloir créer la release {{module.version}} ?"
+                    ng-really-click="create_release(module)" class="btn" ng-show="is_workingcopy">Créer la release</button>
+        </blockquote>
+    </div>
+</div>
+
+<div class="row voffset1">
+    <div class="col-md-6">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="bg-light">
+                    <h4>Les technos de ce module :</h4>
+                    <list-of-items items="module.technos"
+                                   createfunction="add_techno($name)"
+                                   ondelete="delete_techno($item)"
+                                   size="small"
+                                   label="$item.title"
+                                   selected-item="techno"
+                                   selectable="false"
+                                   editable="is_workingcopy"
+                                   typeaheadexpression="techno as techno.title for techno in $parent.$parent.$parent.search_technos($viewValue)"
+                            ></list-of-items>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12">
+                <div class="bg-light">
+                    <h4>Les fichiers specifiques du module</h4>
+                    <hesperides-template-list template-entries="templateEntries"
+                                              add="add_template"
+                                              edit="edit_template"
+                                              delete="delete_template"
+                                              is-read-only="is_release"></hesperides-template-list>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-1">
+        <div class="bd-light" style="height: 200px;margin-top: 80px;">
+            <span class="glyphicon glyphicon-chevron-right"></span>
+        </div>
+    </div>
+    <div class="col-md-5">
+        <h3>Les properties associees</h3>
+        <hesperides-model model="model"></hesperides-model>
+    </div>
+</div>
+
+

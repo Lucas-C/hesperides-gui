@@ -43,7 +43,7 @@ menuModule.controller('MenuTechnoCtrl', ['$scope', '$modal', '$location', 'Techn
 
 }]);
 
-menuModule.controller('MenuApplicationCtrl', ['$scope', '$modal', '$location', 'ApplicationService', function ($scope, $modal, $location, ApplicationService) {
+menuModule.controller('MenuModuleCtrl', ['$scope', '$modal', '$location', 'ModuleService', 'Module',  function ($scope, $modal, $location, ModuleService, Module) {
 
     var modal;
 
@@ -56,15 +56,26 @@ menuModule.controller('MenuApplicationCtrl', ['$scope', '$modal', '$location', '
         });
     };
 
-    $scope.open_application_page = function (name, version) {
-        $location.path('/application/' + name + '/' + version);
-        $scope.applicationSearched = "";
+    $scope.create_module = function(name, version){
+        var module = new Module({name: name, version: version});
+        ModuleService.save(module).then(function(module){
+            $scope.open_module_page(module.name, module.version, module.is_working_copy);
+        });
+    };
+
+    $scope.open_module_page = function (name, version, is_working_copy) {
+        if(is_working_copy){
+            $location.path('/module/' + name + '/' + version).search({type : "workingcopy"});
+        } else {
+            $location.path('/module/' + name + '/' + version).search({});
+        }
+        $scope.moduleSearched = "";
         if (modal) modal.close();
     };
 
-    $scope.open_create_application_dialog = function () {
+    $scope.open_create_module_dialog = function () {
         modal = $modal.open({
-            templateUrl: 'application-menu-modal.html',
+            templateUrl: 'module-menu-modal.html',
             scope: $scope
         });
     };

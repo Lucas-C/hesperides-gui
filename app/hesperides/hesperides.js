@@ -7,7 +7,7 @@ if ( typeof String.prototype.startsWith != 'function' ) {
 
 var hesperidesModule = angular.module('hesperides', [
     'ngRoute',
-    'hesperides.application',
+    'hesperides.module',
     'hesperides.context',
     'hesperides.file',
     'hesperides.menu',
@@ -43,9 +43,9 @@ hesperidesModule.controller("TitleCtrl", ['$scope', 'Page', function ($scope, Pa
 
 hesperidesModule.config(['$routeProvider', function ($routeProvider) {
     $routeProvider.
-        when('/application/:application/:version', {
-            templateUrl: 'application/application.html',
-            controller: 'ApplicationCtrl'
+        when('/module/:name/:version', {
+            templateUrl: 'module/module.html',
+            controller: 'ModuleCtrl'
         }).
         when('/properties/:application/:version', {
             templateUrl: 'properties/properties.html',
@@ -54,10 +54,6 @@ hesperidesModule.config(['$routeProvider', function ($routeProvider) {
         when('/contexts/:application/:version', {
             templateUrl: 'context/context.html',
             controller: 'ContextCtrl'
-        }).
-        when('/technos', {
-            templateUrl: 'techno/all-technos.html',
-            controller: 'TechnoSearchCtrl'
         }).
         when('/techno/:name/:version', {
             templateUrl: 'techno/techno.html',

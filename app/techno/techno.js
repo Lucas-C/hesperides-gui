@@ -6,7 +6,7 @@ var technoModule = angular.module('hesperides.techno', ['hesperides.template', '
 technoModule.controller('TechnoCtrl', ['$scope', '$location', '$routeParams', 'Techno', 'Page', 'TechnoService', 'HesperidesTemplateModal', 'Template', function ($scope, $location, $routeParams, Techno, Page, TechnoService, HesperidesTemplateModal, Template) {
     Page.setTitle("Technos");
 
-    $scope.isWorkingCopy = ($routeParams.type === "workingcopy") ? true : false;
+    $scope.isWorkingCopy = $routeParams.type === "workingcopy";
     $scope.isRelease = !$scope.isWorkingCopy;
     $scope.techno = new Techno($routeParams.name, $routeParams.version, ($routeParams.type === "workingcopy") ? true : false);
     $scope.templateEntries = [];
@@ -14,9 +14,6 @@ technoModule.controller('TechnoCtrl', ['$scope', '$location', '$routeParams', 'T
     if ($scope.techno.is_working_copy) {
         TechnoService.get_all_templates_from_workingcopy($scope.techno.name, $scope.techno.version).then(function (templateEntries) {
             $scope.templateEntries = templateEntries;
-            if (!$scope.$$phase) {
-                    $scope.$apply();
-                }
         });
     } else {
         TechnoService.get_all_templates_from_release($scope.techno.name, $scope.techno.version).then(function (templateEntries) {
@@ -73,12 +70,12 @@ technoModule.controller('TechnoCtrl', ['$scope', '$location', '$routeParams', 'T
                 entry.location = savedTemplate.location;
                 entry.filename = savedTemplate.filename;
             } else {
-                var entry = {
+                var new_entry = {
                     name: savedTemplate.name,
                     location: savedTemplate.location,
                     filename: savedTemplate.filename
-                }
-                $scope.templateEntries.push(entry);
+                };
+                $scope.templateEntries.push(new_entry);
             }
             $scope.refreshModel();
             return savedTemplate;
@@ -114,25 +111,27 @@ technoModule.controller('TechnoSearchCtrl', ['$scope', '$routeParams', 'TechnoSe
 
 technoModule.factory('Techno', function () {
 
-    //var Techno = function (namespace) {
-    //    var namespaceTokens = namespace.split("#");
-    //    this.name = namespaceTokens[1];
-    //    this.version = namespaceTokens[2];
-    //    this.namespace = namespace;
-    //    this.title = this.name + ", version " + this.version;
-    //};
-
     var Techno = function (name, version, is_working_copy) {
         this.name = name;
         this.version = version;
         this.is_working_copy = is_working_copy;
         this.title = this.name + ", " + this.version + (this.is_working_copy ? " (working copy)" : "");
+
+
+        this.to_rest_entity = function(){
+            return {
+                name: this.name,
+                version: this.version,
+                working_copy: this.is_working_copy
+            };
+        };
+
     };
 
     return Techno;
 });
 
-technoModule.factory('TechnoService', ['$http', 'Techno', 'Template', 'TemplateEntry', 'Properties', function ($http, Techno, Template, TemplateEntry, Properties) {
+technoModule.factory('TechnoService', ['$http', '$q', 'Techno', 'Template', 'TemplateEntry', 'Properties', function ($http, $q, Techno, Template, TemplateEntry, Properties) {
 
     return {
         get_model: function (name, version, isWorkingCopy){
@@ -247,7 +246,11 @@ technoModule.factory('TechnoService', ['$http', 'Techno', 'Template', 'TemplateE
                         return new Techno(techno.name, techno.version, techno.working_copy);
                     });
                 });
-            } else return [];
+            } else {
+                var deferred = $q.defer();
+                deferred.resolve([]);
+                return deferred.promise;
+            }
         }
     }
 

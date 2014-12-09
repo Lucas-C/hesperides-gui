@@ -140,6 +140,8 @@ applicationModule.factory('Module', ['Techno', function (Techno) {
             return new Techno(data.name, data.version, data.working_copy);
         });
 
+        this.title = this.name + ', ' + this.version + (this.is_working_copy ? ' (working copy)' : '');
+
         this.add_techno = function (techno) {
             if (!_.some(this.technos, {'name': techno.name, 'version': techno.version, 'is_working_copy': techno.is_working_copy})) {
                 this.technos.push(techno);
@@ -175,7 +177,7 @@ applicationModule.factory('Module', ['Techno', function (Techno) {
 
 }]);
 
-applicationModule.factory('ModuleService', ['$http', 'Module', 'Template', 'TemplateEntry', 'Properties', function ($http, Module, Template, TemplateEntry, Properties) {
+applicationModule.factory('ModuleService', ['$http', '$q', 'Module', 'Template', 'TemplateEntry', 'Properties', function ($http, $q, Module, Template, TemplateEntry, Properties) {
 
     return {
         get: function (name, version, is_working_copy) {
@@ -296,6 +298,19 @@ applicationModule.factory('ModuleService', ['$http', 'Module', 'Template', 'Temp
                     $.notify(error.data, "error");
                     throw error;
                 });
+            }
+        },
+        with_name_like: function (name) {
+            if(name.length > 2) { //prevent search with too few characters
+                return $http.post('rest/modules/perform_search?terms=' + encodeURIComponent(name.replace(' ', '#'))).then(function (response) {
+                    return _.map(response.data, function (module) {
+                        return new Module(module);
+                    });
+                });
+            } else {
+                var deferred = $q.defer();
+                deferred.resolve([]);
+                return deferred.promise;
             }
         }
 

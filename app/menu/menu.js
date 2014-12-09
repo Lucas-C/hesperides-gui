@@ -47,13 +47,8 @@ menuModule.controller('MenuModuleCtrl', ['$scope', '$modal', '$location', 'Modul
 
     var modal;
 
-    $scope.find_applications_by_name = function (name) {
-        return ApplicationService.with_name_like(name).then(function (applicationsByName) {
-            return _(applicationsByName).flatten().map(function (application) {
-                application.title = application.name + ", " + application.version //Display purposes
-                return application;
-            }).value();
-        });
+    $scope.find_modules_by_name = function (name) {
+        return ModuleService.with_name_like(name);
     };
 
     $scope.create_module = function(name, version){

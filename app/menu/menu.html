@@ -37,10 +37,10 @@
                             <li><a href="" ng-click="open_create_module_dialog()">Creer un nouveau module</a></li>
                             <li class="divider"></li>
                             <li><a href=""><input style="border: none;background:transparent" type="text"
-                                                  ng-model="moduleSearched" ng-blur="applicationSearched=''"
+                                                  ng-model="moduleSearched" ng-blur="moduleSearched=''"
                                                   placeholder="Rechercher"
-                                                  typeahead="application as application.title for application in find_applications_by_name($viewValue)"
-                                                  typeahead-on-select="open_application_page($item.name, $item.version)"/></a>
+                                                  typeahead="module as module.title for module in find_modules_by_name($viewValue)"
+                                                  typeahead-on-select="open_module_page($item.name, $item.version, $item.is_working_copy)"/></a>
                             </li>
                         </ul>
                     </li>

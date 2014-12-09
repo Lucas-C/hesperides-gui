@@ -294,11 +294,22 @@ applicationModule.factory('ModuleService', ['$http', '$q', 'Module', 'Template',
             } else {
                 return $http.post('rest/modules/create_release?module_name=' + encodeURIComponent(module.name) + '&module_version=' + encodeURIComponent(module.version)).then(function (response) {
                     $.notify("La release " + module.name + ", " + module.version + " a bien ete creee", "success");
+                    return new Module(response.data);
                 }, function (error) {
                     $.notify(error.data, "error");
                     throw error;
                 });
             }
+        },
+        create_workingcopy_from: function(name, version, fromModule) {
+            var newModule = new Module({name: name, version:version}).to_rest_entity();
+            return $http.post('rest/modules?from_module_name='+encodeURIComponent(fromModule.name)+'&from_module_version='+encodeURIComponent(fromModule.version)+'&from_is_working_copy='+encodeURIComponent(fromModule.is_working_copy), newModule).then(function(response){
+                $.notify("La working copy " + name + ", " + version + " a bien ete creee", "success");
+                return new Module(response.data);
+            }, function (error) {
+                $.notify(error.data, "error");
+                throw error;
+            });
         },
         with_name_like: function (name) {
             if(name.length > 2) { //prevent search with too few characters

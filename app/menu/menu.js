@@ -58,6 +58,12 @@ menuModule.controller('MenuModuleCtrl', ['$scope', '$modal', '$location', 'Modul
         });
     };
 
+    $scope.create_module_from = function (name, version, moduleFrom) {
+        ModuleService.create_workingcopy_from(name, version, moduleFrom).then(function(){
+            $scope.open_module_page(name, version, true);
+        });
+    };
+
     $scope.open_module_page = function (name, version, is_working_copy) {
         if(is_working_copy){
             $location.path('/module/' + name + '/' + version).search({type : "workingcopy"});
@@ -71,6 +77,13 @@ menuModule.controller('MenuModuleCtrl', ['$scope', '$modal', '$location', 'Modul
     $scope.open_create_module_dialog = function () {
         modal = $modal.open({
             templateUrl: 'module-menu-modal.html',
+            scope: $scope
+        });
+    };
+
+    $scope.open_create_module_from_dialog = function () {
+        modal = $modal.open({
+            templateUrl: 'module-menu-modal-from.html',
             scope: $scope
         });
     };

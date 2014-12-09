@@ -35,6 +35,7 @@
                                 class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu" ng-click="$event.stopPropagation()">
                             <li><a href="" ng-click="open_create_module_dialog()">Creer un nouveau module</a></li>
+                            <li><a href="" ng-click="open_create_module_from_dialog()">Creer une working copy à partir de...</a></li>
                             <li class="divider"></li>
                             <li><a href=""><input style="border: none;background:transparent" type="text"
                                                   ng-model="moduleSearched" ng-blur="moduleSearched=''"
@@ -149,7 +150,7 @@
                 <label for="fromTechno">A partir de</label>
                 <input type="text" class="form-control" id="fromTechno"
                        ng-model="technoSearched"
-                       placeholder="Rechercher"
+                       placeholder="Rechercher" required ng-focus="technoSearched = ''"
                        typeahead="techno as techno.title for techno in find_technos_by_name($viewValue)"
                        />
             </div>
@@ -184,6 +185,40 @@
     <div class="modal-footer">
         <button class="btn btn-primary" ng-disabled="applicationForm.$invalid"
                 ng-click="create_module(new_module.name, new_module.version)">Creer
+        </button>
+        <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
+    </div>
+</script>
+
+<script type="text/ng-template" id="module-menu-modal-from.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Nouveau module (working copy) à partir d'une précédente version</h3>
+    </div>
+    <div class="modal-body">
+        <form name="moduleForm" role="form">
+            <div class="form-group">
+                <label for="moduleName">Nom</label>
+                <input type="text" class="form-control" required ng-trim="true" ng-model="new_module.name"
+                       id="moduleName" placeholder="Entrer un nom"/>
+            </div>
+            <div class="form-group">
+                <label for="moduleVersion">Version cible</label>
+                <input type="text" class="form-control" required ng-trim="true" ng-model="new_module.version"
+                       id="moduleVersion" placeholder="Entrer un numero de version"/>
+            </div>
+            <div class="form-group">
+                <label for="fromModule">A partir de</label>
+                <input type="text" class="form-control" id="fromModule"
+                       ng-model="moduleSearched"
+                       placeholder="Rechercher" required ng-focus="moduleSearched = ''"
+                       typeahead="module as module.title for module in find_modules_by_name($viewValue)"
+                        />
+            </div>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-disabled="moduleForm.$invalid"
+                ng-click="create_module_from(new_module.name, new_module.version, moduleSearched)">Creer
         </button>
         <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
     </div>

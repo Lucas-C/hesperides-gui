@@ -135,8 +135,7 @@ technoModule.factory('TechnoService', ['$http', '$q', 'Techno', 'Template', 'Tem
 
     return {
         get_model: function (name, version, isWorkingCopy){
-            var namespace = "packages#"+name+"#"+version+"#"+ (isWorkingCopy ? "WORKINGCOPY":"RELEASE");
-            return $http.get('rest/properties/model/'+encodeURIComponent(namespace)).then(function(response){
+            return $http.get('rest/templates/packages/' + encodeURIComponent(name) + '/' + encodeURIComponent(version) + '/' + (isWorkingCopy ? "workingcopy" : "release") + '/model').then(function(response){
                 return new Properties(response.data);
             }, function (error) {
                 return new Properties({});

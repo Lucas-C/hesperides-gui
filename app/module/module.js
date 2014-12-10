@@ -212,11 +212,7 @@ applicationModule.factory('ModuleService', ['$http', '$q', 'Module', 'Template',
             }
         },
         get_model: function (module){
-            var namespaces = "modules#"+module.name+"#"+module.version+"#"+ (module.is_working_copy ? "WORKINGCOPY":"RELEASE");
-            _.forEach(module.technos, function(techno){
-                namespaces += ",packages#"+techno.name+"#"+techno.version+"#"+ (techno.is_working_copy ? "WORKINGCOPY":"RELEASE");
-            });
-            return $http.get('rest/properties/model/'+encodeURIComponent(namespaces)).then(function(response){
+            return $http.get('rest/modules/' + encodeURIComponent(module.name) + '/' + encodeURIComponent(module.version) + '/' + (module.is_working_copy ? "workingcopy" : "release") + '/model').then(function(response){
                 return new Properties(response.data);
             }, function (error) {
                 return new Properties({});

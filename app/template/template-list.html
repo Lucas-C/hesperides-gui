@@ -1,4 +1,4 @@
-<blockquote ng-if="templateEntries">
+<blockquote ng-if="templateEntries.length > 0">
     <p ng-repeat="template_entry in templateEntries | orderBy:['location', 'name']"
        style="font-size: 14px;margin-bottom: 0px;" ng-class="{'text-stroke': hover}">
         <button ng-really-message="Etes-vous sur de vouloir supprimer le template '{{template_entry.name}}'"

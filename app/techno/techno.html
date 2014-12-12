@@ -2,7 +2,8 @@
     <div class="col-md-12">
         <blockquote>
             <h3>Techno <strong>{{techno.name}}</strong>, Version <strong>{{techno.version}}</strong> <span ng-show="isWorkingCopy">(Working Copy)</span></span></h3>
-            <button ng-click="create_release(techno.name, techno.version)" class="btn" ng-show="isWorkingCopy">Créer la release</button>
+            <button ng-really-message="Etes-vous sur de vouloir créer la release {{techno.version}} ?"
+                    ng-really-click="create_release(techno.name, techno.version)" class="btn" ng-show="isWorkingCopy">Créer la release</button>
         </blockquote>
     </div>
 </div>

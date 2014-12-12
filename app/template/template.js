@@ -102,7 +102,7 @@ templateModule.factory('Template', function () {
             filename: "",
             location: "",
             content: "",
-            versionID: -1
+            version_id: -1
         }, data);
 
         this.toHesperidesEntity = function(){
@@ -111,7 +111,7 @@ templateModule.factory('Template', function () {
               filename: this.filename,
               location: this.location,
               content: this.content,
-              versionID: this.versionID
+              version_id: this.version_id
           }
         };
 
@@ -147,7 +147,7 @@ templateModule.factory('TemplateService', ['$http', 'Template', 'TemplateEntry',
         },
         save: function (template) {
             template = template.toHesperidesEntity();
-            if (template.versionID < 0) {
+            if (template.version_id < 0) {
                 return $http.post('rest/templates/' + encodeURIComponent(template.namespace) + '/' + encodeURIComponent(template.name), template).then(function (response) {
                     $.notify("Le template bien ete cree", "success");
                     return new Template(response.data);

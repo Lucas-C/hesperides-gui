@@ -128,7 +128,7 @@ applicationModule.factory('Module', ['Techno', function (Techno) {
             version: "",
             is_working_copy: true,
             technos: [],
-            versionID: -1
+            version_id: -1
         }, data);
 
         if (!_.isUndefined(data.working_copy)) { //When it is created through a rest entity
@@ -164,7 +164,7 @@ applicationModule.factory('Module', ['Techno', function (Techno) {
                 name: this.name,
                 version: this.version,
                 working_copy: this.is_working_copy,
-                versionID: this.versionID,
+                version_id: this.version_id,
                 technos: _.map(this.technos, function (techno) {
                     return techno.to_rest_entity();
                 })
@@ -194,7 +194,7 @@ applicationModule.factory('ModuleService', ['$http', '$q', 'Module', 'Template',
                 throw module;
             } else {
                 module = module.to_rest_entity();
-                if (module.versionID < 0) {
+                if (module.version_id < 0) {
                     return $http.post('rest/modules', module).then(function (response) {
                         $.notify("La workingcopy du module a bien ete creee", "success");
                         return new Module(response.data);
@@ -246,7 +246,7 @@ applicationModule.factory('ModuleService', ['$http', '$q', 'Module', 'Template',
                 throw module;
             } else {
                 template = template.toHesperidesEntity();
-                if (template.versionID < 0) {
+                if (template.version_id < 0) {
                     return $http.post('rest/modules/' + encodeURIComponent(module.name) + '/' + encodeURIComponent(module.version) + '/workingcopy/templates', template).then(function (response) {
                         $.notify("Le template bien ete cree", "success");
                         return new Template(response.data);

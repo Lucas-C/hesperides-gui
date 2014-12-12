@@ -3,7 +3,7 @@
  */
 var technoModule = angular.module('hesperides.techno', ['hesperides.template', 'hesperides.properties', 'hesperides.model']);
 
-technoModule.controller('TechnoCtrl', ['$scope', '$location', '$routeParams', 'Techno', 'Page', 'TechnoService', 'HesperidesTemplateModal', 'Template', function ($scope, $location, $routeParams, Techno, Page, TechnoService, HesperidesTemplateModal, Template) {
+technoModule.controller('TechnoCtrl', ['$scope', '$location', '$routeParams', 'Techno', 'Page', 'TechnoService', 'HesperidesTemplateModal', 'Template', 'TemplateEntry', function ($scope, $location, $routeParams, Techno, Page, TechnoService, HesperidesTemplateModal, Template, TemplateEntry) {
     Page.setTitle("Technos");
 
     $scope.isWorkingCopy = $routeParams.type === "workingcopy";
@@ -70,11 +70,11 @@ technoModule.controller('TechnoCtrl', ['$scope', '$location', '$routeParams', 'T
                 entry.location = savedTemplate.location;
                 entry.filename = savedTemplate.filename;
             } else {
-                var new_entry = {
+                var new_entry = new TemplateEntry({
                     name: savedTemplate.name,
                     location: savedTemplate.location,
                     filename: savedTemplate.filename
-                };
+                });
                 $scope.templateEntries.push(new_entry);
             }
             $scope.refreshModel();
@@ -187,7 +187,7 @@ technoModule.factory('TechnoService', ['$http', '$q', 'Techno', 'Template', 'Tem
         },
         save_template_in_workingcopy: function (wc_name, wc_version, template) {
             template = template.toHesperidesEntity();
-            if (template.versionID < 0) {
+            if (template.version_id < 0) {
                 return $http.post('rest/templates/packages/' + encodeURIComponent(wc_name) + '/' + encodeURIComponent(wc_version) + '/workingcopy/templates', template).then(function (response) {
                     $.notify("Le template bien ete cree", "success");
                     return new Template(response.data);
@@ -220,7 +220,11 @@ technoModule.factory('TechnoService', ['$http', '$q', 'Techno', 'Template', 'Tem
         },
         create_release: function (r_name, r_version) {
             return $http.post('rest/templates/packages/create_release?package_name=' + encodeURIComponent(r_name) + '&package_version=' + encodeURIComponent(r_version)).then(function (response) {
-                $.notify("La release " + r_name + ", " + r_version + " a bien ete creee", "success");
+				if (response.status === 201) {
+                    $.notify("La release " + r_name + ", " + r_version + " a bien ete creee", "success");
+                } else {
+                    $.notify(response.data, "warning");
+                }
             }, function (error) {
                 $.notify(error.data, "error");
                 throw error;

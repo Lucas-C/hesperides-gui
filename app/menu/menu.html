@@ -31,10 +31,10 @@
                     </li>
 
                     <li class="dropdown" ng-controller="MenuModuleCtrl">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">En module<span
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">En composant technique<span
                                 class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu" ng-click="$event.stopPropagation()">
-                            <li><a href="" ng-click="open_create_module_dialog()">Creer un nouveau module</a></li>
+                            <li><a href="" ng-click="open_create_module_dialog()">Creer un nouveau composant technique</a></li>
                             <li><a href="" ng-click="open_create_module_from_dialog()">Creer une working copy à partir de...</a></li>
                             <li class="divider"></li>
                             <li><a href=""><input style="border: none;background:transparent" type="text"
@@ -58,7 +58,7 @@
                                 class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu" ng-click="$event.stopPropagation()"
                             style="width: 450px !important">
-                            <li><a href="" ng-click="open_create_properties_dialog()">Creer</a></li>
+                            <li><a href="" ng-click="open_create_platform_dialog()">Creer une plateforme</a></li>
                             <li class="divider"></li>
                             <li><a href=""><input style="border: none;background:transparent;width: 420px !important"
                                                   type="text" ng-model="applicationSearched"
@@ -166,7 +166,7 @@
 
 <script type="text/ng-template" id="module-menu-modal.html">
     <div class="modal-header">
-        <h3 class="modal-title">Nouveau module (working copy)</h3>
+        <h3 class="modal-title">Nouveau composant technique (working copy)</h3>
     </div>
     <div class="modal-body">
         <form name="moduleForm" role="form">
@@ -192,7 +192,7 @@
 
 <script type="text/ng-template" id="module-menu-modal-from.html">
     <div class="modal-header">
-        <h3 class="modal-title">Nouveau module (working copy) à partir d'une précédente version</h3>
+        <h3 class="modal-title">Nouveau composant technique (working copy) à partir d'une précédente version</h3>
     </div>
     <div class="modal-body">
         <form name="moduleForm" role="form">
@@ -224,29 +224,34 @@
     </div>
 </script>
 
-<script type="text/ng-template" id="properties-menu-modal.html">
+<script type="text/ng-template" id="platform-menu-modal.html">
     <div class="modal-header">
-        <h3 class="modal-title">Nouvelles properties</h3>
+        <h3 class="modal-title">Nouvelle plateforme</h3>
     </div>
     <div class="modal-body">
-        <form name="propertiesForm" role="form">
+        <form name="platformForm" role="form">
             <div class="form-group">
-                <label for="propertiesApplication">Application</label>
+                <label for="platformApplication">Application</label>
                 <input type="text" class="form-control" required ng-trim="true"
-                       ng-model="new_properties.application" typeahead-editable="false"
-                       id="propertiesApplication"
-                       typeahead="application as application.title for application in find_applications_by_name($viewValue)"/>
+                       ng-model="new_platform.application_name"
+                       id="platformApplication"
+                />
             </div>
             <div class="form-group">
-                <label for="propertiesPlatform">Plateforme</label>
-                <input type="text" class="form-control" required ng-trim="true" ng-model="new_properties.platform"
-                       id="propertiesPlatform" placeholder="Indiquer la plateforme"/>
+                <label for="platformName">Plateforme</label>
+                <input type="text" class="form-control" required ng-trim="true" ng-model="new_platform.platform_name"
+                       id="platformName" placeholder="Indiquer la plateforme"/>
+            </div>
+            <div class="form-group">
+                <label for="platformApplicationVersion">Version de l'application</label>
+                <input type="text" class="form-control" required ng-trim="true" ng-model="new_platform.application_version"
+                       id="platformApplicationVersion" placeholder="Indiquer la version de l'application sur cette plateforme"/>
             </div>
         </form>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-primary" ng-disabled="propertiesForm.$invalid"
-                ng-click="open_properties_page(new_properties.application.name, new_properties.application.version, new_properties.platform)">
+        <button class="btn btn-primary" ng-disabled="platformForm.$invalid"
+                ng-click="create_platform(new_platform.application_name, new_platform.platform_name, new_platform.application_version)">
             Creer
         </button>
         <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>

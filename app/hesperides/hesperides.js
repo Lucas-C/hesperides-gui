@@ -11,7 +11,6 @@ var hesperidesModule = angular.module('hesperides', [
     'hesperides.context',
     'hesperides.file',
     'hesperides.menu',
-    'hesperides.platform',
     'hesperides.properties',
     'hesperides.techno',
     'hesperides.template',
@@ -47,7 +46,7 @@ hesperidesModule.config(['$routeProvider', function ($routeProvider) {
             templateUrl: 'module/module.html',
             controller: 'ModuleCtrl'
         }).
-        when('/properties/:application/:version', {
+        when('/properties/:application', {
             templateUrl: 'properties/properties.html',
             controller: 'PropertiesCtrl'
         }).

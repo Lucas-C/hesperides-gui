@@ -3,15 +3,66 @@
  */
 var propertiesModule = angular.module('hesperides.properties', []);
 
-propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', 'PropertiesService', 'ApplicationService', 'PlatformService', 'Page',  function ($scope, $routeParams, PropertiesService, ApplicationService, PlatformService, Page) {
+propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', 'ApplicationService', 'ModuleService', 'Page',  function ($scope, $routeParams, ApplicationService, ModuleService, Page) {
     Page.setTitle("Properties");
 
     $scope.platform = $routeParams.platform;
     $scope.platforms = [];
 
-    $scope.on_edit_platform = function(platform_name){
+    var Box = function(data){
+        return angular.extend(this, {
+            parent: null,
+            children: {},
+            modules: [],
+            isEmpty: function(){
+                return _.keys(this.children).length === 0 && this.modules.length === 0;
+            }
+        }, data);
+    };
+
+    $scope.on_edit_platform = function(platform){
         /* Reset unit choice */
-        $scope.unit = undefined;
+        //$scope.unit = undefined;
+
+        //Try to build the view depending on the different paths of the modules
+        var mainBox = new Box({parent: null});
+
+        var add_to_box = function(box, folders, level, module){
+            if(level > folders.length){
+                throw "Should have nether been here, wrong use of add_to_box recursive function";
+            }
+            if(level === folders.length){
+                //Found terminal level
+                box.modules.push(module);
+            } else {
+                if(_.isUndefined(box["children"][folders[level]])){
+                    box["children"][folders[level]] = new Box({parent: box});
+                }
+                return add_to_box(box["children"][folders[level]], folders, level+1, module);
+            }
+        };
+
+        _.each(platform.modules, function(module){
+            var path = module.path;
+            var folders = path.split('#');
+            add_to_box(mainBox, folders, 0, module);
+        });
+
+        $scope.mainBox = mainBox;
+
+    };
+
+    $scope.add_box = function(box){
+        box["children"]["TO_CHANGE"] = new Box({parent: box});
+    };
+
+    $scope.remove_box = function(name, box){
+        delete box.parent["children"][name];
+    };
+
+    $scope.update_box_name = function(box, old_name, new_name){
+        box.parent["children"][new_name] = box.parent["children"][old_name];
+        delete box.parent["children"][old_name];
     };
 
     $scope.add_platform = function(platform_name) {
@@ -24,47 +75,42 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', 'Proper
         //Might be a bit tricky
     };
 
-    $scope.on_edit_unit = function(unit){
-        PropertiesService.getPropertiesMergedWithModel("properties#"+$scope.application.name+"#"+$scope.application.version+"#"+$scope.platform+"#"+unit.name, unit.modelNamespaces).then(function(properties){
-            $scope.properties = properties;
+    $scope.edit_properties = function(platform, module){
+        ApplicationService.get_properties($routeParams.application, platform, module.get_properties_path()).then(function(properties){
+            ModuleService.get_model(module).then(function(model){
+                $scope.properties = properties.mergeWithModel(model);
+                $scope.selected_module = module;
+            });
         });
     };
 
-    $scope.save_properties = function(properties) {
-        PropertiesService.save(properties).then(function(properties){
-            PropertiesService.getModel($scope.unit.modelNamespaces).then(function(model){
+    $scope.save_properties = function(properties, module) {
+        ApplicationService.save_properties($routeParams.application, $scope.platform, properties, module.get_properties_path()).then(function(properties){
+            ModuleService.get_model(module).then(function(model){
                 $scope.properties = properties.mergeWithModel(model);
             });
         });
     };
 
     /* Get the application */
-    ApplicationService.get($routeParams.application, $routeParams.version).then(function(application){
+    ApplicationService.get($routeParams.application).then(function(application){
         $scope.application = application;
-        /* If unit was mentionned in the route, try to find it */
+        $scope.platforms = application.platforms;
+        /* If platform was mentionned in the route, try to find it */
         /* If it does not exist show error */
-        if($routeParams.unit){
-            var actual_unit = _.find(application.units, function(unit){ return unit.name === $routeParams.unit; });
-            if(_.isUndefined(actual_unit)){
+        if($routeParams.platform){
+            var selected_platform = _.find($scope.platforms, function(platform){ return platform.name === $routeParams.platform; });
+            if(_.isUndefined(selected_platform)){
                 $.notify("La brique technique mentionee dans l'url n'existe pas", "error");
             } else {
-                $scope.unit = actual_unit;
-                $scope.on_edit_unit(actual_unit);
+                $scope.platform = selected_platform;
+                $scope.on_edit_platform(selected_platform);
             }
         };
 
     }, function(error){
         $.notify(error.data, "error");
     });
-
-    /* Find all the platforms */
-    PlatformService.get($routeParams.application, $routeParams.version).then(function(platforms){
-        $scope.platforms = platforms;
-    }).then(function(){
-        /* If platform was mentionned in the route, try to find it or add it */
-        if($scope.platform) $scope.add_platform($scope.platform);
-    });
-
 
 }]);
 
@@ -147,7 +193,7 @@ propertiesModule.factory('Properties', function(){
             return this;
         };
 
-        this.toHesperidesEntity = function(){
+        this.to_rest_entity = function(){
             return {
                 namespace: this.namespace,
                 versionID: this.versionID,

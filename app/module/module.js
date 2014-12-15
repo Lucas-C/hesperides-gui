@@ -171,6 +171,10 @@ applicationModule.factory('Module', ['Techno', function (Techno) {
             };
         };
 
+        this.get_properties_path = function(){
+            return this.path +'#'+this.name+'#'+this.version+'#'+(this.is_working_copy ? "WORKINGCOPY" : "RELEASE");
+        };
+
     };
 
     return Module;

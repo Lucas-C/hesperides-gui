@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-md-12">
         <blockquote>
-            <h3>Application <strong>{{application.name}}</strong>, Version <strong>{{application.version}}</strong></h3>
+            <h3>Application <strong>{{application.name}}</strong></h3>
         </blockquote>
     </div>
 </div>
@@ -10,13 +10,13 @@
         <div class="bg-light">
             <h3>PLATEFORMES</h3>
             <list-of-items items="platforms"
-                           label="$item"
+                           label="$item.name"
                            selected-item="platform"
                            createfunction="add_platform($name)"
                            ondelete="delete_platform($item)"
                            onedit="on_edit_platform($item)"
                            selectable="true"
-                           editable="true"
+                           editable="false"
                            size="small">
             </list-of-items>
         </div>
@@ -25,22 +25,60 @@
 <div class="row" ng-show="platform">
     <div class="col-md-12">
         <div class="bg-light">
-            <h3>BRIQUES APPLICATIVES</h3>
-            <list-of-items items="application.units"
-                           label="$item.name"
-                           selected-item="unit"
-                           selectable="true"
-                           onedit="on_edit_unit($item)"
-                           editable="false"
-                           size="small">
-            </list-of-items>
+
+            <script type="text/ng-template" id="box_renderer.html">
+                <div id="header" style="width: 100%">
+                    <div class="col-md-6 text-left" style="padding-left:10px">
+                        <strong><a href="" editable-text="name"
+                                   onbeforesave="update_box_name(box, name, $data)">{{name}}</a></strong>
+                    </div>
+                    <div class="col-md-6 text-right" style="padding-right:10px">
+                        <button ng-click="add_module(box)"
+                                class="btn btn-primary btn-xs">
+                            <span class="glyphicon glyphicon-cog"></span>
+                        </button>
+                        <button ng-click="add_box(box)"
+                                class="btn btn-success btn-xs">
+                            <span class="glyphicon glyphicon-plus"></span>
+                        </button>
+                        <button ng-click="remove_box(name, box)" ng-if="box.isEmpty()"
+                                class="btn btn-danger btn-xs">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </button>
+                    </div>
+                </div>
+                <ul class="list-inline">
+                    <li class="box" ng-repeat="(name, box) in box.children"
+                        ng-include="'box_renderer.html'"></li>
+                    <li class="box" ng-if="box.modules.length > 0">
+                        <div ng-repeat="module in box.modules">
+                            <button class="btn btn-info btn-sm" style="margin: 5px -1px 5px 5px" ng-click="edit_properties(platform, module)" ><span class="glyphicon glyphicon-list" style="margin-right: 10px"></span>{{module.title}}</button>
+                            <button ng-click="remove_module(module)" style="margin: 5px 5px 5px -1px"
+                                    class="btn btn-danger btn-sm">
+                                <span class="glyphicon glyphicon-trash"></span>
+                            </button>
+                        </div>
+                    </li>
+                </ul>
+            </script>
+
+            <h3><span style="margin-right: 30px">Representation logique </span><button ng-click="add_box(mainBox)" ng-hide="show_input" class="btn btn-sm">
+                <span style="padding-right:10px">Ajouter un composant applicatif</span><span
+                    class="glyphicon glyphicon-plus"></span>
+            </button></h3>
+            <ul class="list-inline">
+                <li class="box" ng-repeat="(name, box) in mainBox.children" ng-include="'box_renderer.html'"/>
+                <li class="box" ng-if="box.modules.length > 0">
+                    <button class="btn btn-info btn-sm" style="margin: 5px 5px 5px 5px" ng-repeat="module in mainBox.modules">{{module.title}} <span class="glyphicon glyphicon-list"></span></button>
+                </li>
+            </ul>
         </div>
     </div>
 </div>
-<div class="row" ng-show="unit">
+<div class="row" ng-show="properties">
     <div class="col-md-12">
-        <h3>Les properties associees a '{{unit.name}}'
-            <button ng-click="save_properties(properties)" style="margin-left:10px;" class="btn btn-primary btn-xs">
+        <h3>Les properties associees a <strong>{{selected_module.path.replace('#', '/')}} -> {{selected_module.title}}</strong>
+            <button ng-click="save_properties(properties, selected_module)" style="margin-left:10px;" class="btn btn-primary btn-xs">
                 Sauver
             </button>
         </h3>

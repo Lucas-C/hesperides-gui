@@ -91,7 +91,7 @@ menuModule.controller('MenuModuleCtrl', ['$scope', '$modal', '$location', 'Modul
 
 }]);
 
-menuModule.controller('MenuPropertiesCtrl', ['$scope', '$modal', '$location', 'ApplicationService', function ($scope, $modal, $location, ApplicationService) {
+menuModule.controller('MenuPropertiesCtrl', ['$scope', '$modal', '$location', 'ApplicationService', 'Platform', function ($scope, $modal, $location, ApplicationService, Platform) {
 
     var modal;
 
@@ -104,17 +104,24 @@ menuModule.controller('MenuPropertiesCtrl', ['$scope', '$modal', '$location', 'A
         });
     };
 
-    $scope.open_properties_page = function (name, version, platform) {
-        var path = '/properties/' + name + '/' + version;
-        if (platform) path += '?platform=' + platform;
-        $location.url(path);
+    $scope.open_properties_page = function (application_name, platform_name) {
+        var path = '/properties/' + application_name;
+        //if (platform) path += '?platform=' + platform;
+        $location.url(path).search({platform: platform});
         $scope.applicationSearched = "";
         if (modal) modal.close();
     };
 
-    $scope.open_create_properties_dialog = function () {
+    $scope.create_platform = function(application_name, platform_name, application_version){
+        var platform = new Platform({name: platform_name, application_name: application_name, application_version: application_version});
+        ApplicationService.save_platform(platform).then(function(platform){
+            $scope.open_properties_page(platform.application_name, platform.platform_name);
+        });
+    };
+
+    $scope.open_create_platform_dialog = function () {
         modal = $modal.open({
-            templateUrl: 'properties-menu-modal.html',
+            templateUrl: 'platform-menu-modal.html',
             scope: $scope
         });
     };

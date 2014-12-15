@@ -4,172 +4,21 @@
 var applicationModule = angular.module('hesperides.application', []);
 
 
-applicationModule.controller('ApplicationCtrl', ['$scope', '$routeParams', '$modal', 'TechnoService', 'TemplateService', 'ApplicationService', 'PropertiesService', 'Page', '$q', function($scope, $routeParams, $modal, TechnoService, TemplateService, ApplicationService, PropertiesService, Page, $q) {
+applicationModule.factory('Application', ['Platform', function (Platform) {
 
-    Page.setTitle('Applications');
-
-    /* Try to find the corresponding application */
-    ApplicationService.get($routeParams.application, $routeParams.version).then(function(application){
-        $scope.application = application;
-    });
-
-    /* This function is used to save the application */
-    $scope.save = function(application) {
-        ApplicationService.save(application).then(function(application){
-            $scope.application = application;
-        });
-    };
-
-    // This function is used to add a new unit to the application
-    $scope.create_unit = function(name) {
-        return $scope.application.add_unit(name);
-    };
-
-    $scope.delete_unit = function(unit) {
-        $scope.application.remove_unit(unit);
-    };
-
-    //TODO this should be done server side
-    $scope.update_unit_title = function(new_title) {
-        /* We need to resave the templates with a different namespace
-         Then save the application with the new unit name
-         Then delete the ones with the old namespace
-         Proceding in this order guaranties no loss of data		   */
-        if(new_title === $scope.unit.name){
-            return true; /* Display no error but do nothing */
-        }
-
-        var new_namespace = "app."+$routeParams.application+"."+$routeParams.version+"."+new_title;
-
-        return _.reduce($scope.templateEntries, function(promise, tEntry) {
-            return promise.then(function(){ return TemplateService.get({namespace: tEntry.namespace, name: tEntry.name}).$promise; })
-                .then(function(template){
-                    template.hesnamespace = new_namespace;
-                    return template.$create();
-                })
-        }, $q.when()).then(function(){
-            /* Update or create the app */
-            $scope.unit.name = new_title;
-            if($scope.application.id){
-                return $scope.application.$update();
-            } else {
-                return $scope.application.$create();
-            }
-        }).then(function(){
-            /* Construct the chain of deletion */
-            return _.reduce($scope.templateEntries, function(promise, tEntry) {
-                return promise.then(function() { return TemplateService.delete({namespace: tEntry.namespace, name: tEntry.name}).$promise; });
-            }, $q.when());
-
-        }).then(function(){
-            /* Everything went well, update model*/
-            _.each($scope.templateEntries, function(tEntry) { tEntry.namespace = "app."+$routeParams.application+"."+$routeParams.version+"."+new_title; });
-            return true;
-
-        }, function(error) {
-            return "Probleme : "+error.data;
-        });
-
-    };
-
-    $scope.is_unit_selected = function() {
-        return !_.isUndefined($scope.unit);
-    };
-
-    /* This function is used to find technos not already chosen */
-    $scope.search_technos = function(name, chosenTechnos) {
-        return TechnoService.with_name_like(name).then(function(technosByName){
-            return _(technosByName).flatten().reject(function(techno) {
-                return  _.some(chosenTechnos, function(chosenTechno){
-                    return chosenTechno.namespace = techno.namespace;
-                });
-            }).value();
-        });
-    };
-
-    $scope.create_techno = function(techno) {
-        $scope.unit.add_techno(techno);
-    };
-
-    $scope.delete_techno = function(techno){
-        $scope.unit.remove_techno(techno);
-    };
-
-    $scope.$on("hesperidesTemplateChanged", function(event){
-        //Use timeout because of elasticsearch indexation
-        setTimeout(function(){
-            $scope.$broadcast('hesperidesModelRefresh');
-        }, 1000);
-    });
-
-    $scope.$watch("unit", function(){
-        if($scope.unit){
-            $scope.$broadcast('hesperidesModelRefresh');
-        }
-    }, true);
-
-}]);
-
-applicationModule.factory('Application', ['Unit', function(Unit){
-
-    var Application = function(data) {
+    var Application = function (data) {
 
         var me = this;
 
         angular.extend(this, {
             name: "",
-            version: "",
-            units: [],
-            versionID: -1
+            platforms: []
         }, data);
 
         //Object casting when application is created
-        this.units = _.map(this.units, function(data){
-            return new Unit({
-                name: data.name,
-                technos: data.technos,
-                namespace: "app#"+me.name+"#"+me.version+"#"+data.name
-            });
+        this.platforms = _.map(this.platforms, function (data) {
+            return new Platform(data);
         });
-
-        this.remove_unit = function(unit){
-            _.remove(this.units, unit);
-        };
-
-        this.hasUnit = function(name){
-            return _.some(this.units, function(unit){
-               return unit.name === name;
-            });
-        };
-
-        this.add_unit = function(name){
-            var unit = new Unit({
-                name:name,
-                technos: [],
-                namespace: "app#"+this.name+"#"+this.version+"#"+name
-            });
-            if(!this.hasUnit(name)){
-              this.units.push(unit);
-            }
-            return unit;
-        };
-
-        /* Convert this object to the hesperides model */
-        this.toHesperidesEntity = function() {
-            return {
-                name: this.name,
-                version: this.version,
-                versionID: this.versionID,
-                units: _.map(this.units, function(unit){
-                    return {
-                        name: unit.name,
-                        technos: _.map(unit.technos, function(techno){
-                            return techno.namespace;
-                        })
-                    }
-                })
-            }
-        }
 
     };
 
@@ -177,91 +26,102 @@ applicationModule.factory('Application', ['Unit', function(Unit){
 
 }]);
 
-applicationModule.factory('Unit', ['Techno', function(Techno){
+applicationModule.factory('Platform', ['Module', function (Module) {
 
-    var Unit = function(data){
+    var Platform = function (data) {
 
         var me = this;
 
         angular.extend(this, {
             name: "",
-            namespace: "",
-            technos: []
+            application_name: "",
+            application_version: "",
+            modules: [],
+            version_id: -1
         }, data);
 
-        /* Object casting when instance is created */
-        this.technos = _.map(this.technos, function(namespace){
-            return new Techno(namespace);
+        if(!_.isUndefined(this.platform_name)){//When it comes from rest entity
+            this.name = this.platform_name;
+        }
+
+        //Object casting when application is created
+        this.modules = _.map(this.modules, function (data) {
+            return new Module(data);
         });
 
-        this.modelNamespaces = [];
-        this.modelNamespaces.push(this.namespace);
-        _.each(this.technos, function(techno){
-            me.modelNamespaces.push(techno.namespace);
-        });
-
-        this.add_techno = function(techno){
-            if(!_.contains(this.technos, techno)){
-                this.technos.push(techno);
-                this.modelNamespaces.push(techno);
-            }
-            return techno;
-        };
-
-        this.remove_techno = function(techno){
-            _.remove(this.technos, function(value){ return value === techno});
-            _.remove(this.modelNamespaces, function(value){ return value === techno});
+        this.to_rest_entity = function () {
+            return {
+                platform_name: this.name,
+                application_name: this.application_name,
+                application_version: this.application_version,
+                modules: this.modules,
+                version_id: this.version_id
+            };
         };
 
     };
 
-    return Unit;
+    return Platform;
 
 }]);
 
-applicationModule.factory('ApplicationService', ['$http', 'Application', function ($http, Application) {
+applicationModule.factory('ApplicationService', ['$http', 'Application', 'Platform', 'Properties', function ($http, Application, Platform, Properties) {
 
     return{
-        get: function(name, version) {
-            return $http.get('rest/applications/'+encodeURIComponent(name)+'/'+encodeURIComponent(version)).then(function(response) {
+        get: function (name) {
+            return $http.get('rest/applications/' + encodeURIComponent(name)).then(function (response) {
                 return new Application(response.data);
-            }, function(error){
-                if(error.status != 404){
-                    $.notify(error.data, "error");
-                } else {
-                    //If not found return a new Application
-                    return new Application({name: name, version: version});
-                }
+            }, function (error) {
+                $.notify(error.data, "error");
+                throw error;
             });
         },
-        save: function(application) {
-            application = application.toHesperidesEntity();
-            if(application.versionID < 0){
-                return $http.post('rest/applications/'+encodeURIComponent(application.name)+'/'+encodeURIComponent(application.version), application).then(function(response) {
-                    $.notify("L'application a bien ete creee", "success");
-                    return new Application(response.data);
-                }, function(error) {
+        get_platform: function (application_name, platform_name) {
+            return $http.get('rest/applications/' + encodeURIComponent(application_name) + '/platforms' + encodeURIComponent(platform_name)).then(function (response) {
+                return new Platform(response.data);
+            }, function (error) {
+                $.notify(error.data, "error");
+                throw error;
+            });
+        },
+        save_platform: function (platform) {
+            platform = platform.to_rest_entity();
+            if (platform.version_id < 0) {
+                return $http.post('rest/applications/' + encodeURIComponent(platform.application_name) + '/platforms', platform).then(function (response) {
+                    $.notify("La plateforme a bien ete creee", "success");
+                    return new Platform(response.data);
+                }, function (error) {
                     $.notify(error.data, "error");
+                    throw error;
                 });
             } else {
-                return $http.put('rest/applications/'+encodeURIComponent(application.name)+'/'+encodeURIComponent(application.version), application).then(function(response) {
-                    $.notify("L'application a bien ete mise a jour", "success");
-                    return new Application(response.data);
-                }, function(error) {
+                return $http.put('rest/applications/' + encodeURIComponent(platform.application_name) + '/platforms', platform).then(function (response) {
+                    $.notify("La plateforme a bien ete mise a jour", "success");
+                    return new Platform(response.data);
+                }, function (error) {
                     $.notify(error.data, "error");
+                    throw error;
                 });
             }
         },
-        with_name_like: function(name) {
-            return $http.get('rest/applications/search/'+encodeURIComponent('*'+name+'*')).then(function(response) {
-                return _(response.data)
-                    .map(function(data){ return new Application(data); })
-                    .groupBy("name")
-                    .sortBy("version")
-                    .value();
+        get_properties: function (application_name, platform, path) {
+            return $http.get('rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform.name) + '/properties?path=' + encodeURIComponent(path)).then(function (response) {
+                return new Properties(response.data);
+            }, function (error) {
+                $.notify(error.data, "error");
+                throw error;
+            });
+        },
+        save_properties: function (application_name, platform, properties, path) {
+            properties = properties.to_rest_entity();
+            return $http.post('rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform.name) + '/properties?path=' + encodeURIComponent(path) +'&platform_vid=' + encodeURIComponent(platform.version_id), properties).then(function (response) {
+                $.notify("Les properties ont bien ete sauvagardees", "success");
+                return new Properties(response.data);
+            }, function (error) {
+                $.notify(error.data, "error");
+                throw error;
             });
         }
-
-    }
+    };
 
 }]);

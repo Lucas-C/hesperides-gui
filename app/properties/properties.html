@@ -1,14 +1,7 @@
 <div class="row">
     <div class="col-md-12">
-        <blockquote>
-            <h3>Application <strong>{{application.name}}</strong></h3>
-        </blockquote>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-12">
         <div class="bg-light">
-            <h3>PLATEFORMES</h3>
+            <h3>Plateformes de <strong>{{application.name}}</strong></h3>
             <list-of-items items="platforms"
                            label="$item.name"
                            selected-item="platform"
@@ -42,14 +35,15 @@
                     </form>
                 </div>
                 <div class="modal-footer">
-                    <button class="btn btn-success" ng-disabled="searchModuleForm.$invalid" ng-click="$close(moduleSearched, box)" ng-hide="isReadOnly">Ok
+                    <button class="btn btn-success" ng-disabled="searchModuleForm.$invalid"
+                            ng-click="$close(moduleSearched, box)" ng-hide="isReadOnly">Ok
                     </button>
                     <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
                 </div>
             </script>
 
             <script type="text/ng-template" id="box_renderer.html">
-                <div id="header" style="width: 100%">
+                <div id="header" style="height: 38px">
                     <div class="col-md-6 text-left" style="padding-left:10px">
                         <strong><a href="" editable-text="name"
                                    onbeforesave="update_box_name(box, name, $data)">{{name}}</a></strong>
@@ -57,11 +51,11 @@
                     <div class="col-md-6 text-right" style="padding-right:10px">
                         <button ng-click="search_module(box)"
                                 class="btn btn-primary btn-xs">
-                            <span class="glyphicon glyphicon-cog"></span>
+                            <span class="glyphicon glyphicon-plus"></span>
                         </button>
                         <button ng-click="add_box(box)"
                                 class="btn btn-success btn-xs">
-                            <span class="glyphicon glyphicon-plus"></span>
+                            <span class="glyphicon glyphicon-inbox"></span>
                         </button>
                         <button ng-click="remove_box(name, box)" ng-if="box.isEmpty()"
                                 class="btn btn-danger btn-xs">
@@ -87,14 +81,14 @@
                 </ul>
             </script>
 
-            <h3><span style="margin-right: 30px">Representation logique </span>
+            <h3><span style="margin-right: 30px">Representation logique de <strong>{{platform.name}}</strong></span>
                 <button ng-click="add_box(mainBox)" class="btn btn-sm">
-                    <span style="padding-right:10px">Ajouter un composant applicatif</span><span
-                        class="glyphicon glyphicon-plus"></span>
+                    <span class="glyphicon glyphicon-plus" style="padding-right:10px"></span>
+                    <span>Ajouter un composant applicatif</span>
                 </button>
                 <button ng-click="save_platform_from_box(mainBox)" class="btn btn-sm">
-                    <span style="padding-right:10px">Sauver la plateforme</span><span
-                        class="glyphicon glyphicon-saved"></span>
+                    <span class="glyphicon glyphicon-saved" style="padding-right:10px"></span>
+                    <span>Sauver la plateforme</span>
                 </button>
             </h3>
             <ul class="list-inline">
@@ -110,14 +104,17 @@
 </div>
 <div class="row" ng-show="properties">
     <div class="col-md-12">
-        <h3>Les properties associees a <strong>{{selected_module.path.replace('#', '/')}} ->
-            {{selected_module.title}}</strong>
-            <button ng-click="save_properties(properties, selected_module)" class="btn btn-xs">
-                <span style="padding-right:10px">Sauver les properties</span><span
-                    class="glyphicon glyphicon-saved"></span>
-            </button>
-        </h3>
-        <properties-list properties="properties">
-        </properties-list>
+        <div class="bg-light">
+            <h3><span style="margin-right: 30px">Les properties associees a <strong>{{selected_module.path.replace('#',
+                '/')}} ->
+                {{selected_module.title}}</strong></span>
+                <button ng-click="save_properties(properties, selected_module)" class="btn btn-sm">
+                    <span class="glyphicon glyphicon-saved" style="padding-right:10px"></span>
+                    <span>Sauver les properties</span>
+                </button>
+            </h3>
+            <properties-list properties="properties">
+            </properties-list>
+        </div>
     </div>
 </div>

@@ -1,10 +1,17 @@
 <div class="row">
     <div class="col-md-12">
-        <blockquote>
-            <h3>Techno <strong>{{techno.name}}</strong>, Version <strong>{{techno.version}}</strong> <span ng-show="isWorkingCopy">(Working Copy)</span></span></h3>
+        <div class="bg-light">
+            <h3><span> Techno <strong>{{techno.name}}</strong>, Version <strong>{{techno.version}}</strong></span><span style="padding-left: 10px;"
+                    ng-show="isWorkingCopy">(Working Copy)</span></span>
             <button ng-really-message="Etes-vous sur de vouloir créer la release {{techno.version}} ?"
-                    ng-really-click="create_release(techno.name, techno.version)" class="btn" ng-show="isWorkingCopy">Créer la release</button>
-        </blockquote>
+                    ng-really-click="create_release(techno.name, techno.version)"
+                    class="btn btn-sm" ng-show="isWorkingCopy"
+                    style="margin-left: 30px;">
+                <span style="padding-right:10px">Créer la release</span>
+                <span class="glyphicon glyphicon-share-alt"></span>
+            </button>
+            </h3>
+        </div>
     </div>
 </div>
 <div class="row">
@@ -20,7 +27,9 @@
     </div>
 
     <div class="col-md-6">
-        <h3>Les properties associees a la techno</h3>
-        <hesperides-model model="model"></hesperides-model>
+        <div class="bg-light" style="display: block; overflow:auto;">
+            <h3>Les properties associees a la techno</h3>
+            <hesperides-model model="model"></hesperides-model>
+        </div>
     </div>
 </div>

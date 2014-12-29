@@ -1,10 +1,17 @@
 <div class="row">
     <div class="col-md-12">
-        <blockquote>
-            <h3>Composant technique <strong>{{module.name}}</strong>, Version <strong>{{module.version}} <span ng-show="is_workingcopy">(Working Copy)</span></span></strong></h3>
+        <div class="bg-light">
+            <h3>Composant technique <strong>{{module.name}}</strong>, Version <strong>{{module.version}}</strong> <span style="padding-left: 10px;"
+                    ng-show="is_workingcopy">(Working Copy)</span></span></strong>
             <button ng-really-message="Etes-vous sur de vouloir créer la release {{module.version}} ?"
-                    ng-really-click="create_release(module)" class="btn" ng-show="is_workingcopy">Créer la release</button>
-        </blockquote>
+                    ng-really-click="create_release(module)"
+                    class="btn" ng-show="is_workingcopy"
+                    style="margin-left: 30px;">
+                <span style="padding-right:10px">Créer la release</span>
+                <span class="glyphicon glyphicon-share-alt"></span>
+            </button>
+            </h3>
+        </div>
     </div>
 </div>
 
@@ -40,14 +47,11 @@
             </div>
         </div>
     </div>
-    <div class="col-md-1">
-        <div class="bd-light" style="height: 200px;margin-top: 80px;">
-            <span class="glyphicon glyphicon-chevron-right"></span>
+    <div class="col-md-6">
+        <div class="bg-light" style="display: block; overflow:auto;">
+            <h3>Les properties associees</h3>
+            <hesperides-model model="model"></hesperides-model>
         </div>
-    </div>
-    <div class="col-md-5">
-        <h3>Les properties associees</h3>
-        <hesperides-model model="model"></hesperides-model>
     </div>
 </div>
 

@@ -142,6 +142,11 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
         //Might be a bit tricky
     };
 
+    $scope.on_edit_platform = function(platform){
+        $scope.platform = platform;
+        $scope.update_main_box(platform);
+    };
+
     $scope.edit_properties = function(platform, module){
         ApplicationService.get_properties($routeParams.application, platform, module.get_properties_path()).then(function(properties){
             ModuleService.get_model(module).then(function(model){

@@ -72,7 +72,7 @@
                 <ul class="list-inline">
                     <li class="box" ng-repeat="(name, box) in box.children"
                         ng-include="'box_renderer.html'"></li>
-                    <li class="box" style="border: none" ng-if="box.modules.length > 0">
+                    <li ng-if="box.modules.length > 0">
                         <div ng-repeat="module in box.modules">
                             <button class="btn btn-info btn-sm" style="margin: 5px -1px 5px 5px"
                                     ng-click="edit_properties(platform, module)"><span class="glyphicon glyphicon-list"

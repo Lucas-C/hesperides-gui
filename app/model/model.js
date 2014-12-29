@@ -5,15 +5,12 @@
 
 var modelModule = angular.module('hesperides.model', ['hesperides.properties']);
 
-modelModule.directive('hesperidesModel', ['PropertiesService', function(PropertiesService){
+modelModule.directive('hesperidesModel', function(){
     return {
         restrict: 'E',
         templateUrl: 'model/model.html',
         scope: {
             model: '='
-        },
-        link: function(scope, element, attr){
-
         }
     }
-}]);
+});

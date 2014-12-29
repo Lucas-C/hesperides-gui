@@ -66,7 +66,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
     };
 
     $scope.add_box = function(box){
-        box["children"]["TO_CHANGE"] = new Box({parent_box: box});
+        box["children"]["TO_CHANGE"] = new Box({parent_box: box, name:"TO_CHANGE"});
     };
 
     $scope.remove_box = function(name, box){
@@ -74,6 +74,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
     };
 
     $scope.update_box_name = function(box, old_name, new_name){
+        box.name = new_name;
         box.parent_box["children"][new_name] = box.parent_box["children"][old_name];
         delete box.parent_box["children"][old_name];
     };

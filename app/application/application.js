@@ -40,7 +40,7 @@ applicationModule.factory('Platform', ['Module', function (Module) {
             version_id: -1
         }, data);
 
-        if(!_.isUndefined(this.platform_name)){//When it comes from rest entity
+        if (!_.isUndefined(this.platform_name)) {//When it comes from rest entity
             this.name = this.platform_name;
         }
 
@@ -54,7 +54,15 @@ applicationModule.factory('Platform', ['Module', function (Module) {
                 platform_name: this.name,
                 application_name: this.application_name,
                 application_version: this.application_version,
-                modules: this.modules,
+                modules: _.map(this.modules, function (module) {
+                    return {
+                        name: module.name,
+                        version: module.version,
+                        working_copy: module.is_working_copy,
+                        deployment_group: module.deployment_group,
+                        path: module.path
+                    }
+                }),
                 version_id: this.version_id
             };
         };
@@ -114,8 +122,8 @@ applicationModule.factory('ApplicationService', ['$http', 'Application', 'Platfo
         },
         save_properties: function (application_name, platform, properties, path) {
             properties = properties.to_rest_entity();
-            return $http.post('rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform.name) + '/properties?path=' + encodeURIComponent(path) +'&platform_vid=' + encodeURIComponent(platform.version_id), properties).then(function (response) {
-                $.notify("Les properties ont bien ete sauvagardees", "success");
+            return $http.post('rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform.name) + '/properties?path=' + encodeURIComponent(path) + '&platform_vid=' + encodeURIComponent(platform.version_id), properties).then(function (response) {
+                $.notify("Les properties ont bien ete sauvegardees", "success");
                 return new Properties(response.data);
             }, function (error) {
                 $.notify(error.data, "error");

@@ -3,7 +3,7 @@
  */
 var propertiesModule = angular.module('hesperides.properties', []);
 
-propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', 'ApplicationService', 'ModuleService', 'Page',  function ($scope, $routeParams, ApplicationService, ModuleService, Page) {
+propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal', 'ApplicationService', 'ModuleService', 'Module', 'Page',  function ($scope, $routeParams, $modal, ApplicationService, ModuleService, Module, Page) {
     Page.setTitle("Properties");
 
     $scope.platform = $routeParams.platform;
@@ -11,21 +11,30 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', 'Applic
 
     var Box = function(data){
         return angular.extend(this, {
-            parent: null,
+            parent_box: null,
+            name: "",
             children: {},
             modules: [],
             isEmpty: function(){
                 return _.keys(this.children).length === 0 && this.modules.length === 0;
+            },
+            get_path: function(){
+                return (this.parent_box == null ? "": (this.parent_box.get_path() + "#")) + this.name;
+            },
+            to_modules: function(){
+                return this.modules.concat(
+                    _.flatten(_.map(this.children, function(box){
+                        return box.to_modules();
+                    }))
+                );
             }
         }, data);
     };
 
-    $scope.on_edit_platform = function(platform){
-        /* Reset unit choice */
-        //$scope.unit = undefined;
+    $scope.update_main_box = function(platform){
 
         //Try to build the view depending on the different paths of the modules
-        var mainBox = new Box({parent: null});
+        var mainBox = new Box({parent_box: null});
 
         var add_to_box = function(box, folders, level, module){
             if(level > folders.length){
@@ -35,15 +44,19 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', 'Applic
                 //Found terminal level
                 box.modules.push(module);
             } else {
-                if(_.isUndefined(box["children"][folders[level]])){
-                    box["children"][folders[level]] = new Box({parent: box});
+                var name = folders[level];
+                if(_.isUndefined(box["children"][name])){
+                    box["children"][name] = new Box({parent_box: box, name: name});
                 }
-                return add_to_box(box["children"][folders[level]], folders, level+1, module);
+                return add_to_box(box["children"][name], folders, level+1, module);
             }
         };
 
         _.each(platform.modules, function(module){
             var path = module.path;
+            if(path.charAt(0) === '#'){ //Remove possible preceding #
+                path = path.substring(1, path.length);
+            }
             var folders = path.split('#');
             add_to_box(mainBox, folders, 0, module);
         });
@@ -53,24 +66,72 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', 'Applic
     };
 
     $scope.add_box = function(box){
-        box["children"]["TO_CHANGE"] = new Box({parent: box});
+        box["children"]["TO_CHANGE"] = new Box({parent_box: box});
     };
 
     $scope.remove_box = function(name, box){
-        delete box.parent["children"][name];
+        delete box.parent_box["children"][name];
     };
 
     $scope.update_box_name = function(box, old_name, new_name){
-        box.parent["children"][new_name] = box.parent["children"][old_name];
-        delete box.parent["children"][old_name];
+        box.parent_box["children"][new_name] = box.parent_box["children"][old_name];
+        delete box.parent_box["children"][old_name];
     };
 
+    $scope.search_module = function(box){
+        var modal = $modal.open({
+            templateUrl: 'application/search_module.html',
+            backdrop: 'static',
+            size: 'sm',
+            keyboard: false,
+            scope: $scope
+        });
+
+        modal.result.then(function(module){
+            $scope.add_module(module.name, module.version, module.is_working_copy, box);
+        });
+    };
+
+    $scope.find_modules_by_name = function (name) {
+        return ModuleService.with_name_like(name);
+    };
+
+    $scope.add_module = function(name, version, is_working_copy, box){
+        if(!_.some(box.modules, {'name': name, 'version': version, 'is_working_copy': is_working_copy})){
+            box.modules.push(new Module(
+                {
+                    name: name,
+                    version: version,
+                    is_working_copy: is_working_copy,
+                    deployment_group: "",
+                    path: box.get_path()
+                }
+            ));
+        }
+    };
+
+    $scope.delete_module = function(module, box){
+        _.remove(box.modules, function(existing){
+            return _.isEqual(existing, module);
+        });
+    };
+
+    $scope.save_platform_from_box = function(box){
+        $scope.platform.modules = box.to_modules();
+        ApplicationService.save_platform($scope.platform).then(function(platform){
+            $scope.platform = platform;
+            $scope.update_main_box(platform);
+        });
+    };
+
+    //TODO
     $scope.add_platform = function(platform_name) {
         if(!_.contains($scope.platforms, platform_name)){
              $scope.platforms.push(platform_name);
         }
     };
 
+    //TODO
     $scope.delete_platform = function(platform){
         //Might be a bit tricky
     };
@@ -104,7 +165,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', 'Applic
                 $.notify("La brique technique mentionee dans l'url n'existe pas", "error");
             } else {
                 $scope.platform = selected_platform;
-                $scope.on_edit_platform(selected_platform);
+                $scope.update_main_box(selected_platform);
             }
         };
 
@@ -219,57 +280,3 @@ propertiesModule.factory('Properties', function(){
     return Properties;
 
 });
-
-propertiesModule.factory('PropertiesService', ['$http', 'Properties', function ($http, Properties) {
-
-    return {
-        getModel: function(namespaces) {
-            var namespaces_as_string = _.isArray(namespaces) ? namespaces.join(",")  : namespaces;
-            return $http.get('rest/properties/model/'+encodeURIComponent(namespaces_as_string)).then(function(response){
-                return new Properties(response.data);
-            }, function (error) {
-                return new Properties({});
-            });
-        },
-        get: function (namespace) {
-            return $http.get('rest/properties/'+encodeURIComponent(namespace)).then(function (response) {
-                return new Properties(response.data);
-            }, function (error) {
-                $.notify(error.data, "error");
-                throw error;
-            });
-        },
-        getPropertiesMergedWithModel: function(properties_namespace, model_namespaces) {
-            var me = this;
-            return this.getModel(model_namespaces).then(function(model){
-
-                return me.get(properties_namespace).then(function(properties){
-                    return properties.mergeWithModel(model);
-                }, function(error){
-                    var properties = new Properties({namespace: properties_namespace});
-                    return properties.mergeWithModel(model);
-                });
-
-            });
-        },
-        save: function(properties){
-            properties = properties.toHesperidesEntity();
-            if(properties.versionID < 0){
-                return $http.post('rest/properties/'+encodeURIComponent(properties.namespace), properties).then(function(response) {
-                    $.notify("Les proprietes ont bien ete crees", "success");
-                    return new Properties(response.data);
-                }, function(error) {
-                    $.notify(error.data, "error");
-                });
-            } else {
-                return $http.put('rest/properties/'+encodeURIComponent(properties.namespace), properties).then(function(response) {
-                    $.notify("Les proprietes ont bien ete mises a jour", "success");
-                    return new Properties(response.data)
-                }, function(error) {
-                    $.notify(error.data, "error");
-                });
-            }
-        }
-    }
-
-}]);

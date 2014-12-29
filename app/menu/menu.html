@@ -151,6 +151,7 @@
                 <input type="text" class="form-control" id="fromTechno"
                        ng-model="technoSearched"
                        placeholder="Rechercher" required ng-focus="technoSearched = ''"
+                       typeahead-editable="false"
                        typeahead="techno as techno.title for techno in find_technos_by_name($viewValue)"
                        />
             </div>
@@ -211,6 +212,7 @@
                 <input type="text" class="form-control" id="fromModule"
                        ng-model="moduleSearched"
                        placeholder="Rechercher" required ng-focus="moduleSearched = ''"
+                       typeahead-editable="false"
                        typeahead="module as module.title for module in find_modules_by_name($viewValue)"
                         />
             </div>

@@ -121,6 +121,11 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
         $scope.platform.modules = box.to_modules();
         ApplicationService.save_platform($scope.platform).then(function(platform){
             $scope.platform = platform;
+            //Replace platforms in the list by the new one
+            var existing_index = 0;
+            _.find($scope.platforms, function(existing_platform, index){ existing_index = index; return existing_platform.name === platform.name; });
+            $scope.platforms[existing_index] = platform;
+            //Update the view
             $scope.update_main_box(platform);
         });
     };

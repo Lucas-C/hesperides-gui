@@ -96,18 +96,12 @@ menuModule.controller('MenuPropertiesCtrl', ['$scope', '$modal', '$location', 'A
     var modal;
 
     $scope.find_applications_by_name = function (name) {
-        return ApplicationService.with_name_like(name).then(function (applicationsByName) {
-            return _(applicationsByName).flatten().map(function (application) {
-                application.title = application.name + ", " + application.version //Display purposes
-                return application;
-            }).value();
-        });
+        return ApplicationService.with_name_like(name);
     };
 
     $scope.open_properties_page = function (application_name, platform_name) {
         var path = '/properties/' + application_name;
-        //if (platform) path += '?platform=' + platform;
-        $location.url(path).search({platform: platform});
+        $location.url(path).search({platform: platform_name});
         $scope.applicationSearched = "";
         if (modal) modal.close();
     };

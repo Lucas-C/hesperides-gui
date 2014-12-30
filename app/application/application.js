@@ -84,6 +84,14 @@ applicationModule.factory('ApplicationService', ['$http', 'Application', 'Platfo
                 throw error;
             });
         },
+        with_name_like: function(name){
+            return $http.post('rest/applications/perform_search?name=' + encodeURIComponent(name)).then(function (response) {
+                return response.data;
+            }, function (error) {
+                $.notify(error.data, "error");
+                throw error;
+            });
+        },
         get_platform: function (application_name, platform_name) {
             return $http.get('rest/applications/' + encodeURIComponent(application_name) + '/platforms' + encodeURIComponent(platform_name)).then(function (response) {
                 return new Platform(response.data);

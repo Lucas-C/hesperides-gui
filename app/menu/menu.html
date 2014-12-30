@@ -64,8 +64,8 @@
                                                   type="text" ng-model="applicationSearched"
                                                   ng-blur="applicationSearched=''"
                                                   placeholder="Rechercher une application pour y éditer/ajouter des properties"
-                                                  typeahead="application as application.title for application in find_applications_by_name($viewValue)"
-                                                  typeahead-on-select="open_properties_page($item.name, $item.version)"/></a>
+                                                  typeahead="application.name for application in find_applications_by_name($viewValue)"
+                                                  typeahead-on-select="open_properties_page($item.name, null)"/></a>
                             </li>
                         </ul>
                     </li>
@@ -236,6 +236,7 @@
                 <label for="platformApplication">Application</label>
                 <input type="text" class="form-control" required ng-trim="true"
                        ng-model="new_platform.application_name"
+                       placeholder="Indiquer le trigramme applicatif"
                        id="platformApplication"
                 />
             </div>

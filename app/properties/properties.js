@@ -3,7 +3,7 @@
  */
 var propertiesModule = angular.module('hesperides.properties', []);
 
-propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal', 'ApplicationService', 'ModuleService', 'Module', 'Page',  function ($scope, $routeParams, $modal, ApplicationService, ModuleService, Module, Page) {
+propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal', 'ApplicationService', 'ModuleService', 'ApplicationModule', 'Page',  function ($scope, $routeParams, $modal, ApplicationService, ModuleService, Module, Page) {
     Page.setTitle("Properties");
 
     $scope.platform = $routeParams.platform;
@@ -65,8 +65,8 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
 
     };
 
-    $scope.add_box = function(box){
-        box["children"]["TO_CHANGE"] = new Box({parent_box: box, name:"TO_CHANGE"});
+    $scope.add_box = function(name, box){
+        box["children"][name] = new Box({parent_box: box, name:name});
     };
 
     $scope.remove_box = function(name, box){
@@ -77,6 +77,34 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
         box.name = new_name;
         box.parent_box["children"][new_name] = box.parent_box["children"][old_name];
         delete box.parent_box["children"][old_name];
+    };
+
+    $scope.open_add_box_dialog = function(box){
+        var modal = $modal.open({
+            templateUrl: 'application/add_box.html',
+            backdrop: 'static',
+            size: 'sm',
+            keyboard: false,
+            scope: $scope
+        });
+
+        modal.result.then(function(name){
+            $scope.add_box(name, box);
+        });
+    };
+
+    $scope.open_add_instance_dialog = function(module){
+        var modal = $modal.open({
+            templateUrl: 'application/add_instance.html',
+            backdrop: 'static',
+            size: 'sm',
+            keyboard: false,
+            scope: $scope
+        });
+
+        modal.result.then(function(name){
+            $scope.add_instance(name, module);
+        });
     };
 
     $scope.search_module = function(box){
@@ -109,6 +137,14 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
                 }
             ));
         }
+    };
+
+    $scope.add_instance = function(name, module){
+        module.create_new_instance(name);
+    };
+
+    $scope.delete_instance = function(instance, module){
+        module.delete_instance(instance);
     };
 
     $scope.delete_module = function(module, box){
@@ -152,6 +188,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
             ModuleService.get_model(module).then(function(model){
                 $scope.properties = properties.mergeWithModel(model);
                 $scope.selected_module = module;
+                $scope.instance = undefined; //hide the instanc epanel if opened
             });
         });
     };
@@ -161,6 +198,13 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
             ModuleService.get_model(module).then(function(model){
                 $scope.properties = properties.mergeWithModel(model);
             });
+        });
+    };
+
+    $scope.edit_instance = function(instance){
+        ApplicationService.get_instance_model($routeParams.application, $scope.platform, instance).then(function(model){
+                $scope.instance = instance.mergeWithModel(model);
+                $scope.properties = undefined; //hide the properties panel if opened
         });
     };
 
@@ -178,7 +222,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
                 $scope.platform = selected_platform;
                 $scope.update_main_box(selected_platform);
             }
-        };
+        }
 
     }, function(error){
         $.notify(error.data, "error");

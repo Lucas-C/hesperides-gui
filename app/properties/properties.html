@@ -36,7 +36,46 @@
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-success" ng-disabled="searchModuleForm.$invalid"
-                            ng-click="$close(moduleSearched, box)" ng-hide="isReadOnly">Ok
+                            ng-click="$close(moduleSearched)" ng-hide="isReadOnly">Ok
+                    </button>
+                    <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
+                </div>
+            </script>
+
+            <script type="text/ng-template" id="application/add_box.html">
+                <div class="modal-header">
+                    <h3 class="modal-title">Ajouter un composant applicatif</h3>
+                </div>
+                <div class="modal-body">
+                    <form name="addComponentForm">
+                        <label for="name">Nom</label>
+                        <input type="text" class="form-control" id="name"
+                               ng-model="new_component_name"
+                               placeholder="Exemple WDIGST,..." required />
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success" ng-disabled="addComponentForm.$invalid"
+                            ng-click="$close(new_component_name)" ng-hide="isReadOnly">Ok
+                    </button>
+                    <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
+                </div>
+            </script>
+
+            <script type="text/ng-template" id="application/add_instance.html">
+                <div class="modal-header">
+                    <h3 class="modal-title">Ajouter une instance</h3>
+                </div>
+                <div class="modal-body">
+                    <form name="addInstanceForm">
+                        <label for="name">Nom</label>
+                        <input type="text" class="form-control" id="name"
+                               ng-model="new_instance_name" required />
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success" ng-disabled="addInstanceForm.$invalid"
+                            ng-click="$close(new_instance_name)" ng-hide="isReadOnly">Ok
                     </button>
                     <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
                 </div>
@@ -53,7 +92,7 @@
                                 class="btn btn-primary btn-xs">
                             <span class="glyphicon glyphicon-plus"></span>
                         </button>
-                        <button ng-click="add_box(box)"
+                        <button ng-click="open_add_box_dialog(box)"
                                 class="btn btn-success btn-xs">
                             <span class="glyphicon glyphicon-inbox"></span>
                         </button>
@@ -66,23 +105,45 @@
                 <ul class="list-inline">
                     <li class="box" ng-repeat="(name, box) in box.children"
                         ng-include="'box_renderer.html'"></li>
-                    <li ng-if="box.modules.length > 0">
-                        <div ng-repeat="module in box.modules">
-                            <button class="btn btn-info btn-sm" style="margin: 5px -1px 5px 5px"
-                                    ng-click="edit_properties(platform, module)"><span class="glyphicon glyphicon-list"
-                                                                                       style="margin-right: 10px"></span>{{module.title}}
-                            </button>
-                            <button ng-click="delete_module(module, box)" style="margin: 5px 5px 5px -1px"
-                                    class="btn btn-danger btn-sm">
-                                <span class="glyphicon glyphicon-trash"></span>
-                            </button>
+                    <li ng-if="box.modules.length > 0" class="box instance" ng-repeat="module in box.modules">
+                        <div id="header" style="height: 38px; width: 100%">
+                            <div class="col-md-6" style="padding-left:10px;white-space: nowrap;">
+                                <span><strong>{{module.title}}</strong></span>
+                            </div>
+                            <div class="col-md-6 text-right" style="padding-right:10px">
+                                <button ng-click="open_add_instance_dialog(module)"
+                                        class="btn btn-primary btn-xs">
+                                    <span class="glyphicon glyphicon-plus"></span>
+                                </button>
+                                <button class="btn btn-info btn-xs"
+                                        ng-click="edit_properties(platform, module)"><span class="glyphicon glyphicon-list"></span>
+                                </button>
+                                <button ng-click="delete_module(module, box)"
+                                        class="btn btn-danger btn-xs">
+                                    <span class="glyphicon glyphicon-trash"></span>
+                                </button>
+                            </div>
+                        </div>
+                        <div>
+                            <ul class="list-inline" style="padding-top:10px; padding-bottom:10px">
+                                <li ng-repeat="instance in module.instances">
+                                    <button ng-click="edit_instance(instance)"
+                                            class="btn btn-info btn-xs">
+                                        <span class="glyphicon glyphicon-list" style="margin-right:10px"></span>{{instance.name}}
+                                    </button>
+                                    <button ng-click="delete_instance(instance, module)"
+                                            class="btn btn-danger btn-xs">
+                                        <span class="glyphicon glyphicon-trash"></span>
+                                    </button>
+                                </li>
+                            </ul>
                         </div>
                     </li>
                 </ul>
             </script>
 
             <h3><span style="margin-right: 30px">Representation logique de <strong>{{platform.name}}</strong></span>
-                <button ng-click="add_box(mainBox)" class="btn btn-sm">
+                <button ng-click="open_add_box_dialog(mainBox)" class="btn btn-sm">
                     <span class="glyphicon glyphicon-plus" style="padding-right:10px"></span>
                     <span>Ajouter un composant applicatif</span>
                 </button>
@@ -105,8 +166,7 @@
 <div class="row" ng-show="properties">
     <div class="col-md-12">
         <div class="bg-light">
-            <h3><span style="margin-right: 30px">Les properties associees a <strong>{{selected_module.path.split('#').join(' | ')}} |
-                {{selected_module.title}}</strong></span>
+            <h3><span style="margin-right: 30px">Les properties associees a <strong>{{selected_module.path.split('#').join(' | ')}} | {{selected_module.title}}</strong></span>
                 <button ng-click="save_properties(properties, selected_module)" class="btn btn-sm">
                     <span class="glyphicon glyphicon-saved" style="padding-right:10px"></span>
                     <span>Sauver les properties</span>
@@ -114,6 +174,27 @@
             </h3>
             <properties-list properties="properties">
             </properties-list>
+        </div>
+    </div>
+</div>
+<div class="row" ng-show="instance">
+    <div class="col-md-12">
+        <div class="bg-light">
+            <h3>
+                <span style="margin-right: 30px">Les properties associees a l'instance <strong>{{instance.name}}</strong></span>
+                <button ng-click="save_platform_from_box(mainBox)" class="btn btn-sm">
+                    <span class="glyphicon glyphicon-saved" style="padding-right:10px"></span>
+                    <span>Sauver l'instance</span>
+                </button>
+            </h3>
+            <form class="form-horizontal narrow" role="form">
+                <div class="form-group" ng-class="{'property-not-used': !key_value_property.inModel}" ng-repeat="key_value_property in instance.key_values | orderBy:'name' track by $index">
+                    <label for="input-{{ key_value_property.name }}" class="col-md-3 control-label">{{ key_value_property.name }}</label>
+                    <div class="col-md-9">
+                        <input id="input-{{ key_value_property.name }}" type="text" class="form-control" placeholder="{{key_value_property.comment}}" ng-model="key_value_property.value" tooltip="{{key_value_property.comment}}" tooltip-trigger="focus" tooltip-placement="right" />
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>

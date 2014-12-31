@@ -172,6 +172,8 @@ h4.app-unit button {
     background-image: linear-gradient(#E5E5E5, #FFFFFF, #E5E5E5);
 }
 
-.box ul {
-
+.box .instance div#header {
+    background-color: #FFFFFF;
+    background-image: none;
+    font-size: 12px;
 }

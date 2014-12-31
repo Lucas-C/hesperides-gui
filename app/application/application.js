@@ -26,7 +26,7 @@ applicationModule.factory('Application', ['Platform', function (Platform) {
 
 }]);
 
-applicationModule.factory('Platform', ['Module', function (Module) {
+applicationModule.factory('Platform', ['ApplicationModule', function (Module) {
 
     var Platform = function (data) {
 
@@ -55,13 +55,7 @@ applicationModule.factory('Platform', ['Module', function (Module) {
                 application_name: this.application_name,
                 application_version: this.application_version,
                 modules: _.map(this.modules, function (module) {
-                    return {
-                        name: module.name,
-                        version: module.version,
-                        working_copy: module.is_working_copy,
-                        deployment_group: module.deployment_group,
-                        path: module.path
-                    }
+                    return module.to_rest_entity();
                 }),
                 version_id: this.version_id
             };
@@ -73,7 +67,141 @@ applicationModule.factory('Platform', ['Module', function (Module) {
 
 }]);
 
-applicationModule.factory('ApplicationService', ['$http', 'Application', 'Platform', 'Properties', function ($http, Application, Platform, Properties) {
+applicationModule.factory('ApplicationModule', ['Instance', function (Instance) {
+
+    var ApplicationModule = function (data) {
+
+        var me = this;
+
+        angular.extend(this, {
+            name: "",
+            version: "",
+            is_working_copy: true,
+            instances: []
+        }, data);
+
+        if (!_.isUndefined(data.working_copy)) { //When it is created through a rest entity
+            this.is_working_copy = data.working_copy;
+        }
+
+        /* Object casting when instance is created */
+        this.instances = _.map(this.instances, function (data) {
+            return new Instance(data);
+        });
+
+        this.title = this.name + ', ' + this.version + (this.is_working_copy ? ' (working copy)' : '');
+
+        this.create_new_instance = function(name){
+            if(!_.find(this.instances, function(instance) { return instance.name === name; })){
+                this.instances.push(new Instance({name: name}));
+            }
+        };
+
+        this.delete_instance = function(instance){
+            this.instances = _.without(this.instances, instance);
+        };
+
+        this.to_rest_entity = function () {
+            return {
+                name: this.name,
+                version: this.version,
+                working_copy: this.is_working_copy,
+                deployment_group: this.deployment_group,
+                path: this.path,
+                instances: _.map(this.instances, function(instance){
+                    return instance.to_rest_entity();
+                })
+            };
+        };
+
+        this.get_properties_path = function(){
+            return this.path +'#'+this.name+'#'+this.version+'#'+(this.is_working_copy ? "WORKINGCOPY" : "RELEASE");
+        };
+
+    };
+
+    return ApplicationModule;
+
+}]);
+
+applicationModule.factory('InstanceModel', function () {
+
+    var InstanceModel = function (data) {
+
+        angular.extend(this, {
+            keys: []
+        }, data);
+
+        this.hasKey = function (name) {
+            return this.keys.some(function (key) {
+                return key.name === name;
+            });
+        };
+
+    };
+
+    return InstanceModel;
+
+});
+
+applicationModule.factory('Instance', function () {
+
+    var Instance = function (data) {
+
+        angular.extend(this, {
+            name: "",
+            key_values: []
+        }, data);
+
+        this.hasKey = function (name) {
+            return _.some(this.key_values, function (key) {
+                return key.name === name;
+            });
+        };
+
+        this.mergeWithModel = function (model) {
+            var me = this;
+
+            /* Mark key_values that are in the model */
+            _.each(this.key_values, function (key_value) {
+                key_value.inModel = model.hasKey(key_value.name);
+            });
+
+            /* Add key_values that are only in the model */
+            _(model.keys).filter(function (model_key_value) {
+                return !me.hasKey(model_key_value.name);
+            }).each(function (model_key_value) {
+                me.key_values.push({
+                    name: model_key_value.name,
+                    comment: model_key_value.comment,
+                    value: "",
+                    inModel: true
+                });
+            });
+
+            return this;
+        };
+
+        this.to_rest_entity = function () {
+            return {
+                name: this.name,
+                key_values: _.map(this.key_values, function (kv) {
+                    return {
+                        name: kv.name,
+                        comment: kv.comment,
+                        value: kv.value
+                    }
+                })
+            }
+        }
+
+    };
+
+    return Instance;
+
+});
+
+applicationModule.factory('ApplicationService', ['$http', 'Application', 'Platform', 'Properties', 'InstanceModel', function ($http, Application, Platform, Properties, InstanceModel) {
 
     return{
         get: function (name) {
@@ -133,6 +261,14 @@ applicationModule.factory('ApplicationService', ['$http', 'Application', 'Platfo
             return $http.post('rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform.name) + '/properties?path=' + encodeURIComponent(path) + '&platform_vid=' + encodeURIComponent(platform.version_id), properties).then(function (response) {
                 $.notify("Les properties ont bien ete sauvegardees", "success");
                 return new Properties(response.data);
+            }, function (error) {
+                $.notify(error.data, "error");
+                throw error;
+            });
+        },
+        get_instance_model: function (application_name, platform, instance) {
+            return $http.get('rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform.name) + '/instances/' + encodeURIComponent(instance.name) + '/model').then(function (response) {
+                return new InstanceModel(response.data);
             }, function (error) {
                 $.notify(error.data, "error");
                 throw error;

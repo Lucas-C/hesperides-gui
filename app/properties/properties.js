@@ -198,6 +198,8 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
             ModuleService.get_model(module).then(function(model){
                 $scope.properties = properties.mergeWithModel(model);
             });
+            //Increase platform number
+            $scope.platform.version_id = $scope.platform.version_id + 1;
         });
     };
 

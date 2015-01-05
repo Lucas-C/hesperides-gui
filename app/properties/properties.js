@@ -180,6 +180,9 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
 
     $scope.on_edit_platform = function(platform){
         $scope.platform = platform;
+        $scope.selected_module = undefined;
+        $scope.instance = undefined;
+        $scope.properties = undefined;
         $scope.update_main_box(platform);
     };
 

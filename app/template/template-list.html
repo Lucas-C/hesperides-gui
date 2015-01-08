@@ -10,4 +10,4 @@
             style="font-size: 12px;margin-left: 5px;">{{template_entry.name}}</em>
     </p>
 </blockquote>
-<button ng-click="add_template()" class="btn">Ajouter un template</button>
+<button ng-click="add_template()" class="btn" ng-show="!isReadOnly">Ajouter un template</button>

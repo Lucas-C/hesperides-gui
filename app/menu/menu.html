@@ -136,7 +136,7 @@
                 <label for="fromTechno">A partir de</label>
                 <input type="text" class="form-control" id="fromTechno"
                        ng-model="technoSearched"
-                       placeholder="Rechercher" required ng-focus="technoSearched = ''"
+                       placeholder="Rechercher" required
                        typeahead-editable="false"
                        typeahead="techno as techno.title for techno in find_technos_by_name($viewValue)"
                        />
@@ -197,7 +197,7 @@
                 <label for="fromModule">A partir de</label>
                 <input type="text" class="form-control" id="fromModule"
                        ng-model="moduleSearched"
-                       placeholder="Rechercher" required ng-focus="moduleSearched = ''"
+                       placeholder="Rechercher" required
                        typeahead-editable="false"
                        typeahead="module as module.title for module in find_modules_by_name($viewValue)"
                         />

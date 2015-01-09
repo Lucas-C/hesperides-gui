@@ -28,7 +28,7 @@
                         <label for="module">Composant technique</label>
                         <input type="text" class="form-control" id="module"
                                ng-model="moduleSearched"
-                               placeholder="Rechercher" required ng-focus="moduleSearched = ''"
+                               placeholder="Rechercher" required
                                typeahead-editable="false"
                                typeahead="module as module.title for module in find_modules_by_name($viewValue)"
                                 />
@@ -181,10 +181,10 @@
     <div class="col-md-12">
         <div class="bg-light">
             <h3>
-                <span style="margin-right: 30px">Les properties associees a l'instance <strong>{{instance.name}}</strong></span>
+                <span style="margin-right: 30px">Les properties d'instance associees a <strong>{{instance.name}}</strong></span>
                 <button ng-click="save_platform_from_box(mainBox)" class="btn btn-sm">
                     <span class="glyphicon glyphicon-saved" style="padding-right:10px"></span>
-                    <span>Sauver l'instance</span>
+                    <span>Sauver les properties</span>
                 </button>
             </h3>
             <form class="form-horizontal narrow" role="form">

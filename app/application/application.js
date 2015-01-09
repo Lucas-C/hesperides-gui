@@ -270,8 +270,7 @@ applicationModule.factory('ApplicationService', ['$http', 'Application', 'Platfo
             return $http.get('rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform.name) + '/instances/' + encodeURIComponent(instance.name) + '/model').then(function (response) {
                 return new InstanceModel(response.data);
             }, function (error) {
-                $.notify(error.data, "error");
-                throw error;
+                return new InstanceModel({});
             });
         }
     };

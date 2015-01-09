@@ -48,16 +48,9 @@ hesperidesModule.config(['$routeProvider', function ($routeProvider) {
             templateUrl: 'properties/properties.html',
             controller: 'PropertiesCtrl'
         }).
-        when('/contexts/:application/:version', {
-            templateUrl: 'instance/context.html',
-            controller: 'ContextCtrl'
-        }).
         when('/techno/:name/:version', {
             templateUrl: 'techno/techno.html',
             controller: 'TechnoCtrl'
-        }).
-        when('/help/api', {
-            templateUrl: 'help/help_api.html'
         }).
         when('/help/swagger', {
             templateUrl: 'swagger/swagger.html'

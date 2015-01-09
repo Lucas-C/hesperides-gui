@@ -70,20 +70,6 @@
                         </ul>
                     </li>
 
-                    <li class="dropdown" ng-controller="MenuContextCtrl">
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Pour des instances<span class="caret"></span></a>
-                        <ul class="dropdown-menu" role="menu" ng-click="$event.stopPropagation()"
-                            style="width: 450px !important">
-                            <li><a href=""><input style="border: none;background:transparent;width: 420px !important"
-                                                  type="text" ng-model="applicationSearched"
-                                                  ng-blur="applicationSearched=''"
-                                                  placeholder="Rechercher une application pour y éditer/ajouter des instances"
-                                                  typeahead="application as application.title for application in find_applications_by_name($viewValue)"
-                                                  typeahead-on-select="open_context_page($item.name, $item.version)"/></a>
-                            </li>
-                        </ul>
-                    </li>
-
                 </ul>
 
                 <ul class="nav navbar-nav navbar-right">

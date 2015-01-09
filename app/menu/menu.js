@@ -124,29 +124,6 @@ menuModule.controller('MenuPropertiesCtrl', ['$scope', '$modal', '$location', 'A
 }]);
 
 
-menuModule.controller('MenuContextCtrl', ['$scope', '$location', 'ApplicationService', function ($scope, $location, ApplicationService) {
-
-    var modal;
-
-    $scope.open_context_page = function (name, version) {
-        $location.path('/contexts/' + name + '/' + version);
-        $scope.applicationSearched = "";
-        if (modal) modal.close();
-    };
-
-    $scope.find_applications_by_name = function (name) {
-        return ApplicationService.with_name_like(name).then(function (applicationsByName) {
-            return _(applicationsByName).flatten().map(function (application) {
-                application.title = application.name + ", " + application.version //Display purposes
-                return application;
-            }).value();
-        });
-    };
-
-}]);
-
-
-
 
 
 

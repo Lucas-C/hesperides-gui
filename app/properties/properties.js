@@ -136,11 +136,13 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
                     path: box.get_path()
                 }
             ));
+            $scope.save_platform_from_box($scope.mainBox);
         }
     };
 
     $scope.add_instance = function(name, module){
         module.create_new_instance(name);
+        $scope.save_platform_from_box($scope.mainBox);
     };
 
     $scope.delete_instance = function(instance, module){
@@ -151,6 +153,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
         _.remove(box.modules, function(existing){
             return _.isEqual(existing, module);
         });
+        $scope.save_platform_from_box($scope.mainBox);
     };
 
     $scope.save_platform_from_box = function(box){

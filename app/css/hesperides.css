@@ -177,3 +177,7 @@ h4.app-unit button {
     background-image: none;
     font-size: 12px;
 }
+
+/* CodeMirror Mode */
+.cm-hesperides {color: #cc051e;}
+.cm-hesperides-token {color: #a100cc;}

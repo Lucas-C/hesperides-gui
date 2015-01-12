@@ -5,9 +5,66 @@ var templateModule = angular.module('hesperides.template', []);
 
 templateModule.factory('HesperidesTemplateModal', ['TemplateService', '$modal', '$rootScope', function (TemplateService, $modal, $rootScope) {
 
+    var hesperidesOverlay = {
+        startState: function() {
+            return {
+                inMustache: false
+            }
+        },
+        token: function(stream, state) {
+            var ch;
+            if (stream.match("{{")){ //We found an hesperides token
+                state.inMustache = true; //Remember what we do
+                state.inMustacheInner = true;
+                return "hesperides";
+            }
+            if(state.inMustache) {
+                while ((ch = stream.next()) != null) { //Read characters through the token
+                    if (ch == "}" && stream.next() == "}") { //End of hesperides token
+                        if(state.inMustacheInner){
+                            stream.backUp(2);
+                            state.inMustacheInner = false;
+                            return "hesperides-token"; //Color for the inner token
+                        } else {
+                            stream.eat("}");
+                            state.inMustache = false; //Remember to update state
+                            state.inMustacheInner = false;
+                            return "hesperides"; //Color for the }}
+                        }
+                    }
+                    if(ch == "|"){ //Found an inner item limit
+                        if(state.inMustacheInner){
+                            stream.backUp(1);
+                            state.inMustacheInner = false;
+                            return "hesperides-token"; //Color for the inner token
+                        } else {
+                            state.inMustacheInner = true;
+                            return "hesperides"; //Color for the | character
+                        }
+                    }
+                }
+                return "hesperides-token"; //return the style for syntax highlight even if we reached end of line
+            }
+            while (stream.next() != null && !stream.match("{{", false)) {} //Skip everything unless we find an hesperides token or reach the end of line
+            return null;
+        }
+    };
+
+    /* Thisis for the initialization, to make sure we have at least the simple Mustache mode selected */
+    CodeMirror.defineMode("hesperides", function(config, parserConfig) {
+        return CodeMirror.overlayMode(
+            CodeMirror.getMode(config, parserConfig.backdrop || ""),
+            hesperidesOverlay
+        );
+    });
+
     var defaultScope = {
+        codemirrorModes: [
+            { name: "Simple Hesperides", mimetype: ""},
+            { name: "Properties File", mimetype:"text/x-properties"}
+        ],
         codeMirrorOptions: {
-            mode: 'text',
+            mode: 'hesperides',
             lineNumbers: true,
             extraKeys: {
                 'F11': function (cm) {
@@ -21,7 +78,20 @@ templateModule.factory('HesperidesTemplateModal', ['TemplateService', '$modal', 
                     if (cm.getOption('fullScreen')) cm.setOption('fullScreen', false);
                     cm.focus();
                 }
+            },
+            onLoad: function(_editor){
+                defaultScope.editor = _editor;
             }
+        },
+        changeCodeMirrorMode: function(new_mode){
+            var mode_name = "hesperides+"+new_mode;
+            CodeMirror.defineMode(mode_name, function(config, parserConfig) {
+                return CodeMirror.overlayMode(
+                    CodeMirror.getMode(config, parserConfig.backdrop || new_mode),
+                    hesperidesOverlay
+                );
+            });
+            defaultScope.editor.setOption("mode", mode_name);
         }
     };
 

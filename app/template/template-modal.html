@@ -25,6 +25,10 @@
                 <small class="text-right" style="padding-left: 10px; color: grey;font-weight:normal"><kbd>F11</kbd>
                     Activer / <kbd>Esc</kbd> Desactiver l'edtion en plein ecran
                 </small>
+                <small class="text-right" style="float: right">
+                    Mode MIME:
+                    <select ng-init="selectedMode = codemirrorModes[0]" ng-options="mode.name for mode in codemirrorModes" ng-model="selectedMode" ng-change="changeCodeMirrorMode(selectedMode.mimetype)"></select>
+                </small>
             </label>
             <ui-codemirror id="templateContent" ui-codemirror-opts="codeMirrorOptions"
                            ng-model="template.content"></ui-codemirror>

@@ -123,6 +123,29 @@ menuModule.controller('MenuPropertiesCtrl', ['$scope', '$modal', '$location', 'A
 
 }]);
 
+menuModule.controller('MenuHelpCtrl', ['$scope', '$modal', '$http', function($scope, $modal, $http){
+
+    $scope.display_hesperides_informations = function(){
+
+        $scope.front_version = '0.2-SNAPSHOT';
+
+        //Get the backend versions
+        $http.get('rest/versions').then(function(response){
+            $scope.backend_version = response.data.backend_version;
+            $scope.api_version = response.data.api_version;
+        }, function (error) {
+            throw error;
+        });
+
+        var modal = $modal.open({
+            templateUrl: 'help-menu-modal.html',
+            scope: $scope
+        });
+
+    };
+
+}]);
+
 
 
 

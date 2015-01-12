@@ -10,7 +10,8 @@
 
                 <p class="navbar-text"><span class="divider">/</span></p>s
 
-                <p class="navbar-text">Regrouper des templates<span class="glyphicon glyphicon-arrow-right" style="margin-left: 10px"></span></p>
+                <p class="navbar-text">Regrouper des templates<span class="glyphicon glyphicon-arrow-right"
+                                                                    style="margin-left: 10px"></span></p>
 
                 <ul class="nav navbar-nav navbar-left">
 
@@ -19,7 +20,8 @@
                                 class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu" ng-click="$event.stopPropagation()">
                             <li><a href="" ng-click="open_create_techno_dialog()">Creer une working copy</a></li>
-                            <li><a href="" ng-click="open_create_techno_from_dialog()">Creer une working copy à partir de...</a></li>
+                            <li><a href="" ng-click="open_create_techno_from_dialog()">Creer une working copy à partir
+                                de...</a></li>
                             <li class="divider"></li>
                             <li><a href=""><input style="border: none;background:transparent" type="text"
                                                   ng-model="technoSearched" ng-blur="technoSearched=''"
@@ -34,8 +36,10 @@
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">En composant technique<span
                                 class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu" ng-click="$event.stopPropagation()">
-                            <li><a href="" ng-click="open_create_module_dialog()">Creer un nouveau composant technique</a></li>
-                            <li><a href="" ng-click="open_create_module_from_dialog()">Creer une working copy à partir de...</a></li>
+                            <li><a href="" ng-click="open_create_module_dialog()">Creer un nouveau composant
+                                technique</a></li>
+                            <li><a href="" ng-click="open_create_module_from_dialog()">Creer une working copy à partir
+                                de...</a></li>
                             <li class="divider"></li>
                             <li><a href=""><input style="border: none;background:transparent" type="text"
                                                   ng-model="moduleSearched" ng-blur="moduleSearched=''"
@@ -49,7 +53,8 @@
 
                 <p class="navbar-text"><span class="divider">/</span></p>
 
-                <p class="navbar-text">Valoriser des properties<span class="glyphicon glyphicon-arrow-right" style="margin-left: 10px"></span></p>
+                <p class="navbar-text">Valoriser des properties<span class="glyphicon glyphicon-arrow-right"
+                                                                     style="margin-left: 10px"></span></p>
 
                 <ul class="nav navbar-nav navbar-left">
 
@@ -74,10 +79,11 @@
 
                 <ul class="nav navbar-nav navbar-right">
 
-                    <li class="dropdown">
+                    <li class="dropdown" ng-controller="MenuHelpCtrl">
                         <a href="#" class="dropdown-toggle" data-toggle="dropdown">Aide <span class="caret"></span></a>
                         <ul class="dropdown-menu" role="menu" ng-click="$event.stopPropagation()">
                             <li><a href="/swagger.html">Swagger</a></li>
+                            <li><a href="" ng-click="display_hesperides_informations()">A propos</a></li>
                         </ul>
                     </li>
 
@@ -87,6 +93,20 @@
     </nav>
 
 </div>
+
+<script type="text/ng-template" id="help-menu-modal.html">
+    <div class="modal-header">
+        <h3 class="modal-title">A propos</h3>
+    </div>
+    <div class="modal-body">
+        <p><strong>Version du backend :</strong> {{backend_version}}</p>
+        <p><strong>Version de l'API :</strong> {{api_version}}</p>
+        <p><strong>Version du front :</strong> {{front_version}}</p>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-primary" ng-click="$dismiss('cancel')">Fermer</button>
+    </div>
+</script>
 
 <script type="text/ng-template" id="techno-menu-modal.html">
     <div class="modal-header">
@@ -137,13 +157,14 @@
                        placeholder="Rechercher" required
                        typeahead-editable="false"
                        typeahead="techno as techno.title for techno in find_technos_by_name($viewValue)"
-                       />
+                        />
             </div>
         </form>
     </div>
     <div class="modal-footer">
         <button class="btn btn-primary" ng-disabled="technoForm.$invalid"
-                ng-click="create_techno_from(new_techno.name, new_techno.version, technoSearched.name, technoSearched.version, technoSearched.is_working_copy)">Creer
+                ng-click="create_techno_from(new_techno.name, new_techno.version, technoSearched.name, technoSearched.version, technoSearched.is_working_copy)">
+            Creer
         </button>
         <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
     </div>
@@ -222,7 +243,7 @@
                        ng-model="new_platform.application_name"
                        placeholder="Indiquer le trigramme applicatif"
                        id="platformApplication"
-                />
+                        />
             </div>
             <div class="form-group">
                 <label for="platformName">Plateforme</label>
@@ -231,8 +252,10 @@
             </div>
             <div class="form-group">
                 <label for="platformApplicationVersion">Version de l'application</label>
-                <input type="text" class="form-control" required ng-trim="true" ng-model="new_platform.application_version"
-                       id="platformApplicationVersion" placeholder="Indiquer la version de l'application sur cette plateforme"/>
+                <input type="text" class="form-control" required ng-trim="true"
+                       ng-model="new_platform.application_version"
+                       id="platformApplicationVersion"
+                       placeholder="Indiquer la version de l'application sur cette plateforme"/>
             </div>
         </form>
     </div>

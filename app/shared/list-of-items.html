@@ -1,5 +1,5 @@
 <ul class="list-inline" style="padding-left: 20px;">
-    <li ng-repeat="item in items track by $index">
+    <li ng-repeat="item in items | orderBy:sortOn">
         <button ng-click="selfEdit(item)" ng-mouseenter="hover = true" ng-mouseleave="hover = false"
                 class="btn"
                 ng-class="{'btn-info': (!item === selectedItem), 'btn-warning': (item === selectedItem), 'btn-sm': size === 'small'}"

@@ -28,6 +28,10 @@ components.directive('listOfItems', ['$parse', function ($parse) {
                 return $parse(attrs.label)(scope.$parent, {$item: item});
             };
 
+            scope.sortOn = function (item) {
+                return $parse(attrs.sorton)(scope.$parent, {$item: item});
+            };
+
             scope.selfEdit = function (item) {
                 if(scope.selectable){
                     $parse(attrs.onedit)(scope.$parent, {$item: item});

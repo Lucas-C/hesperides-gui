@@ -113,9 +113,23 @@ menuModule.controller('MenuPropertiesCtrl', ['$scope', '$modal', '$location', 'A
         });
     };
 
+    $scope.create_platform_from = function(application_name, platform_name, application_version, from_application, from_platform){
+        var platform = new Platform({name: platform_name, application_name: application_name, application_version: application_version});
+        ApplicationService.create_platform_from(platform, from_application, from_platform).then(function(platform){
+            $scope.open_properties_page(platform.application_name, platform.platform_name);
+        });
+    };
+
     $scope.open_create_platform_dialog = function () {
         modal = $modal.open({
             templateUrl: 'platform-menu-modal.html',
+            scope: $scope
+        });
+    };
+
+    $scope.open_create_platform_from_dialog = function () {
+        modal = $modal.open({
+            templateUrl: 'platform-menu-modal-from.html',
             scope: $scope
         });
     };

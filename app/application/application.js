@@ -248,6 +248,16 @@ applicationModule.factory('ApplicationService', ['$http', 'Application', 'Platfo
                 });
             }
         },
+        create_platform_from: function(platform, from_application, from_platform) {
+            platform = platform.to_rest_entity();
+            return $http.post('rest/applications/' + encodeURIComponent(platform.application_name) + '/platforms?from_application='+encodeURIComponent(from_application)+'&from_platform='+encodeURIComponent(from_platform), platform).then(function(response){
+                $.notify("La plateforme a bien ete creee", "success");
+                return new Platform(response.data);
+            }, function(error) {
+                $.notify(error.data, "error");
+                throw error;
+            });
+        },
         get_properties: function (application_name, platform, path) {
             return $http.get('rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform.name) + '/properties?path=' + encodeURIComponent(path)).then(function (response) {
                 return new Properties(response.data);

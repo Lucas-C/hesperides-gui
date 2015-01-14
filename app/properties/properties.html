@@ -22,11 +22,11 @@
 
             <script type="text/ng-template" id="application/search_module.html">
                 <div class="modal-header">
-                    <h3 class="modal-title">Rechercher un composant technique</h3>
+                    <h3 class="modal-title">Rechercher un module</h3>
                 </div>
                 <div class="modal-body">
                     <form name="searchModuleForm">
-                        <label for="module">Composant technique</label>
+                        <label for="module">Module</label>
                         <input type="text" class="form-control" id="module"
                                ng-model="moduleSearched"
                                placeholder="Rechercher" required
@@ -45,7 +45,7 @@
 
             <script type="text/ng-template" id="application/add_box.html">
                 <div class="modal-header">
-                    <h3 class="modal-title">Ajouter un composant applicatif</h3>
+                    <h3 class="modal-title">Ajouter un groupe logique</h3>
                 </div>
                 <div class="modal-body">
                     <form name="addComponentForm">
@@ -146,7 +146,7 @@
             <h3><span style="margin-right: 30px">Representation logique de <strong>{{platform.name}}</strong></span>
                 <button ng-click="open_add_box_dialog(mainBox)" class="btn btn-sm">
                     <span class="glyphicon glyphicon-plus" style="padding-right:10px"></span>
-                    <span>Ajouter un composant applicatif</span>
+                    <span>Ajouter un groupe logique</span>
                 </button>
                 <button ng-click="save_platform_from_box(mainBox)" class="btn btn-sm">
                     <span class="glyphicon glyphicon-saved" style="padding-right:10px"></span>

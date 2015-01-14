@@ -1,7 +1,7 @@
 <div class="row">
     <div class="col-md-12">
         <div class="bg-light">
-            <h3>Composant technique <strong>{{module.name}}</strong>, Version <strong>{{module.version}}</strong> <span style="padding-left: 10px;"
+            <h3>Module <strong>{{module.name}}</strong>, Version <strong>{{module.version}}</strong> <span style="padding-left: 10px;"
                     ng-show="is_workingcopy">(Working Copy)</span></span></strong>
             <button ng-really-message="Etes-vous sur de vouloir créer la release {{module.version}} ?"
                     ng-really-click="create_release(module)"
@@ -20,7 +20,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="bg-light">
-                    <h4>Les technos de ce composant technique :</h4>
+                    <h4>Les technos de ce module :</h4>
                     <list-of-items items="module.technos"
                                    createfunction="add_techno($name)"
                                    ondelete="delete_techno($item)"
@@ -37,7 +37,7 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="bg-light">
-                    <h4>Les fichiers specifiques du composant technique</h4>
+                    <h4>Les fichiers specifiques du module</h4>
                     <hesperides-template-list template-entries="templateEntries"
                                               add="add_template"
                                               edit="edit_template"

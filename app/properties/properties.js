@@ -233,7 +233,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
         }
 
     }, function(error){
-        $.notify(error.data, "error");
+        $.notify(error.data.message, "error");
     });
 
 }]);

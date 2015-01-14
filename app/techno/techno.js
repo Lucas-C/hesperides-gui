@@ -145,7 +145,7 @@ technoModule.factory('TechnoService', ['$http', '$q', 'Techno', 'Template', 'Tem
             return $http.get('rest/templates/packages/' + encodeURIComponent(wc_name) + '/' + encodeURIComponent(wc_version) + '/workingcopy/templates/' + encodeURIComponent(template_name)).then(function (response) {
                 return new Template(response.data);
             }, function (error) {
-                $.notify(error.data, "error");
+                $.notify(error.data.message, "error");
                 throw error;
             });
         },
@@ -153,7 +153,7 @@ technoModule.factory('TechnoService', ['$http', '$q', 'Techno', 'Template', 'Tem
             return $http.get('rest/templates/packages/' + encodeURIComponent(wc_name) + '/' + encodeURIComponent(wc_version) + '/release/templates/' + encodeURIComponent(template_name)).then(function (response) {
                 return new Template(response.data);
             }, function (error) {
-                $.notify(error.data, "error");
+                $.notify(error.data.message, "error");
                 throw error;
             });
         },
@@ -163,7 +163,7 @@ technoModule.factory('TechnoService', ['$http', '$q', 'Techno', 'Template', 'Tem
                     return new TemplateEntry(data);
                 }, function (error) {
                     if (error.status != 404) {
-                        $.notify(error.data, "error");
+                        $.notify(error.data.message, "error");
                         throw error;
                     } else {
                         return [];
@@ -177,7 +177,7 @@ technoModule.factory('TechnoService', ['$http', '$q', 'Techno', 'Template', 'Tem
                     return new TemplateEntry(data);
                 }, function (error) {
                     if (error.status != 404) {
-                        $.notify(error.data, "error");
+                        $.notify(error.data.message, "error");
                         throw error;
                     } else {
                         return [];
@@ -195,7 +195,7 @@ technoModule.factory('TechnoService', ['$http', '$q', 'Techno', 'Template', 'Tem
                     if (error.status === 409) {
                         $.notify("Impossible de creer le template car il existe deja un template avec ce nom", "error");
                     } else {
-                        $.notify(error.data, "error");
+                        $.notify(error.data.message, "error");
                     }
                     throw error;
                 });
@@ -204,7 +204,7 @@ technoModule.factory('TechnoService', ['$http', '$q', 'Techno', 'Template', 'Tem
                     $.notify("Le template a ete mis a jour", "success");
                     return new Template(response.data);
                 }, function (error) {
-                    $.notify(error.data, "error");
+                    $.notify(error.data.message, "error");
                     throw error;
                 });
             }
@@ -214,7 +214,7 @@ technoModule.factory('TechnoService', ['$http', '$q', 'Techno', 'Template', 'Tem
                 $.notify("Le template a bien ete supprime", "success");
                 return response;
             }, function (error) {
-                $.notify(error.data, "error");
+                $.notify(error.data.message, "error");
                 throw error;
             });
         },
@@ -226,7 +226,7 @@ technoModule.factory('TechnoService', ['$http', '$q', 'Techno', 'Template', 'Tem
                     $.notify(response.data, "warning");
                 }
             }, function (error) {
-                $.notify(error.data, "error");
+                $.notify(error.data.message, "error");
                 throw error;
             });
         },
@@ -238,7 +238,7 @@ technoModule.factory('TechnoService', ['$http', '$q', 'Techno', 'Template', 'Tem
                     $.notify(response.data, "warning");
                 }
             }, function (error) {
-                $.notify(error.data, "error");
+                $.notify(error.data.message, "error");
                 throw error;
             });
         },

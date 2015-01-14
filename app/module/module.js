@@ -188,7 +188,7 @@ applicationModule.factory('ModuleService', ['$http', '$q', 'Module', 'Template',
             return $http.get('rest/modules/' + encodeURIComponent(name) + '/' + encodeURIComponent(version) + "/" + (is_working_copy ? "workingcopy" : "release")).then(function (response) {
                 return new Module(response.data);
             }, function (error) {
-                $.notify(error.data, "error");
+                $.notify(error.data.message, "error");
                 throw error;
             });
         },
@@ -203,14 +203,14 @@ applicationModule.factory('ModuleService', ['$http', '$q', 'Module', 'Template',
                         $.notify("La workingcopy du module a bien ete creee", "success");
                         return new Module(response.data);
                     }, function (error) {
-                        $.notify(error.data, "error");
+                        $.notify(error.data.message, "error");
                     });
                 } else {
                     return $http.put('rest/modules', module).then(function (response) {
                         $.notify("La workingcopy du module a bien ete mise a jour", "success");
                         return new Module(response.data);
                     }, function (error) {
-                        $.notify(error.data, "error");
+                        $.notify(error.data.message, "error");
                     });
                 }
             }
@@ -226,7 +226,7 @@ applicationModule.factory('ModuleService', ['$http', '$q', 'Module', 'Template',
             return $http.get('rest/modules/' + encodeURIComponent(module.name) + '/' + encodeURIComponent(module.version) + '/'+ (module.is_working_copy ? "workingcopy" : "release") +'/templates/' + encodeURIComponent(template_name)).then(function (response) {
                 return new Template(response.data);
             }, function (error) {
-                $.notify(error.data, "error");
+                $.notify(error.data.message, "error");
                 throw error;
             });
         },
@@ -236,7 +236,7 @@ applicationModule.factory('ModuleService', ['$http', '$q', 'Module', 'Template',
                     return new TemplateEntry(data);
                 }, function (error) {
                     if (error.status != 404) {
-                        $.notify(error.data, "error");
+                        $.notify(error.data.message, "error");
                         throw error;
                     } else {
                         return [];
@@ -258,7 +258,7 @@ applicationModule.factory('ModuleService', ['$http', '$q', 'Module', 'Template',
                         if (error.status === 409) {
                             $.notify("Impossible de creer le template car il existe deja un template avec ce nom", "error");
                         } else {
-                            $.notify(error.data, "error");
+                            $.notify(error.data.message, "error");
                         }
                         throw error;
                     });
@@ -267,7 +267,7 @@ applicationModule.factory('ModuleService', ['$http', '$q', 'Module', 'Template',
                         $.notify("Le template a ete mis a jour", "success");
                         return new Template(response.data);
                     }, function (error) {
-                        $.notify(error.data, "error");
+                        $.notify(error.data.message, "error");
                         throw error;
                     });
                 }
@@ -282,7 +282,7 @@ applicationModule.factory('ModuleService', ['$http', '$q', 'Module', 'Template',
                     $.notify("Le template a bien ete supprime", "success");
                     return response;
                 }, function (error) {
-                    $.notify(error.data, "error");
+                    $.notify(error.data.message, "error");
                     throw error;
                 });
             }
@@ -296,7 +296,7 @@ applicationModule.factory('ModuleService', ['$http', '$q', 'Module', 'Template',
                     $.notify("La release " + module.name + ", " + module.version + " a bien ete creee", "success");
                     return new Module(response.data);
                 }, function (error) {
-                    $.notify(error.data, "error");
+                    $.notify(error.data.message, "error");
                     throw error;
                 });
             }
@@ -307,7 +307,7 @@ applicationModule.factory('ModuleService', ['$http', '$q', 'Module', 'Template',
                 $.notify("La working copy " + name + ", " + version + " a bien ete creee", "success");
                 return new Module(response.data);
             }, function (error) {
-                $.notify(error.data, "error");
+                $.notify(error.data.message, "error");
                 throw error;
             });
         },

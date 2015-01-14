@@ -208,7 +208,7 @@ applicationModule.factory('ApplicationService', ['$http', 'Application', 'Platfo
             return $http.get('rest/applications/' + encodeURIComponent(name)).then(function (response) {
                 return new Application(response.data);
             }, function (error) {
-                $.notify(error.data, "error");
+                $.notify(error.data.message, "error");
                 throw error;
             });
         },
@@ -216,7 +216,7 @@ applicationModule.factory('ApplicationService', ['$http', 'Application', 'Platfo
             return $http.post('rest/applications/perform_search?name=' + encodeURIComponent(name)).then(function (response) {
                 return response.data;
             }, function (error) {
-                $.notify(error.data, "error");
+                $.notify(error.data.message, "error");
                 throw error;
             });
         },
@@ -224,7 +224,7 @@ applicationModule.factory('ApplicationService', ['$http', 'Application', 'Platfo
             return $http.get('rest/applications/' + encodeURIComponent(application_name) + '/platforms' + encodeURIComponent(platform_name)).then(function (response) {
                 return new Platform(response.data);
             }, function (error) {
-                $.notify(error.data, "error");
+                $.notify(error.data.message, "error");
                 throw error;
             });
         },
@@ -235,7 +235,7 @@ applicationModule.factory('ApplicationService', ['$http', 'Application', 'Platfo
                     $.notify("La plateforme a bien ete creee", "success");
                     return new Platform(response.data);
                 }, function (error) {
-                    $.notify(error.data, "error");
+                    $.notify(error.data.message, "error");
                     throw error;
                 });
             } else {
@@ -243,7 +243,7 @@ applicationModule.factory('ApplicationService', ['$http', 'Application', 'Platfo
                     $.notify("La plateforme a bien ete mise a jour", "success");
                     return new Platform(response.data);
                 }, function (error) {
-                    $.notify(error.data, "error");
+                    $.notify(error.data.message, "error");
                     throw error;
                 });
             }
@@ -254,7 +254,7 @@ applicationModule.factory('ApplicationService', ['$http', 'Application', 'Platfo
                 $.notify("La plateforme a bien ete creee", "success");
                 return new Platform(response.data);
             }, function(error) {
-                $.notify(error.data, "error");
+                $.notify(error.data.message, "error");
                 throw error;
             });
         },
@@ -262,7 +262,7 @@ applicationModule.factory('ApplicationService', ['$http', 'Application', 'Platfo
             return $http.get('rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform.name) + '/properties?path=' + encodeURIComponent(path)).then(function (response) {
                 return new Properties(response.data);
             }, function (error) {
-                $.notify(error.data, "error");
+                $.notify(error.data.message, "error");
                 throw error;
             });
         },
@@ -272,7 +272,7 @@ applicationModule.factory('ApplicationService', ['$http', 'Application', 'Platfo
                 $.notify("Les properties ont bien ete sauvegardees", "success");
                 return new Properties(response.data);
             }, function (error) {
-                $.notify(error.data, "error");
+                $.notify(error.data.message, "error");
                 throw error;
             });
         },

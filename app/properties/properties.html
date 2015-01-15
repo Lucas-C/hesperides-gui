@@ -22,7 +22,7 @@
 
             <script type="text/ng-template" id="application/search_module.html">
                 <div class="modal-header">
-                    <h3 class="modal-title">Rechercher un module</h3>
+                    <h3 class="modal-title">Ajouter un module</h3>
                 </div>
                 <div class="modal-body">
                     <form name="searchModuleForm">
@@ -89,15 +89,15 @@
                                    onbeforesave="update_box_name(box, name, $data)">{{name}}</a></strong>
                     </div>
                     <div class="col-md-6 text-right" style="padding-right:10px">
-                        <button ng-click="search_module(box)"
+                        <button ng-click="search_module(box)" title="Ajouter un module"
                                 class="btn btn-primary btn-xs">
                             <span class="glyphicon glyphicon-plus"></span>
                         </button>
-                        <button ng-click="open_add_box_dialog(box)"
+                        <button ng-click="open_add_box_dialog(box)" title="Ajouter un groupe logique"
                                 class="btn btn-success btn-xs">
                             <span class="glyphicon glyphicon-inbox"></span>
                         </button>
-                        <button ng-click="remove_box(name, box)" ng-if="box.isEmpty()"
+                        <button ng-click="remove_box(name, box)" ng-if="box.isEmpty()" title="Supprimer le groupe logique"
                                 class="btn btn-danger btn-xs">
                             <span class="glyphicon glyphicon-trash"></span>
                         </button>
@@ -112,14 +112,14 @@
                                 <span><strong>{{module.title}}</strong></span>
                             </div>
                             <div class="col-md-6 text-right" style="padding-right:10px">
-                                <button ng-click="open_add_instance_dialog(module)"
+                                <button ng-click="open_add_instance_dialog(module)" title="Ajouter une instance"
                                         class="btn btn-primary btn-xs">
                                     <span class="glyphicon glyphicon-plus"></span>
                                 </button>
-                                <button class="btn btn-info btn-xs"
+                                <button class="btn btn-info btn-xs" title="Editer les properties"
                                         ng-click="edit_properties(platform, module)"><span class="glyphicon glyphicon-list"></span>
                                 </button>
-                                <button ng-click="delete_module(module, box)"
+                                <button ng-click="delete_module(module, box)" title="Supprimer le module"
                                         class="btn btn-danger btn-xs">
                                     <span class="glyphicon glyphicon-trash"></span>
                                 </button>
@@ -128,11 +128,11 @@
                         <div>
                             <ul class="list-inline" style="padding-top:10px; padding-bottom:10px">
                                 <li ng-repeat="instance in module.instances">
-                                    <button ng-click="edit_instance(instance)"
+                                    <button ng-click="edit_instance(instance)" title="Editer les properties de l'instance"
                                             class="btn btn-info btn-xs">
                                         <span class="glyphicon glyphicon-list" style="margin-right:10px"></span>{{instance.name}}
                                     </button>
-                                    <button ng-click="delete_instance(instance, module)"
+                                    <button ng-click="delete_instance(instance, module)" title="Supprimer l'instance"
                                             class="btn btn-danger btn-xs">
                                         <span class="glyphicon glyphicon-trash"></span>
                                     </button>

@@ -6,3 +6,6 @@ tmp
 .idea
 **/*.iml
 *.iml
+
+target/hesperides-gui-0.2-SNAPSHOT.zip
+.gitignore

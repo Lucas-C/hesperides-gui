@@ -38,7 +38,7 @@
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-success" ng-disabled="searchModuleForm.$invalid"
-                            ng-click="$submit()" ng-hide="isReadOnly">Ok
+                            ng-click="$close(moduleSearched)" ng-hide="isReadOnly">Ok
                     </button>
                     <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
                 </div>
@@ -59,7 +59,7 @@
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-success" ng-disabled="addComponentForm.$invalid"
-                            ng-click="$submit()" ng-hide="isReadOnly">Ok
+                            ng-click="$close(new_component_name)" ng-hide="isReadOnly">Ok
                     </button>
                     <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
                 </div>
@@ -79,7 +79,7 @@
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-success" ng-disabled="addInstanceForm.$invalid"
-                            ng-click="$submit()" ng-hide="isReadOnly">Ok
+                            ng-click="$close(new_instance_name)" ng-hide="isReadOnly">Ok
                     </button>
                     <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
                 </div>

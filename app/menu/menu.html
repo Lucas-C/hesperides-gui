@@ -133,7 +133,7 @@
     </div>
     <div class="modal-footer">
         <button class="btn btn-primary" ng-disabled="technoForm.$invalid"
-                ng-click="$submit()">Creer
+                ng-click="open_techno_page(new_techno.name, new_techno.version, true)">Creer
         </button>
         <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
     </div>
@@ -169,7 +169,7 @@
     </div>
     <div class="modal-footer">
         <button class="btn btn-primary" ng-disabled="technoForm.$invalid"
-                ng-click="$submit()">
+                ng-click="create_techno_from(new_techno.name, new_techno.version, technoSearched.name, technoSearched.version, technoSearched.is_working_copy)">
             Creer
         </button>
         <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
@@ -197,7 +197,7 @@
     </div>
     <div class="modal-footer">
         <button class="btn btn-primary" ng-disabled="applicationForm.$invalid"
-                ng-click="$submit()">Creer
+                ng-click="create_module(new_module.name, new_module.version)">Creer
         </button>
         <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
     </div>
@@ -233,7 +233,7 @@
     </div>
     <div class="modal-footer">
         <button class="btn btn-primary" ng-disabled="moduleForm.$invalid"
-                ng-click="$submit()">Creer
+                ng-click="create_module_from(new_module.name, new_module.version, moduleSearched)">Creer
         </button>
         <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
     </div>
@@ -244,10 +244,10 @@
         <h3 class="modal-title">Nouvelle plateforme</h3>
     </div>
     <div class="modal-body">
-        <form name="platformForm" role="form" novalidate ng-submit="platformForm.$valid && create_platform(new_platform.application_name, new_platform.platform_name, new_platform.application_version)">
+        <form name="platformForm" role="form" ng-submit="platformForm.$valid && create_platform(new_platform.application_name, new_platform.platform_name, new_platform.application_version)">
             <div class="form-group">
                 <label for="platformApplication">Application</label>
-                <input type="text" class="form-control" required ng-trim="true" ng-pattern="/[A-Z]{3}/"
+                <input type="text" class="form-control" required ng-trim="true" ng-pattern="/^[A-Z]{3}$/"
                        ng-model="new_platform.application_name"
                        placeholder="Indiquer le trigramme applicatif (exemples : VSL, EPM, ACW …)"
                        id="platformApplication"
@@ -270,7 +270,7 @@
     </div>
     <div class="modal-footer">
         <button class="btn btn-primary" ng-disabled="platformForm.$invalid"
-                ng-click="$submit()">
+                ng-click="create_platform(new_platform.application_name, new_platform.platform_name, new_platform.application_version)">
             Creer
         </button>
         <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
@@ -285,7 +285,7 @@
         <form name="platformForm" role="form" novalidate ng-submit="platformForm.$valid && create_platform_from(new_platform.application_name, new_platform.platform_name, new_platform.application_version, new_platform.from_application, new_platform.from_platform)">
             <div class="form-group">
                 <label for="platformApplication">Application</label>
-                <input type="text" class="form-control" required ng-trim="true" ng-pattern="/[A-Z]{3}/"
+                <input type="text" class="form-control" required ng-trim="true" ng-pattern="/^[A-Z]{3}$/"
                        ng-model="new_platform.application_name"
                        placeholder="Indiquer le trigramme applicatif (exemples : VSL, EPM, ACW …)"
                        id="platformApplication"
@@ -323,7 +323,7 @@
     </div>
     <div class="modal-footer">
         <button class="btn btn-primary" ng-disabled="platformForm.$invalid"
-                ng-click="$submit()">
+                ng-click="create_platform_from(new_platform.application_name, new_platform.platform_name, new_platform.application_version, new_platform.from_application, new_platform.from_platform)">
             Creer
         </button>
         <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>

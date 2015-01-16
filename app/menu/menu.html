@@ -244,10 +244,10 @@
         <h3 class="modal-title">Nouvelle plateforme</h3>
     </div>
     <div class="modal-body">
-        <form name="platformForm" role="form" ng-submit="create_platform(new_platform.application_name, new_platform.platform_name, new_platform.application_version)">
+        <form name="platformForm" role="form" novalidate ng-submit="platformForm.$valid && create_platform(new_platform.application_name, new_platform.platform_name, new_platform.application_version)">
             <div class="form-group">
                 <label for="platformApplication">Application</label>
-                <input type="text" class="form-control" required ng-trim="true"
+                <input type="text" class="form-control" required ng-trim="true" ng-pattern="/[A-Z]{3}/"
                        ng-model="new_platform.application_name"
                        placeholder="Indiquer le trigramme applicatif (exemples : VSL, EPM, ACW …)"
                        id="platformApplication"
@@ -282,10 +282,10 @@
         <h3 class="modal-title">Nouvelle plateforme</h3>
     </div>
     <div class="modal-body">
-        <form name="platformForm" role="form" ng-submit="create_platform_from(new_platform.application_name, new_platform.platform_name, new_platform.application_version, new_platform.from_application, new_platform.from_platform)">
+        <form name="platformForm" role="form" novalidate ng-submit="platformForm.$valid && create_platform_from(new_platform.application_name, new_platform.platform_name, new_platform.application_version, new_platform.from_application, new_platform.from_platform)">
             <div class="form-group">
                 <label for="platformApplication">Application</label>
-                <input type="text" class="form-control" required ng-trim="true"
+                <input type="text" class="form-control" required ng-trim="true" ng-pattern="/[A-Z]{3}/"
                        ng-model="new_platform.application_name"
                        placeholder="Indiquer le trigramme applicatif (exemples : VSL, EPM, ACW …)"
                        id="platformApplication"

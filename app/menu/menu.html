@@ -117,7 +117,7 @@
         <h3 class="modal-title">Nouvelle techno (working copy)</h3>
     </div>
     <div class="modal-body">
-        <form name="technoForm" role="form">
+        <form name="technoForm" role="form" ng-submit="open_techno_page(new_techno.name, new_techno.version, true)">
             <div class="form-group">
                 <label for="technoName">Nom</label>
                 <input type="text" class="form-control" required ng-trim="true" ng-model="new_techno.name"
@@ -128,11 +128,12 @@
                 <input type="text" class="form-control" required ng-trim="true" ng-model="new_techno.version"
                        id="technoVersion" placeholder="Entrer un numero de version"/>
             </div>
+            <input type="submit" id="submit" value="Submit" ng-hide="true"/>
         </form>
     </div>
     <div class="modal-footer">
         <button class="btn btn-primary" ng-disabled="technoForm.$invalid"
-                ng-click="open_techno_page(new_techno.name, new_techno.version, true)">Creer
+                ng-click="$submit()">Creer
         </button>
         <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
     </div>
@@ -143,7 +144,7 @@
         <h3 class="modal-title">Nouvelle techno (working copy) à partir d'une précédente version</h3>
     </div>
     <div class="modal-body">
-        <form name="technoForm" role="form">
+        <form name="technoForm" role="form" ng-submit="create_techno_from(new_techno.name, new_techno.version, technoSearched.name, technoSearched.version, technoSearched.is_working_copy)">
             <div class="form-group">
                 <label for="technoName">Nom</label>
                 <input type="text" class="form-control" required ng-trim="true" ng-model="new_techno.name"
@@ -163,11 +164,12 @@
                        typeahead="techno as techno.title for techno in find_technos_by_name($viewValue)"
                         />
             </div>
+            <input type="submit" id="submit" value="Submit" ng-hide="true"/>
         </form>
     </div>
     <div class="modal-footer">
         <button class="btn btn-primary" ng-disabled="technoForm.$invalid"
-                ng-click="create_techno_from(new_techno.name, new_techno.version, technoSearched.name, technoSearched.version, technoSearched.is_working_copy)">
+                ng-click="$submit()">
             Creer
         </button>
         <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
@@ -179,7 +181,7 @@
         <h3 class="modal-title">Nouveau module (working copy)</h3>
     </div>
     <div class="modal-body">
-        <form name="moduleForm" role="form">
+        <form name="moduleForm" role="form" ng-submit="create_module(new_module.name, new_module.version)">
             <div class="form-group">
                 <label for="moduleName">Nom</label>
                 <input type="text" class="form-control" required ng-trim="true" ng-model="new_module.name"
@@ -190,11 +192,12 @@
                 <input type="text" class="form-control" required ng-trim="true" ng-model="new_module.version"
                        id="moduleVersion" placeholder="Entrer un numero de version"/>
             </div>
+            <input type="submit" id="submit" value="Submit" ng-hide="true"/>
         </form>
     </div>
     <div class="modal-footer">
         <button class="btn btn-primary" ng-disabled="applicationForm.$invalid"
-                ng-click="create_module(new_module.name, new_module.version)">Creer
+                ng-click="$submit()">Creer
         </button>
         <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
     </div>
@@ -205,7 +208,7 @@
         <h3 class="modal-title">Nouveau module (working copy) à partir d'une précédente version</h3>
     </div>
     <div class="modal-body">
-        <form name="moduleForm" role="form">
+        <form name="moduleForm" role="form" ng-submit="create_module_from(new_module.name, new_module.version, moduleSearched)">
             <div class="form-group">
                 <label for="moduleName">Nom</label>
                 <input type="text" class="form-control" required ng-trim="true" ng-model="new_module.name"
@@ -225,11 +228,12 @@
                        typeahead="module as module.title for module in find_modules_by_name($viewValue)"
                         />
             </div>
+            <input type="submit" id="submit" value="Submit" ng-hide="true"/>
         </form>
     </div>
     <div class="modal-footer">
         <button class="btn btn-primary" ng-disabled="moduleForm.$invalid"
-                ng-click="create_module_from(new_module.name, new_module.version, moduleSearched)">Creer
+                ng-click="$submit()">Creer
         </button>
         <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
     </div>
@@ -240,7 +244,7 @@
         <h3 class="modal-title">Nouvelle plateforme</h3>
     </div>
     <div class="modal-body">
-        <form name="platformForm" role="form">
+        <form name="platformForm" role="form" ng-submit="create_platform(new_platform.application_name, new_platform.platform_name, new_platform.application_version)">
             <div class="form-group">
                 <label for="platformApplication">Application</label>
                 <input type="text" class="form-control" required ng-trim="true"
@@ -261,11 +265,12 @@
                        id="platformApplicationVersion"
                        placeholder="Indiquer la version de l'application sur cette plateforme"/>
             </div>
+            <input type="submit" id="submit" value="Submit" ng-hide="true"/>
         </form>
     </div>
     <div class="modal-footer">
         <button class="btn btn-primary" ng-disabled="platformForm.$invalid"
-                ng-click="create_platform(new_platform.application_name, new_platform.platform_name, new_platform.application_version)">
+                ng-click="$submit()">
             Creer
         </button>
         <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
@@ -277,7 +282,7 @@
         <h3 class="modal-title">Nouvelle plateforme</h3>
     </div>
     <div class="modal-body">
-        <form name="platformForm" role="form">
+        <form name="platformForm" role="form" ng-submit="create_platform_from(new_platform.application_name, new_platform.platform_name, new_platform.application_version, new_platform.from_application, new_platform.from_platform)">
             <div class="form-group">
                 <label for="platformApplication">Application</label>
                 <input type="text" class="form-control" required ng-trim="true"
@@ -313,11 +318,12 @@
                        placeholder="Application source"/>
 
             </div>
+            <input type="submit" id="submit" value="Submit" ng-hide="true"/>
         </form>
     </div>
     <div class="modal-footer">
         <button class="btn btn-primary" ng-disabled="platformForm.$invalid"
-                ng-click="create_platform_from(new_platform.application_name, new_platform.platform_name, new_platform.application_version, new_platform.from_application, new_platform.from_platform)">
+                ng-click="$submit()">
             Creer
         </button>
         <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>

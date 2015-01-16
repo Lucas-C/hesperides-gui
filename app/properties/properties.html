@@ -25,7 +25,7 @@
                     <h3 class="modal-title">Ajouter un module</h3>
                 </div>
                 <div class="modal-body">
-                    <form name="searchModuleForm">
+                    <form name="searchModuleForm" ng-submit="$close(moduleSearched)">
                         <label for="module">Module</label>
                         <input type="text" class="form-control" id="module"
                                ng-model="moduleSearched"
@@ -33,11 +33,12 @@
                                typeahead-editable="false"
                                typeahead="module as module.title for module in find_modules_by_name($viewValue)"
                                 />
+                        <input type="submit" id="submit" value="Submit" ng-hide="true"/>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-success" ng-disabled="searchModuleForm.$invalid"
-                            ng-click="$close(moduleSearched)" ng-hide="isReadOnly">Ok
+                            ng-click="$submit()" ng-hide="isReadOnly">Ok
                     </button>
                     <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
                 </div>
@@ -48,16 +49,17 @@
                     <h3 class="modal-title">Ajouter un groupe logique</h3>
                 </div>
                 <div class="modal-body">
-                    <form name="addComponentForm">
+                    <form name="addComponentForm" ng-submit="$close(new_component_name)">
                         <label for="name">Nom</label>
                         <input type="text" class="form-control" id="name"
                                ng-model="new_component_name"
                                placeholder="Exemple WDIGST,..." required />
+                        <input type="submit" id="submit" value="Submit" ng-hide="true"/>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-success" ng-disabled="addComponentForm.$invalid"
-                            ng-click="$close(new_component_name)" ng-hide="isReadOnly">Ok
+                            ng-click="$submit()" ng-hide="isReadOnly">Ok
                     </button>
                     <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
                 </div>
@@ -68,15 +70,16 @@
                     <h3 class="modal-title">Ajouter une instance</h3>
                 </div>
                 <div class="modal-body">
-                    <form name="addInstanceForm">
+                    <form name="addInstanceForm" ng-submit="$close(new_instance_name)">
                         <label for="name">Nom</label>
                         <input type="text" class="form-control" id="name"
                                ng-model="new_instance_name" required />
+                        <input type="submit" id="submit" value="Submit" ng-hide="true"/>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button class="btn btn-success" ng-disabled="addInstanceForm.$invalid"
-                            ng-click="$close(new_instance_name)" ng-hide="isReadOnly">Ok
+                            ng-click="$submit()" ng-hide="isReadOnly">Ok
                     </button>
                     <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
                 </div>

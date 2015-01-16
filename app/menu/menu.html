@@ -117,7 +117,7 @@
         <h3 class="modal-title">Nouvelle techno (working copy)</h3>
     </div>
     <div class="modal-body">
-        <form name="technoForm" role="form" ng-submit="open_techno_page(new_techno.name, new_techno.version, true)">
+        <form name="technoForm" role="form" novalidate ng-submit="technoForm.$valid && open_techno_page(new_techno.name, new_techno.version, true)">
             <div class="form-group">
                 <label for="technoName">Nom</label>
                 <input type="text" class="form-control" required ng-trim="true" ng-model="new_techno.name"
@@ -144,7 +144,7 @@
         <h3 class="modal-title">Nouvelle techno (working copy) à partir d'une précédente version</h3>
     </div>
     <div class="modal-body">
-        <form name="technoForm" role="form" ng-submit="create_techno_from(new_techno.name, new_techno.version, technoSearched.name, technoSearched.version, technoSearched.is_working_copy)">
+        <form name="technoForm" role="form" novalidate ng-submit="technoForm.$valid && create_techno_from(new_techno.name, new_techno.version, technoSearched.name, technoSearched.version, technoSearched.is_working_copy)">
             <div class="form-group">
                 <label for="technoName">Nom</label>
                 <input type="text" class="form-control" required ng-trim="true" ng-model="new_techno.name"
@@ -181,7 +181,7 @@
         <h3 class="modal-title">Nouveau module (working copy)</h3>
     </div>
     <div class="modal-body">
-        <form name="moduleForm" role="form" ng-submit="create_module(new_module.name, new_module.version)">
+        <form name="moduleForm" role="form" novalidate ng-submit="moduleForm.$valid && create_module(new_module.name, new_module.version)">
             <div class="form-group">
                 <label for="moduleName">Nom</label>
                 <input type="text" class="form-control" required ng-trim="true" ng-model="new_module.name"
@@ -208,7 +208,7 @@
         <h3 class="modal-title">Nouveau module (working copy) à partir d'une précédente version</h3>
     </div>
     <div class="modal-body">
-        <form name="moduleForm" role="form" ng-submit="create_module_from(new_module.name, new_module.version, moduleSearched)">
+        <form name="moduleForm" role="form" novalidate ng-submit="moduleForm.$valid && create_module_from(new_module.name, new_module.version, moduleSearched)">
             <div class="form-group">
                 <label for="moduleName">Nom</label>
                 <input type="text" class="form-control" required ng-trim="true" ng-model="new_module.name"

@@ -3,7 +3,7 @@
         <div class="bg-light">
             <h3>Plateformes de <strong>{{application.name}}</strong></h3>
             <list-of-items items="platforms"
-                           label="$item.name"
+                           label="$item.name + ' v' + $item.application_version"
                            sorton="$item.name"
                            selected-item="platform"
                            createfunction="add_platform($name)"

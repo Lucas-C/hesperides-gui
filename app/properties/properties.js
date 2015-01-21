@@ -149,6 +149,11 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
         module.delete_instance(instance);
     };
 
+    $scope.update_instance_name = function(instance, new_name){
+        instance.name = new_name;
+        $scope.save_platform_from_box($scope.mainBox);
+    };
+
     $scope.delete_module = function(module, box){
         _.remove(box.modules, function(existing){
             return _.isEqual(existing, module);

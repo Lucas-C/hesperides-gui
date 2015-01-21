@@ -182,7 +182,8 @@
     <div class="col-md-12">
         <div class="bg-light">
             <h3>
-                <span style="margin-right: 30px">Les properties d'instance associees a <strong>{{instance.name}}</strong></span>
+                <span style="margin-right: 30px">Les properties d'instance associees a <strong><a href="" editable-text="instance.name"
+                                                                                                  onbeforesave="update_instance_name(instance, $data)">{{instance.name}}</a></strong></span>
                 <button ng-click="save_platform_from_box(mainBox)" class="btn btn-sm">
                     <span class="glyphicon glyphicon-saved" style="padding-right:10px"></span>
                     <span>Sauver les properties</span>

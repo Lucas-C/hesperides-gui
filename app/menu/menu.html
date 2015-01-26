@@ -8,7 +8,7 @@
 
             <div class="collapse navbar-collapse">
 
-                <p class="navbar-text"><span class="divider">/</span></p>s
+                <p class="navbar-text"><span class="divider">/</span></p>
 
                 <p class="navbar-text">Regrouper des templates<span class="glyphicon glyphicon-arrow-right"
                                                                     style="margin-left: 10px"></span></p>
@@ -117,7 +117,7 @@
         <h3 class="modal-title">Nouvelle techno (working copy)</h3>
     </div>
     <div class="modal-body">
-        <form name="technoForm" role="form">
+        <form name="technoForm" role="form" novalidate ng-submit="technoForm.$valid && open_techno_page(new_techno.name, new_techno.version, true)">
             <div class="form-group">
                 <label for="technoName">Nom</label>
                 <input type="text" class="form-control" required ng-trim="true" ng-model="new_techno.name"
@@ -128,6 +128,7 @@
                 <input type="text" class="form-control" required ng-trim="true" ng-model="new_techno.version"
                        id="technoVersion" placeholder="Entrer un numero de version"/>
             </div>
+            <input type="submit" id="submit" value="Submit" ng-hide="true"/>
         </form>
     </div>
     <div class="modal-footer">
@@ -143,7 +144,7 @@
         <h3 class="modal-title">Nouvelle techno (working copy) à partir d'une précédente version</h3>
     </div>
     <div class="modal-body">
-        <form name="technoForm" role="form">
+        <form name="technoForm" role="form" novalidate ng-submit="technoForm.$valid && create_techno_from(new_techno.name, new_techno.version, technoSearched.name, technoSearched.version, technoSearched.is_working_copy)">
             <div class="form-group">
                 <label for="technoName">Nom</label>
                 <input type="text" class="form-control" required ng-trim="true" ng-model="new_techno.name"
@@ -163,6 +164,7 @@
                        typeahead="techno as techno.title for techno in find_technos_by_name($viewValue)"
                         />
             </div>
+            <input type="submit" id="submit" value="Submit" ng-hide="true"/>
         </form>
     </div>
     <div class="modal-footer">
@@ -179,7 +181,7 @@
         <h3 class="modal-title">Nouveau module (working copy)</h3>
     </div>
     <div class="modal-body">
-        <form name="moduleForm" role="form">
+        <form name="moduleForm" role="form" novalidate ng-submit="moduleForm.$valid && create_module(new_module.name, new_module.version)">
             <div class="form-group">
                 <label for="moduleName">Nom</label>
                 <input type="text" class="form-control" required ng-trim="true" ng-model="new_module.name"
@@ -190,6 +192,7 @@
                 <input type="text" class="form-control" required ng-trim="true" ng-model="new_module.version"
                        id="moduleVersion" placeholder="Entrer un numero de version"/>
             </div>
+            <input type="submit" id="submit" value="Submit" ng-hide="true"/>
         </form>
     </div>
     <div class="modal-footer">
@@ -205,7 +208,7 @@
         <h3 class="modal-title">Nouveau module (working copy) à partir d'une précédente version</h3>
     </div>
     <div class="modal-body">
-        <form name="moduleForm" role="form">
+        <form name="moduleForm" role="form" novalidate ng-submit="moduleForm.$valid && create_module_from(new_module.name, new_module.version, moduleSearched)">
             <div class="form-group">
                 <label for="moduleName">Nom</label>
                 <input type="text" class="form-control" required ng-trim="true" ng-model="new_module.name"
@@ -225,6 +228,7 @@
                        typeahead="module as module.title for module in find_modules_by_name($viewValue)"
                         />
             </div>
+            <input type="submit" id="submit" value="Submit" ng-hide="true"/>
         </form>
     </div>
     <div class="modal-footer">
@@ -240,19 +244,19 @@
         <h3 class="modal-title">Nouvelle plateforme</h3>
     </div>
     <div class="modal-body">
-        <form name="platformForm" role="form">
+        <form name="platformForm" role="form" ng-submit="platformForm.$valid && create_platform(new_platform.application_name, new_platform.platform_name, new_platform.application_version)">
             <div class="form-group">
                 <label for="platformApplication">Application</label>
-                <input type="text" class="form-control" required ng-trim="true"
+                <input type="text" class="form-control" required ng-trim="true" ng-pattern="/^[A-Z]{3}$/"
                        ng-model="new_platform.application_name"
-                       placeholder="Indiquer le trigramme applicatif"
+                       placeholder="Indiquer le trigramme applicatif (exemples : VSL, EPM, ACW …)"
                        id="platformApplication"
                         />
             </div>
             <div class="form-group">
                 <label for="platformName">Plateforme</label>
                 <input type="text" class="form-control" required ng-trim="true" ng-model="new_platform.platform_name"
-                       id="platformName" placeholder="Indiquer la plateforme"/>
+                       id="platformName" placeholder="Indiquer la plateforme (exemples : USN1, REC2, PRD3 …)"/>
             </div>
             <div class="form-group">
                 <label for="platformApplicationVersion">Version de l'application</label>
@@ -261,6 +265,7 @@
                        id="platformApplicationVersion"
                        placeholder="Indiquer la version de l'application sur cette plateforme"/>
             </div>
+            <input type="submit" id="submit" value="Submit" ng-hide="true"/>
         </form>
     </div>
     <div class="modal-footer">
@@ -277,19 +282,19 @@
         <h3 class="modal-title">Nouvelle plateforme</h3>
     </div>
     <div class="modal-body">
-        <form name="platformForm" role="form">
+        <form name="platformForm" role="form" novalidate ng-submit="platformForm.$valid && create_platform_from(new_platform.application_name, new_platform.platform_name, new_platform.application_version, new_platform.from_application, new_platform.from_platform)">
             <div class="form-group">
                 <label for="platformApplication">Application</label>
-                <input type="text" class="form-control" required ng-trim="true"
+                <input type="text" class="form-control" required ng-trim="true" ng-pattern="/^[A-Z]{3}$/"
                        ng-model="new_platform.application_name"
-                       placeholder="Indiquer le trigramme applicatif"
+                       placeholder="Indiquer le trigramme applicatif (exemples : VSL, EPM, ACW …)"
                        id="platformApplication"
                         />
             </div>
             <div class="form-group">
                 <label for="platformName">Plateforme</label>
                 <input type="text" class="form-control" required ng-trim="true" ng-model="new_platform.platform_name"
-                       id="platformName" placeholder="Indiquer la plateforme"/>
+                       id="platformName" placeholder="Indiquer la plateforme (exemples : USN1, REC2, PRD3 …)"/>
             </div>
             <div class="form-group">
                 <label for="platformApplicationVersion">Version de l'application</label>
@@ -313,6 +318,7 @@
                        placeholder="Application source"/>
 
             </div>
+            <input type="submit" id="submit" value="Submit" ng-hide="true"/>
         </form>
     </div>
     <div class="modal-footer">

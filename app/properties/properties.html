@@ -3,7 +3,7 @@
         <div class="bg-light">
             <h3>Plateformes de <strong>{{application.name}}</strong></h3>
             <list-of-items items="platforms"
-                           label="$item.name"
+                           label="$item.name + ' v' + $item.application_version"
                            sorton="$item.name"
                            selected-item="platform"
                            createfunction="add_platform($name)"
@@ -22,10 +22,10 @@
 
             <script type="text/ng-template" id="application/search_module.html">
                 <div class="modal-header">
-                    <h3 class="modal-title">Rechercher un module</h3>
+                    <h3 class="modal-title">Ajouter un module</h3>
                 </div>
                 <div class="modal-body">
-                    <form name="searchModuleForm">
+                    <form name="searchModuleForm" novalidate ng-submit="searchModuleForm.$valid && $close(moduleSearched)">
                         <label for="module">Module</label>
                         <input type="text" class="form-control" id="module"
                                ng-model="moduleSearched"
@@ -33,6 +33,7 @@
                                typeahead-editable="false"
                                typeahead="module as module.title for module in find_modules_by_name($viewValue)"
                                 />
+                        <input type="submit" id="submit" value="Submit" ng-hide="true"/>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -79,11 +80,12 @@
                     <h3 class="modal-title">Ajouter un groupe logique</h3>
                 </div>
                 <div class="modal-body">
-                    <form name="addComponentForm">
+                    <form name="addComponentForm" novalidate ng-submit="addComponentForm.$valid && $close(new_component_name)">
                         <label for="name">Nom</label>
                         <input type="text" class="form-control" id="name"
                                ng-model="new_component_name"
                                placeholder="Exemple WDIGST,..." required />
+                        <input type="submit" id="submit" value="Submit" ng-hide="true"/>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -99,10 +101,11 @@
                     <h3 class="modal-title">Ajouter une instance</h3>
                 </div>
                 <div class="modal-body">
-                    <form name="addInstanceForm">
+                    <form name="addInstanceForm" novalidate ng-submit="addInstanceForm.$valid && $close(new_instance_name)">
                         <label for="name">Nom</label>
                         <input type="text" class="form-control" id="name"
                                ng-model="new_instance_name" required />
+                        <input type="submit" id="submit" value="Submit" ng-hide="true"/>
                     </form>
                 </div>
                 <div class="modal-footer">
@@ -120,15 +123,15 @@
                                    onbeforesave="update_box_name(box, name, $data)">{{name}}</a></strong>
                     </div>
                     <div class="col-md-6 text-right" style="padding-right:10px">
-                        <button ng-click="search_module(box)"
+                        <button ng-click="search_module(box)" title="Ajouter un module"
                                 class="btn btn-primary btn-xs">
                             <span class="glyphicon glyphicon-plus"></span>
                         </button>
-                        <button ng-click="open_add_box_dialog(box)"
+                        <button ng-click="open_add_box_dialog(box)" title="Ajouter un groupe logique"
                                 class="btn btn-success btn-xs">
                             <span class="glyphicon glyphicon-inbox"></span>
                         </button>
-                        <button ng-click="remove_box(name, box)" ng-if="box.isEmpty()"
+                        <button ng-click="remove_box(name, box)" ng-if="box.isEmpty()" title="Supprimer le groupe logique"
                                 class="btn btn-danger btn-xs">
                             <span class="glyphicon glyphicon-trash"></span>
                         </button>
@@ -144,14 +147,14 @@
                                                  title="Modifier la version du module">{{module.title}}</a></strong></span>
                             </div>
                             <div class="col-md-6 text-right" style="padding-right:10px">
-                                <button ng-click="open_add_instance_dialog(module)"
+                                <button ng-click="open_add_instance_dialog(module)" title="Ajouter une instance"
                                         class="btn btn-primary btn-xs">
                                     <span class="glyphicon glyphicon-plus"></span>
                                 </button>
-                                <button class="btn btn-info btn-xs"
+                                <button class="btn btn-info btn-xs" title="Editer les properties"
                                         ng-click="edit_properties(platform, module)"><span class="glyphicon glyphicon-list"></span>
                                 </button>
-                                <button ng-click="delete_module(module, box)"
+                                <button ng-click="delete_module(module, box)" title="Supprimer le module"
                                         class="btn btn-danger btn-xs">
                                     <span class="glyphicon glyphicon-trash"></span>
                                 </button>
@@ -160,11 +163,11 @@
                         <div>
                             <ul class="list-inline" style="padding-top:10px; padding-bottom:10px">
                                 <li ng-repeat="instance in module.instances">
-                                    <button ng-click="edit_instance(instance)"
+                                    <button ng-click="edit_instance(instance)" title="Editer les properties de l'instance"
                                             class="btn btn-info btn-xs">
                                         <span class="glyphicon glyphicon-list" style="margin-right:10px"></span>{{instance.name}}
                                     </button>
-                                    <button ng-click="delete_instance(instance, module)"
+                                    <button ng-click="delete_instance(instance, module)" title="Supprimer l'instance"
                                             class="btn btn-danger btn-xs">
                                         <span class="glyphicon glyphicon-trash"></span>
                                     </button>

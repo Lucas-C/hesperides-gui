@@ -228,7 +228,10 @@ applicationModule.factory('ApplicationService', ['$http', 'Application', 'Platfo
                 throw error;
             });
         },
-        save_platform: function (platform) {
+        save_platform: function (platform, copyPropertiesOfUpdatedModules) {
+            if(_.isUndefined(copyPropertiesOfUpdatedModules)){
+                copyPropertiesOfUpdatedModules = false;
+            }
             platform = platform.to_rest_entity();
             if (platform.version_id < 0) {
                 return $http.post('rest/applications/' + encodeURIComponent(platform.application_name) + '/platforms', platform).then(function (response) {
@@ -239,7 +242,7 @@ applicationModule.factory('ApplicationService', ['$http', 'Application', 'Platfo
                     throw error;
                 });
             } else {
-                return $http.put('rest/applications/' + encodeURIComponent(platform.application_name) + '/platforms', platform).then(function (response) {
+                return $http.put('rest/applications/' + encodeURIComponent(platform.application_name) + '/platforms?copyPropertiesForUpgradedModules='+copyPropertiesOfUpdatedModules, platform).then(function (response) {
                     $.notify("La plateforme a bien ete mise a jour", "success");
                     return new Platform(response.data);
                 }, function (error) {

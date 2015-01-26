@@ -121,6 +121,31 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
         });
     };
 
+    $scope.change_module = function(module){
+
+        var modalScope = $scope.$new();
+        modalScope.module = module;
+
+        var modal = $modal.open({
+            templateUrl: 'application/change_module_version.html',
+            backdrop: 'static',
+            size: 'sm',
+            keyboard: false,
+            scope: modalScope
+        });
+
+        modal.result.then(function(modal_data){
+            var new_module = modal_data.new_module;
+            module.name = new_module.name;
+            module.version = new_module.version;
+            module.is_working_copy = new_module.is_working_copy;
+            $scope.save_platform_from_box($scope.mainBox, modal_data.copy_properties).then(function(response){
+                $scope.properties = undefined;
+                $scope.instance = undefined;
+            });
+        });
+    };
+
     $scope.find_modules_by_name = function (name) {
         return ModuleService.with_name_like(name);
     };
@@ -136,7 +161,10 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
                     path: box.get_path()
                 }
             ));
-            $scope.save_platform_from_box($scope.mainBox);
+            $scope.save_platform_from_box($scope.mainBox).then(function(response){
+                $scope.properties = undefined;
+                $scope.instance = undefined;
+            });
         }
     };
 
@@ -161,9 +189,9 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
         $scope.save_platform_from_box($scope.mainBox);
     };
 
-    $scope.save_platform_from_box = function(box){
+    $scope.save_platform_from_box = function(box, copyPropertiesOfUpdatedModules){
         $scope.platform.modules = box.to_modules();
-        ApplicationService.save_platform($scope.platform).then(function(platform){
+        return ApplicationService.save_platform($scope.platform, copyPropertiesOfUpdatedModules).then(function(platform){
             $scope.platform = platform;
             //Replace platforms in the list by the new one
             var existing_index = 0;

@@ -43,6 +43,37 @@
                 </div>
             </script>
 
+            <script type="text/ng-template" id="application/change_module_version.html">
+                <div class="modal-header">
+                    <h3 class="modal-title">Changer la version de {{module.title}}</h3>
+                </div>
+                <div class="modal-body">
+                    <form name="searchModuleForm" autocomplete="off" novalidate
+                          ng-submit="searchModuleForm.$valid && $close({new_module: moduleSearched, copy_properties: copyProperties})">
+                        <div class="form-group">
+                            <label for="module">vers la version</label>
+                            <input type="text" class="form-control" id="module"
+                                   ng-model="moduleSearched"
+                                   placeholder="Rechercher la version" required
+                                   typeahead-editable="false"
+                                   typeahead="module as module.title for module in find_modules_by_name(module.name + ' ' + $viewValue) | filter:{name:module.name}"
+                                    />
+                        </div>
+                        <div class="form-group" ng-show="moduleSearched">
+                            <input type="checkbox" id="copyProperties" ng-model="copyProperties"/><span style="padding-left: 10px" ng-style="{'text-decoration': (copyProperties ? '' : 'line-through'), 'font-weight' : (copyProperties ? 'bold' : 'normal')}">Copier les properties valorisées de la version {{module.version}} vers la version
+                                {{moduleSearched.version}}</span>
+                        </div>
+                        <input type="submit" id="submit" value="Submit" ng-hide="true" />
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success" ng-disabled="searchModuleForm.$invalid"
+                            ng-click="$close({new_module: moduleSearched, copy_properties: copyProperties})" ng-hide="isReadOnly">Ok
+                    </button>
+                    <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
+                </div>
+            </script>
+
             <script type="text/ng-template" id="application/add_box.html">
                 <div class="modal-header">
                     <h3 class="modal-title">Ajouter un groupe logique</h3>
@@ -85,7 +116,7 @@
             <script type="text/ng-template" id="box_renderer.html">
                 <div id="header" style="height: 38px">
                     <div class="col-md-6 text-left" style="padding-left:10px">
-                        <strong><a href="" editable-text="name"
+                        <strong><a href="" editable-text="name" title="Modifier le nom du groupe logique"
                                    onbeforesave="update_box_name(box, name, $data)">{{name}}</a></strong>
                     </div>
                     <div class="col-md-6 text-right" style="padding-right:10px">
@@ -109,7 +140,8 @@
                     <li ng-if="box.modules.length > 0" class="box instance" ng-repeat="module in box.modules">
                         <div id="header" style="height: 38px; width: 100%">
                             <div class="col-md-6" style="padding-left:10px;white-space: nowrap;">
-                                <span><strong>{{module.title}}</strong></span>
+                                <span><strong><a href="" ng-click="change_module(module)"
+                                                 title="Modifier la version du module">{{module.title}}</a></strong></span>
                             </div>
                             <div class="col-md-6 text-right" style="padding-right:10px">
                                 <button ng-click="open_add_instance_dialog(module)"
@@ -182,7 +214,8 @@
     <div class="col-md-12">
         <div class="bg-light">
             <h3>
-                <span style="margin-right: 30px">Les properties d'instance associees a <strong><a href="" editable-text="instance.name"
+                <span style="margin-right: 30px">Les properties d'instance associees a <strong><a href=""
+                                                                                                  editable-text="instance.name"
                                                                                                   onbeforesave="update_instance_name(instance, $data)">{{instance.name}}</a></strong></span>
                 <button ng-click="save_platform_from_box(mainBox)" class="btn btn-sm">
                     <span class="glyphicon glyphicon-saved" style="padding-right:10px"></span>
@@ -190,10 +223,16 @@
                 </button>
             </h3>
             <form class="form-horizontal narrow" role="form">
-                <div class="form-group" ng-class="{'property-not-used': !key_value_property.inModel}" ng-repeat="key_value_property in instance.key_values | orderBy:'name' track by $index">
-                    <label for="input-{{ key_value_property.name }}" class="col-md-3 control-label">{{ key_value_property.name }}</label>
+                <div class="form-group" ng-class="{'property-not-used': !key_value_property.inModel}"
+                     ng-repeat="key_value_property in instance.key_values | orderBy:'name' track by $index">
+                    <label for="input-{{ key_value_property.name }}" class="col-md-3 control-label">{{
+                        key_value_property.name }}</label>
+
                     <div class="col-md-9">
-                        <input id="input-{{ key_value_property.name }}" type="text" class="form-control" placeholder="{{key_value_property.comment}}" ng-model="key_value_property.value" tooltip="{{key_value_property.comment}}" tooltip-trigger="focus" tooltip-placement="right" />
+                        <input id="input-{{ key_value_property.name }}" type="text" class="form-control"
+                               placeholder="{{key_value_property.comment}}" ng-model="key_value_property.value"
+                               tooltip="{{key_value_property.comment}}" tooltip-trigger="focus"
+                               tooltip-placement="right"/>
                     </div>
                 </div>
             </form>

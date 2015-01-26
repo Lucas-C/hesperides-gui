@@ -164,11 +164,11 @@
                             <ul class="list-inline" style="padding-top:10px; padding-bottom:10px">
                                 <li ng-repeat="instance in module.instances | orderBy:'name':false" ng-mouseover="instance.hover = true" ng-mouseleave="instance.hover = false">
                                     <button ng-click="edit_instance(instance)" title="Editer les properties de l'instance"
-                                            class="btn btn-info btn-xs">
+                                            class="btn btn-xs" >
                                         <span class="glyphicon glyphicon-list" style="margin-right:10px"></span>{{instance.name}}
                                     </button>
                                     <button ng-click="delete_instance(instance, module)" title="Supprimer l'instance"
-                                            class="btn btn-danger btn-xs">
+                                            class="btn btn-danger btn-xs" ng-show="instance.hover">
                                         <span class="glyphicon glyphicon-trash"></span>
                                     </button>
                                 </li>

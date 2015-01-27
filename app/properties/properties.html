@@ -162,7 +162,7 @@
                         </div>
                         <div>
                             <ul class="list-inline" style="padding-top:10px; padding-bottom:10px">
-                                <li ng-repeat="instance in module.instances">
+                                <li ng-repeat="instance in module.instances | orderBy:'name':false" ng-mouseover="instance.hover = true" ng-mouseleave="instance.hover = false">
                                     <button ng-click="edit_instance(instance)" title="Editer les properties de l'instance"
                                             class="btn btn-info btn-xs">
                                         <span class="glyphicon glyphicon-list" style="margin-right:10px"></span>{{instance.name}}

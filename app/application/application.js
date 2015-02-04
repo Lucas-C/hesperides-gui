@@ -74,6 +74,7 @@ applicationModule.factory('ApplicationModule', ['Instance', function (Instance) 
         var me = this;
 
         angular.extend(this, {
+            id: 0,
             name: "",
             version: "",
             is_working_copy: true,
@@ -103,6 +104,7 @@ applicationModule.factory('ApplicationModule', ['Instance', function (Instance) 
 
         this.to_rest_entity = function () {
             return {
+                id: this.id,
                 name: this.name,
                 version: this.version,
                 working_copy: this.is_working_copy,

@@ -22,6 +22,8 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
                 return (this.parent_box == null ? "": (this.parent_box.get_path() + "#")) + this.name;
             },
             to_modules: function(){
+                var me = this;
+                _.forEach(this.modules, function(module){ module.path = me.get_path(); });
                 return this.modules.concat(
                     _.flatten(_.map(this.children, function(box){
                         return box.to_modules();
@@ -77,6 +79,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
         box.name = new_name;
         box.parent_box["children"][new_name] = box.parent_box["children"][old_name];
         delete box.parent_box["children"][old_name];
+        $scope.save_platform_from_box($scope.mainBox, true);
     };
 
     $scope.open_add_box_dialog = function(box){

@@ -183,10 +183,12 @@
                     <span class="glyphicon glyphicon-plus" style="padding-right:10px"></span>
                     <span>Ajouter un groupe logique</span>
                 </button>
-                <button ng-click="save_platform_from_box(mainBox)" class="btn btn-sm">
+                <!--
+                <button ng-click="save_platform_from_box(mainBox, true)" class="btn btn-sm">
                     <span class="glyphicon glyphicon-saved" style="padding-right:10px"></span>
                     <span>Sauver la plateforme</span>
                 </button>
+                -->
             </h3>
             <ul class="list-inline">
                 <li class="box" ng-repeat="(name, box) in mainBox.children" ng-include="'box_renderer.html'"/>

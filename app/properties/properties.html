@@ -131,7 +131,8 @@
                                 class="btn btn-success btn-xs">
                             <span class="glyphicon glyphicon-inbox"></span>
                         </button>
-                        <button ng-click="remove_box(name, box)" ng-if="box.isEmpty()" title="Supprimer le groupe logique"
+                        <button ng-really-message="Supprimer le groupe logique {{name}} ?"
+                                ng-really-click="remove_box(name, box)" ng-if="box.isEmpty()" title="Supprimer le groupe logique"
                                 class="btn btn-danger btn-xs">
                             <span class="glyphicon glyphicon-trash"></span>
                         </button>
@@ -154,7 +155,8 @@
                                 <button class="btn btn-info btn-xs" title="Editer les properties"
                                         ng-click="edit_properties(platform, module)"><span class="glyphicon glyphicon-list"></span>
                                 </button>
-                                <button ng-click="delete_module(module, box)" title="Supprimer le module"
+                                <button ng-really-message="Supprimer le module {{module.title}} et toutes ses instances ?"
+                                        ng-really-click="delete_module(module, box)" title="Supprimer le module"
                                         class="btn btn-danger btn-xs">
                                     <span class="glyphicon glyphicon-trash"></span>
                                 </button>
@@ -167,7 +169,8 @@
                                             class="btn btn-xs" >
                                         <span class="glyphicon glyphicon-list" style="margin-right:10px"></span>{{instance.name}}
                                     </button>
-                                    <button ng-click="delete_instance(instance, module)" title="Supprimer l'instance"
+                                    <button ng-really-message="Supprimer l'instance {{instance.name}} ?"
+                                            ng-really-click="delete_instance(instance, module)" title="Supprimer l'instance"
                                             class="btn btn-danger btn-xs" ng-show="instance.hover">
                                         <span class="glyphicon glyphicon-trash"></span>
                                     </button>

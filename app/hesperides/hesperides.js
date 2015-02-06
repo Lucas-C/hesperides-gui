@@ -23,13 +23,13 @@ hesperidesModule.run(function (editableOptions) {
 });
 
 hesperidesModule.factory('Page', function () {
-    var title = 'Hesperides';
+    var title = 'Hesperides - Release BLINK';
     return {
         title: function () {
             return title;
         },
         setTitle: function (newTitle) {
-            title = "Hesperides - " + newTitle
+            title = "Hesperides - Release BLINK - " + newTitle
         }
     }
 });
@@ -100,4 +100,25 @@ hesperidesModule.filter('interpolate', ['version', function (version) {
         return String(text).replace(/\%VERSION\%/mg, version);
     };
 }]);
+
+hesperidesModule.directive('konami', function() {
+    return {
+        restrict: 'E',
+        link: function(scope, element, attrs) {
+            var keys = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65];
+            var i = 0;
+            $(document).keydown(function(e) {
+                if(e.keyCode === keys[i++]) {
+                    if(i === keys.length) {
+                        $(document).unbind('keydown', arguments.callee);
+                        //Konami code is active, do some fun stuff here
+                        element.append('<img src="img/konami_egg.jpg" width="100%"></img>');
+                    }
+                } else {
+                    i = 0;
+                }
+            });
+        }
+    }
+});
 

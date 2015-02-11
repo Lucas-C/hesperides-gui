@@ -1,10 +1,29 @@
 <div class="row">
     <div class="col-md-12">
         <div class="bg-light">
+            <script type="text/ng-template" id="module/create_release.html">
+                <div class="modal-header">
+                    <h3 class="modal-title">Créer une release</h3>
+                </div>
+                <div class="modal-body">
+                    <form name="createReleaseForm" novalidate ng-submit="createReleaseForm.$valid && $close(release_version)">
+                        <label for="release_version">Version de la release</label>
+                        <input type="text" class="form-control" id="release_version"
+                               ng-model="release_version" required />
+                        <input type="submit" id="submit" value="Submit" ng-hide="true"/>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-success" ng-disabled="createReleaseForm.$invalid"
+                            ng-really-message="Etes-vous sûr de vouloir créer la release {{release_version}} ? C'est une opération irreversible"
+                            ng-really-click="$close(release_version)">Ok
+                    </button>
+                    <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
+                </div>
+            </script>
             <h3>Module <strong>{{module.name}}</strong>, Version <strong>{{module.version}}</strong> <span style="padding-left: 10px;"
                     ng-show="is_workingcopy">(Working Copy)</span></span></strong>
-            <button ng-really-message="Etes-vous sur de vouloir créer la release {{module.version}} ?"
-                    ng-really-click="create_release(module)"
+            <button ng-click="open_create_release_dialog(module)"
                     class="btn" ng-show="is_workingcopy"
                     style="margin-left: 30px;">
                 <span style="padding-right:10px">Créer la release</span>

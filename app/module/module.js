@@ -4,7 +4,7 @@
 var applicationModule = angular.module('hesperides.module', []);
 
 
-applicationModule.controller('ModuleCtrl', ['$scope', '$routeParams', '$location', 'TechnoService', 'ModuleService', 'HesperidesTemplateModal', 'Template', 'Page', function ($scope, $routeParams, $location, TechnoService, ModuleService, HesperidesTemplateModal, Template, Page) {
+applicationModule.controller('ModuleCtrl', ['$scope', '$routeParams', '$location', '$modal', 'TechnoService', 'ModuleService', 'HesperidesTemplateModal', 'Template', 'Page', function ($scope, $routeParams, $location, $modal, TechnoService, ModuleService, HesperidesTemplateModal, Template, Page) {
 
     Page.setTitle('Module');
 
@@ -109,9 +109,23 @@ applicationModule.controller('ModuleCtrl', ['$scope', '$routeParams', '$location
         });
     };
 
-    $scope.create_release = function(module){
-        ModuleService.create_release(module).then(function(){
-            $location.path('/module/' + module.name + '/' + module.version).search({});
+    $scope.create_release = function(module, release_version){
+        ModuleService.create_release(module, release_version).then(function(){
+            $location.path('/module/' + module.name + '/' + release_version).search({});
+        });
+    };
+
+    $scope.open_create_release_dialog = function(module){
+        var modal = $modal.open({
+            templateUrl: 'module/create_release.html',
+            backdrop: 'static',
+            size: 'sm',
+            keyboard: false,
+            scope: $scope
+        });
+
+        modal.result.then(function(release_version){
+            $scope.create_release(module, release_version);
         });
     };
 
@@ -287,13 +301,13 @@ applicationModule.factory('ModuleService', ['$http', '$q', 'Module', 'Template',
                 });
             }
         },
-        create_release: function (module) {
+        create_release: function (module, release_version) {
             if (!module.is_working_copy) {
                 $.notify("Operation impossible. Une release ne peut être creee qu'a partir d'une working copy", "error");
                 throw module;
             } else {
-                return $http.post('rest/modules/create_release?module_name=' + encodeURIComponent(module.name) + '&module_version=' + encodeURIComponent(module.version)).then(function (response) {
-                    $.notify("La release " + module.name + ", " + module.version + " a bien ete creee", "success");
+                return $http.post('rest/modules/create_release?module_name=' + encodeURIComponent(module.name) + '&module_version=' + encodeURIComponent(module.version) + '&release_version=' + encodeURIComponent(release_version)).then(function (response) {
+                    $.notify("La release " + module.name + ", " + release_version + " a bien ete creee", "success");
                     return new Module(response.data);
                 }, function (error) {
                     $.notify(error.data.message, "error");

@@ -4,7 +4,7 @@
 
     <groupId>com.vsct.dt</groupId>
     <artifactId>hesperides-gui</artifactId>
-    <version>0.2.2</version>
+    <version>0.2.2.1-SNAPSHOT</version>
     <packaging>pom</packaging>
 
     <properties>

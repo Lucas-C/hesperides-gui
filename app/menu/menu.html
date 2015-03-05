@@ -259,8 +259,14 @@
                        id="platformName" placeholder="Indiquer la plateforme (exemples : USN1, REC2, PRD3 …)"/>
             </div>
             <div class="form-group">
+                <label>Plateforme de production
+                    <input type="checkbox" ng-model="new_platform.production"
+                       id="isProduction" />
+                </label>
+            </div>
+            <div class="form-group">
                 <label for="platformApplicationVersion">Version de l'application</label>
-                <input type="text" class="form-control" required ng-trim="true"
+                <input type="text" required ng-trim="true" class="form-control"
                        ng-model="new_platform.application_version"
                        id="platformApplicationVersion"
                        placeholder="Indiquer la version de l'application sur cette plateforme"/>
@@ -270,7 +276,7 @@
     </div>
     <div class="modal-footer">
         <button class="btn btn-primary" ng-disabled="platformForm.$invalid"
-                ng-click="create_platform(new_platform.application_name, new_platform.platform_name, new_platform.application_version)">
+                ng-click="create_platform(new_platform.application_name, new_platform.platform_name, new_platform.production, new_platform.application_version)">
             Creer
         </button>
         <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
@@ -295,6 +301,12 @@
                 <label for="platformName">Plateforme</label>
                 <input type="text" class="form-control" required ng-trim="true" ng-model="new_platform.platform_name"
                        id="platformName" placeholder="Indiquer la plateforme (exemples : USN1, REC2, PRD3 …)"/>
+            </div>
+            <div class="form-group">
+                <label>Plateforme de production
+                    <input type="checkbox" ng-model="new_platform.production"
+                           id="isProduction" />
+                </label>
             </div>
             <div class="form-group">
                 <label for="platformApplicationVersion">Version de l'application</label>
@@ -323,7 +335,7 @@
     </div>
     <div class="modal-footer">
         <button class="btn btn-primary" ng-disabled="platformForm.$invalid"
-                ng-click="create_platform_from(new_platform.application_name, new_platform.platform_name, new_platform.application_version, new_platform.from_application, new_platform.from_platform)">
+                ng-click="create_platform_from(new_platform.application_name, new_platform.platform_name, new_platform.production, new_platform.application_version, new_platform.from_application, new_platform.from_platform)">
             Creer
         </button>
         <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>

@@ -37,6 +37,7 @@ applicationModule.factory('Platform', ['ApplicationModule', function (Module) {
             application_name: "",
             application_version: "",
             modules: [],
+            production: false,
             version_id: -1
         }, data);
 
@@ -54,6 +55,7 @@ applicationModule.factory('Platform', ['ApplicationModule', function (Module) {
                 platform_name: this.name,
                 application_name: this.application_name,
                 application_version: this.application_version,
+                production: this.production,
                 modules: _.map(this.modules, function (module) {
                     return module.to_rest_entity();
                 }),

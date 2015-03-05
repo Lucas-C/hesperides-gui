@@ -3,7 +3,7 @@
  */
 var propertiesModule = angular.module('hesperides.properties', []);
 
-propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal', 'ApplicationService', 'ModuleService', 'ApplicationModule', 'Page',  function ($scope, $routeParams, $modal, ApplicationService, ModuleService, Module, Page) {
+propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal', '$location', '$route', 'ApplicationService', 'ModuleService', 'ApplicationModule', 'Page',  function ($scope, $routeParams, $modal, $location, $route, ApplicationService, ModuleService, Module, Page) {
     Page.setTitle("Properties");
 
     $scope.platform = $routeParams.platform;
@@ -203,6 +203,10 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
             $scope.platforms[existing_index] = platform;
             //Update the view
             $scope.update_main_box(platform);
+        }, function(error){
+            //If an error occurs, reload the platform, thus avoiding having a non synchronized $scope model object
+            $location.url('/properties/'+$scope.platform.application_name).search({platform: $scope.platform.name});
+            $route.reload(); //Force reload if needed
         });
     };
 
@@ -243,6 +247,10 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
             });
             //Increase platform number
             $scope.platform.version_id = $scope.platform.version_id + 1;
+        }, function(error){
+            //If an error occurs, reload the platform, thus avoiding having a non synchronized $scope model object
+            $location.url('/properties/'+$scope.platform.application_name).search({platform: $scope.platform.name});
+            $route.reload(); //Force reload if needed
         });
     };
 

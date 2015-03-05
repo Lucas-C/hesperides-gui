@@ -17,197 +17,220 @@
     </div>
 </div>
 <div class="row" ng-show="platform">
-    <div class="col-md-12">
-        <div class="bg-light">
+<div class="col-md-12">
+<div class="bg-light">
 
-            <script type="text/ng-template" id="application/search_module.html">
-                <div class="modal-header">
-                    <h3 class="modal-title">Ajouter un module</h3>
-                </div>
-                <div class="modal-body">
-                    <form name="searchModuleForm" novalidate ng-submit="searchModuleForm.$valid && $close(moduleSearched)">
-                        <label for="module">Module</label>
-                        <input type="text" class="form-control" id="module"
-                               ng-model="moduleSearched"
-                               placeholder="Rechercher" required
-                               typeahead-editable="false"
-                               typeahead="module as module.title for module in find_modules_by_name($viewValue)"
-                                />
-                        <input type="submit" id="submit" value="Submit" ng-hide="true"/>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-success" ng-disabled="searchModuleForm.$invalid"
-                            ng-click="$close(moduleSearched)" ng-hide="isReadOnly">Ok
-                    </button>
-                    <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
-                </div>
-            </script>
+<script type="text/ng-template" id="application/search_module.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Ajouter un module</h3>
+    </div>
+    <div class="modal-body">
+        <form name="searchModuleForm" novalidate
+              ng-submit="searchModuleForm.$valid && $close(moduleSearched)">
+            <label for="module">Module</label>
+            <input type="text" class="form-control" id="module"
+                   ng-model="moduleSearched"
+                   placeholder="Rechercher" required
+                   typeahead-editable="false"
+                   typeahead="module as module.title for module in find_modules_by_name($viewValue)"
+                    />
+            <input type="submit" id="submit" value="Submit" ng-hide="true"/>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-success" ng-disabled="searchModuleForm.$invalid"
+                ng-click="$close(moduleSearched)" ng-hide="isReadOnly">Ok
+        </button>
+        <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
+    </div>
+</script>
 
-            <script type="text/ng-template" id="application/change_module_version.html">
-                <div class="modal-header">
-                    <h3 class="modal-title">Changer la version de {{module.title}}</h3>
-                </div>
-                <div class="modal-body">
-                    <form name="searchModuleForm" autocomplete="off" novalidate
-                          ng-submit="searchModuleForm.$valid && $close({new_module: moduleSearched, copy_properties: copyProperties})">
-                        <div class="form-group">
-                            <label for="module">vers la version</label>
-                            <input type="text" class="form-control" id="module"
-                                   ng-model="moduleSearched"
-                                   placeholder="Rechercher la version" required
-                                   typeahead-editable="false"
-                                   typeahead="module as module.title for module in find_modules_by_name(module.name + ' ' + $viewValue) | filter:{name:module.name}"
-                                    />
-                        </div>
-                        <div class="form-group" ng-show="moduleSearched">
-                            <input type="checkbox" id="copyProperties" ng-model="copyProperties"/><span style="padding-left: 10px" ng-style="{'text-decoration': (copyProperties ? '' : 'line-through'), 'font-weight' : (copyProperties ? 'bold' : 'normal')}">Copier les properties valorisées de la version {{module.version}} vers la version
+<script type="text/ng-template" id="application/change_module_version.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Changer la version de {{module.title}}</h3>
+    </div>
+    <div class="modal-body">
+        <form name="searchModuleForm" autocomplete="off" novalidate
+              ng-submit="searchModuleForm.$valid && $close({new_module: moduleSearched, copy_properties: copyProperties})">
+            <div class="form-group">
+                <label for="module">vers la version</label>
+                <input type="text" class="form-control" id="module"
+                       ng-model="moduleSearched"
+                       placeholder="Rechercher la version" required
+                       typeahead-editable="false"
+                       typeahead="module as module.title for module in find_modules_by_name(module.name + ' ' + $viewValue) | filter:{name:module.name}"
+                        />
+            </div>
+            <div class="form-group" ng-show="moduleSearched">
+                <input type="checkbox" id="copyProperties" ng-model="copyProperties"/><span
+                    style="padding-left: 10px"
+                    ng-style="{'text-decoration': (copyProperties ? '' : 'line-through'), 'font-weight' : (copyProperties ? 'bold' : 'normal')}">Copier les properties valorisées de la version {{module.version}} vers la version
                                 {{moduleSearched.version}}</span>
-                        </div>
-                        <input type="submit" id="submit" value="Submit" ng-hide="true" />
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-success" ng-disabled="searchModuleForm.$invalid"
-                            ng-click="$close({new_module: moduleSearched, copy_properties: copyProperties})" ng-hide="isReadOnly">Ok
-                    </button>
-                    <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
-                </div>
-            </script>
+            </div>
+            <input type="submit" id="submit" value="Submit" ng-hide="true"/>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-success" ng-disabled="searchModuleForm.$invalid"
+                ng-click="$close({new_module: moduleSearched, copy_properties: copyProperties})"
+                ng-hide="isReadOnly">Ok
+        </button>
+        <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
+    </div>
+</script>
 
-            <script type="text/ng-template" id="application/add_box.html">
-                <div class="modal-header">
-                    <h3 class="modal-title">Ajouter un groupe logique</h3>
-                </div>
-                <div class="modal-body">
-                    <form name="addComponentForm" novalidate ng-submit="addComponentForm.$valid && $close(new_component_name)">
-                        <label for="name">Nom</label>
-                        <input type="text" class="form-control" id="name"
-                               ng-model="new_component_name"
-                               placeholder="Exemple WDIGST,..." required />
-                        <input type="submit" id="submit" value="Submit" ng-hide="true"/>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-success" ng-disabled="addComponentForm.$invalid"
-                            ng-click="$close(new_component_name)" ng-hide="isReadOnly">Ok
-                    </button>
-                    <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
-                </div>
-            </script>
+<script type="text/ng-template" id="application/add_box.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Ajouter un groupe logique</h3>
+    </div>
+    <div class="modal-body">
+        <form name="addComponentForm" novalidate
+              ng-submit="addComponentForm.$valid && $close(new_component_name)">
+            <label for="name">Nom</label>
+            <input type="text" class="form-control" id="name"
+                   ng-model="new_component_name"
+                   placeholder="Exemple WDIGST,..." required/>
+            <input type="submit" id="submit" value="Submit" ng-hide="true"/>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-success" ng-disabled="addComponentForm.$invalid"
+                ng-click="$close(new_component_name)" ng-hide="isReadOnly">Ok
+        </button>
+        <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
+    </div>
+</script>
 
-            <script type="text/ng-template" id="application/add_instance.html">
-                <div class="modal-header">
-                    <h3 class="modal-title">Ajouter une instance</h3>
-                </div>
-                <div class="modal-body">
-                    <form name="addInstanceForm" novalidate ng-submit="addInstanceForm.$valid && $close(new_instance_name)">
-                        <label for="name">Nom</label>
-                        <input type="text" class="form-control" id="name"
-                               ng-model="new_instance_name" required />
-                        <input type="submit" id="submit" value="Submit" ng-hide="true"/>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-success" ng-disabled="addInstanceForm.$invalid"
-                            ng-click="$close(new_instance_name)" ng-hide="isReadOnly">Ok
-                    </button>
-                    <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
-                </div>
-            </script>
+<script type="text/ng-template" id="application/add_instance.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Ajouter une instance</h3>
+    </div>
+    <div class="modal-body">
+        <form name="addInstanceForm" novalidate
+              ng-submit="addInstanceForm.$valid && $close(new_instance_name)">
+            <label for="name">Nom</label>
+            <input type="text" class="form-control" id="name"
+                   ng-model="new_instance_name" required/>
+            <input type="submit" id="submit" value="Submit" ng-hide="true"/>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-success" ng-disabled="addInstanceForm.$invalid"
+                ng-click="$close(new_instance_name)" ng-hide="isReadOnly">Ok
+        </button>
+        <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
+    </div>
+</script>
 
-            <script type="text/ng-template" id="box_renderer.html">
-                <div id="header" style="height: 38px">
-                    <div class="col-md-6 text-left" style="padding-left:10px">
-                        <strong><a href="" editable-text="name" title="Modifier le nom du groupe logique"
-                                   onbeforesave="update_box_name(box, name, $data)">{{name}}</a></strong>
-                    </div>
-                    <div class="col-md-6 text-right" style="padding-right:10px">
-                        <button ng-click="search_module(box)" title="Ajouter un module"
-                                class="btn btn-primary btn-xs">
-                            <span class="glyphicon glyphicon-plus"></span>
-                        </button>
-                        <button ng-click="open_add_box_dialog(box)" title="Ajouter un groupe logique"
-                                class="btn btn-success btn-xs">
-                            <span class="glyphicon glyphicon-inbox"></span>
-                        </button>
-                        <button ng-really-message="Supprimer le groupe logique {{name}} ?"
-                                ng-really-click="remove_box(name, box)" ng-if="box.isEmpty()" title="Supprimer le groupe logique"
-                                class="btn btn-danger btn-xs">
-                            <span class="glyphicon glyphicon-trash"></span>
-                        </button>
-                    </div>
-                </div>
-                <ul class="list-inline">
-                    <li class="box" ng-repeat="(name, box) in box.children"
-                        ng-include="'box_renderer.html'"></li>
-                    <li ng-if="box.modules.length > 0" class="box instance" ng-repeat="module in box.modules">
-                        <div id="header" style="height: 38px; width: 100%">
-                            <div class="col-md-6" style="padding-left:10px;white-space: nowrap;">
-                                <span><strong><a href="" ng-click="change_module(module)"
-                                                 title="Modifier la version du module">{{module.title}}</a></strong></span>
-                            </div>
-                            <div class="col-md-6 text-right" style="padding-right:10px">
-                                <button ng-click="open_add_instance_dialog(module)" title="Ajouter une instance"
-                                        class="btn btn-primary btn-xs">
-                                    <span class="glyphicon glyphicon-plus"></span>
-                                </button>
-                                <button class="btn btn-info btn-xs" title="Editer les properties"
-                                        ng-click="edit_properties(platform, module)"><span class="glyphicon glyphicon-list"></span>
-                                </button>
-                                <button ng-really-message="Supprimer le module {{module.title}} et toutes ses instances ?"
-                                        ng-really-click="delete_module(module, box)" title="Supprimer le module"
-                                        class="btn btn-danger btn-xs">
-                                    <span class="glyphicon glyphicon-trash"></span>
-                                </button>
-                            </div>
-                        </div>
-                        <div>
-                            <ul class="list-inline" style="padding-top:10px; padding-bottom:10px">
-                                <li ng-repeat="instance in module.instances | orderBy:'name':false" ng-mouseover="instance.hover = true" ng-mouseleave="instance.hover = false">
-                                    <button ng-click="edit_instance(instance)" title="Editer les properties de l'instance"
-                                            class="btn btn-xs" >
-                                        <span class="glyphicon glyphicon-list" style="margin-right:10px"></span>{{instance.name}}
-                                    </button>
-                                    <button ng-really-message="Supprimer l'instance {{instance.name}} ?"
-                                            ng-really-click="delete_instance(instance, module)" title="Supprimer l'instance"
-                                            class="btn btn-danger btn-xs" ng-show="instance.hover">
-                                        <span class="glyphicon glyphicon-trash"></span>
-                                    </button>
-                                </li>
-                            </ul>
-                        </div>
-                    </li>
-                </ul>
-            </script>
-
-            <h3><span style="margin-right: 30px">Representation logique de <strong>{{platform.name}}</strong></span>
-                <button ng-click="open_add_box_dialog(mainBox)" class="btn btn-sm">
-                    <span class="glyphicon glyphicon-plus" style="padding-right:10px"></span>
-                    <span>Ajouter un groupe logique</span>
-                </button>
-                <!--
-                <button ng-click="save_platform_from_box(mainBox, true)" class="btn btn-sm">
-                    <span class="glyphicon glyphicon-saved" style="padding-right:10px"></span>
-                    <span>Sauver la plateforme</span>
-                </button>
-                -->
-            </h3>
-            <ul class="list-inline">
-                <li class="box" ng-repeat="(name, box) in mainBox.children" ng-include="'box_renderer.html'"/>
-                <li class="box" ng-if="box.modules.length > 0">
-                    <button class="btn btn-info btn-sm" style="margin: 5px 5px 5px 5px"
-                            ng-repeat="module in mainBox.modules">{{module.title}} <span
-                            class="glyphicon glyphicon-list"></span></button>
-                </li>
-            </ul>
+<script type="text/ng-template" id="box_renderer.html">
+    <div id="header" style="height: 38px">
+        <div class="col-md-6 text-left" style="padding-left:10px">
+            <strong><a href="" editable-text="name" title="Modifier le nom du groupe logique"
+                       onbeforesave="update_box_name(box, name, $data)">{{name}}</a></strong>
+        </div>
+        <div class="col-md-6 text-right" style="padding-right:10px">
+            <button ng-click="search_module(box)" title="Ajouter un module"
+                    class="btn btn-primary btn-xs">
+                <span class="glyphicon glyphicon-plus"></span>
+            </button>
+            <button ng-click="open_add_box_dialog(box)" title="Ajouter un groupe logique"
+                    class="btn btn-success btn-xs">
+                <span class="glyphicon glyphicon-inbox"></span>
+            </button>
+            <button ng-really-message="Supprimer le groupe logique {{name}} ?"
+                    ng-really-click="remove_box(name, box)" ng-if="box.isEmpty()"
+                    title="Supprimer le groupe logique"
+                    class="btn btn-danger btn-xs">
+                <span class="glyphicon glyphicon-trash"></span>
+            </button>
         </div>
     </div>
+    <ul class="list-inline">
+        <li class="box" ng-repeat="(name, box) in box.children"
+            ng-include="'box_renderer.html'"></li>
+        <li ng-if="box.modules.length > 0" class="box instance" ng-repeat="module in box.modules">
+            <div id="header" style="height: 38px; width: 100%">
+                <div class="col-md-6" style="padding-left:10px;white-space: nowrap;">
+                                <span><strong><a href="" ng-click="change_module(module)"
+                                                 title="Modifier la version du module">{{module.title}}</a></strong></span>
+                </div>
+                <div class="col-md-6 text-right" style="padding-right:10px">
+                    <button ng-click="open_add_instance_dialog(module)" title="Ajouter une instance"
+                            class="btn btn-primary btn-xs">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </button>
+                    <button class="btn btn-info btn-xs" title="Editer les properties"
+                            ng-click="edit_properties(platform, module)"><span
+                            class="glyphicon glyphicon-list"></span>
+                    </button>
+                    <button ng-really-message="Supprimer le module {{module.title}} et toutes ses instances ?"
+                            ng-really-click="delete_module(module, box)" title="Supprimer le module"
+                            class="btn btn-danger btn-xs">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </button>
+                </div>
+            </div>
+            <div>
+                <ul class="list-inline" style="padding-top:10px; padding-bottom:10px">
+                    <li ng-repeat="instance in module.instances | orderBy:'name':false"
+                        ng-mouseover="instance.hover = true" ng-mouseleave="instance.hover = false">
+                        <button ng-click="edit_instance(instance)"
+                                title="Editer les properties de l'instance"
+                                class="btn btn-xs">
+                            <span class="glyphicon glyphicon-list" style="margin-right:10px"></span>{{instance.name}}
+                        </button>
+                        <button ng-really-message="Supprimer l'instance {{instance.name}} ?"
+                                ng-really-click="delete_instance(instance, module)"
+                                title="Supprimer l'instance"
+                                class="btn btn-danger btn-xs" ng-show="instance.hover">
+                            <span class="glyphicon glyphicon-trash"></span>
+                        </button>
+                    </li>
+                </ul>
+            </div>
+        </li>
+    </ul>
+</script>
+
+<h3><span style="margin-right: 30px">Representation logique de <strong>{{platform.name}} (version
+    <a href="" editable-text="platform.application_version"
+       title="Modifier le label 'version de l'application'"
+       onaftersave="save_platform_from_box(mainBox)">{{platform.application_version}}</a>
+    )</strong></span>
+    <small><label>Plateforme de production
+        <input type="checkbox" ng-model="platform.production" ng-change="save_platform_from_box(mainBox)"
+               id="isProduction" />
+    </label></small>
+</h3>
+<button ng-click="open_add_box_dialog(mainBox)" class="btn btn-sm">
+    <span class="glyphicon glyphicon-plus" style="padding-right:10px"></span>
+    <span>Ajouter un groupe logique</span>
+</button>
+
+
+<!--
+<button ng-click="save_platform_from_box(mainBox, true)" class="btn btn-sm">
+    <span class="glyphicon glyphicon-saved" style="padding-right:10px"></span>
+    <span>Sauver la plateforme</span>
+</button>
+-->
+
+<ul class="list-inline">
+    <li class="box" ng-repeat="(name, box) in mainBox.children" ng-include="'box_renderer.html'"/>
+    <li class="box" ng-if="box.modules.length > 0">
+        <button class="btn btn-info btn-sm" style="margin: 5px 5px 5px 5px"
+                ng-repeat="module in mainBox.modules">{{module.title}} <span
+                class="glyphicon glyphicon-list"></span></button>
+    </li>
+</ul>
+</div>
+</div>
 </div>
 <div class="row" ng-show="properties">
     <div class="col-md-12">
         <div class="bg-light">
-            <h3><span style="margin-right: 30px">Les properties associees a <strong>{{selected_module.path.split('#').join(' | ')}} | {{selected_module.title}}</strong></span>
+            <h3><span style="margin-right: 30px">Les properties associees a <strong>{{selected_module.path.split('#').join('
+                | ')}} | {{selected_module.title}}</strong></span>
                 <button ng-click="save_properties(properties, selected_module)" class="btn btn-sm">
                     <span class="glyphicon glyphicon-saved" style="padding-right:10px"></span>
                     <span>Sauver les properties</span>

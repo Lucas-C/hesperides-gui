@@ -106,15 +106,15 @@ menuModule.controller('MenuPropertiesCtrl', ['$scope', '$modal', '$location', 'A
         if (modal) modal.close();
     };
 
-    $scope.create_platform = function(application_name, platform_name, application_version){
-        var platform = new Platform({name: platform_name, application_name: application_name, application_version: application_version});
+    $scope.create_platform = function(application_name, platform_name, production, application_version){
+        var platform = new Platform({name: platform_name, application_name: application_name, application_version: application_version, production: production});
         ApplicationService.save_platform(platform).then(function(platform){
             $scope.open_properties_page(platform.application_name, platform.platform_name);
         });
     };
 
-    $scope.create_platform_from = function(application_name, platform_name, application_version, from_application, from_platform){
-        var platform = new Platform({name: platform_name, application_name: application_name, application_version: application_version});
+    $scope.create_platform_from = function(application_name, platform_name, production, application_version, from_application, from_platform){
+        var platform = new Platform({name: platform_name, application_name: application_name, application_version: application_version, production: production});
         ApplicationService.create_platform_from(platform, from_application, from_platform).then(function(platform){
             $scope.open_properties_page(platform.application_name, platform.platform_name);
         });

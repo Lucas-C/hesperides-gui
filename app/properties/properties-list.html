@@ -1,8 +1,13 @@
 <form class="form-horizontal narrow" role="form">
     <div class="form-group">
-        <input class="col-md-3" style="margin: 0px 15px 0px 15px" placeholder="filtrer les properties par clé" ng-model="propertiesKeyFilter"/>
+        <div class="col-md-4">
+            <input class="form-control" data-hint="Au moins 3 charactères" placeholder="filtrer les properties par clé" ng-model="propertiesKeyFilter"/>
+        </div>
+        <div class="col-md-8">
+            <input class="form-control" sdata-hint="Au moins 3 charactères" placeholder="filtrer les properties par valeur" ng-model="propertiesValueFilter"/>
+        </div>
     </div>
-    <div class="form-group" ng-class="{'property-not-used': !key_value_property.inModel}" ng-repeat="key_value_property in properties.key_value_properties | filter:{'name':propertiesKeyFilter} | orderBy:'name' track by $index">
+    <div class="form-group" ng-class="{'property-not-used': !key_value_property.inModel}" ng-repeat="key_value_property in properties.key_value_properties | filter:{'name':truePropertiesKeyFilter, 'value':truePropertiesValueFilter} | orderBy:'name' track by $index">
         <label style="text-align: right; overflow: hidden; text-overflow: ellipsis" title="{{ key_value_property.name }}" for="input-{{ key_value_property.name }}" class="col-md-4 control-label">{{ key_value_property.name }}</label>
         <div class="col-md-8">
             <input id="input-{{ key_value_property.name }}" type="text" class="form-control" placeholder="{{key_value_property.comment}}" ng-model="key_value_property.value" tooltip="{{key_value_property.comment}}" tooltip-trigger="focus" tooltip-placement="top" />

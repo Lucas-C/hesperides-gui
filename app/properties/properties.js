@@ -114,7 +114,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
         var modal = $modal.open({
             templateUrl: 'application/search_module.html',
             backdrop: 'static',
-            size: 'sm',
+            size: 'lg',
             keyboard: false,
             scope: $scope
         });
@@ -132,7 +132,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
         var modal = $modal.open({
             templateUrl: 'application/change_module_version.html',
             backdrop: 'static',
-            size: 'sm',
+            size: 'lg',
             keyboard: false,
             scope: modalScope
         });
@@ -292,8 +292,27 @@ propertiesModule.directive('propertiesList', function(){
         },
         templateUrl: "properties/properties-list.html",
         link: function(scope, element, attrs){
+            scope.propertiesKeyFilter = "";
+            scope.propertiesValueFilter = "";
 
+            scope.truePropertiesKeyFilter = "";
+            scope.truePropertiesValueFilter = "";
 
+            scope.$watch("propertiesKeyFilter", function(newV, oldV){
+                if(newV.length < 3){
+                    scope.truePropertiesKeyFilter = "";
+                } else {
+                    scope.truePropertiesKeyFilter = newV;
+                }
+            });
+
+            scope.$watch("propertiesValueFilter", function(newV, oldV){
+                if(newV.length < 3){
+                    scope.truePropertiesValueFilter = "";
+                } else {
+                    scope.truePropertiesValueFilter = newV;
+                }
+            });
 
         }
     };

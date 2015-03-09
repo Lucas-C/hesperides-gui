@@ -20,6 +20,7 @@
   z-index: 200000;
 }
 
+
 /* Buttons */
 
 .btn-red:hover {
@@ -122,9 +123,11 @@ h4.app-unit button {
 	background-color: #F8F8F8;
 	padding-top: 10px;
 	padding-bottom: 10px;
-	padding-left: 10px;
+	padding-left: 30px;
 	padding-right: 10px;
 	margin-bottom: 10px;
+    margin-left: 10px;
+    margin-right: 10px;
     box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.7);
 }
 
@@ -151,28 +154,32 @@ h4.app-unit button {
     height: 31px;
 }
 
-.box {
-    margin-top: 10px;
-    margin-bottom: 10px;
-    margin-left: 10px;
-    margin-right: 10px;
-    height: 100%;
-    border: 1px solid #ddd;
-    background-color: #FFFFFF;
-    box-shadow: 0px 0px 3px 0px rgba(0, 0, 0, 0.7), -1px 2px 20px rgba(255, 255, 255, 0.6) inset;
+.box li {
+    vertical-align: top;
 }
 
-.box div#header {
-    background-color: #FFFFFF;
-    padding-top: 5px;
+.box .jumbotron {
+    margin-top: 5px;
+    margin-bottom: 0px;
+    margin-left: 0px;
+    margin-right: 10px;
     padding-bottom: 5px;
+    padding-top: 5px;
+    padding-left: 10px;
+    padding-right: 10px;
+    box-shadow: 0px 0px 1px rgba(0, 0, 0, 0.23), -1px 1px 4px rgba(0, 0, 0, 0.16);
+}
+
+.box .jumbotron div#header {
+    background-color: #FFFFFF;
+    padding-top: 0px;
+    padding-bottom: 0px;
     margin-left: -5px;
     margin-right: -5px;
-    border-bottom: 1px solid #ddd;
-    background-image: linear-gradient(#E5E5E5, #FFFFFF, #E5E5E5);
+    min-width: 250px;
 }
 
-.box .instance div#header {
+.box .jumbotron .instance div#header {
     background-color: #FFFFFF;
     background-image: none;
     font-size: 12px;
@@ -181,3 +188,22 @@ h4.app-unit button {
 /* CodeMirror Mode */
 .cm-hesperides {color: #cc051e;}
 .cm-hesperides-token {color: #a100cc;}
+
+/* Divers Bootstrap */
+.md-btn-xs {
+    width: 35px !important;
+    height: 35px !important;
+}
+
+.vertical-align {
+    display: flex;
+    flex-direction: row;
+}
+
+.vertical-align > [class^="col-"],
+.vertical-align > [class*=" col-"] {
+    display: flex;
+    align-items: center;
+    /*justify-content: center; /* Optional, to align inner items
+                              horizontally inside the column */
+}

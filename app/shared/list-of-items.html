@@ -1,13 +1,13 @@
 <ul class="list-inline" style="padding-left: 20px;">
     <li ng-repeat="item in items | orderBy:sortOn">
         <button ng-click="selfEdit(item)" ng-mouseenter="hover = true" ng-mouseleave="hover = false"
-                class="btn"
+                class="btn  btn-raised"
                 ng-class="{'btn-info': (!item === selectedItem), 'btn-warning': (item === selectedItem), 'btn-sm': size === 'small'}"
                 >{{selfLabel(item)}}
         </button>
         <button ng-if="editable"
                 ng-really-message="Etes-vous sur de vouloir supprimer '{{selfLabel(item)}}' ?"
-                ng-really-click="selfDelete(item)" class="btn btn-danger"
+                ng-really-click="selfDelete(item)" class="btn btn-danger btn-raised"
                 ng-class="{'btn-sm': size === 'small'}"
                 style="margin-left: -5px; padding-left: 2px; padding-right: 2px"><span
                 class="glyphicon glyphicon-trash"></span></button>

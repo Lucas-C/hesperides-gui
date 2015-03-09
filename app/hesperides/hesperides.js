@@ -7,19 +7,26 @@ if ( typeof String.prototype.startsWith != 'function' ) {
 
 var hesperidesModule = angular.module('hesperides', [
     'ngRoute',
+    'ui.bootstrap',
     'hesperides.module',
     'hesperides.menu',
     'hesperides.properties',
     'hesperides.techno',
     'hesperides.template',
     'hesperides.components',
-    'ui.bootstrap',
+    'ngMaterial',
     'xeditable',
     'ui.codemirror'
 ]);
 
 hesperidesModule.run(function (editableOptions) {
     editableOptions.theme = 'bs3';
+    //Init bootstrap ripples
+    $(document).ready(function () {
+        $.material.init();
+    });
+    //Prevent anoying behavior of bootstrap with dropdowns
+    $(document).unbind('keydown.bs.dropdown.data-api');
 });
 
 hesperidesModule.factory('Page', function () {
@@ -38,7 +45,7 @@ hesperidesModule.controller("TitleCtrl", ['$scope', 'Page', function ($scope, Pa
     $scope.Page = Page;
 }]);
 
-hesperidesModule.config(['$routeProvider', function ($routeProvider) {
+hesperidesModule.config(['$routeProvider', '$tooltipProvider', function ($routeProvider, $tooltipProvider) {
     $routeProvider.
         when('/module/:name/:version', {
             templateUrl: 'module/module.html',
@@ -58,6 +65,10 @@ hesperidesModule.config(['$routeProvider', function ($routeProvider) {
         otherwise({
             templateUrl: 'welcome_screen.html'
         });
+    //Setup tooltip delay
+    $tooltipProvider.options({
+        popupDelay: 800
+    });
 }]);
 
 hesperidesModule.directive('ngReallyClick', [function () {

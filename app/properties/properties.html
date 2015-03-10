@@ -255,14 +255,23 @@
 </div>
 
 <div layout="row" ng-show="properties">
-    <div class="col-md-12">
+    <div flex="80">
         <h3><span style="margin-right: 30px">Les properties associees a <strong>{{selected_module.path.split('#').join('
             | ')}} | {{selected_module.title}}</strong></span>
-            <button ng-click="save_properties(properties, selected_module)" class="btn btn-sm">
-                <span class="glyphicon glyphicon-saved" style="padding-right:10px"></span>
-                <span>Sauver les properties</span>
-            </button>
         </h3>
+    </div>
+    <div flex="15" style="justify-content: flex-end">
+        <div id="referenceForSavePropertiesButtonInitialPosition">
+        <button id="savedPropertiesButton" ng-click="save_properties(properties, selected_module)"
+                class="btn btn-primary btn-raised" style="z-index: 1000">
+            <span class="glyphicon glyphicon-saved" style="padding-right:10px"></span>
+            <span>Sauver les properties</span>
+        </button>
+        </div>
+    </div>
+</div>
+<div layout="row" ng-show="properties">
+    <div flex="100">
         <properties-list properties="properties">
         </properties-list>
     </div>

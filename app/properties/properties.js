@@ -281,6 +281,15 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
         $.notify(error.data.message, "error");
     });
 
+    $(window).scroll(function(){
+        var elementPosition = $('#referenceForSavePropertiesButtonInitialPosition').offset();
+        if($(window).scrollTop() > elementPosition.top - 50){
+            $('#savedPropertiesButton').css('position','fixed').css('top','50px');
+        } else {
+            $('#savedPropertiesButton').css('position','static');
+        }
+    });
+
 }]);
 
 propertiesModule.directive('propertiesList', function(){

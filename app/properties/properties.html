@@ -134,11 +134,103 @@
     </div>
 </script>
 
+<script type="text/ng-template" id="application/properties_diff_wizard.html">
+    <div class="jumbotron" style="padding: 20px 20px 20px 20px">
+        <wizard>
+            <wz-step title="Choisir la plateforme à comparer">
+                <div class="modal-header">
+                    <h3 class="modal-title">Choisir la plateforme à comparer</h3>
+                </div>
+                <div class="modal-body">
+                    <form class="form-horizontal" name="comparedPlatformForm">
+                        <fieldset>
+                            <div class="form-group">
+                                <br/>
+                                <input type="text" class="form-control" placeholder="Application"
+                                       ng-model="from.application" required
+                                       data-hint="WDI, PAO, STF, ..."/>
+                                <br/>
+                                <input type="text" class="form-control" placeholder="Plateforme"
+                                       ng-model="from.platform" required
+                                       data-hint="WDI, PAO, STF, ..."/>
+                                <br/>
+
+                                <div class="togglebutton">
+                                    <label>Regarder dans le passé ?
+                                        <input type="checkbox" ng-model="from.lookPast" style="margin-left: 10px"/>
+                                    </label>
+                                </div>
+                                <br/>
+
+                                <div class="dropdown" ng-show="from.lookPast">
+                                    <a class="dropdown-toggle" id="dropdownDate" data-toggle="dropdown" data-target="#"
+                                       href="javascipt:void(0)">
+                                        <div class="input-group">
+                                            <input type="text" class="form-control" data-ng-model="from.date"><span
+                                                class="input-group-addon"><i
+                                                class="glyphicon glyphicon-calendar"></i></span>
+                                        </div>
+                                    </a>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <datetimepicker data-ng-model="from.date" ng-required="from.lookPast"
+                                                        data-datetimepicker-config="{ dropdownSelector: '#dropdownDate' }"/>
+                                    </ul>
+                                </div>
+                            </div>
+                        </fieldset>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button class="btn btn-warning btn-raised" ng-click="$dismiss('cancel')">Annuler</button>
+                    <button class="btn btn-primary btn-raised" wz-next ng-disabled="comparedPlatformForm.$invalid"
+                            ng-click="get_platform_to_compare(from.application, from.platform, from.lookPast, from.date)">
+                        Suivant
+                    </button>
+                </div>
+            </wz-step>
+            <wz-step title="Choisir le module à comparer">
+                <div class="modal-header">
+                    <h3 class="modal-title">Choisir le module à comparer</h3>
+                </div>
+                <div class="modal-body">
+                    <div layout="row" layout-sm="column" layout-align="space-around">
+                        <md-progress-circular class="md-warn md-hue-3" md-mode="indeterminate"
+                                              ng-show="loading_compare_platform"></md-progress-circular>
+                        <div class="col-lg-12" ng-hide="loading_compare_platform">
+                            <ul class="breadcrumb" style="margin-bottom: 2px"
+                                ng-repeat="module in compare_platform.modules | orderBy:'path'">
+                                <li ng-repeat="token in module.path.split('#')">{{token}}</li>
+                                <li class="active"><a href="" ng-click="compare_platform.chosen_module = module">{{module.title}}</a>
+                                </li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <div layout="row" style="align-items: center">
+                    <div flex="50">
+                        <form name="moduleForm">
+                            <h2 class="text-primary">{{compare_platform.chosen_module.title}}</h2>
+                        </form>
+                    </div>
+                    <div flex="50">
+                        <button class="btn btn-warning btn-raised" ng-click="$dismiss('cancel')">Annuler</button>
+                        <button class="btn btn-primary btn-raised" wz-next ng-disabled="!compare_platform.chosen_module" ng-click="$close()">
+                            Lancer le diff !
+                        </button>
+                    </div>
+                    </div>
+                </div>
+            </wz-step>
+        </wizard>
+    </div>
+</script>
+
 <script type="text/ng-template" id="box_renderer.html">
     <div id="header" class="vertical-align">
         <div class="col-md-6 text-left" style="padding-left:10px">
-                <a href="" editable-text="name" title="Modifier le nom du groupe logique"
-                                      onbeforesave="update_box_name(box, name, $data)">{{name}}</a>
+            <a href="" editable-text="name" title="Modifier le nom du groupe logique"
+               onbeforesave="update_box_name(box, name, $data)">{{name}}</a>
         </div>
         <div class="col-md-6" style="padding-right:10px; justify-content: flex-end">
             <md-button ng-click="search_module(box)" tooltip="Ajouter un module"
@@ -173,6 +265,10 @@
                     <md-button class="md-btn-xs" tooltip="Editer les properties"
                                ng-click="edit_properties(platform, module)"><span
                             class="glyphicon glyphicon-list"></span>
+                    </md-button>
+                    <md-button class="md-btn-xs" tooltip="Comparer les properties"
+                               ng-click="diff_properties(module)"><span
+                            class="glyphicon glyphicon-retweet"></span>
                     </md-button>
                     <md-button ng-really-message="Supprimer le module {{module.title}} et toutes ses instances ?"
                                tooltip="Supprimer le module"
@@ -262,11 +358,11 @@
     </div>
     <div flex="15" style="justify-content: flex-end">
         <div id="referenceForSavePropertiesButtonInitialPosition">
-        <button id="savedPropertiesButton" ng-click="save_properties(properties, selected_module)"
-                class="btn btn-primary btn-raised" style="z-index: 1000">
-            <span class="glyphicon glyphicon-saved" style="padding-right:10px"></span>
-            <span>Sauver les properties</span>
-        </button>
+            <button id="savedPropertiesButton" ng-click="save_properties(properties, selected_module)"
+                    class="btn btn-primary btn-raised" style="z-index: 1000">
+                <span class="glyphicon glyphicon-saved" style="padding-right:10px"></span>
+                <span>Sauver les properties</span>
+            </button>
         </div>
     </div>
 </div>

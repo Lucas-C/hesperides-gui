@@ -149,6 +149,40 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
         });
     };
 
+    $scope.diff_properties = function(compare_module){
+
+        $scope.compare_module = compare_module;
+
+        var modal = $modal.open({
+            templateUrl: 'application/properties_diff_wizard.html',
+            backdrop: 'static',
+            size: 'lg',
+            keyboard: false,
+            scope: $scope
+        });
+
+        modal.result.then(function(){
+            $scope.open_diff_page();
+        });
+    };
+
+    $scope.open_diff_page = function(){
+        //Everything is set in the scope by the modal when calling this
+        //Not very safe but easier to manage with all scopes genrated
+        var urlParams = {
+            application : $scope.platform.application_name,
+            platform: $scope.platform.name,
+            properties_path: $scope.compare_module.properties_path,
+            compare_application: $scope.compare_platform.application_name,
+            compare_platform: $scope.compare_platform.name,
+            compare_path: $scope.compare_platform.chosen_module.properties_path
+        };
+        if(!_.isUndefined($scope.compare_platform.timestamp)){
+            urlParams.timestamp = $scope.compare_platform.timestamp;
+        }
+        $location.path('/diff').search(urlParams);
+    };
+
     $scope.find_modules_by_name = function (name) {
         return ModuleService.with_name_like(name);
     };
@@ -231,7 +265,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
     };
 
     $scope.edit_properties = function(platform, module){
-        ApplicationService.get_properties($routeParams.application, platform, module.get_properties_path()).then(function(properties){
+        ApplicationService.get_properties($routeParams.application, platform, module.properties_path).then(function(properties){
             ModuleService.get_model(module).then(function(model){
                 $scope.properties = properties.mergeWithModel(model);
                 $scope.selected_module = module;
@@ -241,7 +275,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
     };
 
     $scope.save_properties = function(properties, module) {
-        ApplicationService.save_properties($routeParams.application, $scope.platform, properties, module.get_properties_path()).then(function(properties){
+        ApplicationService.save_properties($routeParams.application, $scope.platform, properties, module.properties_path).then(function(properties){
             ModuleService.get_model(module).then(function(model){
                 $scope.properties = properties.mergeWithModel(model);
             });
@@ -259,6 +293,21 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
                 $scope.instance = instance.mergeWithModel(model);
                 $scope.properties = undefined; //hide the properties panel if opened
         });
+    };
+
+    $scope.get_platform_to_compare = function(application, platform, lookPast, date){
+        $scope.loading_compare_platform = true;
+        if(lookPast){
+            ApplicationService.get_platform(application, platform, date.getTime()).then(function(platform){
+                $scope.compare_platform = platform;
+                $scope.loading_compare_platform = false;
+            });
+        } else {
+            ApplicationService.get_platform(application, platform).then(function(platform){
+                $scope.compare_platform = platform;
+                $scope.loading_compare_platform = false;
+            });
+        }
     };
 
     /* Get the application */
@@ -289,6 +338,10 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
             $('#savedPropertiesButton').css('position','static');
         }
     });
+
+}]);
+
+propertiesModule.controller('DiffCtrl', ['$scope', '$routeParams', function($scope, $routeParams) {
 
 }]);
 

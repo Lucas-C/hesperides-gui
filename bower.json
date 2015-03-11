@@ -19,6 +19,8 @@
 	"bootstrap-material-design": "latest",
 	"underscore": "1.6.0",
 	"angular-ui-codemirror": "latest",
-	"angular-material": "latest"
+	"angular-material": "latest",
+	"angular-wizard": "latest",
+	"angular-bootstrap-datetimepicker": "latest"
   }
 }

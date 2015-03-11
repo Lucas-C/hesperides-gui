@@ -118,10 +118,6 @@ applicationModule.factory('ApplicationModule', ['Instance', function (Instance) 
             };
         };
 
-        this.get_properties_path = function(){
-            return this.path +'#'+this.name+'#'+this.version+'#'+(this.is_working_copy ? "WORKINGCOPY" : "RELEASE");
-        };
-
     };
 
     return ApplicationModule;
@@ -224,8 +220,13 @@ applicationModule.factory('ApplicationService', ['$http', 'Application', 'Platfo
                 throw error;
             });
         },
-        get_platform: function (application_name, platform_name) {
-            return $http.get('rest/applications/' + encodeURIComponent(application_name) + '/platforms' + encodeURIComponent(platform_name)).then(function (response) {
+        get_platform: function (application_name, platform_name, timestamp) {
+            if(_.isUndefined(timestamp)){
+                var url = 'rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform_name);
+            } else {
+                var url = 'rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform_name) + '?timestamp='+timestamp;
+            }
+            return $http.get(url).then(function (response) {
                 return new Platform(response.data);
             }, function (error) {
                 $.notify(error.data.message, "error");

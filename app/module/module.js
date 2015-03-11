@@ -12,8 +12,10 @@ applicationModule.controller('ModuleCtrl', ['$scope', '$routeParams', '$location
     $scope.is_release = !$scope.is_workingcopy;
 
     $scope.refreshModel = function () {
+        $scope.loading_model = true;
         ModuleService.get_model($scope.module).then(function (model) {
             $scope.model = model;
+            $scope.loading_model = false;
         });
     };
 

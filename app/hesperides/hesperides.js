@@ -15,8 +15,11 @@ var hesperidesModule = angular.module('hesperides', [
     'hesperides.template',
     'hesperides.components',
     'ngMaterial',
+    'ngAnimate',
     'xeditable',
-    'ui.codemirror'
+    'ui.codemirror',
+    'mgo-angular-wizard',
+    'ui.bootstrap.datetimepicker'
 ]);
 
 hesperidesModule.run(function (editableOptions) {
@@ -54,6 +57,10 @@ hesperidesModule.config(['$routeProvider', '$tooltipProvider', function ($routeP
         when('/properties/:application', {
             templateUrl: 'properties/properties.html',
             controller: 'PropertiesCtrl'
+        }).
+        when('/diff', {
+            templateUrl: 'properties/diff.html',
+            controller: 'DiffCtrl'
         }).
         when('/techno/:name/:version', {
             templateUrl: 'techno/techno.html',

@@ -272,7 +272,11 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
                 $scope.instance = undefined; //hide the instance panel if opened
 
                 //Scroll to properties
-                $timeout(function(){$(window).scrollTop($('#referenceForSavePropertiesButtonInitialPosition').offset().top);}, 0);
+                $timeout(function(){
+                    $('html, body').animate({
+                        scrollTop:$('#referenceForSavePropertiesButtonInitialPosition').offset().top
+                    }, 1000, 'swing');
+                }, 0);
 
             });
         });

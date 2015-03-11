@@ -3,7 +3,7 @@
  */
 var propertiesModule = angular.module('hesperides.properties', []);
 
-propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal', '$location', '$route', 'ApplicationService', 'ModuleService', 'ApplicationModule', 'Page',  function ($scope, $routeParams, $modal, $location, $route, ApplicationService, ModuleService, Module, Page) {
+propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal', '$location', '$route', '$timeout', 'ApplicationService', 'ModuleService', 'ApplicationModule', 'Page',  function ($scope, $routeParams, $modal, $location, $route, $timeout, ApplicationService, ModuleService, Module, Page) {
     Page.setTitle("Properties");
 
     $scope.platform = $routeParams.platform;
@@ -269,9 +269,14 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
             ModuleService.get_model(module).then(function(model){
                 $scope.properties = properties.mergeWithModel(model);
                 $scope.selected_module = module;
-                $scope.instance = undefined; //hide the instanc epanel if opened
+                $scope.instance = undefined; //hide the instance panel if opened
+
+                //Scroll to properties
+                $timeout(function(){$(window).scrollTop($('#referenceForSavePropertiesButtonInitialPosition').offset().top);}, 0);
+
             });
         });
+
     };
 
     $scope.save_properties = function(properties, module) {

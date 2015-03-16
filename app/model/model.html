@@ -1,12 +1,12 @@
 <div>
     <dl class="dl-horizontal text-overflow" style="margin-bottom:0" ng-animate="'animate'"
-        ng-repeat="keyValueProperty in model.key_value_properties | orderBy:'name' track by $index" on-finish-render>
+        ng-repeat="keyValueProperty in model.key_value_properties | orderBy:'name' track by $index">
         <dt style="width: 100%; text-align: left" ng-if="keyValueProperty.comment"><a href="" title="{{ keyValueProperty.name }}" popover-trigger="focus" popover="{{keyValueProperty.comment}}">{{ keyValueProperty.name }}</a></dt>
         <dt style="width: 100%; text-align: left" ng-if="!keyValueProperty.comment">{{ keyValueProperty.name }}</dt>
     </dl>
     <h3 ng-show="model.iterable_properties.length > 0">Proprietes multiples :</h3>
     <dl class="dl-horizontal text-overflow" style="margin-bottom:0" ng-animate="'animate'"
-        ng-repeat="iterableProperty in model.iterable_properties | orderBy:'name' track by $index" on-finish-render>
+        ng-repeat="iterableProperty in model.iterable_properties | orderBy:'name' track by $index">
         <dt>{{ iterableProperty.name }}</dt>
         <dd ng-repeat="field in iterableProperty.fields | orderBy:'name' track by $index">{{ field.name }}
             <small style="padding-left: 10px;"><em>{{ field.comment }}</em></small>

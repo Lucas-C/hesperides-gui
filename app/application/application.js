@@ -266,8 +266,13 @@ applicationModule.factory('ApplicationService', ['$http', 'Application', 'Platfo
                 throw error;
             });
         },
-        get_properties: function (application_name, platform, path) {
-            return $http.get('rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform.name) + '/properties?path=' + encodeURIComponent(path)).then(function (response) {
+        get_properties: function (application_name, platform_name, path, timestamp) {
+            if(_.isUndefined(timestamp)){
+                var url = 'rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform_name) + '/properties?path=' + encodeURIComponent(path);
+            } else {
+                var url = 'rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform_name) + '/properties?path=' + encodeURIComponent(path) + '&timestamp=' + timestamp;
+            }
+            return $http.get(url).then(function (response) {
                 return new Properties(response.data);
             }, function (error) {
                 $.notify(error.data.message, "error");

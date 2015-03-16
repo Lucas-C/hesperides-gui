@@ -48,7 +48,7 @@ hesperidesModule.controller("TitleCtrl", ['$scope', 'Page', function ($scope, Pa
     $scope.Page = Page;
 }]);
 
-hesperidesModule.config(['$routeProvider', '$tooltipProvider', function ($routeProvider, $tooltipProvider) {
+hesperidesModule.config(['$routeProvider', '$tooltipProvider', '$mdThemingProvider', '$ariaProvider', function ($routeProvider, $tooltipProvider, $mdThemingProvider, $ariaProvider) {
     $routeProvider.
         when('/module/:name/:version', {
             templateUrl: 'module/module.html',
@@ -76,6 +76,26 @@ hesperidesModule.config(['$routeProvider', '$tooltipProvider', function ($routeP
     $tooltipProvider.options({
         popupDelay: 800
     });
+
+    //Material design theming
+    $mdThemingProvider.theme('default')
+        .primaryPalette('teal')
+        .accentPalette('orange');
+
+    //Deactivate Aria
+    $ariaProvider.config({
+        ariaHidden: false,
+        ariaLabel: false,
+        ariaChecked: false,
+        ariaDisabled: false,
+        ariaRequired: false,
+        ariaInvalid: false,
+        ariaMultiline: false,
+        ariaValue: false,
+        tabindex: false,
+        bindKeypress: false
+    });
+
 }]);
 
 hesperidesModule.directive('ngReallyClick', [function () {

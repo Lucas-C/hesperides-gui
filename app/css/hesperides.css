@@ -207,3 +207,7 @@ h4.app-unit button {
     /*justify-content: center; /* Optional, to align inner items
                               horizontally inside the column */
 }
+
+.popover {
+    word-wrap: break-word;
+}

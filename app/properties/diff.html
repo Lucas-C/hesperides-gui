@@ -84,10 +84,10 @@
             </div>
             <div flex="30" layout="row" layout-align="end center">
                 <span id="old_value-{{dot_to_underscore(diff_container.property_to_modify.name)}}" flex="30"
-                      style="overflow: hidden; text-overflow: ellipsis; margin-right: 20px;text-decoration: line-through; "
+                      style="overflow: hidden; text-overflow: ellipsis; margin-right: 20px;text-decoration: line-through; text-align: right"
                       ng-show="diff_container.modified">{{diff_container.property_to_modify.old_value ? diff_container.property_to_modify.old_value : "Aucune valeur renseignée"}}</span>
                 <span id="actual_value-{{dot_to_underscore(diff_container.property_to_modify.name)}}" flex="60"
-                      style="overflow: hidden; text-overflow: ellipsis"
+                      style="overflow: hidden; text-overflow: ellipsis; text-align: right"
                       popover="{{diff_container.property_to_modify.value}}" popover-trigger="mouseenter">{{diff_container.property_to_modify.value ? diff_container.property_to_modify.value : "Aucune valeur renseignée"}}</span>
             </div>
             <div flex="5" layout="row" layout-align="space-around center">

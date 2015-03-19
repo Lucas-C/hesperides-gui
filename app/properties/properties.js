@@ -279,7 +279,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
                 //Scroll to properties
                 $timeout(function () {
                     $('html, body').animate({
-                        scrollTop: $('#referenceForSavePropertiesButtonInitialPosition').offset().top
+                        scrollTop: $('#referenceForPropertiesButtonsInitialPosition').offset().top
                     }, 1000, 'swing');
                 }, 0);
 
@@ -288,10 +288,12 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
 
     };
 
-    $scope.save_properties = function (properties, module) {
+    $scope.clean_properties = function(properties){
         //Filter to keep properties only existing in model
         properties.filter_according_to_model();
+    };
 
+    $scope.save_properties = function (properties, module) {
         ApplicationService.save_properties($routeParams.application, $scope.platform, properties, module.properties_path).then(function (properties) {
             ModuleService.get_model(module).then(function (model) {
                 $scope.properties = properties.mergeWithModel(model);
@@ -354,11 +356,13 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
     });
 
     $(window).scroll(function () {
-        var elementPosition = $('#referenceForSavePropertiesButtonInitialPosition').offset();
+        var elementPosition = $('#referenceForPropertiesButtonsInitialPosition').offset();
+        var width = $('#referenceForPropertiesButtonsInitialPosition').width();
         if ($(window).scrollTop() > elementPosition.top - 50) {
-            $('#savedPropertiesButton').css('position', 'fixed').css('top', '50px');
+            $('#propertiesButtonsContainer').css('position', 'fixed').css('top', '50px');
+            $('#propertiesButtonsContainer').width(width);
         } else {
-            $('#savedPropertiesButton').css('position', 'static');
+            $('#propertiesButtonsContainer').css('position', 'static');
         }
     });
 

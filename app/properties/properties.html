@@ -215,7 +215,9 @@
                             <ul class="breadcrumb" style="margin-bottom: 2px">
                                 <li>{{compare_platform.application_name}}</li>
                                 <li>{{compare_platform.name}}</li>
-                                <li ng-repeat="token in compare_platform.chosen_module.path.substr(1).split('#')">{{token}}</li>
+                                <li ng-repeat="token in compare_platform.chosen_module.path.substr(1).split('#')">
+                                    {{token}}
+                                </li>
                                 <li class="active">{{compare_platform.chosen_module.title}}</a>
                                 </li>
                             </ul>
@@ -264,11 +266,13 @@
                        class="md-btn-xs">
                 <span class="glyphicon glyphicon-plus"></span>
             </md-button>
-            <md-button ng-click="open_add_box_dialog(box)" tooltip="Ajouter un groupe logique" aria-label="Ajouter un groupe logique"
+            <md-button ng-click="open_add_box_dialog(box)" tooltip="Ajouter un groupe logique"
+                       aria-label="Ajouter un groupe logique"
                        class="md-btn-xs">
                 <span class="glyphicon glyphicon-inbox"></span>
             </md-button>
-            <md-button ng-really-message="Supprimer le groupe logique {{name}} ?" tooltip="Supprimer le groupe logique" aria-label="Supprimer le groupe logique"
+            <md-button ng-really-message="Supprimer le groupe logique {{name}} ?" tooltip="Supprimer le groupe logique"
+                       aria-label="Supprimer le groupe logique"
                        ng-really-click="remove_box(name, box)" ng-if="box.isEmpty()"
                        class="md-btn-xs md-warn">
                 <span class="glyphicon glyphicon-trash"></span>
@@ -285,7 +289,8 @@
                                                  title="Modifier la version du module">{{module.title}}</a></strong></span>
                 </div>
                 <div class="col-md-6" style="justify-content: flex-end">
-                    <md-button ng-click="open_add_instance_dialog(module)" tooltip="Ajouter une instance" aria-label="Ajouter une instance"
+                    <md-button ng-click="open_add_instance_dialog(module)" tooltip="Ajouter une instance"
+                               aria-label="Ajouter une instance"
                                class="md-btn-xs">
                         <span class="glyphicon glyphicon-plus"></span>
                     </md-button>
@@ -297,7 +302,8 @@
                                ng-click="diff_properties(module)"><span
                             class="glyphicon glyphicon-transfer"></span>
                     </md-button>
-                    <md-button ng-really-message="Supprimer le module {{module.title}} et toutes ses instances ?" aria-label="Supprimer le module"
+                    <md-button ng-really-message="Supprimer le module {{module.title}} et toutes ses instances ?"
+                               aria-label="Supprimer le module"
                                tooltip="Supprimer le module"
                                ng-really-click="delete_module(module, box)"
                                class="md-btn-xs md-warn">
@@ -309,11 +315,13 @@
                 <ul class="list-inline" style="padding-top:10px; padding-bottom:10px;padding-left: 10px;">
                     <li ng-repeat="instance in module.instances | orderBy:'name':false"
                         ng-mouseover="instance.hover = true" ng-mouseleave="instance.hover = false">
-                        <md-button ng-click="edit_instance(instance)" tooltip="Editer les properties de l'instance" aria-label="Editer les properties de l'instance"
+                        <md-button ng-click="edit_instance(instance)" tooltip="Editer les properties de l'instance"
+                                   aria-label="Editer les properties de l'instance"
                                    class="">
                             <span class="glyphicon glyphicon-list" style="margin-right:10px"></span>{{instance.name}}
                         </md-button>
-                        <md-button ng-really-message="Supprimer l'instance {{instance.name}} ?" aria-label="Supprimer l'instance"
+                        <md-button ng-really-message="Supprimer l'instance {{instance.name}} ?"
+                                   aria-label="Supprimer l'instance"
                                    tooltip="Supprimer l'instance"
                                    ng-really-click="delete_instance(instance, module)"
                                    class="md-warn" ng-show="instance.hover">
@@ -357,7 +365,8 @@
 -->
 <div layout="row" layout-wrap>
     <div flex="5">
-        <md-button ng-click="open_add_box_dialog(mainBox)" class="md-fab md-btn-xs" aria-label="Ajouter un groupe logique"
+        <md-button ng-click="open_add_box_dialog(mainBox)" class="md-fab md-btn-xs"
+                   aria-label="Ajouter un groupe logique"
                    style="color: black;background-color: white">
             <span class="glyphicon glyphicon-inbox"></span>
             <md-tooltip>
@@ -378,18 +387,25 @@
 </div>
 
 <div layout="row" ng-show="properties">
-    <div flex="80">
+    <div flex="50">
         <h3><span style="margin-right: 30px">Les properties associees a <strong>{{selected_module.path.split('#').join('
             | ')}} | {{selected_module.title}}</strong></span>
         </h3>
     </div>
-    <div flex="15" style="justify-content: flex-end">
-        <div id="referenceForSavePropertiesButtonInitialPosition">
-            <button id="savedPropertiesButton" ng-click="save_properties(properties, selected_module)"
-                    class="btn btn-primary btn-raised" style="z-index: 1000">
-                <span class="glyphicon glyphicon-saved" style="padding-right:10px"></span>
-                <span>Sauver les properties</span>
-            </button>
+    <div flex="50">
+        <div id="referenceForPropertiesButtonsInitialPosition">
+            <div id="propertiesButtonsContainer" layout="row" layout-align="space-around" style="z-index: 1000">
+                <button id="cleanPropertiesButton" ng-click="clean_properties(properties)"
+                        class="btn btn-warn btn-raised" style="z-index: 1000">
+                    <span class="glyphicon glyphicon-trash" style="padding-right:10px"></span>
+                    <span>Nettoyer les valorisations inutiles</span>
+                </button>
+                <button id="savedPropertiesButton" ng-click="save_properties(properties, selected_module)"
+                        class="btn btn-primary btn-raised" >
+                    <span class="glyphicon glyphicon-saved" style="padding-right:10px"></span>
+                    <span>Sauver les properties</span>
+                </button>
+            </div>
         </div>
     </div>
 </div>

@@ -358,7 +358,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
     $(window).scroll(function () {
         var elementPosition = $('#referenceForPropertiesButtonsInitialPosition').offset();
         var width = $('#referenceForPropertiesButtonsInitialPosition').width();
-        if ($(window).scrollTop() > elementPosition.top - 50) {
+        if ($(window).scrollTop() > elementPosition.top - 50 && width > 0) {
             $('#propertiesButtonsContainer').css('position', 'fixed').css('top', '50px');
             $('#propertiesButtonsContainer').width(width);
         } else {
@@ -609,7 +609,7 @@ propertiesModule.directive('propertiesList', function () {
             scope.truePropertiesValueFilter = "";
 
             scope.$watch("propertiesKeyFilter", function (newV, oldV) {
-                if (newV.length < 3) {
+                if (newV.length < 2) {
                     scope.truePropertiesKeyFilter = "";
                 } else {
                     scope.truePropertiesKeyFilter = newV;
@@ -617,7 +617,7 @@ propertiesModule.directive('propertiesList', function () {
             });
 
             scope.$watch("propertiesValueFilter", function (newV, oldV) {
-                if (newV.length < 3) {
+                if (newV.length < 2) {
                     scope.truePropertiesValueFilter = "";
                 } else {
                     scope.truePropertiesValueFilter = newV;

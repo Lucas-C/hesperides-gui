@@ -61,7 +61,7 @@
                            placeholder="Rechercher la nouvelle version" required
                            data-hint="entrer juste la version, la recherche filtre déjà sur le nom du module"
                            typeahead-editable="false"
-                           typeahead="module as module.title for module in find_modules_by_name(module.name + ' ' + $viewValue) | filter:{name:module.name}"
+                           typeahead="module as module.title for module in find_modules_by_name($viewValue)"
                             />
                 </div>
             </div>

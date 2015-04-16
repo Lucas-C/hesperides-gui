@@ -1,10 +1,10 @@
 <form class="form-horizontal narrow" role="form">
     <div class="form-group">
         <div class="col-md-4">
-            <input class="form-control" data-hint="Au moins 3 charactères" placeholder="filtrer les properties par clé" ng-model="propertiesKeyFilter"/>
+            <input class="form-control" data-hint="Au moins 2 charactères" placeholder="filtrer les properties par clé" ng-model="propertiesKeyFilter"/>
         </div>
         <div class="col-md-8">
-            <input class="form-control" sdata-hint="Au moins 3 charactères" placeholder="filtrer les properties par valeur" ng-model="propertiesValueFilter"/>
+            <input class="form-control" sdata-hint="Au moins 2 charactères" placeholder="filtrer les properties par valeur" ng-model="propertiesValueFilter"/>
         </div>
     </div>
     <div class="form-group" ng-class="{'property-not-used': !key_value_property.inModel}" ng-repeat="key_value_property in properties.key_value_properties | filter:{'name':truePropertiesKeyFilter, 'value':truePropertiesValueFilter} | orderBy:'name' track by $index">

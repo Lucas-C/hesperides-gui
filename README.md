@@ -5,7 +5,7 @@ Prérequis :
 * Installer NPM
 
 Récupération des dépendances :
-	* npm install 
+* npm install 
 
 
 	ATTENTION, chez vsct le protocol "git" est refusé depuis l'extérieur.

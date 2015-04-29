@@ -78,10 +78,12 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
     };
 
     $scope.update_box_name = function (box, old_name, new_name) {
-        box.name = new_name;
-        box.parent_box["children"][new_name] = box.parent_box["children"][old_name];
-        delete box.parent_box["children"][old_name];
-        $scope.save_platform_from_box($scope.mainBox, true);
+        if(!(old_name === new_name)) {
+            box.name = new_name;
+            box.parent_box["children"][new_name] = box.parent_box["children"][old_name];
+            delete box.parent_box["children"][old_name];
+            $scope.save_platform_from_box($scope.mainBox, true);
+        }
     };
 
     $scope.open_add_box_dialog = function (box) {

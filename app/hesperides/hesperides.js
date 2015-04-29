@@ -33,13 +33,13 @@ hesperidesModule.run(function (editableOptions) {
 });
 
 hesperidesModule.factory('Page', function () {
-    var title = 'Hesperides - Release BLINK';
+    var title = 'Hesperides - Release ULTRON';
     return {
         title: function () {
             return title;
         },
         setTitle: function (newTitle) {
-            title = "Hesperides - Release BLINK - " + newTitle
+            title = "Hesperides - Release ULTRON - " + newTitle
         }
     }
 });

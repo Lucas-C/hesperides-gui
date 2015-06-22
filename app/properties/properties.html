@@ -189,6 +189,7 @@
                             ng-click="get_platform_to_compare(from.application, from.platform, from.lookPast, from.date)">
                         Suivant
                     </button>
+                        <button class="btn btn-warning btn-raised" ng-click="$dismiss('cancel')">Annuler</button>
                 </div>
             </wz-step>
             <wz-step title="Choisir le module à comparer">
@@ -360,6 +361,11 @@
     <h3><span style="padding-right: 10px">Properties niveau plateforme</span>
         <button class="btn btn-warn btn-raised" ng-click="showGlobalProperties = !showGlobalProperties"><span>Voir/Masquer</span></button>
         <button id="savedPropertiesButton" ng-click="save_global_properties(platform.global_properties)"
+                class="btn btn-primary btn-raised">
+            <span class="glyphicon glyphicon-saved" style="padding-right:10px"></span>
+            <span>Sauver les properties globales</span>
+        </button>
+        <button id="savedPropertiesButton" ng-click="diff_properties(platform.global_properties)"
                 class="btn btn-primary btn-raised">
             <span class="glyphicon glyphicon-saved" style="padding-right:10px"></span>
             <span>Sauver les properties globales</span>

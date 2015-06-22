@@ -26,7 +26,7 @@ applicationModule.factory('Application', ['Platform', function (Platform) {
 
 }]);
 
-applicationModule.factory('Platform', ['ApplicationModule', function (Module) {
+applicationModule.factory('Platform', ['ApplicationModule', 'Properties', function (Module, Properties) {
 
     var Platform = function (data) {
 
@@ -37,6 +37,7 @@ applicationModule.factory('Platform', ['ApplicationModule', function (Module) {
             application_name: "",
             application_version: "",
             modules: [],
+            global_properties: new Properties(),
             production: false,
             version_id: -1
         }, data);
@@ -50,6 +51,7 @@ applicationModule.factory('Platform', ['ApplicationModule', function (Module) {
             return new Module(data);
         });
 
+        //Volontarly do not turn platform global properties to rest. Thoose are handled via the API Rest for properties
         this.to_rest_entity = function () {
             return {
                 platform_name: this.name,
@@ -205,8 +207,16 @@ applicationModule.factory('ApplicationService', ['$http', 'Application', 'Platfo
 
     return{
         get: function (name) {
+            var me = this;
             return $http.get('rest/applications/' + encodeURIComponent(name)).then(function (response) {
-                return new Application(response.data);
+                //Load global properties for each platform
+                var application = new Application(response.data);
+                _.each(application.platforms, function(platform){
+                    me.get_properties(name, platform.name, "#").then(function(properties){
+                        platform.global_properties = properties;
+                    });
+                });
+                return application;
             }, function (error) {
                 $.notify(error.data.message, "error");
                 throw error;
@@ -221,13 +231,19 @@ applicationModule.factory('ApplicationService', ['$http', 'Application', 'Platfo
             });
         },
         get_platform: function (application_name, platform_name, timestamp) {
+            var me = this;
             if(_.isUndefined(timestamp)){
                 var url = 'rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform_name);
             } else {
                 var url = 'rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform_name) + '?timestamp='+timestamp;
             }
             return $http.get(url).then(function (response) {
-                return new Platform(response.data);
+                //Try to get the global properties
+                var platform = new Platform(response.data);
+                me.get_properties(application_name, platform_name, "#", timestamp).then(function(properties){
+                    platform.global_properties = properties;
+                });
+                return platform;
             }, function (error) {
                 $.notify(error.data.message, "error");
                 throw error;

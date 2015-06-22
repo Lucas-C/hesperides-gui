@@ -356,6 +356,57 @@
     </div>
 </div>
 
+<div layout="row" class="vertical-align">
+    <h3><span style="padding-right: 10px">Properties niveau plateforme</span>
+        <button class="btn btn-warn btn-raised" ng-click="showGlobalProperties = !showGlobalProperties"><span>Voir/Masquer</span></button>
+        <button id="savedPropertiesButton" ng-click="save_global_properties(platform.global_properties)"
+                class="btn btn-primary btn-raised">
+            <span class="glyphicon glyphicon-saved" style="padding-right:10px"></span>
+            <span>Sauver les properties globales</span>
+        </button>
+    </h3>
+</div>
+
+<div layout="row" class="vertical-align" ng-show="showGlobalProperties">
+    <div flex="100">
+        <form class="form-horizontal narrow" role="form">
+            <div class="form-group">
+                <div class="col-md-1">
+                    <md-button ng-click="platform.global_properties.addKeyValue({
+                        'name': new_kv_name,
+                        'value': new_kv_value,
+                        'comment': ''
+                    });new_kv_name = ''; new_kv_value= ''" tooltip="Ajouter" aria-label="Ajouter"
+                               class="md-btn-xs">
+                        <span class="glyphicon glyphicon-plus"></span>
+                    </md-button>
+                </div>
+                <div class="col-md-4">
+                    <input class="form-control" placeholder="Nouvelle property globale" ng-model="new_kv_name"/>
+                </div>
+                <div class="col-md-7">
+                    <input class="form-control" placeholder="Valorisation" ng-model="new_kv_value"/>
+                </div>
+            </div>
+            <div class="form-group" ng-repeat="kv_property in platform.global_properties.key_value_properties">
+                <div class="col-md-1">
+                    <md-button ng-really-message="Supprimer la property globale {{kv_property.name}} ?" tooltip="Supprimer"
+                               aria-label="Supprimer"
+                               ng-really-click="platform.global_properties.deleteKeyValue(kv_property)"
+                               class="md-btn-xs md-warn">
+                        <span class="glyphicon glyphicon-trash"></span>
+                    </md-button>
+                </div>
+                <div class="col-md-4">
+                    <label style="text-align: right; overflow: hidden; text-overflow: ellipsis" title="{{ kv_property.name }}" for="input-{{ kv_property.name }}" class="col-md-4 control-label">{{ kv_property.name }}</label>
+                </div>
+                <div class="col-md-7">
+                    <input id="input-{{ kv_property.name }}" type="text" class="form-control" ng-model="kv_property.value"  />
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
 
 <!--
 <button ng-click="save_platform_from_box(mainBox, true)" class="btn btn-sm">
@@ -401,7 +452,7 @@
                     <span>Nettoyer les valorisations inutiles</span>
                 </button>
                 <button id="savedPropertiesButton" ng-click="save_properties(properties, selected_module)"
-                        class="btn btn-primary btn-raised" >
+                        class="btn btn-primary btn-raised">
                     <span class="glyphicon glyphicon-saved" style="padding-right:10px"></span>
                     <span>Sauver les properties</span>
                 </button>

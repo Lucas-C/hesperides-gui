@@ -275,6 +275,9 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
         ApplicationService.get_properties($routeParams.application, platform.name, module.properties_path).then(function (properties) {
             ModuleService.get_model(module).then(function (model) {
                 $scope.properties = properties.mergeWithModel(model);
+                //Merge with global properties
+                $scope.properties = properties.mergeWithGlobalProperties($scope.platform.global_properties);
+
                 $scope.selected_module = module;
                 $scope.instance = undefined; //hide the instance panel if opened
 
@@ -295,12 +298,27 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
         properties.filter_according_to_model();
     };
 
+    $scope.save_global_properties = function(properties) {
+        ApplicationService.save_properties($routeParams.application, $scope.platform, properties, '#').then(function(properties){
+            if(!_.isUndefined($scope.properties)){
+                $scope.properties = $scope.properties.mergeWithGlobalProperties(properties);
+            }
+            //Increase platform number
+            $scope.platform.version_id = $scope.platform.version_id + 1;
+        });
+    }
+
     $scope.save_properties = function (properties, module) {
         ApplicationService.save_properties($routeParams.application, $scope.platform, properties, module.properties_path).then(function (properties) {
+            //Merge properties with model
             ModuleService.get_model(module).then(function (model) {
                 $scope.properties = properties.mergeWithModel(model);
             });
-            //Increase platform number
+
+            //Merge with global properties
+            $scope.properties = properties.mergeWithGlobalProperties($scope.platform.global_properties);
+
+                //Increase platform number
             $scope.platform.version_id = $scope.platform.version_id + 1;
         }, function (error) {
             //If an error occurs, reload the platform, thus avoiding having a non synchronized $scope model object
@@ -654,6 +672,47 @@ propertiesModule.factory('Properties', function () {
                 return key.name === name;
             });
         };
+
+        this.addKeyValue = function(key_value_property){
+            if(! this.hasKey(key_value_property.name)){
+                this.key_value_properties.push(key_value_property);
+            }
+        }
+
+        this.deleteKeyValue = function(key_value_property){
+            var index = this.key_value_properties.indexOf(key_value_property);
+            if(index > -1) {
+                this.key_value_properties.splice(index, 1);
+            }
+        }
+
+        this.mergeWithGlobalProperties = function(global_properties) {
+            //Here we just want to mark the one existing identical in the global properties,
+            //because they wont be editable
+            //Mark also the ones just using a global in their valorisation
+            _.each(this.key_value_properties, function (key_value) {
+                //First clean, in case there has been updates from the server
+                key_value.inGlobal = false;
+                key_value.useGlobal = false;
+
+                var existing_global_property = _.find(global_properties.key_value_properties, function(kvp){
+                    return key_value.name === kvp.name;
+                }, 'value');
+                if(!_.isUndefined(existing_global_property)){
+                    key_value.inGlobal = true;
+                    key_value.value = existing_global_property.value;
+                } else {
+                    //Try to check if it uses a global in the valorisation
+                    if(_.some(global_properties.key_value_properties, function(kvp){
+                        return key_value.value.includes("{{"+kvp.name+"}}");
+                    })){
+                       key_value.useGlobal = true;
+                    }
+                };
+            });
+
+            return this;
+        }
 
         this.mergeWithModel = function (model) {
             var me = this;

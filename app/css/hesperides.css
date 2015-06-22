@@ -79,6 +79,10 @@
 	background-color: #F0F0F0;
 }
 
+.property-using-global {
+    color: #009587;
+}
+
 /* Layout */
 .voffset  { margin-top: 2px; }
 .voffset1 { margin-top: 5px; }

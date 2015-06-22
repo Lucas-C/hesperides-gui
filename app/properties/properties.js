@@ -187,6 +187,38 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
         $location.path('/diff').search(urlParams);
     };
 
+    $scope.diff_global_properties = function (platform) {
+        $scope.from= {}
+        var modal = $modal.open({
+            templateUrl: 'application/global_properties_diff_wizard.html',
+            backdrop: 'static',
+            size: 'lg',
+            keyboard: false,
+            scope: $scope
+        });
+
+        modal.result.then(function (from) {
+            $scope.open_global_diff_page(from);
+        });
+    };
+
+    $scope.open_global_diff_page = function (from) {
+        //Everything is set in the scope by the modal when calling this
+        //Not very safe but easier to manage with all scopes genrated
+        var urlParams = {
+            application: $scope.platform.application_name,
+            platform: $scope.platform.name,
+            properties_path: '#',
+            compare_application: from.application,
+            compare_platform: from.platform,
+            compare_path: '#'
+        };
+        if (!_.isUndefined(from.date)) {
+            urlParams.timestamp = from.date.getTime();
+        }
+        $location.path('/diff').search(urlParams);
+    };
+
     $scope.find_modules_by_name = function (name) {
         return ModuleService.with_name_like(name);
     };

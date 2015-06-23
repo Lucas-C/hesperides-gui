@@ -81,6 +81,10 @@ templateModule.factory('HesperidesTemplateModal', ['TemplateService', '$modal', 
             },
             onLoad: function(_editor){
                 defaultScope.editor = _editor;
+                //This is some trick to avoid a bug. If not refresh, then we have to click on code mirror to see its content
+                setTimeout(function(){
+                    defaultScope.editor.refresh();
+                }, 100);
             }
         },
         changeCodeMirrorMode: function(new_mode){

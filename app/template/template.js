@@ -110,7 +110,7 @@ templateModule.factory('HesperidesTemplateModal', ['TemplateService', '$modal', 
 
             modalScope.isReadOnly = options.isReadOnly;
 
-            defaultScope.codeMirrorOptions.readOnly = options.isReadOnly ? "nocursor" : false;
+            defaultScope.codeMirrorOptions.readOnly = options.isReadOnly ? true : false;
 
             angular.extend(modalScope, defaultScope);
 

@@ -141,7 +141,7 @@ menuModule.controller('MenuHelpCtrl', ['$scope', '$modal', '$http', function($sc
 
     $scope.display_hesperides_informations = function(){
 
-        $scope.front_version = '0.2.4';
+        $scope.front_version = '0.2.5-SNAPSHOT';
 
         //Get the backend versions
         $http.get('rest/versions').then(function(response){

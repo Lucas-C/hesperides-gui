@@ -305,8 +305,8 @@ applicationModule.factory('ApplicationService', ['$http', 'Application', 'Platfo
                 throw error;
             });
         },
-        get_instance_model: function (application_name, platform, instance) {
-            return $http.get('rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform.name) + '/instances/' + encodeURIComponent(instance.name) + '/model').then(function (response) {
+        get_instance_model: function (application_name, platform, path) {
+            return $http.get('rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform.name) + '/properties/instance_model?path=' + encodeURIComponent(path)).then(function (response) {
                 return new InstanceModel(response.data);
             }, function (error) {
                 return new InstanceModel({});

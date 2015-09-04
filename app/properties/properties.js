@@ -359,8 +359,8 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
         });
     };
 
-    $scope.edit_instance = function (instance) {
-        ApplicationService.get_instance_model($routeParams.application, $scope.platform, instance).then(function (model) {
+    $scope.edit_instance = function (instance, properties_path) {
+        ApplicationService.get_instance_model($routeParams.application, $scope.platform, properties_path).then(function (model) {
             $scope.instance = instance.mergeWithModel(model);
             $scope.properties = undefined; //hide the properties panel if opened
         });
@@ -805,8 +805,7 @@ propertiesModule.factory('Properties', function () {
                 iterable_properties: _.map(this.iterable_properties, function (ip) {
                     return {
                         name: ip.name,
-                        comment: ip.comment,
-                        fields: ip.fields
+                        iterable_valorisation_items: ip.iterable_valorisation_items
                     }
                 })
             }

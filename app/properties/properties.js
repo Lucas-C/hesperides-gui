@@ -283,18 +283,6 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
         });
     };
 
-    //TODO
-    $scope.add_platform = function (platform_name) {
-        if (!_.contains($scope.platforms, platform_name)) {
-            $scope.platforms.push(platform_name);
-        }
-    };
-
-    //TODO
-    $scope.delete_platform = function (platform) {
-        //Might be a bit tricky
-    };
-
     $scope.on_edit_platform = function (platform) {
         $scope.platform = platform;
         $scope.selected_module = undefined;
@@ -316,7 +304,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
                 //Scroll to properties
                 $timeout(function () {
                     $('html, body').animate({
-                        scrollTop: $('#referenceForPropertiesButtonsInitialPosition').offset().top
+                        scrollTop: $('#propertiesButtonsContainer').offset().top
                     }, 1000, 'swing');
                 }, 0);
 
@@ -405,17 +393,6 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
 
     }, function (error) {
         $.notify(error.data.message, "error");
-    });
-
-    $(window).scroll(function () {
-        var elementPosition = $('#referenceForPropertiesButtonsInitialPosition').offset();
-        var width = $('#referenceForPropertiesButtonsInitialPosition').width();
-        if ($(window).scrollTop() > elementPosition.top - 50 && width > 0) {
-            $('#propertiesButtonsContainer').css('position', 'fixed').css('top', '50px');
-            $('#propertiesButtonsContainer').width(width);
-        } else {
-            $('#propertiesButtonsContainer').css('position', 'static');
-        }
     });
 
 }]);

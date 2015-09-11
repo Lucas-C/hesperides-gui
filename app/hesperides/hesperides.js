@@ -19,7 +19,8 @@ var hesperidesModule = angular.module('hesperides', [
     'xeditable',
     'ui.codemirror',
     'mgo-angular-wizard',
-    'ui.bootstrap.datetimepicker'
+    'ui.bootstrap.datetimepicker',
+    'vs-repeat'
 ]);
 
 hesperidesModule.run(function (editableOptions) {

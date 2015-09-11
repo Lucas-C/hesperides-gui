@@ -56,11 +56,11 @@
     <div vs-repeat style="max-height: 400px; white-space: normal; overflow: auto;" ng-show="toggle0"
          layout-align="start">
         <div layout="column" style="width: 95%;"
-             ng-repeat="diff_container in diff_containers0 = (diff_containers | filter:{'status':0, 'property_name': propertiesKeyFilter0} | orderBy:'property_to_modify.name')">
+             ng-repeat="diff_container in diff_containers0 = (diff_containers | filter:{'status':0, 'property_name': propertiesKeyFilter0} | orderBy:'property_name')">
             <div layout="row" layout-align="center" layout-margin
                  style="margin-bottom: 0;margin-top: 0; width: 100%; max-height: 40px">
                 <div flex="35" style="overflow: hidden; text-overflow: ellipsis" layout="row" layout-align="end center">
-                    <label style="overflow: hidden; text-overflow: ellipsis">{{diff_container.property_to_modify.name}}</label>
+                    <label style="overflow: hidden; text-overflow: ellipsis">{{diff_container.property_name}}</label>
                 </div>
                 <div flex="30" layout="row" layout-align="end center">
                     <span style="overflow: hidden; text-overflow: ellipsis" class="text-modifiable">{{diff_container.property_to_modify.value ? diff_container.property_to_modify.value : "Aucune valeur renseignée"}}</span>
@@ -141,16 +141,16 @@
              ng-repeat="diff_container in diff_containers1 = (diff_containers | filter:{'status':1, 'modified': show_only_modified, 'property_name': propertiesKeyFilter1}  | orderBy:'property_name')">
             <div layout="row" layout-align="center" layout-margin
                  style="margin-bottom: 0;margin-top: 0; width: 100%; max-height: 40px"
-                 id="identical-row-{{dot_to_underscore(diff_container.property_to_modify.name)}}">
+                 id="identical-row-{{dot_to_underscore(diff_container.property_name)}}">
                 <div flex="35" style="overflow: hidden; text-overflow: ellipsis" layout="row" layout-align="end center">
-                    <label style="overflow: hidden; text-overflow: ellipsis">{{diff_container.property_to_modify.name}}</label>
+                    <label style="overflow: hidden; text-overflow: ellipsis">{{diff_container.property_name}}</label>
                 </div>
                 <div flex="30" layout="row" layout-align="end center">
-                <span id="old_value-{{dot_to_underscore(diff_container.property_to_modify.name)}}" flex="30"
+                <span id="old_value-{{dot_to_underscore(diff_container.property_name)}}" flex="30"
                       class="text-old"
                       style="overflow: hidden; text-overflow: ellipsis; margin-right: 20px;text-decoration: line-through; text-align: right"
                       ng-show="diff_container.modified">{{diff_container.property_to_modify.old_value ? diff_container.property_to_modify.old_value : "Aucune valeur renseignée"}}</span>
-                <span id="actual_value-{{dot_to_underscore(diff_container.property_to_modify.name)}}" flex="60"
+                <span id="actual_value-{{dot_to_underscore(diff_container.property_name)}}" flex="60"
                       class="text-modifiable"
                       style="overflow: hidden; text-overflow: ellipsis; text-align: right"
                       popover="{{diff_container.property_to_modify.value}}" popover-trigger="mouseenter">{{diff_container.property_to_modify.value ? diff_container.property_to_modify.value : "Aucune valeur renseignée"}}</span>
@@ -229,16 +229,16 @@
     <div vs-repeat style="max-height: 400px; white-space: normal; overflow: auto;" ng-show="toggle2"
          layout-align="start">
         <div layout="column" style="width: 95%;"
-             ng-repeat="diff_container in diff_containers2 = (diff_containers | filter:{'status':2, 'property_name': propertiesKeyFilter2}  | orderBy:'property_to_modify.name')">
+             ng-repeat="diff_container in diff_containers2 = (diff_containers | filter:{'status':2, 'property_name': propertiesKeyFilter2}  | orderBy:'property_name')">
             <div layout="row" layout-align="center" layout-margin
                  style="margin-bottom: 0;margin-top: 0; width: 100%; max-height: 40px"
-                 id="different-row-{{dot_to_underscore(diff_container.property_to_modify.name)}}">
+                 id="different-row-{{dot_to_underscore(diff_container.property_name)}}">
                 <div flex="35" style="overflow: hidden; text-overflow: ellipsis" layout="row" layout-align="end center">
-                    <label style="overflow: hidden; text-overflow: ellipsis">{{diff_container.property_to_compare_to.name}}</label>
+                    <label style="overflow: hidden; text-overflow: ellipsis">{{diff_container.property_name}}</label>
                 </div>
                 <div flex="30" layout="row" layout-align="end center">
             <span style="overflow: hidden; text-overflow: ellipsis" class="text-modifiable"
-                  id="value_to_replace-{{dot_to_underscore(diff_container.property_to_compare_to.name)}}"
+                  id="value_to_replace-{{dot_to_underscore(diff_container.property_name)}}"
                   popover="{{diff_container.property_to_modify.value}}" popover-trigger="mouseenter">{{diff_container.property_to_modify.value ? diff_container.property_to_modify.value : "Aucune valeur renseignée"}}</span>
                 </div>
                 <div flex="5" layout="row" layout-align="space-around center">
@@ -247,7 +247,7 @@
                 </div>
                 <div flex="30" layout="row" layout-align="start center">
             <span style="overflow: hidden; text-overflow: ellipsis" class="text-unmodifiable"
-                  id="value_to_use-{{dot_to_underscore(diff_container.property_to_compare_to.name)}}"
+                  id="value_to_use-{{dot_to_underscore(diff_container.property_name)}}"
                   popover="{{diff_container.property_to_compare_to.value}}" popover-trigger="mouseenter">{{diff_container.property_to_compare_to.value ? diff_container.property_to_compare_to.value : "Aucune valeur renseignée"}}</span>
                 </div>
             </div>
@@ -312,16 +312,16 @@
     <div layout="row" vs-repeat style="max-height: 400px; white-space: normal; overflow: auto;" ng-show="toggle3"
          layout-align="start">
         <div layout="column" style="width: 95%;"
-             ng-repeat="diff_container in diff_containers3 = (diff_containers | filter:{'status':3, 'property_name': propertiesKeyFilter3}  | orderBy:'property_to_compare_to.name')">
+             ng-repeat="diff_container in diff_containers3 = (diff_containers | filter:{'status':3, 'property_name': propertiesKeyFilter3}  | orderBy:'property_name')">
             <div layout="row" layout-align="center" layout-margin
                  style="margin-bottom: 0;margin-top: 0; max-height: 40px; width: 100%;"
-                 id="different-row-{{dot_to_underscore(diff_container.property_to_compare_to.name)}}">
+                 id="different-row-{{dot_to_underscore(diff_container.property_name)}}">
                 <div flex="35" style="overflow: hidden; text-overflow: ellipsis" layout="row" layout-align="end center">
-                    <label style="overflow: hidden; text-overflow: ellipsis">{{diff_container.property_to_compare_to.name}}</label>
+                    <label style="overflow: hidden; text-overflow: ellipsis">{{diff_container.property_name}}</label>
                 </div>
                 <div flex="30" layout="row" layout-align="end center">
             <span style="overflow: hidden; text-overflow: ellipsis" class="text-modifiable"
-                  id="value_to_replace-{{dot_to_underscore(diff_container.property_to_compare_to.name)}}"
+                  id="value_to_replace-{{dot_to_underscore(diff_container.property_name)}}"
                     >{{diff_container.property_to_modify.value ? diff_container.property_to_modify.value : "Aucune valeur renseignée"}}</span>
                 </div>
                 <div flex="5" layout="row" layout-align="space-around center">
@@ -330,7 +330,7 @@
                 </div>
                 <div flex="30" layout="row" layout-align="start center">
             <span style="overflow: hidden; text-overflow: ellipsis" class="text-unmodifiable"
-                  id="value_to_use-{{dot_to_underscore(diff_container.property_to_compare_to.name)}}"
+                  id="value_to_use-{{dot_to_underscore(diff_container.property_name)}}"
                   popover="{{diff_container.property_to_compare_to.value}}" popover-trigger="mouseenter">{{diff_container.property_to_compare_to.value ? diff_container.property_to_compare_to.value : "Aucune valeur renseignée"}}</span>
                 </div>
             </div>

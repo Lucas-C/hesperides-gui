@@ -18,10 +18,10 @@
 
 <div layout="row" layout-margin>
     <button class="btn btn-primary btn-raised" ng-click="apply_diff()">
-        1/ Pr&eacute;visualiser les changements (ne sauvegarde pas)
+        1/ Pr&eacute;visualiser les changements <span style="font-weight: bold; text-decoration: underline">ne sauvegarde pas</span>
     </button>
-    <button class="btn btn-primary btn-raised" ng-click="save_diff()">
-        2/ Sauvegarder les changements (il faut avoir previsualis&eacute; avant)
+    <button class="btn btn-primary btn-raised" ng-really-click="save_diff()" ng-really-message="Les modifications vont &ecirc;tre appliqu&eacute;es sur {{application_name}} - {{platform_name}}. Continuer ?">
+        2/ <span style="font-weight: bold; text-decoration: underline">Sauvegarder</span> les changements (il faut avoir previsualis&eacute; avant)
     </button>
 </div>
 
@@ -342,10 +342,10 @@
 
 <div layout="row" layout-margin>
     <button class="btn btn-primary btn-raised" ng-click="apply_diff()">
-        1/ Pr&eacute;visualiser les changements (ne sauvegarde pas)
+        1/ Pr&eacute;visualiser les changements <span style="font-weight: bold; text-decoration: underline">ne sauvegarde pas</span>
     </button>
-    <button class="btn btn-primary btn-raised" ng-click="save_diff()">
-        2/ Sauvegarder les changements (il faut avoir previsualis&eacute; avant)
+    <button class="btn btn-primary btn-raised" ng-really-click="save_diff()" ng-really-message="Les modifications vont &ecirc;tre appliqu&eacute;es sur {{application_name}} - {{platform_name}}. Continuer ?">
+        2/ <span style="font-weight: bold; text-decoration: underline">Sauvegarder</span> les changements (il faut avoir previsualis&eacute; avant)
     </button>
 </div>
 

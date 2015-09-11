@@ -399,12 +399,13 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
 
 propertiesModule.controller('DiffCtrl', ['$scope', '$routeParams', '$timeout', '$route', 'ApplicationService', function ($scope, $routeParams, $timeout, $route, ApplicationService) {
 
-    var DiffContainer = function (status, property_to_modify, property_to_compare_to) {
+    var DiffContainer = function (status, property_name, property_to_modify, property_to_compare_to) {
         // 0 -> only on to_modify
         // 1 -> on both and identical values
         // 2 -> on both and different values
         // 3 -> only on to_compare_to
         this.status = status;
+        this.property_name = property_name;
         this.property_to_modify = property_to_modify;
         this.property_to_compare_to = property_to_compare_to;
         this.modified = false;
@@ -419,11 +420,11 @@ propertiesModule.controller('DiffCtrl', ['$scope', '$routeParams', '$timeout', '
     $scope.compare_path = $routeParams.compare_path;
 
     $scope.show_only_modified = true;
-    $scope.identical_values_filter = {'status':'1', 'modified': 'true'};
 
-    $scope.change_identical_values_filter = function(){
-       $scope.identical_values_filter = $scope.show_only_modified ? {'status':'1', 'modified': 'true'} : {'status':'1'};
-    }
+    $scope.propertiesKeyFilter0 = "";
+    $scope.propertiesKeyFilter1 = "";
+    $scope.propertiesKeyFilter2 = "";
+    $scope.propertiesKeyFilter3 = "";
 
     //Get the platform to get the version id
     //Then get the properties, version id could have changed but it is really marginal
@@ -459,7 +460,7 @@ propertiesModule.controller('DiffCtrl', ['$scope', '$routeParams', '$timeout', '
                 //Avoid null pointer create prop to compare to with an empty value
                 var prop_to_compare_to = angular.copy(prop_to_modify);
                 prop_to_compare_to.value = '';
-                $scope.diff_containers.push(new DiffContainer(0, prop_to_modify, {}));
+                $scope.diff_containers.push(new DiffContainer(0, prop_to_modify.name, prop_to_modify, {}));
                 return;
             }
 
@@ -472,12 +473,12 @@ propertiesModule.controller('DiffCtrl', ['$scope', '$routeParams', '$timeout', '
                 //Avoid null pointer create prop to compare to with an empty value
                 var prop_to_compare_to = angular.copy(prop_to_modify);
                 prop_to_compare_to.value = '';
-                $scope.diff_containers.push(new DiffContainer(0, prop_to_modify, {}));
+                $scope.diff_containers.push(new DiffContainer(0, prop_to_modify.name, prop_to_modify, {}));
             } else {
                 if (prop_to_modify.value === prop_to_compare_to.value) {
-                    $scope.diff_containers.push(new DiffContainer(1, prop_to_modify, prop_to_compare_to));
+                    $scope.diff_containers.push(new DiffContainer(1, prop_to_modify.name, prop_to_modify, prop_to_compare_to));
                 } else {
-                    $scope.diff_containers.push(new DiffContainer(2, prop_to_modify, prop_to_compare_to));
+                    $scope.diff_containers.push(new DiffContainer(2, prop_to_modify.name, prop_to_modify, prop_to_compare_to));
                 }
             }
         });
@@ -492,7 +493,7 @@ propertiesModule.controller('DiffCtrl', ['$scope', '$routeParams', '$timeout', '
                 //Avoid null pointer create prop to modify with an empty value
                 var prop_to_modify = angular.copy(prop_to_compare_to);
                 prop_to_modify.value = '';
-                $scope.diff_containers.push(new DiffContainer(3, prop_to_modify, prop_to_compare_to));
+                $scope.diff_containers.push(new DiffContainer(3, prop_to_modify.name, prop_to_modify, prop_to_compare_to));
             }
         });
     }
@@ -593,7 +594,7 @@ propertiesModule.directive('propertiesList', function () {
             scope.truePropertiesValueFilter = "";
 
             scope.$watch("propertiesKeyFilter", function (newV, oldV) {
-                if (newV.length < 2) {
+                if (newV.length < 1) {
                     scope.truePropertiesKeyFilter = "";
                 } else {
                     scope.truePropertiesKeyFilter = newV;

@@ -589,26 +589,6 @@ propertiesModule.directive('propertiesList', function () {
         link: function (scope, element, attrs) {
             scope.propertiesKeyFilter = "";
             scope.propertiesValueFilter = "";
-
-            scope.truePropertiesKeyFilter = "";
-            scope.truePropertiesValueFilter = "";
-
-            scope.$watch("propertiesKeyFilter", function (newV, oldV) {
-                if (newV.length < 1) {
-                    scope.truePropertiesKeyFilter = "";
-                } else {
-                    scope.truePropertiesKeyFilter = newV;
-                }
-            });
-
-            scope.$watch("propertiesValueFilter", function (newV, oldV) {
-                if (newV.length < 2) {
-                    scope.truePropertiesValueFilter = "";
-                } else {
-                    scope.truePropertiesValueFilter = newV;
-                }
-            });
-
         }
     };
 
@@ -625,6 +605,10 @@ propertiesModule.factory('Properties', function () {
             versionID: -1
         }, data);
 
+        //Add a property that allows to filter other properties values
+        _.each(this.key_value_properties, function(kvp){
+           kvp.filtrable_value = kvp.value;
+        });
 
         this.hasKey = function (name) {
             return _.some(this.key_value_properties, function (key) {

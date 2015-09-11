@@ -447,12 +447,28 @@ propertiesModule.controller('DiffCtrl', ['$scope', '$routeParams', '$timeout', '
         //Group properties, this is a O(n^2) algo but is enough for the use case
         //Only focus on key/value properties
         //We set create a container for each property with a diff status, a property_to_modify, a property_to_compare_to
+        //First we look in the properties to modify, for each try:
+        //  - to check if value is empty -> status 3
+        //  - to find a property to compare to
+        //        - with identical value -> status 1
+        //        - with different value -> status 2
+        //  - if no matching property -> status 0
         _.each($scope.properties_to_modify.key_value_properties, function (prop_to_modify) {
+
+            if(prop_to_modify.value === ''){
+                //Avoid null pointer create prop to compare to with an empty value
+                var prop_to_compare_to = angular.copy(prop_to_modify);
+                prop_to_compare_to.value = '';
+                $scope.diff_containers.push(new DiffContainer(0, prop_to_modify, {}));
+                return;
+            }
+
+            //else try to find a matching prop_to_compare_to
             var prop_to_compare_to = _.find($scope.properties_to_compare_to.key_value_properties, function (prop) {
                 return prop_to_modify.name === prop.name;
             });
 
-            if (_.isUndefined(prop_to_compare_to)) {
+            if (_.isUndefined(prop_to_compare_to) || prop_to_compare_to.value === '') {
                 //Avoid null pointer create prop to compare to with an empty value
                 var prop_to_compare_to = angular.copy(prop_to_modify);
                 prop_to_compare_to.value = '';
@@ -466,7 +482,7 @@ propertiesModule.controller('DiffCtrl', ['$scope', '$routeParams', '$timeout', '
             }
         });
 
-        //Check properties only in compare_to
+        //Check properties remaining in compare_to (not existing or value equals to ''). The one we missed when iterating through properties_to_modify
         _.each($scope.properties_to_compare_to.key_value_properties, function (prop_to_compare_to) {
             var some = _.some($scope.properties_to_modify.key_value_properties, function (prop) {
                 return prop_to_compare_to.name === prop.name;

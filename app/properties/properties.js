@@ -359,8 +359,8 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
         });
     };
 
-    $scope.edit_instance = function (instance) {
-        ApplicationService.get_instance_model($routeParams.application, $scope.platform, instance).then(function (model) {
+    $scope.edit_instance = function (instance, properties_path) {
+        ApplicationService.get_instance_model($routeParams.application, $scope.platform, properties_path).then(function (model) {
             $scope.instance = instance.mergeWithModel(model);
             $scope.properties = undefined; //hide the properties panel if opened
         });
@@ -431,6 +431,7 @@ propertiesModule.controller('DiffCtrl', ['$scope', '$routeParams', '$timeout', '
         this.property_to_modify = property_to_modify;
         this.property_to_compare_to = property_to_compare_to;
         this.modified = false;
+        this.selected = false;
     };
 
     $scope.application_name = $routeParams.application;
@@ -440,11 +441,11 @@ propertiesModule.controller('DiffCtrl', ['$scope', '$routeParams', '$timeout', '
     $scope.compare_platform = $routeParams.compare_platform;
     $scope.compare_path = $routeParams.compare_path;
 
-    $scope.show_only_modified = false;
-    $scope.identical_values_filter = {'status':'1'};
+    $scope.show_only_modified = true;
+    $scope.identical_values_filter = {'status':'1', 'modified': 'true'};
 
     $scope.change_identical_values_filter = function(){
-       $scope.identical_values_filter = $scope.show_only_modified ? {'status':'1', 'modified': 'true'} : {'status':'1'};;
+       $scope.identical_values_filter = $scope.show_only_modified ? {'status':'1', 'modified': 'true'} : {'status':'1'};
     }
 
     //Get the platform to get the version id
@@ -475,7 +476,10 @@ propertiesModule.controller('DiffCtrl', ['$scope', '$routeParams', '$timeout', '
             });
 
             if (_.isUndefined(prop_to_compare_to)) {
-                $scope.diff_containers.push(new DiffContainer(0, prop_to_modify, prop_to_compare_to));
+                //Avoid null pointer create prop to compare to with an empty value
+                var prop_to_compare_to = angular.copy(prop_to_modify);
+                prop_to_compare_to.value = '';
+                $scope.diff_containers.push(new DiffContainer(0, prop_to_modify, {}));
             } else {
                 if (prop_to_modify.value === prop_to_compare_to.value) {
                     $scope.diff_containers.push(new DiffContainer(1, prop_to_modify, prop_to_compare_to));
@@ -492,7 +496,10 @@ propertiesModule.controller('DiffCtrl', ['$scope', '$routeParams', '$timeout', '
             });
 
             if (!some) {
-                $scope.diff_containers.push(new DiffContainer(3, null, prop_to_compare_to));
+                //Avoid null pointer create prop to modify with an empty value
+                var prop_to_modify = angular.copy(prop_to_compare_to);
+                prop_to_modify.value = '';
+                $scope.diff_containers.push(new DiffContainer(3, prop_to_modify, prop_to_compare_to));
             }
         });
     }
@@ -502,136 +509,68 @@ propertiesModule.controller('DiffCtrl', ['$scope', '$routeParams', '$timeout', '
         return string.replace(/\./g, '_');
     }
 
-    $scope.replace_property = function (diff_container) {
-
-        if (_.isUndefined(diff_container.property_to_modify) || diff_container.property_to_modify == null) {
-            diff_container.property_to_modify = {};
-        }
-        diff_container.property_to_modify.name = diff_container.property_to_compare_to.name;
-
-        //There is an animation to trigger before making the actual change
-        //Property_to_compare_to will always be here, so use it instead of property_to_modify
-        var row = $('#different-row-' + $scope.dot_to_underscore(diff_container.property_to_compare_to.name));
-        var value_to_replace = $('#value_to_replace-' + $scope.dot_to_underscore(diff_container.property_to_compare_to.name));
-        var value_to_use = $('#value_to_use-' + $scope.dot_to_underscore(diff_container.property_to_compare_to.name));
-
-        var value_to_replace_left = value_to_replace.offset().left;
-        var value_to_replace_top = value_to_replace.offset().top;
-        var value_to_replace_width = value_to_replace.width();
-        var value_to_use_left = value_to_use.offset().left;
-        var value_to_use_top = value_to_use.offset().top;
-        var value_to_use_width = value_to_use.width();
-
-        var value_to_use_clone = value_to_use.clone();
-        value_to_use.parent().append(value_to_use_clone);
-        value_to_use_clone.css({position: 'absolute', top: value_to_use.offset().top, left: value_to_use_left});
-
-        var value_to_replace_clone = value_to_replace.clone();
-        value_to_replace.parent().prepend(value_to_replace_clone);
-        value_to_replace.hide();
-        value_to_replace_clone.css({position: 'relative'});
-        value_to_replace_clone.animate({
-            opacity: 0,
-            top: "+=200px"
-        }, 500, "swing");
-
-        //Move value_to_use to value_to_replace
-        value_to_use_clone.animate({
-                opacity: 1,
-                left: value_to_replace_left + (value_to_replace_width-value_to_use_width)
-            }, 500, "swing"
-            , function () {
-                //Replace for real
-                diff_container.property_to_modify.old_value = diff_container.property_to_modify.value;
-                diff_container.property_to_modify.value = diff_container.property_to_compare_to.value;
-
-                $scope.$apply();
-                value_to_replace.show();
-
-                value_to_use_clone.remove();
-
-
-                //Animate row to go up
-                $timeout(function() {
-                    row.css({position: 'relative'});
-                    row.animate({
-                        opacity: 0,
-                        top: "-=200px"
-                    }, 500, "swing", function () {
-                        //Change status for real
-                        diff_container.modified = true;
-                        diff_container.status = 1;
-
-                        $scope.$apply();
-
-                        row.remove();
-                    });
-                }, 200);
-            });
-
+    $scope.toggle_selected_to_containers_with_filter = function(filter, selected){
+        _($scope.diff_containers).filter(function(container){
+            for(var key in filter){
+                if(!_.isEqual(filter[key],container[key])) return false;
+            }
+            return true;
+        }).each(function(container){
+            container.selected = selected;
+        });
     };
 
-    $scope.undo_diff = function(diff_container){
+    $scope.apply_diff = function() {
+        /* Filter the diff container that have been selected
+           depending on the status apply different behaviors
+           if status == 0 : this should not happened because it is values that are only in the destination platform, so just ignore it
+           if status == 1 : normaly the only selected containers should be the one that have been modified, but it does not really matter
+                            because the other ones have the same values. We can just apply the 'revert modification' mecanism
+           if status == 2 : this is when we want to apply modification from sourc epltfm to destination pltfm
+           if status == 3 : same behavior as status == 2
+         */
+        _($scope.diff_containers).filter(function(diff_container) { return diff_container.selected}).each(function(diff_container){
+            switch(diff_container.status) {
+                case 0:
+                    break;
+                case 1:
+                    //Revert modifs
+                    diff_container.property_to_modify.value = diff_container.property_to_modify.old_value;
+                    delete diff_container.property_to_modify.old_value;
 
-        var row = $('#identical-row-' + $scope.dot_to_underscore(diff_container.property_to_modify.name));
-        var old_value = $('#old_value-' + $scope.dot_to_underscore(diff_container.property_to_modify.name));
-        var actual_value = $('#actual_value-' + $scope.dot_to_underscore(diff_container.property_to_modify.name));
-
-        var old_value_left = old_value.offset().left;
-        var old_value_top = old_value.offset().top;
-        var old_value_width = old_value.width();
-        var actual_value_left = actual_value.offset().left;
-        var actual_value_top = actual_value.offset().top;
-        var actual_value_width = actual_value.width();
-
-        var actual_value_clone = actual_value.clone();
-        actual_value.parent().append(actual_value_clone);
-        actual_value.hide();
-        actual_value_clone.css({position: 'relative'});
-        actual_value_clone.animate({
-            opacity: 0,
-            top: "+=200px"
-        }, 500, "swing");
-
-        old_value.css({position: 'absolute', top: old_value_top, left: old_value_left, "text-decoration": 'none'});
-        old_value.animate({
-            left: actual_value_left + actual_value_width - old_value_width
-        }, 500, "swing", function(){
-
-            //Replace for real
-            diff_container.property_to_modify.value = diff_container.property_to_modify.old_value;
-            delete diff_container.property_to_modify.old_value;
-
-            $scope.$apply();
-            actual_value.show();
-
-            old_value.remove();
-            actual_value_clone.remove();
-
-
-            //Animate row to go up
-            $timeout(function() {
-                row.css({position: 'relative'});
-                row.animate({
-                    opacity: 0,
-                    top: "+=200px"
-                }, 500, "swing", function () {
-                    //Change status for real
+                    //Change status and reset markers. Keep selected for user experience
+                    //Status depends on old_value, if it was empty status is 3 otherwise it is 2
+                    diff_container.status = diff_container.property_to_modify.value != '' ? 2 : 3;
                     diff_container.modified = false;
-                    diff_container.status = 2;
+                    break;
+                case 2:
+                    //Store old value and apply modifs
+                    diff_container.property_to_modify.old_value = diff_container.property_to_modify.value;
+                    diff_container.property_to_modify.value = diff_container.property_to_compare_to.value;
 
-                    $scope.$apply();
+                    //Change status and reset markers. Keep selected for user experience
+                    diff_container.modified = true;
+                    diff_container.status = 1;
+                    break;
+                case 3:
+                    //Same as 2, copy paste (bad :p )
+                    //Store old value and apply modifs
+                    diff_container.property_to_modify.old_value = diff_container.property_to_modify.value;
+                    diff_container.property_to_modify.value = diff_container.property_to_compare_to.value;
 
-                    row.remove();
-                });
-            }, 200);
-
-
+                    //Change status and reset markers. Keep selected for user experience
+                    diff_container.modified = true;
+                    diff_container.status = 1;
+                    break;
+                default:
+                    console.error("Diff container with invalid status -> "+container.status+". It will be ignored");
+                    break;
+            }
         });
 
     };
 
-    $scope.validate_diff = function () {
+    $scope.save_diff = function () {
         //Get all the properties modified
         var key_value_properties = _($scope.diff_containers).filter(function (diff_container) {
             return diff_container.property_to_modify != null;
@@ -805,8 +744,7 @@ propertiesModule.factory('Properties', function () {
                 iterable_properties: _.map(this.iterable_properties, function (ip) {
                     return {
                         name: ip.name,
-                        comment: ip.comment,
-                        fields: ip.fields
+                        iterable_valorisation_items: ip.iterable_valorisation_items
                     }
                 })
             }

@@ -377,7 +377,7 @@
                 <ul class="list-inline" style="padding-top:10px; padding-bottom:10px;padding-left: 10px;">
                     <li ng-repeat="instance in module.instances | orderBy:'name':false"
                         ng-mouseover="instance.hover = true" ng-mouseleave="instance.hover = false">
-                        <md-button ng-click="edit_instance(instance)" tooltip="Editer les properties de l'instance"
+                        <md-button ng-click="edit_instance(instance, module.properties_path)" tooltip="Editer les properties de l'instance"
                                    aria-label="Editer les properties de l'instance"
                                    class="">
                             <span class="glyphicon glyphicon-list" style="margin-right:10px"></span>{{instance.name}}
@@ -465,7 +465,7 @@
                     </md-button>
                 </div>
                 <div class="col-md-4">
-                    <label style="text-align: right; overflow: hidden; text-overflow: ellipsis" title="{{ kv_property.name }}" for="input-{{ kv_property.name }}" class="col-md-4 control-label">{{ kv_property.name }}</label>
+                    <label style="text-align: right; overflow: hidden; text-overflow: ellipsis" title="{{ kv_property.name }}" for="input-{{ kv_property.name }}" class="col-md-12 control-label">{{ kv_property.name }}</label>
                 </div>
                 <div class="col-md-7">
                     <input id="input-{{ kv_property.name }}" type="text" class="form-control" ng-model="kv_property.value"  />

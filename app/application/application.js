@@ -250,6 +250,7 @@ applicationModule.factory('ApplicationService', ['$http', 'Application', 'Platfo
             });
         },
         save_platform: function (platform, copyPropertiesOfUpdatedModules) {
+            var me = this;
             if(_.isUndefined(copyPropertiesOfUpdatedModules)){
                 copyPropertiesOfUpdatedModules = false;
             }
@@ -257,7 +258,12 @@ applicationModule.factory('ApplicationService', ['$http', 'Application', 'Platfo
             if (platform.version_id < 0) {
                 return $http.post('rest/applications/' + encodeURIComponent(platform.application_name) + '/platforms', platform).then(function (response) {
                     $.notify("La plateforme a bien ete creee", "success");
-                    return new Platform(response.data);
+                    //Try to get the global properties
+                    var platform = new Platform(response.data);
+                    me.get_properties(platform.application_name, platform.platform_name, "#").then(function(properties){
+                        platform.global_properties = properties;
+                    });
+                    return platform;
                 }, function (error) {
                     $.notify(error.data.message, "error");
                     throw error;
@@ -265,7 +271,12 @@ applicationModule.factory('ApplicationService', ['$http', 'Application', 'Platfo
             } else {
                 return $http.put('rest/applications/' + encodeURIComponent(platform.application_name) + '/platforms?copyPropertiesForUpgradedModules='+copyPropertiesOfUpdatedModules, platform).then(function (response) {
                     $.notify("La plateforme a bien ete mise a jour", "success");
-                    return new Platform(response.data);
+                    //Try to get the global properties
+                    var platform = new Platform(response.data);
+                    me.get_properties(platform.application_name, platform.platform_name, "#").then(function(properties){
+                        platform.global_properties = properties;
+                    });
+                    return platform;
                 }, function (error) {
                     $.notify(error.data.message, "error");
                     throw error;
@@ -273,10 +284,16 @@ applicationModule.factory('ApplicationService', ['$http', 'Application', 'Platfo
             }
         },
         create_platform_from: function(platform, from_application, from_platform) {
+            var me = this;
             platform = platform.to_rest_entity();
             return $http.post('rest/applications/' + encodeURIComponent(platform.application_name) + '/platforms?from_application='+encodeURIComponent(from_application)+'&from_platform='+encodeURIComponent(from_platform), platform).then(function(response){
                 $.notify("La plateforme a bien ete creee", "success");
-                return new Platform(response.data);
+                //Try to get the global properties
+                var platform = new Platform(response.data);
+                me.get_properties(platform.application_name, platform.platform_name, "#").then(function(properties){
+                    platform.global_properties = properties;
+                });
+                return platform;
             }, function(error) {
                 $.notify(error.data.message, "error");
                 throw error;
@@ -305,8 +322,8 @@ applicationModule.factory('ApplicationService', ['$http', 'Application', 'Platfo
                 throw error;
             });
         },
-        get_instance_model: function (application_name, platform, instance) {
-            return $http.get('rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform.name) + '/instances/' + encodeURIComponent(instance.name) + '/model').then(function (response) {
+        get_instance_model: function (application_name, platform, path) {
+            return $http.get('rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform.name) + '/properties/instance_model?path=' + encodeURIComponent(path)).then(function (response) {
                 return new InstanceModel(response.data);
             }, function (error) {
                 return new InstanceModel({});

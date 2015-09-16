@@ -138,7 +138,7 @@
     <div vs-repeat style="max-height: 400px; white-space: normal; overflow: auto;" ng-show="toggle1"
          layout-align="start">
         <div layout="column" style="width: 95%;" ng-class="{'bg-warning': diff_container.modified}"
-             ng-repeat="diff_container in diff_containers1 = (diff_containers | filter:{'status':1, 'modified': show_only_modified, 'property_name': propertiesKeyFilter1}  | orderBy:'property_name')">
+             ng-repeat="diff_container in diff_containers1 = (diff_containers | filter: show_only_modified ? {'status':1, 'modified': true, 'property_name': propertiesKeyFilter1} : {'status':1, 'property_name': propertiesKeyFilter1}  | orderBy:'property_name')">
             <div layout="row" layout-align="center" layout-margin
                  style="margin-bottom: 0;margin-top: 0; width: 100%; max-height: 40px"
                  id="identical-row-{{dot_to_underscore(diff_container.property_name)}}">

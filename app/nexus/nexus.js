@@ -1,7 +1,30 @@
-var nexusModule = angular.module('hesperides.nexus', []);
+var nexusModule = angular.module('hesperides.nexus', ['xml']);
 
-nexusModule.factory('NexusService', ['$http', function ($http) {
+nexusModule.factory('NexusService', ['$http', 'x2js', function ($http, x2js) {
     return {
+
+        /**
+         * Récupère la liste des versions des notes de livraison dans Nexus.
+         *
+         * @param application_name nom de l'application
+         * @returns la liste des versions des ndl
+         */
+        getNdlVersions: function (application_name) {
+            return $http.get('/nexus-api/service/local/lucene/search',
+                {
+                    "params": {
+                        "g": "com.vsct." + application_name.toLowerCase(),
+                        "a": "delivery-notes"
+                    }
+                })
+                .then(function (response) {
+                    var artifacts = x2js.xml_str2json(response.data).searchNGResponse.data.artifact;
+                    return _.pluck(artifacts, 'version');
+                }, function (error) {
+                    // l'erreur n'est pas bloquante
+                    return [];
+                });
+        },
 
         /**
          * Récupère la note de livraison dans Nexus.

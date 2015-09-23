@@ -121,48 +121,56 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
      */
     $scope.change_platform_version = function (platform) {
 
-        var modalScope = $scope.$new();
-        modalScope.platform = platform;
+        // récupération des versions des ndl de l'application
+        NexusService.getNdlVersions(platform.application_name)
+            .then(function (ndlVersions) {
+                var modalScope = $scope.$new();
+                modalScope.platform = platform;
+                modalScope.ndlVersions = ndlVersions;
 
-        var modal = $modal.open({
-            templateUrl: 'application/change_platform_version.html',
-            backdrop: 'static',
-            size: 'lg',
-            keyboard: false,
-            scope: modalScope
-        });
+                var modal = $modal.open({
+                    templateUrl: 'application/change_platform_version.html',
+                    backdrop: 'static',
+                    size: 'lg',
+                    keyboard: false,
+                    scope: modalScope
+                });
 
-        modal.result.then(function (modal_data) {
-            if (modal_data.use_ndl === true) {
-                // we should update module versions as defined in the release note
-                NexusService.getNdl(platform.application_name, modal_data.new_version)
-                    .then(function (ndl) {
-                        return ApplicationService.updatePlatformConfig(platform, modal_data.new_version, ndl.NDL_pour_rundeck.packages);
-                    })
-                    .then(function (updatedModules) {
-                        $scope.save_platform_from_box($scope.mainBox, modal_data.copy_properties)
+                modal.result.then(function (modal_data) {
+
+                    if (modal_data.use_ndl === true) {
+                        // on met à jour les modules de l'application à partir des infos de la ndl
+                        NexusService.getNdl(platform.application_name, modal_data.new_version)
+                            .then(function (ndl) {
+                                return ApplicationService.updatePlatformConfig(platform, modal_data.new_version, ndl.NDL_pour_rundeck.packages);
+                            })
+                            .then(function (updatedModules) {
+                                // sauvegarde de la plateforme
+                                $scope.save_platform_from_box($scope.mainBox, modal_data.copy_properties)
+                                    .then(function (response) {
+                                        $scope.properties = undefined;
+                                        $scope.instance = undefined;
+
+                                        // notification des modules mis à jour
+                                        _.each(updatedModules, function (updatedModule) {
+                                            $.notify("Module mis à jour : " + updatedModule.name, "success");
+                                        })
+                                    });
+                            });
+
+                    } else {
+                        // sinon, on ne met à jour que la version de l'application
+                        platform.application_version = modal_data.new_version;
+
+                        // sauvegarde de la plateforme
+                        $scope.save_platform_from_box($scope.mainBox)
                             .then(function (response) {
                                 $scope.properties = undefined;
                                 $scope.instance = undefined;
-
-                                // notification des modules mis à jour
-                                _.each(updatedModules, function(updatedModule) {
-                                    $.notify("Module mis à jour : " + updatedModule.name, "success");
-                                })
                             });
-                    });
-
-            } else {
-                // otherwise, update only platform version
-                platform.application_version = modal_data.new_version;
-
-                $scope.save_platform_from_box($scope.mainBox)
-                    .then(function (response) {
-                        $scope.properties = undefined;
-                        $scope.instance = undefined;
-                    });
-            }
-        })
+                    }
+                });
+            });
     };
 
     $scope.search_module = function (box) {

@@ -96,13 +96,15 @@ applicationModule.factory('ApplicationModule', ['Instance', function (Instance) 
 
         this.title = this.name + ', ' + this.version + (this.is_working_copy ? ' (working copy)' : '');
 
-        this.create_new_instance = function(name){
-            if(!_.find(this.instances, function(instance) { return instance.name === name; })){
+        this.create_new_instance = function (name) {
+            if (!_.find(this.instances, function (instance) {
+                    return instance.name === name;
+                })) {
                 this.instances.push(new Instance({name: name}));
             }
         };
 
-        this.delete_instance = function(instance){
+        this.delete_instance = function (instance) {
             this.instances = _.without(this.instances, instance);
         };
 
@@ -114,7 +116,7 @@ applicationModule.factory('ApplicationModule', ['Instance', function (Instance) 
                 working_copy: this.is_working_copy,
                 deployment_group: this.deployment_group,
                 path: this.path,
-                instances: _.map(this.instances, function(instance){
+                instances: _.map(this.instances, function (instance) {
                     return instance.to_rest_entity();
                 })
             };
@@ -205,14 +207,14 @@ applicationModule.factory('Instance', function () {
 
 applicationModule.factory('ApplicationService', ['$http', 'Application', 'Platform', 'Properties', 'InstanceModel', function ($http, Application, Platform, Properties, InstanceModel) {
 
-    return{
+    return {
         get: function (name) {
             var me = this;
             return $http.get('rest/applications/' + encodeURIComponent(name)).then(function (response) {
                 //Load global properties for each platform
                 var application = new Application(response.data);
-                _.each(application.platforms, function(platform){
-                    me.get_properties(name, platform.name, "#").then(function(properties){
+                _.each(application.platforms, function (platform) {
+                    me.get_properties(name, platform.name, "#").then(function (properties) {
                         platform.global_properties = properties;
                     });
                 });
@@ -222,7 +224,7 @@ applicationModule.factory('ApplicationService', ['$http', 'Application', 'Platfo
                 throw error;
             });
         },
-        with_name_like: function(name){
+        with_name_like: function (name) {
             return $http.post('rest/applications/perform_search?name=' + encodeURIComponent(name)).then(function (response) {
                 return response.data;
             }, function (error) {
@@ -232,15 +234,15 @@ applicationModule.factory('ApplicationService', ['$http', 'Application', 'Platfo
         },
         get_platform: function (application_name, platform_name, timestamp) {
             var me = this;
-            if(_.isUndefined(timestamp)){
+            if (_.isUndefined(timestamp)) {
                 var url = 'rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform_name);
             } else {
-                var url = 'rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform_name) + '?timestamp='+timestamp;
+                var url = 'rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform_name) + '?timestamp=' + timestamp;
             }
             return $http.get(url).then(function (response) {
                 //Try to get the global properties
                 var platform = new Platform(response.data);
-                me.get_properties(application_name, platform_name, "#", timestamp).then(function(properties){
+                me.get_properties(application_name, platform_name, "#", timestamp).then(function (properties) {
                     platform.global_properties = properties;
                 });
                 return platform;
@@ -251,7 +253,7 @@ applicationModule.factory('ApplicationService', ['$http', 'Application', 'Platfo
         },
         save_platform: function (platform, copyPropertiesOfUpdatedModules) {
             var me = this;
-            if(_.isUndefined(copyPropertiesOfUpdatedModules)){
+            if (_.isUndefined(copyPropertiesOfUpdatedModules)) {
                 copyPropertiesOfUpdatedModules = false;
             }
             platform = platform.to_rest_entity();
@@ -260,7 +262,7 @@ applicationModule.factory('ApplicationService', ['$http', 'Application', 'Platfo
                     $.notify("La plateforme a bien ete creee", "success");
                     //Try to get the global properties
                     var platform = new Platform(response.data);
-                    me.get_properties(platform.application_name, platform.platform_name, "#").then(function(properties){
+                    me.get_properties(platform.application_name, platform.platform_name, "#").then(function (properties) {
                         platform.global_properties = properties;
                     });
                     return platform;
@@ -269,11 +271,11 @@ applicationModule.factory('ApplicationService', ['$http', 'Application', 'Platfo
                     throw error;
                 });
             } else {
-                return $http.put('rest/applications/' + encodeURIComponent(platform.application_name) + '/platforms?copyPropertiesForUpgradedModules='+copyPropertiesOfUpdatedModules, platform).then(function (response) {
+                return $http.put('rest/applications/' + encodeURIComponent(platform.application_name) + '/platforms?copyPropertiesForUpgradedModules=' + copyPropertiesOfUpdatedModules, platform).then(function (response) {
                     $.notify("La plateforme a bien ete mise a jour", "success");
                     //Try to get the global properties
                     var platform = new Platform(response.data);
-                    me.get_properties(platform.application_name, platform.platform_name, "#").then(function(properties){
+                    me.get_properties(platform.application_name, platform.platform_name, "#").then(function (properties) {
                         platform.global_properties = properties;
                     });
                     return platform;
@@ -283,24 +285,24 @@ applicationModule.factory('ApplicationService', ['$http', 'Application', 'Platfo
                 });
             }
         },
-        create_platform_from: function(platform, from_application, from_platform) {
+        create_platform_from: function (platform, from_application, from_platform) {
             var me = this;
             platform = platform.to_rest_entity();
-            return $http.post('rest/applications/' + encodeURIComponent(platform.application_name) + '/platforms?from_application='+encodeURIComponent(from_application)+'&from_platform='+encodeURIComponent(from_platform), platform).then(function(response){
+            return $http.post('rest/applications/' + encodeURIComponent(platform.application_name) + '/platforms?from_application=' + encodeURIComponent(from_application) + '&from_platform=' + encodeURIComponent(from_platform), platform).then(function (response) {
                 $.notify("La plateforme a bien ete creee", "success");
                 //Try to get the global properties
                 var platform = new Platform(response.data);
-                me.get_properties(platform.application_name, platform.platform_name, "#").then(function(properties){
+                me.get_properties(platform.application_name, platform.platform_name, "#").then(function (properties) {
                     platform.global_properties = properties;
                 });
                 return platform;
-            }, function(error) {
+            }, function (error) {
                 $.notify(error.data.message, "error");
                 throw error;
             });
         },
         get_properties: function (application_name, platform_name, path, timestamp) {
-            if(_.isUndefined(timestamp)){
+            if (_.isUndefined(timestamp)) {
                 var url = 'rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform_name) + '/properties?path=' + encodeURIComponent(path);
             } else {
                 var url = 'rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform_name) + '/properties?path=' + encodeURIComponent(path) + '&timestamp=' + timestamp;
@@ -328,6 +330,43 @@ applicationModule.factory('ApplicationService', ['$http', 'Application', 'Platfo
             }, function (error) {
                 return new InstanceModel({});
             });
+        },
+
+        /**
+         * Met à jour la configuration des modules d'une plateforme.
+         * <p>
+         * Attention, seule l'instance "locale" est modifiée. La modification n'est pas persistée.
+         * </p>
+         *
+         * @param platform platforme à mettre à jour
+         * @param newVersion nouvelle version de la plateforme
+         * @param newModulesConfig nouvelle version des modules
+         * @returns {Array} la liste des modules misà jour
+         */
+        updatePlatformConfig: function (platform, newVersion, newModulesConfig) {
+            var updatedModules = [];
+
+            // mise à jour de la version de la plateforme
+            platform.application_version = newVersion;
+
+            // mise à jour de la version des modules
+            platform.modules = _.map(platform.modules, function (platformModule) {
+
+                var newModuleConfig = _.find(newModulesConfig, function (module) {
+                    return module.hesperidesModule === platformModule.name;
+                });
+
+                if (newModuleConfig !== undefined) {
+                    platformModule.version = newModuleConfig.version;
+                    platformModule.working_copy = newModuleConfig.version.indexOf('-SNAPSHOT') > -1;
+
+                    updatedModules.push(platformModule);
+                }
+
+                return platformModule;
+            });
+
+            return updatedModules;
         }
     };
 

@@ -1,9 +1,9 @@
 /**
  * Created by william_montaz on 17/10/2014.
  */
-var propertiesModule = angular.module('hesperides.properties', []);
+var propertiesModule = angular.module('hesperides.properties', ['hesperides.nexus']);
 
-propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal', '$location', '$route', '$timeout', 'ApplicationService', 'ModuleService', 'ApplicationModule', 'Page', function ($scope, $routeParams, $modal, $location, $route, $timeout, ApplicationService, ModuleService, Module, Page) {
+propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal', '$location', '$route', '$timeout', 'ApplicationService', 'ModuleService', 'ApplicationModule', 'Page', 'NexusService', function ($scope, $routeParams, $modal, $location, $route, $timeout, ApplicationService, ModuleService, Module, Page, NexusService) {
     Page.setTitle("Properties");
 
     $scope.platform = $routeParams.platform;
@@ -112,6 +112,57 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
         modal.result.then(function (name) {
             $scope.add_instance(name, module);
         });
+    };
+
+    /**
+     * Met à jour la version de la plateforme.
+     *
+     * @param platform plateforme courante
+     */
+    $scope.change_platform_version = function (platform) {
+
+        var modalScope = $scope.$new();
+        modalScope.platform = platform;
+
+        var modal = $modal.open({
+            templateUrl: 'application/change_platform_version.html',
+            backdrop: 'static',
+            size: 'lg',
+            keyboard: false,
+            scope: modalScope
+        });
+
+        modal.result.then(function (modal_data) {
+            if (modal_data.use_ndl === true) {
+                // we should update module versions as defined in the release note
+                NexusService.getNdl(platform.application_name, modal_data.new_version)
+                    .then(function (ndl) {
+                        return ApplicationService.updatePlatformConfig(platform, modal_data.new_version, ndl.NDL_pour_rundeck.packages);
+                    })
+                    .then(function (updatedModules) {
+                        $scope.save_platform_from_box($scope.mainBox, modal_data.copy_properties)
+                            .then(function (response) {
+                                $scope.properties = undefined;
+                                $scope.instance = undefined;
+
+                                // notification des modules mis à jour
+                                _.each(updatedModules, function(updatedModule) {
+                                    $.notify("Module mis à jour : " + updatedModule.name, "success");
+                                })
+                            });
+                    });
+
+            } else {
+                // otherwise, update only platform version
+                platform.application_version = modal_data.new_version;
+
+                $scope.save_platform_from_box($scope.mainBox)
+                    .then(function (response) {
+                        $scope.properties = undefined;
+                        $scope.instance = undefined;
+                    });
+            }
+        })
     };
 
     $scope.search_module = function (box) {

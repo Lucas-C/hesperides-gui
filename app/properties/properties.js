@@ -35,8 +35,6 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
         }, data);
     };
 
-    $scope.getDeleteProperties = getDeleteProperties;
-
     $scope.update_main_box = function (platform) {
 
         //Try to build the view depending on the different paths of the modules
@@ -591,10 +589,36 @@ propertiesModule.directive('propertiesList', function () {
         link: function (scope, element, attrs) {
             scope.propertiesKeyFilter = "";
             scope.propertiesValueFilter = "";
-            scope.getDeleteProperties = getDeleteProperties;
         }
     };
 
+
+});
+
+propertiesModule.directive('toggleDeletedProperties', function () {
+
+    return {
+        restrict: 'E',
+        scope: {
+            keyValueProperties: '=',
+            toggle: '='
+        },
+        template: '<md-checkbox type="checkbox" ng-model="toggle" ng-init="toggle=false"/> Afficher les propri&eacute;t&eacute;es supprim&eacute;es ({{ getNumberOfDeletedProperties(keyValueProperties) }})',
+        link: function (scope, element, attrs) {
+            scope.getNumberOfDeletedProperties = function(tab) {
+                var count = 0;
+
+                if (tab) {
+                    for (var index = 0; index < tab.length; index++) {
+                        if (!tab[index].inModel) {
+                            count++;
+                        }
+                    }
+                }
+                return count;
+            };
+        }
+    }
 
 });
 
@@ -752,16 +776,3 @@ propertiesModule.filter('displayProperties', function() {
         return filtered;
     };
 });
-
-getDeleteProperties = function(tab) {
-    var count = 0;
-
-    if (tab) {
-        for (var index = 0; index < tab.length; index++) {
-            if (!tab[index].inModel) {
-                count++;
-            }
-        }
-    }
-    return count;
-};

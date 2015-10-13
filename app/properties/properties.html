@@ -559,7 +559,7 @@
                     <span>Sauver les properties</span>
                 </button>
             </h3>
-            <input type="checkbox" ng-model="displayDeletedProperties" ng-init="displayDeletedProperties=false"/> Afficher les propriétées supprimées ({{ getDeleteProperties(instance.key_values) }})
+            <toggle-deleted-properties key-value-properties="instance.key_values" toggle="displayDeletedProperties"></toggle-deleted-properties>
             <form class="form-horizontal narrow" role="form">
                 <div class="form-group" ng-class="{'property-not-used': !key_value_property.inModel}"
                      ng-repeat="key_value_property in instance.key_values | displayProperties:displayDeletedProperties | orderBy:'name' track by $index">

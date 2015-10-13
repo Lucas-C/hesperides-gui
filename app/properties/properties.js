@@ -595,6 +595,33 @@ propertiesModule.directive('propertiesList', function () {
 
 });
 
+propertiesModule.directive('toggleDeletedProperties', function () {
+
+    return {
+        restrict: 'E',
+        scope: {
+            keyValueProperties: '=',
+            toggle: '='
+        },
+        template: '<md-checkbox type="checkbox" ng-model="toggle" ng-init="toggle=false"/> Afficher les propri&eacute;t&eacute;es supprim&eacute;es ({{ getNumberOfDeletedProperties(keyValueProperties) }})',
+        link: function (scope, element, attrs) {
+            scope.getNumberOfDeletedProperties = function(tab) {
+                var count = 0;
+
+                if (tab) {
+                    for (var index = 0; index < tab.length; index++) {
+                        if (!tab[index].inModel) {
+                            count++;
+                        }
+                    }
+                }
+                return count;
+            };
+        }
+    }
+
+});
+
 propertiesModule.factory('Properties', function () {
 
     var Properties = function (data) {
@@ -732,4 +759,20 @@ propertiesModule.factory('Properties', function () {
 
     return Properties;
 
+});
+
+propertiesModule.filter('displayProperties', function() {
+    return function(items, display) {
+        var filtered = [];
+
+        angular.forEach(items, function(item) {
+            if(display == undefined || display == true){
+                filtered.push(item);
+            } else if(item.inModel){
+                filtered.push(item);
+            }
+        });
+
+        return filtered;
+    };
 });

@@ -35,6 +35,8 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
         }, data);
     };
 
+    $scope.getDeleteProperties = getDeleteProperties;
+
     $scope.update_main_box = function (platform) {
 
         //Try to build the view depending on the different paths of the modules
@@ -589,6 +591,7 @@ propertiesModule.directive('propertiesList', function () {
         link: function (scope, element, attrs) {
             scope.propertiesKeyFilter = "";
             scope.propertiesValueFilter = "";
+            scope.getDeleteProperties = getDeleteProperties;
         }
     };
 
@@ -733,3 +736,32 @@ propertiesModule.factory('Properties', function () {
     return Properties;
 
 });
+
+propertiesModule.filter('displayProperties', function() {
+    return function(items, display) {
+        var filtered = [];
+
+        angular.forEach(items, function(item) {
+            if(display == undefined || display == true){
+                filtered.push(item);
+            } else if(item.inModel){
+                filtered.push(item);
+            }
+        });
+
+        return filtered;
+    };
+});
+
+getDeleteProperties = function(tab) {
+    var count = 0;
+
+    if (tab) {
+        for (var index = 0; index < tab.length; index++) {
+            if (!tab[index].inModel) {
+                count++;
+            }
+        }
+    }
+    return count;
+};

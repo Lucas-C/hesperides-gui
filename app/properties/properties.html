@@ -551,17 +551,18 @@
     <div layout="row" ng-show="instance">
         <div class="col-md-12">
             <h3>
-                <span style="margin-right: 30px">Les properties d'instance associees a <strong><a href=""
-                                                                                                  editable-text="instance.name"
-                                                                                                  onbeforesave="update_instance_name(instance, $data)">{{instance.name}}</a></strong></span>
+                <span style="margin-right: 30px">Les properties d'instance associees a <strong>
+                    <a href="" editable-text="instance.name"
+                       onbeforesave="update_instance_name(instance, $data)">{{instance.name}}</a></strong></span>
                 <button ng-click="save_platform_from_box(mainBox)" class="btn btn-sm">
                     <span class="glyphicon glyphicon-saved" style="padding-right:10px"></span>
                     <span>Sauver les properties</span>
                 </button>
             </h3>
+            <input type="checkbox" ng-model="displayDeletedProperties" ng-init="displayDeletedProperties=false"/> Afficher les propriétées supprimées ({{ getDeleteProperties(instance.key_values) }})
             <form class="form-horizontal narrow" role="form">
                 <div class="form-group" ng-class="{'property-not-used': !key_value_property.inModel}"
-                     ng-repeat="key_value_property in instance.key_values | orderBy:'name' track by $index">
+                     ng-repeat="key_value_property in instance.key_values | displayProperties:displayDeletedProperties | orderBy:'name' track by $index">
                     <label for="input-{{ key_value_property.name }}" class="col-md-3 control-label">{{
                         key_value_property.name }}</label>
 

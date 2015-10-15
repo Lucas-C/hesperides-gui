@@ -99,6 +99,10 @@ menuModule.controller('MenuPropertiesCtrl', ['$scope', '$modal', '$location', 'A
         return ApplicationService.with_name_like(name);
     };
 
+    $scope.find_platforms_of_application = function (application_name) {
+        return ApplicationService.get_platform_name_of_application(application_name);
+    };
+
     $scope.open_properties_page = function (application_name, platform_name) {
         var path = '/properties/' + application_name;
         $location.url(path).search({platform: platform_name});

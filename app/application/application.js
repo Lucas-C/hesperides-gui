@@ -230,6 +230,14 @@ applicationModule.factory('ApplicationService', ['$http', 'Application', 'Platfo
                 throw error;
             });
         },
+        get_platform_name_of_application: function(application_name){
+            return $http.post('rest/applications/platforms/perform_search?name=' + encodeURIComponent(application_name)).then(function (response) {
+                return response.data;
+            }, function (error) {
+                $.notify(error.data.message, "error");
+                throw error;
+            });
+        },
         get_platform: function (application_name, platform_name, timestamp) {
             var me = this;
             if(_.isUndefined(timestamp)){

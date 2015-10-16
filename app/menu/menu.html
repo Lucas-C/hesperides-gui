@@ -382,7 +382,8 @@
                         <input type="text" class="form-control" required ng-trim="true"
                                ng-model="new_platform.from_application"
                                id="fromApplication"
-                               placeholder="Nom de l'application source">
+                               placeholder="Nom de l'application source" required
+                               typeahead="application.name for application in find_applications_by_name($viewValue)">
                     </div>
                 </div>
                 <div class="form-group">
@@ -390,7 +391,8 @@
                         <input type="text" class="form-control" required ng-trim="true"
                                ng-model="new_platform.from_platform"
                                id="fromPlatform"
-                               placeholder="Nom de la plateforme source">
+                               placeholder="Nom de la plateforme source" required
+                               typeahead="platform.name for platform in find_platforms_of_application(new_platform.from_application)">
                     </div>
                 </div>
                 <input type="submit" id="submit" value="Submit" ng-hide="true">

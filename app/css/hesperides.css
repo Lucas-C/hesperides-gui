@@ -293,3 +293,9 @@ h4.app-unit button {
     text-overflow: ellipsis;
     text-align: right;
 }
+
+.template-file-right {
+    display: inline;
+    margin-left: 10px;
+    margin-right: 0px;
+}

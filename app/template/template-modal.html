@@ -21,7 +21,7 @@
                    data-hint="Indiquer le dossier dans lequel sera copie le fichier sur le serveur. On peut utiliser des proprietes dans ce champ"/>
         </div>
         <div class="form-group" id="templateContentParent" style="padding-top: 10px">
-            <label for="templateContent" style="width: 100%">Contenu du fichier
+            <label style="width: 100%">Contenu du fichier
                 <small class="text-right" style="padding-left: 10px; color: grey;font-weight:normal"><kbd>F11</kbd>
                     Activer / <kbd>Esc</kbd> Desactiver l'edtion en plein ecran
                 </small>
@@ -32,6 +32,9 @@
             </label>
             <ui-codemirror id="templateContent" ui-codemirror-opts="codeMirrorOptions"
                            ng-model="template.content"></ui-codemirror>
+        </div>
+        <div class="form-group">
+            <label>Droits d'execution</label> <md-checkbox type="checkbox" ng-model="template.rights.user.read" ng-init="template.right.user.read=false" class="template-file-right">R</md-checkbox><md-checkbox type="checkbox" ng-model="template.rights.user.write" ng-init="template.right.user.write=false" class="template-file-right">W</md-checkbox><md-checkbox type="checkbox" ng-model="template.rights.user.execute" ng-init="template.right.user.execute=false" class="template-file-right">X</md-checkbox>&nbsp;&nbsp;&nbsp;&nbsp;<md-checkbox type="checkbox" ng-model="template.rights.group.read" ng-init="template.right.group.read=false" class="template-file-right">R</md-checkbox><md-checkbox type="checkbox" ng-model="template.rights.group.write" ng-init="template.right.group.write=false" class="template-file-right">W</md-checkbox><md-checkbox type="checkbox" ng-model="template.rights.group.execute" ng-init="template.right.group.execute=false" class="template-file-right">X</md-checkbox>&nbsp;&nbsp;&nbsp;&nbsp;<md-checkbox type="checkbox" ng-model="template.rights.other.read" ng-init="template.right.other.read=false" class="template-file-right">R</md-checkbox><md-checkbox type="checkbox" ng-model="template.rights.other.write" ng-init="template.right.other.write=false" class="template-file-right">W</md-checkbox><md-checkbox type="checkbox" ng-model="template.rights.other.execute" ng-init="template.right.other.execute=false" class="template-file-right">X</md-checkbox>
         </div>
     </form>
 </div>

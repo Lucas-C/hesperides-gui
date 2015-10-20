@@ -3,25 +3,31 @@
  */
 var menuModule = angular.module('hesperides.menu', ['hesperides.techno', 'hesperides.application', 'hesperides.properties']);
 
-menuModule.controller('MenuTechnoCtrl', ['$scope', '$modal', '$location', 'TechnoService', function ($scope, $modal, $location, TechnoService) {
+menuModule.controller('MenuTechnoCtrl', ['$scope', '$mdDialog', '$location', 'TechnoService', function ($scope, $mdDialog, $location, TechnoService) {
 
-    var modal;
+    $scope.closeDialog = function() {
+        $mdDialog.hide();
+    };
 
     $scope.find_technos_by_name = function (name) {
         return TechnoService.with_name_like(name);
     };
 
     $scope.open_create_techno_dialog = function () {
-        modal = $modal.open({
-            templateUrl: 'techno-menu-modal.html',
-            scope: $scope
+        $mdDialog.show({
+            templateUrl: 'techno/techno-menu-modal.html',
+            controller: 'MenuTechnoCtrl',
+            preserveScope: true, // requiered for not freez menu see https://github.com/angular/material/issues/5041
+            scope:$scope
         });
     };
 
     $scope.open_create_techno_from_dialog = function () {
-        modal = $modal.open({
-            templateUrl: 'techno-menu-modal-from.html',
-            scope: $scope
+        $mdDialog.show({
+            templateUrl: 'techno/techno-menu-modal-from.html',
+            controller: 'MenuTechnoCtrl',
+            preserveScope: true, // requiered for not freez menu
+            scope:$scope
         });
     };
 
@@ -38,17 +44,27 @@ menuModule.controller('MenuTechnoCtrl', ['$scope', '$modal', '$location', 'Techn
             $location.path('/techno/' + name + '/' + version).search({});
         }
         $scope.technoSearched = "";
-        if (modal) modal.close();
+        $mdDialog.hide();
     }
 
 }]);
 
-menuModule.controller('MenuModuleCtrl', ['$scope', '$modal', '$location', 'ModuleService', 'Module',  function ($scope, $modal, $location, ModuleService, Module) {
+menuModule.controller('MenuModuleCtrl', ['$scope', '$mdDialog', '$location', 'ModuleService', 'Module', '$http',  function ($scope, $mdDialog, $location, ModuleService, Module, $http) {
 
-    var modal;
+    $scope.closeDialog = function() {
+        $mdDialog.hide();
+    };
+
+    $scope.selectedItemChange = function(item) {
+        $log.info('Item changed to ' + JSON.stringify(item));
+    }
 
     $scope.find_modules_by_name = function (name) {
-        return ModuleService.with_name_like(name);
+        if (name) {
+            return ModuleService.with_name_like(name);
+        } else {
+            return null;
+        }
     };
 
     $scope.create_module = function(name, version){
@@ -71,32 +87,42 @@ menuModule.controller('MenuModuleCtrl', ['$scope', '$modal', '$location', 'Modul
             $location.path('/module/' + name + '/' + version).search({});
         }
         $scope.moduleSearched = "";
-        if (modal) modal.close();
+        $mdDialog.hide();
     };
 
     $scope.open_create_module_dialog = function () {
-        modal = $modal.open({
-            templateUrl: 'module-menu-modal.html',
-            scope: $scope
+        $mdDialog.show({
+            templateUrl: 'module/module-menu-modal.html',
+            controller: 'MenuModuleCtrl',
+            preserveScope: true, // requiered for not freez menu
+            scope:$scope
         });
     };
 
     $scope.open_create_module_from_dialog = function () {
-        modal = $modal.open({
-            templateUrl: 'module-menu-modal-from.html',
-            scope: $scope
+        $mdDialog.show({
+            templateUrl: 'module/module-menu-modal-from.html',
+            controller: 'MenuModuleCtrl',
+            preserveScope: true, // requiered for not freez menu
+            scope:$scope
         });
     };
 
 
 }]);
 
-menuModule.controller('MenuPropertiesCtrl', ['$scope', '$modal', '$location', 'ApplicationService', 'Platform', function ($scope, $modal, $location, ApplicationService, Platform) {
+menuModule.controller('MenuPropertiesCtrl', ['$scope', '$mdDialog', '$location', 'ApplicationService', 'Platform', function ($scope, $mdDialog, $location, ApplicationService, Platform) {
 
-    var modal;
+    $scope.closeDialog = function() {
+        $mdDialog.hide();
+    };
 
     $scope.find_applications_by_name = function (name) {
-        return ApplicationService.with_name_like(name);
+        if (name) {
+            return ApplicationService.with_name_like(name);
+        } else {
+            return null;
+        }
     };
 
     $scope.find_platforms_of_application = function (application_name) {
@@ -125,23 +151,29 @@ menuModule.controller('MenuPropertiesCtrl', ['$scope', '$modal', '$location', 'A
     };
 
     $scope.open_create_platform_dialog = function () {
-        modal = $modal.open({
-            templateUrl: 'platform-menu-modal.html',
-            scope: $scope
+        $mdDialog.show({
+            templateUrl: 'properties/platform-menu-modal.html',
+            controller: 'MenuPropertiesCtrl',
+            preserveScope: true, // requiered for not freez menu
+            scope:$scope
         });
     };
 
     $scope.open_create_platform_from_dialog = function () {
-        modal = $modal.open({
-            templateUrl: 'platform-menu-modal-from.html',
-            scope: $scope
+        $mdDialog.show({
+            templateUrl: 'properties/platform-menu-modal-from.html',
+            controller: 'MenuPropertiesCtrl',
+            preserveScope: true, // requiered for not freez menu
+            scope:$scope
         });
     };
-
-
 }]);
 
-menuModule.controller('MenuHelpCtrl', ['$scope', '$modal', '$http', function($scope, $modal, $http){
+menuModule.controller('MenuHelpCtrl', ['$scope', '$mdDialog', '$http', function($scope, $mdDialog, $http){
+
+    $scope.closeDialog = function() {
+        $mdDialog.hide();
+    };
 
     $scope.display_hesperides_informations = function(){
 
@@ -155,12 +187,18 @@ menuModule.controller('MenuHelpCtrl', ['$scope', '$modal', '$http', function($sc
             throw error;
         });
 
-        var modal = $modal.open({
-            templateUrl: 'help-menu-modal.html',
-            scope: $scope
+        $mdDialog.show({
+            templateUrl: 'hesperides/help-menu-modal.html',
+            controller: 'MenuHelpCtrl',
+            preserveScope: true, // requiered for not freez menu
+            scope:$scope
         });
 
     };
+
+    $scope.display_swagger = function() {
+        window.open('/swagger.html');
+    }
 
 }]);
 

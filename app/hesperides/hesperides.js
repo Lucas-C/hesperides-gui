@@ -7,7 +7,6 @@ if ( typeof String.prototype.startsWith != 'function' ) {
 
 var hesperidesModule = angular.module('hesperides', [
     'ngRoute',
-    'ui.bootstrap',
     'hesperides.module',
     'hesperides.menu',
     'hesperides.properties',
@@ -19,16 +18,15 @@ var hesperidesModule = angular.module('hesperides', [
     'xeditable',
     'ui.codemirror',
     'mgo-angular-wizard',
-    'ui.bootstrap.datetimepicker',
     'vs-repeat'
 ]);
 
 hesperidesModule.run(function (editableOptions) {
     editableOptions.theme = 'bs3';
     //Init bootstrap ripples
-    $(document).ready(function () {
+    /*$(document).ready(function () {
         $.material.init();
-    });
+    });*/
     //Prevent anoying behavior of bootstrap with dropdowns
     $(document).unbind('keydown.bs.dropdown.data-api');
 });
@@ -49,7 +47,7 @@ hesperidesModule.controller("TitleCtrl", ['$scope', 'Page', function ($scope, Pa
     $scope.Page = Page;
 }]);
 
-hesperidesModule.config(['$routeProvider', '$tooltipProvider', '$mdThemingProvider', '$ariaProvider', function ($routeProvider, $tooltipProvider, $mdThemingProvider, $ariaProvider) {
+hesperidesModule.config(['$routeProvider', '$mdThemingProvider', '$ariaProvider', function ($routeProvider, $mdThemingProvider, $ariaProvider) {
     $routeProvider.
         when('/module/:name/:version', {
             templateUrl: 'module/module.html',
@@ -73,10 +71,6 @@ hesperidesModule.config(['$routeProvider', '$tooltipProvider', '$mdThemingProvid
         otherwise({
             templateUrl: 'welcome_screen.html'
         });
-    //Setup tooltip delay
-    $tooltipProvider.options({
-        popupDelay: 800
-    });
 
     //Material design theming
     $mdThemingProvider.theme('default')
@@ -161,3 +155,6 @@ hesperidesModule.directive('konami', function() {
     }
 });
 
+hesperidesModule.config(function($mdIconProvider) {
+    $mdIconProvider.fontSet('fa', 'fontawesome');
+});

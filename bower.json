@@ -13,14 +13,11 @@
     "angular-mocks": "~1.2.15",
 	"angular-resource": "~1.2.x",
 	"angular-xeditable": "0.1.8",
-	"angular-bootstrap": "0.12.1",
 	"angular-dragdrop": "1.0.5",
-	"bootstrap": "3.1.1",
-	"bootstrap-material-design": "latest",
 	"underscore": "1.6.0",
-	"angular-ui-codemirror": "latest",
-	"angular-material": "latest",
-	"angular-wizard": "latest",
-	"angular-bootstrap-datetimepicker": "latest"
+	"angular-ui-codemirror": "0.3.0",
+	"angular-material": "0.11.4",
+	"angular-wizard": "0.5.5",
+    "momentjs":"2.10.6"
   }
 }

@@ -1,411 +1,122 @@
 <div id="header">
+    <md-toolbar class="md-menu-toolbar">
+        <md-menu-bar class="menu">
+            <span>{{ Page.title() }}</span>
+            <span class="menu-header"> / Regrouper des templates <i class="fa fa-arrow-right"></i></span>
+            <md-menu ng-controller="MenuTechnoCtrl">
+                <button ng-click="$mdOpenMenu()" class="menu">
+                    En techno <i class="fa fa-caret-down"></i>
+                </button>
+                <md-menu-content class="menu-item">
+                    <md-menu-item>
+                        <md-button ng-click="open_create_techno_dialog()">
+                            Creer une working copy
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button ng-click="open_create_techno_from_dialog()">
+                            Creer une working copy à partir de...
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-divider></md-menu-divider>
+                    <md-menu-item >
+                        <md-autocomplete
+                                md-no-cache="true"
+                                md-selected-item="ctrl.selectedItem"
+                                md-search-text="ctrl.searchText"
+                                md-items="item in find_technos_by_name(ctrl.searchText)"
+                                md-item-text="item.name"
+                                md-selected-item-change="(item) ? open_techno_page(item.name, item.version, item.is_working_copy) : false"
+                                md-min-length="0"
+                                placeholder="Rechercher...">
+                            <span md-highlight-text="ctrl.searchText" ng-show="item.is_working_copy">{{item.name}} {{item.version}} (working copy)</span>
+                            <span md-highlight-text="ctrl.searchText" ng-show="!item.is_working_copy">{{item.name}} {{item.version}}</span>
+                        </md-autocomplete>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
+            <md-menu ng-controller="MenuModuleCtrl">
+                <button ng-click="$mdOpenMenu()" class="menu">
+                    En module <i class="fa fa-caret-down"></i>
+                </button>
+                <md-menu-content class="menu-item">
+                    <md-menu-item>
+                        <md-button ng-click="open_create_module_dialog()">
+                            Creer un nouveau module
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button ng-click="open_create_module_from_dialog()">
+                            Creer une working copy à partir de...
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-divider></md-menu-divider>
+                    <md-menu-item>
+                        <md-autocomplete
+                                         md-no-cache="true"
+                                         md-selected-item="ctrl.selectedItem"
+                                         md-search-text="ctrl.searchText"
+                                         md-items="item in find_modules_by_name(ctrl.searchText)"
+                                         md-item-text="item.name"
+                                         md-selected-item-change="(item) ? open_module_page(item.name, item.version, item.is_working_copy) : false"
+                                         md-min-length="0"
+                                         placeholder="Rechercher...">
+                            <span md-highlight-text="ctrl.searchText" ng-show="item.is_working_copy">{{item.name}} {{item.version}} (working copy)</span>
+                            <span md-highlight-text="ctrl.searchText" ng-show="!item.is_working_copy">{{item.name}} {{item.version}}</span>
+                        </md-autocomplete>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
+            <span class="menu-header">Valoriser des properties <i class="fa fa-arrow-right"></i></span>
+            <md-menu ng-controller="MenuPropertiesCtrl">
+                <button ng-click="$mdOpenMenu()" class="menu">
+                    Pour des applications <i class="fa fa-caret-down"></i>
+                </button>
+                <md-menu-content class="menu-item">
+                    <md-menu-item>
+                        <md-button ng-click="open_create_platform_dialog()">
+                            Creer une plateforme
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button ng-click="open_create_platform_from_dialog()">
+                            Creer une plateforme à partir de...
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-divider></md-menu-divider>
+                    <md-menu-item>
+                        <md-autocomplete
+                                md-no-cache="true"
+                                md-selected-item="ctrl.selectedItem"
+                                md-search-text="ctrl.searchText"
+                                md-items="item in find_applications_by_name(ctrl.searchText)"
+                                md-item-text="item.name"
+                                md-selected-item-change="(item) ? open_properties_page(item.name, null) : false"
+                                md-min-length="0"
+                                placeholder="Rechercher une application pour y éditer/ajouter des properties">
+                            <span md-highlight-text="ctrl.searchText">{{item.name}} {{item.version}}</span>
+                        </md-autocomplete>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
 
-    <nav class="navbar navbar-default" role="navigation">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="#">{{ Page.title() }}</a>
-        </div>
-
-        <div class="navbar-collapse collapse navbar-responsive-collapse">
-
-            <ul class="nav navbar-nav navbar-left">
-
-                <li class="navbar-text"><span class="divider">/</span></li>
-
-                <li class="navbar-text">Regrouper des templates<span class="glyphicon glyphicon-arrow-right"
-                                                                     style="margin-left: 10px"></span></li>
-
-                <li class="dropdown" ng-controller="MenuTechnoCtrl">
-                    <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown" data-target="#">En techno<b
-                            class="caret"></b></a>
-                    <ul class="dropdown-menu" role="menu" ng-click="$event.stopPropagation()">
-                        <li><a href="" ng-click="open_create_techno_dialog()">Creer une working copy</a></li>
-                        <li><a href="" ng-click="open_create_techno_from_dialog()">Creer une working copy à partir
-                            de...</a></li>
-                        <li class="divider"></li>
-                        <li style="overflow: visible"><a href=""><input style="border: none;background:transparent" type="text"
-                                              ng-model="technoSearched" ng-blur="technoSearched=''"
-                                              placeholder="Rechercher"
-                                              typeahead="techno as techno.title for techno in find_technos_by_name($viewValue)"
-                                              typeahead-on-select="open_techno_page($item.name, $item.version, $item.is_working_copy)"/></a>
-                        </li>
-                    </ul>
-                </li>
-
-                <li class="dropdown" ng-controller="MenuModuleCtrl">
-                    <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">En module<span
-                            class="caret"></span></a>
-                    <ul class="dropdown-menu" role="menu" ng-click="$event.stopPropagation()">
-                        <li><a href="javascript:void(0)" ng-click="open_create_module_dialog()">Creer un nouveau module
-                        </a></li>
-                        <li><a href="javascript:void(0)" ng-click="open_create_module_from_dialog()">Creer une working copy à partir
-                            de...</a></li>
-                        <li class="divider"></li>
-                        <li style="overflow: visible"><a href="javascript:void(0)"><input style="border: none;background:transparent" type="text"
-                                              ng-model="moduleSearched" ng-blur="moduleSearched=''"
-                                              placeholder="Rechercher"
-                                              typeahead="module as module.title for module in find_modules_by_name($viewValue)"
-                                              typeahead-on-select="open_module_page($item.name, $item.version, $item.is_working_copy)"/></a>
-                        </li>
-                    </ul>
-                </li>
-            </ul>
-
-            <ul class="nav navbar-nav navbar-left">
-
-                <li class="navbar-text"><span class="divider">/</span></li>
-
-                <li class="navbar-text">Valoriser des properties<span class="glyphicon glyphicon-arrow-right"
-                                                                      style="margin-left: 10px"></span></li>
-
-                <li class="dropdown" ng-controller="MenuPropertiesCtrl">
-                    <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">Pour des applications<span
-                            class="caret"></span></a>
-                    <ul class="dropdown-menu" role="menu" ng-click="$event.stopPropagation()"
-                        style="width: 450px !important">
-                        <li><a href="" ng-click="open_create_platform_dialog()">Creer une plateforme</a></li>
-                        <li><a href="" ng-click="open_create_platform_from_dialog()">Creer une plateforme à partir
-                            de...</a></li>
-                        <li class="divider"></li>
-                        <li style="overflow: visible"><a href=""><input style="border: none;background:transparent;width: 420px !important"
-                                              type="text" ng-model="applicationSearched"
-                                              ng-blur="applicationSearched=''"
-                                              placeholder="Rechercher une application pour y éditer/ajouter des properties"
-                                              typeahead="application.name for application in find_applications_by_name($viewValue)"
-                                              typeahead-on-select="open_properties_page($item.name, null)"/></a>
-                        </li>
-                    </ul>
-                </li>
-
-            </ul>
-
-            <ul class="nav navbar-nav navbar-right">
-
-                <li class="dropdown" ng-controller="MenuHelpCtrl">
-                    <a href="javascript:void(0)" class="dropdown-toggle" data-toggle="dropdown">Aide <span class="caret"></span></a>
-                    <ul class="dropdown-menu" role="menu" ng-click="$event.stopPropagation()">
-                        <li><a href="/swagger.html">Swagger</a></li>
-                        <li><a href="" ng-click="display_hesperides_informations()">A propos</a></li>
-                    </ul>
-                </li>
-
-            </ul>
-        </div>
-    </nav>
-
+            <md-menu ng-controller="MenuHelpCtrl" class="menu-help">
+                <button ng-click="$mdOpenMenu()" class="menu">
+                    Aide <i class="fa fa-question"></i>
+                </button>
+                <md-menu-content class="menu-item">
+                    <md-menu-item>
+                        <md-button ng-click="display_swagger()">
+                            Swagger
+                        </md-button>
+                    </md-menu-item>
+                    <md-menu-item>
+                        <md-button ng-click="display_hesperides_informations()">
+                            A propos
+                        </md-button>
+                    </md-menu-item>
+                </md-menu-content>
+            </md-menu>
+        </md-menu-bar>
+    </md-toolbar>
 </div>
-
-<script type="text/ng-template" id="help-menu-modal.html">
-    <div class="modal-header">
-        <h3 class="modal-title">A propos de la release BLINK</h3>
-    </div>
-    <div class="modal-body">
-        <p><strong>Version du backend :</strong> {{backend_version}}</p>
-
-        <p><strong>Version de l'API :</strong> {{api_version}}</p>
-
-        <p><strong>Version du front :</strong> {{front_version}}</p>
-        <konami></konami>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-primary" ng-click="$dismiss('cancel')">Fermer</button>
-    </div>
-</script>
-
-<script type="text/ng-template" id="techno-menu-modal.html">
-    <div class="modal-header">
-        <h3 class="modal-title">Nouvelle techno (working copy)</h3>
-    </div>
-    <div class="modal-body">
-        <form name="technoForm" role="form" novalidate class="form-horizontal"
-              ng-submit="technoForm.$valid && open_techno_page(new_techno.name, new_techno.version, true)">
-            <div class="form-group">
-                <div class="col-lg-12">
-                    <input type="text" class="form-control" required ng-trim="true" ng-model="new_techno.name"
-                           id="technoName" placeholder="Entrer un nom" data-hint="tomcat, hadoop, flume, ..."/>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-lg-12">
-                    <input type="text" class="form-control" required ng-trim="true" ng-model="new_techno.version"
-                           id="technoVersion" placeholder="Entrer un numero de version"/>
-                </div>
-            </div>
-            <input type="submit" id="submit" value="Submit" ng-hide="true"/>
-        </form>
-    </div>
-    <div class="modal-footer">
-        <div class="col-lg-9 col-lg-offset-3">
-            <button class="btn btn-primary" ng-disabled="technoForm.$invalid"
-                    ng-click="open_techno_page(new_techno.name, new_techno.version, true)">Creer
-            </button>
-            <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
-        </div>
-    </div>
-</script>
-
-<script type="text/ng-template" id="techno-menu-modal-from.html">
-    <div class="modal-header">
-        <h3 class="modal-title">Nouvelle techno (working copy) à partir d'une précédente version</h3>
-    </div>
-    <div class="modal-body">
-        <form name="technoForm" role="form" novalidate class="form-horizontal"
-              ng-submit="technoForm.$valid && create_techno_from(new_techno.name, new_techno.version, technoSearched.name, technoSearched.version, technoSearched.is_working_copy)">
-            <div class="form-group">
-                <div class="col-lg-12">
-                    <input type="text" class="form-control" required ng-trim="true" ng-model="new_techno.name"
-                           id="technoName" placeholder="Entrer un nom"/>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-lg-12">
-                    <input type="text" class="form-control" required ng-trim="true" ng-model="new_techno.version"
-                           id="technoVersion" placeholder="Entrer un numero de version"/>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="fromTechno" class="col-lg-2 control-label">A partir de</label>
-
-                <div class="col-lg-10">
-                    <input type="text" class="form-control" id="fromTechno"
-                           ng-model="technoSearched"
-                           placeholder="Rechercher une techno existante" required
-                           data-hint="Entrer un nom de techno"
-                           typeahead-editable="false"
-                           typeahead="techno as techno.title for techno in find_technos_by_name($viewValue)"
-                            />
-                </div>
-            </div>
-            <input type="submit" id="submit" value="Submit" ng-hide="true"/>
-        </form>
-    </div>
-    <div class="modal-footer">
-        <div class="col-lg-9 col-lg-offset-3">
-            <button class="btn btn-primary" ng-disabled="technoForm.$invalid"
-                    ng-click="create_techno_from(new_techno.name, new_techno.version, technoSearched.name, technoSearched.version, technoSearched.is_working_copy)">
-                Creer
-            </button>
-            <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
-        </div>
-    </div>
-</script>
-
-<script type="text/ng-template" id="module-menu-modal.html">
-    <div class="modal-header">
-        <h3 class="modal-title">Nouveau module (working copy)</h3>
-    </div>
-    <div class="modal-body">
-        <form name="moduleForm" role="form" novalidate class="form-horizontal"
-              ng-submit="moduleForm.$valid && create_module(new_module.name, new_module.version)">
-            <div class="form-group">
-                <div class="col-lg-12">
-                    <input type="text" class="form-control" required ng-trim="true" ng-model="new_module.name"
-                           data-hint="Ce nom correspond à un package de la note de livraison. Par ex. wdiCore-war"
-                           id="moduleName" placeholder="Entrer un nom"/>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-lg-12">
-                    <input type="text" class="form-control" required ng-trim="true" ng-model="new_module.version"
-                           id="moduleVersion" placeholder="Entrer un numero de version"
-                           data-hint="Le numéro de version correspond à celui du package dans la note de livraison"/>
-                </div>
-            </div>
-            <input type="submit" id="submit" value="Submit" ng-hide="true"/>
-        </form>
-    </div>
-    <div class="modal-footer">
-        <div class="col-lg-9 col-lg-offset-3">
-            <button class="btn btn-primary" ng-disabled="applicationForm.$invalid"
-                    ng-click="create_module(new_module.name, new_module.version)">Creer
-            </button>
-            <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
-        </div>
-    </div>
-</script>
-
-<script type="text/ng-template" id="module-menu-modal-from.html">
-    <div class="modal-header">
-        <h3 class="modal-title">Nouveau module (working copy) à partir d'une précédente version</h3>
-    </div>
-    <div class="modal-body">
-        <form name="moduleForm" role="form" novalidate class="form-horizontal"
-              ng-submit="moduleForm.$valid && create_module_from(new_module.name, new_module.version, moduleSearched)">
-            <div class="form-group">
-                <div class="col-lg-12">
-                    <input type="text" class="form-control" required ng-trim="true" ng-model="new_module.name"
-                           id="moduleName" placeholder="Entrer un nom"
-                           data-hint="Ce nom correspond à un package de la note de livraison. Par ex. wdiCore-war"/>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-lg-12">
-                    <input type="text" class="form-control" required ng-trim="true" ng-model="new_module.version"
-                           id="moduleVersion" placeholder="Entrer un numero de version"
-                           data-hint="Le numéro de version correspond à celui du package dans la note de livraison"/>
-                </div>
-            </div>
-            <div class="form-group">
-                <label for="fromModule" class="col-lg-2 control-label">A partir de</label>
-
-                <div class="col-lg-10">
-                    <input type="text" class="form-control" id="fromModule"
-                           ng-model="moduleSearched"
-                           placeholder="Rechercher un module existant" required
-                           data-hint="Rechercher par nom et numéro de version"
-                           typeahead-editable="false"
-                           typeahead="module as module.title for module in find_modules_by_name($viewValue)"
-                            />
-                </div>
-            </div>
-            <input type="submit" id="submit" value="Submit" ng-hide="true"/>
-        </form>
-    </div>
-    <div class="modal-footer">
-        <div class="col-lg-9 col-lg-offset-3">
-            <button class="btn btn-primary" ng-disabled="moduleForm.$invalid"
-                    ng-click="create_module_from(new_module.name, new_module.version, moduleSearched)">Creer
-            </button>
-            <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
-        </div>
-    </div>
-</script>
-
-<script type="text/ng-template" id="platform-menu-modal.html">
-    <div class="modal-header">
-        <h3 class="modal-title">Nouvelle plateforme</h3>
-    </div>
-    <div class="modal-body">
-        <form name="platformForm" role="form" class="form-horizontal"
-              ng-submit="platformForm.$valid && create_platform(new_platform.application_name, new_platform.platform_name, new_platform.application_version)">
-            <div class="form-group">
-                <div class="col-lg-12">
-                    <input type="text" class="form-control" required ng-trim="true"
-                           ng-model="new_platform.application_name"
-                           placeholder="Trigramme applicatif"
-                           data-hint="Par ex. VSL, EPM, ACW …)"
-                           id="platformApplication"
-                            />
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-lg-12">
-                    <input type="text" class="form-control" required ng-trim="true"
-                           ng-model="new_platform.platform_name"
-                           id="platformName" placeholder="Nom de la plateforme"
-                           data-hint="Par ex. USN1, REC2, PRD3 …"/>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="col-lg-12">
-                    <input type="text" required ng-trim="true" class="form-control"
-                           ng-model="new_platform.application_version"
-                           id="platformApplicationVersion"
-                           placeholder="Indiquer la version de l'application sur cette plateforme"
-                           data-hint="Cette information est purement indicative et pourra être changée par la suite"/>
-                </div>
-            </div>
-            <div class="form-group vertical-align">
-                <label for="platformApplication" class="col-lg-6 control-label" style="padding-top: 0">Est-ce une plateforme de production ?</label>
-
-                <div class="col-lg-6">
-                    <div class="togglebutton">
-                        <label>
-                            <input type="checkbox" ng-model="new_platform.production"
-                                   id="isProduction"/>
-                        </label>
-                    </div>
-                </div>
-            </div>
-            <input type="submit" id="submit" value="Submit" ng-hide="true"/>
-        </form>
-    </div>
-    <div class="modal-footer">
-        <div class="col-lg-9 col-lg-offset-3">
-            <button class="btn btn-primary" ng-disabled="platformForm.$invalid"
-                    ng-click="create_platform(new_platform.application_name, new_platform.platform_name, new_platform.production, new_platform.application_version)">
-                Creer
-            </button>
-            <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
-        </div>
-    </div>
-</script>
-
-<script type="text/ng-template" id="platform-menu-modal-from.html">
-    <div class="modal-header">
-        <h3 class="modal-title">Nouvelle plateforme</h3>
-    </div>
-    <div class="modal-body">
-        <form name="platformForm" role="form" novalidate class="form-horizontal"
-              ng-submit="platformForm.$valid && create_platform_from(new_platform.application_name, new_platform.platform_name, new_platform.application_version, new_platform.from_application, new_platform.from_platform)">
-            <fieldset>
-                <div class="form-group">
-                    <div class="col-lg-12">
-                        <input type="text" class="form-control" required ng-trim="true"
-                               ng-model="new_platform.application_name"
-                               placeholder="Trigramme applicatif"
-                               data-hint="Par ex. VSL, EPM, ACW …)"
-                               id="platformApplication"
-                                >
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-lg-12">
-                        <input type="text" class="form-control" required ng-trim="true"
-                               ng-model="new_platform.platform_name"
-                               id="platformName" placeholder="Nom de la plateforme"
-                               data-hint="Par ex. USN1, REC2, PRD3 …">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-lg-12">
-                        <input type="text" class="form-control" required ng-trim="true"
-                               ng-model="new_platform.application_version"
-                               id="platformApplicationVersion"
-                               placeholder="Indiquer la version de l'application sur cette plateforme"
-                               data-hint="Cette information est purement indicative et pourra être changée par la suite">
-                    </div>
-                </div>
-                <div class="form-group vertical-align">
-                    <label for="platformApplication" class="col-lg-6 control-label" style="padding-top: 0">Est-ce une plateforme de production ?</label>
-
-                    <div class="col-lg-6">
-                        <div class="togglebutton">
-                            <label>
-                                <input type="checkbox" ng-model="new_platform.production"
-                                       id="isProduction"/>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-lg-12">
-                        <input type="text" class="form-control" required ng-trim="true"
-                               ng-model="new_platform.from_application"
-                               id="fromApplication"
-                               placeholder="Nom de l'application source" required
-                               typeahead="application.name for application in find_applications_by_name($viewValue)">
-                    </div>
-                </div>
-                <div class="form-group">
-                    <div class="col-lg-12">
-                        <input type="text" class="form-control" required ng-trim="true"
-                               ng-model="new_platform.from_platform"
-                               id="fromPlatform"
-                               placeholder="Nom de la plateforme source" required
-                               typeahead="platform.name for platform in find_platforms_of_application(new_platform.from_application)">
-                    </div>
-                </div>
-                <input type="submit" id="submit" value="Submit" ng-hide="true">
-            </fieldset>
-        </form>
-    </div>
-    <div class="modal-footer">
-        <div class="col-lg-9 col-lg-offset-3">
-            <button class="btn btn-primary" ng-disabled="platformForm.$invalid"
-                    ng-click="create_platform_from(new_platform.application_name, new_platform.platform_name, new_platform.production, new_platform.application_version, new_platform.from_application, new_platform.from_platform)">
-                Creer
-            </button>
-            <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
-        </div>
-    </div>
-</script>

@@ -2,13 +2,20 @@
 
 arrive.js provides events to watch for DOM elements creation and removal. It makes use of [Mutation Observers](https://developer.mozilla.org/en/docs/Web/API/MutationObserver) internally.
 
-Download [arrive.min.js](https://raw.githubusercontent.com/uzairfarooq/arrive/master/releases/arrive.min.js) (latest)
+Download [arrive.min.js](https://raw.githubusercontent.com/uzairfarooq/arrive/master/minified/arrive.min.js) (latest)
 
 or use [Bower](http://bower.io/) to install:
 
 ```bash
 # install arrive.js and add it to bower.json dependencies
 $ bower install arrive --save
+```
+
+##### Node.js / NPM
+Node.js users can install using npm:
+
+```bash
+$ npm install arrive --save
 ```
 
 ## Usage
@@ -55,12 +62,18 @@ $(document).unbindArrive(callbackFunc);
 
 // unbind only a specific callback on ".test-elem" selector
 $(document).unbindArrive(".test-elem", callbackFunc);
+
+// unbind all arrive events
+Arrive.unbindAllArrive();
 ```
+
 ####Options
 As of v2.0 `arrive` event accepts an optional `options` object as 2nd argument. Options object consists of following:
 ```javascript
 var options = {
-    fireOnAttributesModification: boolean // Defaults to false. Setting it to true would make arrive event fire on existing elements which start to satisfy selector after some modification in DOM. If false, id'd only fire for newly created elements.
+    fireOnAttributesModification: boolean, // Defaults to false. Setting it to true would make arrive event fire on existing elements which start to satisfy selector after some modification in DOM attributes (an arrive event won't fire twice for a single element even if the option is true). If false, it'd only fire for newly created elements.
+    onceOnly: boolean                      // Defaults to false. Setting it to true would ensure that registered callbacks fire only once. No need to unbind the event if the attribute is set to true, it'll automatically unbind after firing once.
+    existing: boolean                      // Defaults to false. Setting it to true would ensure that the registered callback is fired for the elements that already exists in the DOM and match the selector. If options.onceOnly is set, the callback is only called once with the first element matching the selector.
 };
 ```
 Example:
@@ -82,7 +95,16 @@ $(".container-1").leave(".test-elem", function() {
 });
 ```
 
-You can unbind the `leave` event in the same way as `arrive` event, using `unbindLeave` function.
+You can unbind the `leave` event in the same way as `arrive` event, using `unbindLeave` function i.e:
+
+```javascript
+// unbind all leave events on document element
+$(document).unbindLeave();
+
+// unbind all leave events
+Arrive.unbindAllLeave();
+```
+
 
 ##Browser Support
 arrive.js is built over [Mutation Observers](https://developer.mozilla.org/en/docs/Web/API/MutationObserver) which is introduced in DOM4. It's supported in latest versions of all popular browsers.
@@ -112,3 +134,7 @@ If you want ot contribute to arrive, here is the workflow you should use:
 8. Submit a pull request from your repo back to the original repository.
 9. Once it is accepted, remember to pull those changes back into your develop branch!
 
+
+**Keywords**
+
+javascript, js, jquery, node.js, watch, listen, creation, dynamically, removal, new, elements, DOM, dynamic, detect, insertions, event, bind, live, livequery

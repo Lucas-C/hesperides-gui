@@ -293,3 +293,41 @@ h4.app-unit button {
     text-overflow: ellipsis;
     text-align: right;
 }
+
+/******************************************************************************
+ * Modal form
+ */
+.ng-binding > h2 {
+    margin-left: 10px;
+}
+
+/******************************************************************************
+ * Menu
+ */
+.menu {
+    background-color: #009587;
+    color: white;
+}
+
+.menu-item {
+    color: black;
+}
+
+.menu-header {
+    font-size: 14px;
+}
+
+.menu-search-input {
+    border: none;
+    background:transparent;
+    font-size: 14px;
+}
+
+.menu-properties-search-input {
+    width: 420px !important;
+}
+
+.menu-help {
+    float: right;
+}
+

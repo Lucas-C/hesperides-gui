@@ -1,8 +1,7 @@
 # Angular-Wizard
 
-[![PayPayl donate button](http://img.shields.io/paypal/donate.png?color=yellow)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=martin%40gon%2eto&lc=US&item_name=Martin%20Gontovnikas&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted "Donate once-off to this project using Paypal")
-[![Donate on Gittip](http://badgr.co/gittip/mgonto.png)](https://www.gittip.com/mgonto/)
-
+[![PayPal donate button](http://img.shields.io/paypal/donate.png?color=yellow)](https://www.paypal.com/cgi-bin/webscr?cmd=_donations&business=martin%40gon%2eto&lc=US&item_name=Martin%20Gontovnikas&currency_code=USD&bn=PP%2dDonationsBF%3abtn_donateCC_LG%2egif%3aNonHosted "Donate once-off to this project using PayPal")
+[![Donate on Gratipay](http://img.shields.io/gratipay/mgonto.svg)](https://gratipay.com/mgonto/)
 
 Angular-wizard is a component that will make it easy for you to create wizards in your app. You can check a running example of the wizard [by clicking here](http://mgonto.github.io/angular-wizard/)
 
@@ -16,12 +15,12 @@ You can download this by:
 
 ````html
 <!-- Use LATEST folder to always get the latest version-->
-<script type="text/javascript" src="http://cdn.jsdelivr.net/angular.wizard/latest/angular-wizard.js"></script>
-<link rel="stylesheet" type="text/css" href="http://cdn.jsdelivr.net/angular.wizard/latest/angular-wizard.css">
+<script type="text/javascript" src="http://cdn.jsdelivr.net/angular.wizard/latest/angular-wizard.min.js"></script>
+<link rel="stylesheet" type="text/css" href="http://cdn.jsdelivr.net/angular.wizard/latest/angular-wizard.min.css">
 
 <!-- Or use TAG number for specific version -->
-<script type="text/javascript" src="http://cdn.jsdelivr.net/angular-wizard/0.1.0/angular.wizard.js"></script>
-<link rel="stylesheet" type="text/css" href="http://cdn.jsdelivr.net/angular.wizard/0.1.0/angular-wizard.css">
+<script type="text/javascript" src="http://cdn.jsdelivr.net/angular.wizard/0.5.4/angular-wizard.min.js"></script>
+<link rel="stylesheet" type="text/css" href="http://cdn.jsdelivr.net/angular.wizard/0.5.4/angular-wizard.min.css">
 ````
 
 The dist folder contains the following files:
@@ -73,12 +72,13 @@ This will look like the following when you're in the second step:
 Let's go step by step to see how this works.
 
 1) You need to declare a master `wizard` directive. This wizard directive, has the following options as attributes:
-* **on-finish**: Here you can put a function to be called when the wizard is finished. The syntaxis here is very similar to `ng-click`
+* **on-finish**: Here you can put a function to be called when the wizard is finished. The syntax here is very similar to `ng-click`
 * **name**: The name of the wizard. By default, it's called "Default wizard". It's used for the `WizardHandler` which we'll explain later.
-* **edit-mode**: If set to true, this will set the wizard as edit mode. Edit mode means that all steps have been completed but he can modify any of them now. Defaults to false.
+* **edit-mode**: If set to true, this will set the wizard as edit mode. Edit mode means that all steps have been completed and the user can now navigate to and modify any step. Defaults to false.
 * **hide-indicators**: If set to true, the indicators in the bottom of the page showing the current page and allowing navigation for the wizard will be hidden. Defaults to false.
 * **current-step**: You need to set here a property from your scope (similar to `ng-model`) and that property will always have the name of the current step being shown on the screen.
 * **template**: Path to a custom template.
+* **wz-disabled**: expression that when evaluated to `true` will remove said step from the wizard
 
 2) Inside the wizard, we can have as many steps as we want. Each step MUST have a title which is going to be used to identify it. Inside each step, we can put whatever we want. Other directives, bindings, controls, forms, etc.
 
@@ -95,10 +95,41 @@ All of this attributes can receive an optional function to be called before chan
 
 In this case, the `setMode` function will be called before going to the next step.
 
+## Wizard Dynamic Steps
+A step can be conditionally disabled and may change at any time either adding it or removing it from the wizard step flow.
+
+ **Example**
+ 
+HTML
+````html
+<wizard on-finish="finishedWizard()"> 
+    <wz-step title="Starting" wz-disabled="{{disabled}}">
+        <h1>This is the first step</h1>
+        <p>Here you can use whatever you want. You can use other directives, binding, etc.</p>
+        <input type="submit" wz-next value="Continue" />
+    </wz-step>
+    <wz-step title="Continuing">
+        <h1>Continuing</h1>
+        <p>You have continued here!</p>
+        <input type="submit" wz-next value="Go on" />
+    </wz-step>
+    <wz-step title="More steps">
+        <p>Even more steps!!</p>
+        <input type="submit" wz-next value="Finish now" />
+    </wz-step>
+</wizard>
+````
+Controller
+````javascript
+//this will cause the step to be hidden
+$scope.disabled = 'true';
+````
+
+
 ## Wizard Step Validation
 The wzStep directive has the following options as attributes:
-* **canexit**: Here you can reference a function from your controller.  If this attribute is listed the funtion must return true in order for the wizard to move to the next step.  If it is ommitted no validation will be required.
-* **canenter**: Here you can reference a function from your controller.  If this attribute is listed the funtion must return true in order for the wizard to move into this step.  If it is ommitted no validation will be required.
+* **canexit**: Here you can reference a function from your controller.  If this attribute is listed the funtion must return true in order for the wizard to move to the next step. Promises are supported but must resolve with a thruthy value.  If it is ommitted no validation will be required.
+* **canenter**: Here you can reference a function from your controller.  If this attribute is listed the funtion must return true in order for the wizard to move into this step.   Promises are supported but must resolve with a thruthy value.  If it is ommitted no validation will be required.
 
  **Example**
  
@@ -130,11 +161,23 @@ $scope.enterValidation = function(){
 $scope.exitValidation = function(){
     return true;
 };
+//example using context object
+$scope.exitValidation = function(context){
+    return context.firstName === "Jacob";
+}
+//example using promises
+$scope.exitValidation = function(){
+    var d = $q.defer()
+    $timeout(function(){
+        return d.resolve(true);
+    }, 2000);
+    return d.promise;
+}
 ````
 If a step requires information from a previous step to populate itself you can access this information through the `context` object.  The context object is automatically passed in as an argument into your canexit and canenter methods.  You can access the context objext from your controller via: `WizardHandler.wizard().context`
 
 ## Manipulating the wizard from a service
-There're some times where we actually want to manipulate the wizard from the controller instead of from the HTML.
+There are some times where we actually want to manipulate the wizard from the controller instead of from the HTML.
 
 For those cases, we can inject the `WizardHandler` to our controller.
 
@@ -176,9 +219,8 @@ All of those colors are variables in the `angular-wizard.less`. You can easily c
 
 # Contributors
 
-* @sebazelonka helped me with all fo the styles of the Wizard.
+* @sebazelonka helped me with all of the styles in the Wizard.
 * [@jacobscarter](https://github.com/jacobscarter) is helping with manteinance, PRS merging and adding new features
-
 
 # Live sample
 
@@ -191,7 +233,7 @@ Releases notes are together with releases in GitHub at: https://github.com/mgont
 # License
 The MIT License
 
-Copyright (c) 2013 Martin Gontovnikas http://www.gon.to/
+Copyright (c) 2013-2014 Martin Gontovnikas http://www.gon.to/
 
 Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
 

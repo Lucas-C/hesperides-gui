@@ -603,7 +603,7 @@ propertiesModule.directive('toggleDeletedProperties', function () {
             keyValueProperties: '=',
             toggle: '='
         },
-        template: '<md-checkbox type="checkbox" ng-model="toggle" ng-init="toggle=false"/> Afficher les propri&eacute;t&eacute;es supprim&eacute;es ({{ getNumberOfDeletedProperties(keyValueProperties) }})',
+        template: '<md-checkbox type="checkbox" ng-model="toggle" ng-init="toggle=false"/> Afficher les propri&eacute;t&eacute;s supprim&eacute;es ({{ getNumberOfDeletedProperties(keyValueProperties) }})',
         link: function (scope, element, attrs) {
             scope.getNumberOfDeletedProperties = function(tab) {
                 var count = 0;

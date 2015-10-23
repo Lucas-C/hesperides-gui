@@ -47,6 +47,59 @@
         </div>
     </script>
 
+    <script type="text/ng-template" id="application/change_platform_version.html">
+        <div class="modal-header">
+            <h3 class="modal-title">Changer la version de {{platform.platform_name}}</h3>
+        </div>
+        <div class="modal-body">
+            <form name="platformVersionForm" autocomplete="off" novalidate class="form-horizontal"
+                  ng-submit="platformVersionForm.$valid && $close({new_version: newVersion, use_ndl: useNdl, copy_properties: copyProperties})">
+                <div class="form-group">
+                    <div class="col-lg-12">
+                        <input type="text" class="form-control" id="version"
+                               ng-model="newVersion"
+                               placeholder="Nouvelle version" required
+                               typeahead="version for version in ndlVersions | filter:$viewValue"
+                               typeahead-editable="true"
+                               typeahead-min-length="3"/>
+                    </div>
+                </div>
+                <div class="form-group vertical-align" ng-show="newVersion">
+                    <label class="col-lg-8 control-label" style="padding-top: 0"
+                           ng-style="{'text-decoration': (useNdl ? '' : 'line-through'), 'font-weight' : (useNdl ? 'bold' : 'normal')}">Utiliser la note de livraison json de la version {{newVersion}}</label>
+
+                    <div class="col-lg-4">
+                        <div class="togglebutton">
+                            <label>
+                                <input type="checkbox" id="useNdl" ng-model="useNdl"/>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group vertical-align" ng-show="useNdl">
+                    <label class="col-lg-8 control-label" style="padding-top: 0"
+                           ng-style="{'text-decoration': (copyProperties ? '' : 'line-through'), 'font-weight' : (copyProperties ? 'bold' : 'normal')}">Copier les properties valorisées de la version {{platform.application_version}} vers la version {{newVersion}}</label>
+
+                    <div class="col-lg-4">
+                        <div class="togglebutton">
+                            <label>
+                                <input type="checkbox" id="copyProperties" ng-model="copyProperties"/>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <input type="submit" id="submit" value="Submit" ng-hide="true"/>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-success" ng-disabled="platformVersionForm.$invalid"
+                    ng-click="$close({new_version: newVersion, use_ndl: useNdl, copy_properties: copyProperties})"
+                    ng-hide="isReadOnly">Ok
+            </button>
+            <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
+        </div>
+    </script>
+
     <script type="text/ng-template" id="application/change_module_version.html">
         <div class="modal-header">
             <h3 class="modal-title">Changer la version de {{module.title}}</h3>
@@ -410,8 +463,9 @@
     <div layout="row" class="vertical-align">
         <div flex="66">
             <h3><span>Representation logique de <strong>{{platform.name}} (version
-                <a href="" editable-text="platform.application_version"
-                   title="Modifier le label 'version de l'application'"
+                <a href="" ng-click="change_platform_version(platform)"
+                   title="Modifier la version de la plateforme"
+                   class="ng-binding"
                    onaftersave="save_platform_from_box(mainBox)">{{platform.application_version}}</a>
                 )</strong></span>
             </h3>

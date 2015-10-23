@@ -16,6 +16,7 @@ Plusieurs options pour lancer la GUI :
 --------------------------------------
 
 * Utiliser son serveur http préféré: UP TO YOU !
+* Utiliser la commande `grunt server` ; démarre un serveur proxy pour gérer les problématiques Cross-Domain
 * Utiliser les helpers server.groovy ou server_unix.groovy qui permette de lance run serveur web minimaliste en vert.x (besoin donc d'installer vert.x)
 
 Exemple avec Lighttpd 1.4

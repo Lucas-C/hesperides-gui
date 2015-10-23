@@ -78,7 +78,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
     };
 
     $scope.update_box_name = function (box, old_name, new_name) {
-        if(!(old_name === new_name)) {
+        if (!(old_name === new_name)) {
             box.name = new_name;
             box.parent_box["children"][new_name] = box.parent_box["children"][old_name];
             delete box.parent_box["children"][old_name];
@@ -188,7 +188,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
     };
 
     $scope.diff_global_properties = function (platform) {
-        $scope.from= {}
+        $scope.from = {}
         var modal = $modal.open({
             templateUrl: 'application/global_properties_diff_wizard.html',
             backdrop: 'static',
@@ -313,14 +313,14 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
 
     };
 
-    $scope.clean_properties = function(properties){
+    $scope.clean_properties = function (properties) {
         //Filter to keep properties only existing in model
         properties.filter_according_to_model();
     };
 
-    $scope.save_global_properties = function(properties) {
-        ApplicationService.save_properties($routeParams.application, $scope.platform, properties, '#').then(function(properties){
-            if(!_.isUndefined($scope.properties)){
+    $scope.save_global_properties = function (properties) {
+        ApplicationService.save_properties($routeParams.application, $scope.platform, properties, '#').then(function (properties) {
+            if (!_.isUndefined($scope.properties)) {
                 $scope.properties = $scope.properties.mergeWithGlobalProperties(properties);
             }
             //Increase platform number
@@ -338,7 +338,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
             //Merge with global properties
             $scope.properties = properties.mergeWithGlobalProperties($scope.platform.global_properties);
 
-                //Increase platform number
+            //Increase platform number
             $scope.platform.version_id = $scope.platform.version_id + 1;
         }, function (error) {
             //If an error occurs, reload the platform, thus avoiding having a non synchronized $scope model object
@@ -456,7 +456,7 @@ propertiesModule.controller('DiffCtrl', ['$scope', '$routeParams', '$timeout', '
         //  - if no matching property -> status 0
         _.each($scope.properties_to_modify.key_value_properties, function (prop_to_modify) {
 
-            if(prop_to_modify.value === ''){
+            if (prop_to_modify.value === '') {
                 //Avoid null pointer create prop to compare to with an empty value
                 var prop_to_compare_to = angular.copy(prop_to_modify);
                 prop_to_compare_to.value = '';
@@ -503,28 +503,30 @@ propertiesModule.controller('DiffCtrl', ['$scope', '$routeParams', '$timeout', '
         return string.replace(/\./g, '_');
     }
 
-    $scope.toggle_selected_to_containers_with_filter = function(filter, selected){
-        _($scope.diff_containers).filter(function(container){
-            for(var key in filter){
-                if(!_.isEqual(filter[key],container[key])) return false;
+    $scope.toggle_selected_to_containers_with_filter = function (filter, selected) {
+        _($scope.diff_containers).filter(function (container) {
+            for (var key in filter) {
+                if (!_.isEqual(filter[key], container[key])) return false;
             }
             return true;
-        }).each(function(container){
+        }).each(function (container) {
             container.selected = selected;
         });
     };
 
-    $scope.apply_diff = function() {
+    $scope.apply_diff = function () {
         /* Filter the diff container that have been selected
-           depending on the status apply different behaviors
-           if status == 0 : this should not happened because it is values that are only in the destination platform, so just ignore it
-           if status == 1 : normaly the only selected containers should be the one that have been modified, but it does not really matter
-                            because the other ones have the same values. We can just apply the 'revert modification' mecanism
-           if status == 2 : this is when we want to apply modification from sourc epltfm to destination pltfm
-           if status == 3 : same behavior as status == 2
+         depending on the status apply different behaviors
+         if status == 0 : this should not happened because it is values that are only in the destination platform, so just ignore it
+         if status == 1 : normaly the only selected containers should be the one that have been modified, but it does not really matter
+         because the other ones have the same values. We can just apply the 'revert modification' mecanism
+         if status == 2 : this is when we want to apply modification from sourc epltfm to destination pltfm
+         if status == 3 : same behavior as status == 2
          */
-        _($scope.diff_containers).filter(function(diff_container) { return diff_container.selected}).each(function(diff_container){
-            switch(diff_container.status) {
+        _($scope.diff_containers).filter(function (diff_container) {
+            return diff_container.selected
+        }).each(function (diff_container) {
+            switch (diff_container.status) {
                 case 0:
                     break;
                 case 1:
@@ -557,7 +559,7 @@ propertiesModule.controller('DiffCtrl', ['$scope', '$routeParams', '$timeout', '
                     diff_container.status = 1;
                     break;
                 default:
-                    console.error("Diff container with invalid status -> "+container.status+". It will be ignored");
+                    console.error("Diff container with invalid status -> " + container.status + ". It will be ignored");
                     break;
             }
         });
@@ -568,7 +570,9 @@ propertiesModule.controller('DiffCtrl', ['$scope', '$routeParams', '$timeout', '
         //Get all the properties modified
         var key_value_properties = _($scope.diff_containers).filter(function (diff_container) {
             return diff_container.property_to_modify != null;
-        }).map(function(diff_container){ return diff_container.property_to_modify; }).value();
+        }).map(function (diff_container) {
+            return diff_container.property_to_modify;
+        }).value();
 
         $scope.properties_to_modify.key_value_properties = key_value_properties;
         ApplicationService.save_properties($scope.application_name, $scope.platform, $scope.properties_to_modify, $scope.properties_path).then(function (properties) {
@@ -605,7 +609,7 @@ propertiesModule.directive('toggleDeletedProperties', function () {
         },
         template: '<md-checkbox type="checkbox" ng-model="toggle" ng-init="toggle=false"/> Afficher les propri&eacute;t&eacute;s supprim&eacute;es ({{ getNumberOfDeletedProperties(keyValueProperties) }})',
         link: function (scope, element, attrs) {
-            scope.getNumberOfDeletedProperties = function(tab) {
+            scope.getNumberOfDeletedProperties = function (tab) {
                 var count = 0;
 
                 if (tab) {
@@ -633,8 +637,8 @@ propertiesModule.factory('Properties', function () {
         }, data);
 
         //Add a property that allows to filter other properties values
-        _.each(this.key_value_properties, function(kvp){
-           kvp.filtrable_value = kvp.value;
+        _.each(this.key_value_properties, function (kvp) {
+            kvp.filtrable_value = kvp.value;
         });
 
         this.hasKey = function (name) {
@@ -649,20 +653,20 @@ propertiesModule.factory('Properties', function () {
             });
         };
 
-        this.addKeyValue = function(key_value_property){
-            if(! this.hasKey(key_value_property.name)){
+        this.addKeyValue = function (key_value_property) {
+            if (!this.hasKey(key_value_property.name)) {
                 this.key_value_properties.push(key_value_property);
             }
         }
 
-        this.deleteKeyValue = function(key_value_property){
+        this.deleteKeyValue = function (key_value_property) {
             var index = this.key_value_properties.indexOf(key_value_property);
-            if(index > -1) {
+            if (index > -1) {
                 this.key_value_properties.splice(index, 1);
             }
         }
 
-        this.mergeWithGlobalProperties = function(global_properties) {
+        this.mergeWithGlobalProperties = function (global_properties) {
             //Here we just want to mark the one existing identical in the global properties,
             //because they wont be editable
             //Mark also the ones just using a global in their valorisation
@@ -671,20 +675,21 @@ propertiesModule.factory('Properties', function () {
                 key_value.inGlobal = false;
                 key_value.useGlobal = false;
 
-                var existing_global_property = _.find(global_properties.key_value_properties, function(kvp){
+                var existing_global_property = _.find(global_properties.key_value_properties, function (kvp) {
                     return key_value.name === kvp.name;
                 }, 'value');
-                if(!_.isUndefined(existing_global_property)){
+                if (!_.isUndefined(existing_global_property)) {
                     key_value.inGlobal = true;
                     key_value.value = existing_global_property.value;
                 } else {
                     //Try to check if it uses a global in the valorisation
-                    if(_.some(global_properties.key_value_properties, function(kvp){
-                        return  key_value.value.indexOf("{{"+kvp.name+"}}") > -1;
-                    })){
-                       key_value.useGlobal = true;
+                    if (_.some(global_properties.key_value_properties, function (kvp) {
+                            return key_value.value.indexOf("{{" + kvp.name + "}}") > -1;
+                        })) {
+                        key_value.useGlobal = true;
                     }
-                };
+                }
+                ;
             });
 
             return this;
@@ -727,11 +732,11 @@ propertiesModule.factory('Properties', function () {
             return this;
         };
 
-        this.filter_according_to_model = function(){
-            this.key_value_properties = _.filter(this.key_value_properties, function(property){
+        this.filter_according_to_model = function () {
+            this.key_value_properties = _.filter(this.key_value_properties, function (property) {
                 return property.inModel;
             });
-            this.iterable_properties = _.filter(this.iterable_properties, function(property){
+            this.iterable_properties = _.filter(this.iterable_properties, function (property) {
                 return property.inModel;
             });
         }
@@ -761,14 +766,14 @@ propertiesModule.factory('Properties', function () {
 
 });
 
-propertiesModule.filter('displayProperties', function() {
-    return function(items, display) {
+propertiesModule.filter('displayProperties', function () {
+    return function (items, display) {
         var filtered = [];
 
-        angular.forEach(items, function(item) {
-            if(display == undefined || display == true){
+        angular.forEach(items, function (item) {
+            if (display == undefined || display == true) {
                 filtered.push(item);
-            } else if(item.inModel){
+            } else if (item.inModel) {
                 filtered.push(item);
             }
         });

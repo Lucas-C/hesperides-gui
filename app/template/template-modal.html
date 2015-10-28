@@ -33,8 +33,21 @@
             <ui-codemirror id="templateContent" ui-codemirror-opts="codeMirrorOptions"
                            ng-model="template.content"></ui-codemirror>
         </div>
-        <div class="form-group">
-            <label>Droits d'execution</label> <md-checkbox type="checkbox" ng-model="template.rights.user.read" ng-init="template.right.user.read=false" class="template-file-right">R</md-checkbox><md-checkbox type="checkbox" ng-model="template.rights.user.write" ng-init="template.right.user.write=false" class="template-file-right">W</md-checkbox><md-checkbox type="checkbox" ng-model="template.rights.user.execute" ng-init="template.right.user.execute=false" class="template-file-right">X</md-checkbox>&nbsp;&nbsp;&nbsp;&nbsp;<md-checkbox type="checkbox" ng-model="template.rights.group.read" ng-init="template.right.group.read=false" class="template-file-right">R</md-checkbox><md-checkbox type="checkbox" ng-model="template.rights.group.write" ng-init="template.right.group.write=false" class="template-file-right">W</md-checkbox><md-checkbox type="checkbox" ng-model="template.rights.group.execute" ng-init="template.right.group.execute=false" class="template-file-right">X</md-checkbox>&nbsp;&nbsp;&nbsp;&nbsp;<md-checkbox type="checkbox" ng-model="template.rights.other.read" ng-init="template.right.other.read=false" class="template-file-right">R</md-checkbox><md-checkbox type="checkbox" ng-model="template.rights.other.write" ng-init="template.right.other.write=false" class="template-file-right">W</md-checkbox><md-checkbox type="checkbox" ng-model="template.rights.other.execute" ng-init="template.right.other.execute=false" class="template-file-right">X</md-checkbox>
+        <div class="template-right">
+            <fieldset class="standard">
+                <legend>User</legend>
+                <md-checkbox type="checkbox" ng-model="template.rights.user.read" ng-init="template.right.user.read=false" class="template-file-right">R</md-checkbox><md-checkbox type="checkbox" ng-model="template.rights.user.write" ng-init="template.right.user.write=false" class="template-file-right">W</md-checkbox><md-checkbox type="checkbox" ng-model="template.rights.user.execute" ng-init="template.right.user.execute=false" class="template-file-right">X</md-checkbox>
+            </fieldset>
+
+            <fieldset class="standard">
+                <legend>Group</legend>
+                <md-checkbox type="checkbox" ng-model="template.rights.group.read" ng-init="template.right.group.read=false" class="template-file-right">R</md-checkbox><md-checkbox type="checkbox" ng-model="template.rights.group.write" ng-init="template.right.group.write=false" class="template-file-right">W</md-checkbox><md-checkbox type="checkbox" ng-model="template.rights.group.execute" ng-init="template.right.group.execute=false" class="template-file-right">X</md-checkbox>
+            </fieldset>
+
+            <fieldset class="standard">
+                <legend>Other</legend>
+                <md-checkbox type="checkbox" ng-model="template.rights.other.read" ng-init="template.right.other.read=false" class="template-file-right">R</md-checkbox><md-checkbox type="checkbox" ng-model="template.rights.other.write" ng-init="template.right.other.write=false" class="template-file-right">W</md-checkbox><md-checkbox type="checkbox" ng-model="template.rights.other.execute" ng-init="template.right.other.execute=false" class="template-file-right">X</md-checkbox>
+            </fieldset>
         </div>
     </form>
 </div>

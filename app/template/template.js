@@ -3,7 +3,7 @@
  */
 var templateModule = angular.module('hesperides.template', []);
 
-templateModule.factory('HesperidesTemplateModal', ['TemplateService', '$modal', '$rootScope', function (TemplateService, $modal, $rootScope) {
+templateModule.factory('HesperidesTemplateModal', ['TemplateService', '$mdDialog', '$rootScope', function (TemplateService, $mdDialog, $rootScope) {
 
     var hesperidesOverlay = {
         startState: function() {
@@ -110,29 +110,34 @@ templateModule.factory('HesperidesTemplateModal', ['TemplateService', '$modal', 
 
             modalScope.isReadOnly = options.isReadOnly;
 
+            modalScope.$closeDialog = function() {
+                $mdDialog.hide();
+            };
+
             defaultScope.codeMirrorOptions.readOnly = options.isReadOnly ? true : false;
 
             angular.extend(modalScope, defaultScope);
 
-            var modal = $modal.open({
+            $mdDialog.show({
                 templateUrl: 'template/template-modal.html',
-                backdrop: 'static',
-                size: 'lg',
-                keyboard: false,
-                scope: modalScope
+                controller: 'ModuleCtrl',
+                preserveScope: true, // requiered for not freez menu see https://github.com/angular/material/issues/5041
+                scope:modalScope
             });
+
+            modalScope.$close = function(template) {
+                modalScope.save(template).then(function(savedTemplate){
+                    modalScope.template = savedTemplate;
+                });
+
+                $mdDialog.hide();
+            };
 
             modalScope.$save = function(template){
                 modalScope.save(template).then(function(savedTemplate){
                     modalScope.template = savedTemplate;
                 });
             };
-
-            //If everything went well (using $close to close the modal), then save the template
-            //If we use $dismiss to close the modal, this will not be called
-            modal.result.then(function (template) {
-                modalScope.$save(template);
-            });
         }
     };
 

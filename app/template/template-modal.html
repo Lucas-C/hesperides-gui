@@ -1,3 +1,54 @@
+<md-dialog flex="auto">
+    <md-dialog-content>
+        <div class="ng-binding">
+            <h2>Ajout/Edition de template</h2>
+
+            <md-content layout-padding class="autoScroll">
+                <form name="templateForm" role="form" novalidate class="form-horizontal">
+                    <md-input-container md-no-float md-autofocus="true">
+                        <label>Titre</label>
+                        <input type="text" required ng-trim="true" ng-model="template.name"
+                               ng-disabled="isReadOnly"
+                               ng-focus="true"
+                               id="templateName" placeholder="Le titre du template est unique" />
+                    </md-input-container>
+                    <md-input-container md-no-float>
+                        <label>Nom du fichier final</label>
+                        <input type="text" required ng-trim="true" ng-model="template.filename"
+                               ng-disabled="isReadOnly"
+                               id="templateFilename" placeholder="Indiquer le nom qu'aura le fichier sur le serveur. On peut utiliser des proprietes dans ce champ"/>
+                    </md-input-container>
+                    <md-input-container md-no-float>
+                        <label>Dossier de destination</label>
+                        <input type="text" required ng-trim="true" ng-model="template.location"
+                               ng-disabled="isReadOnly"
+                               id="templateLocation" placeholder="Indiquer le dossier dans lequel sera copie le fichier sur le serveur. On peut utiliser des proprietes dans ce champ"/>
+                    </md-input-container>
+                    <div layout="row">
+                        <div flex>
+                            <label class="template-section-header">Contenu du fichier</label>
+                            <kbd>F11</kbd> Activer /
+                            <kbd>Esc</kbd> Desactiver l'edtion en plein ecran
+                        </div>
+                        <div flex="none">
+                            <label class="template-section-header">Mode MIME:</label>
+                            <select ng-init="selectedMode = codemirrorModes[0]" ng-options="mode.name for mode in codemirrorModes" ng-model="selectedMode" ng-change="changeCodeMirrorMode(selectedMode.mimetype)"></select>
+                        </div>
+                    </div>
+                    <div id="templateContentParent">
+                        <ui-codemirror id="templateContent" ui-codemirror-opts="codeMirrorOptions"
+                                       ng-model="template.content"></ui-codemirror>
+                    </div>
+                </form>
+            </md-content>
+        </div>
+        <div class="md-actions">
+            <md-button ng-click="$save(template)" class="md-raised md-primary" ng-disabled="templateForm.$invalid" ng-hide="isReadOnly">Sauver le template</md-button>
+            <md-button ng-click="$close(template)" class="md-raised md-success" ng-disabled="templateForm.$invalid" ng-hide="isReadOnly">Sauver et fermer</md-button>
+            <md-button ng-click="$closeDialog('cancel')" class="md-raised md-warn">Annuler</md-button>
+        </div>
+
+<!--
 <div class="modal-header">
     <h3 class="modal-title">Ajout/Edition de template</h3>
 </div>
@@ -21,7 +72,7 @@
                    data-hint="Indiquer le dossier dans lequel sera copie le fichier sur le serveur. On peut utiliser des proprietes dans ce champ"/>
         </div>
         <div class="form-group" id="templateContentParent" style="padding-top: 10px">
-            <label for="templateContent" style="width: 100%">Contenu du fichier
+            <label style="width: 100%">Contenu du fichier
                 <small class="text-right" style="padding-left: 10px; color: grey;font-weight:normal"><kbd>F11</kbd>
                     Activer / <kbd>Esc</kbd> Desactiver l'edtion en plein ecran
                 </small>
@@ -36,11 +87,9 @@
     </form>
 </div>
 <div class="modal-footer">
-    <button class="btn btn-primary" ng-disabled="templateForm.$invalid" ng-click="$save(template)" ng-hide="isReadOnly">Sauver le
-        template
-    </button>
-    <button class="btn btn-success" ng-disabled="templateForm.$invalid" ng-click="$close(template)" ng-hide="isReadOnly">Sauver et
-        Fermer
-    </button>
-    <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
-</div>
+    <md-button ng-click="$save(template)" class="md-raised md-primary" ng-disabled="templateForm.$invalid" ng-hide="isReadOnly">Sauver le template</md-button>
+    <md-button ng-click="$close(template)" class="md-raised md-success" ng-disabled="templateForm.$invalid" ng-hide="isReadOnly">Sauver et fermer</md-button>
+    <md-button ng-click="$closeDialog('cancel')" class="md-raised md-warn">Annuler</md-button>
+</div>-->
+    </md-dialog-content>
+</md-dialog>

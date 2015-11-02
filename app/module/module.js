@@ -4,7 +4,7 @@
 var applicationModule = angular.module('hesperides.module', []);
 
 
-applicationModule.controller('ModuleCtrl', ['$scope', '$routeParams', '$location', '$modal', 'TechnoService', 'ModuleService', 'HesperidesTemplateModal', 'Template', 'Page', function ($scope, $routeParams, $location, $modal, TechnoService, ModuleService, HesperidesTemplateModal, Template, Page) {
+applicationModule.controller('ModuleCtrl', ['$scope', '$routeParams', '$location', '$mdDialog', 'TechnoService', 'ModuleService', 'HesperidesTemplateModal', 'Template', 'Page', function ($scope, $routeParams, $location, $mdDialog, TechnoService, ModuleService, HesperidesTemplateModal, Template, Page) {
 
     Page.setTitle('Module');
 
@@ -118,17 +118,24 @@ applicationModule.controller('ModuleCtrl', ['$scope', '$routeParams', '$location
     };
 
     $scope.open_create_release_dialog = function(module){
-        var modal = $modal.open({
+        /*var modal = $modal.open({
             templateUrl: 'module/create_release.html',
             backdrop: 'static',
             size: 'sm',
             keyboard: false,
             scope: $scope
+        });*/
+
+        $mdDialog.show({
+            templateUrl: 'module/create_release.html',
+            controller: 'ModuleCtrl',
+            preserveScope: true, // requiered for not freez menu see https://github.com/angular/material/issues/5041
+            scope:$scope
         });
 
-        modal.result.then(function(release_version){
+        /*modal.result.then(function(release_version){
             $scope.create_release(module, release_version);
-        });
+        });*/
     };
 
 }]);

@@ -1,15 +1,15 @@
 <div>
-    <div vs-repeat style="max-height: 510px; overflow: auto">
-        <dl class="dl-horizontal text-overflow" style="margin-bottom:0" ng-animate="'animate'"
+    <div vs-repeat>
+        <dl class="dl-horizontal text-overflow model-property-simple" ng-animate="'animate'"
             ng-repeat="keyValueProperty in model.key_value_properties | orderBy:'name' track by $index">
-            <dt style="width: 100%; text-align: left" ng-if="keyValueProperty.comment">
+            <dt class="model-property-simple" ng-if="keyValueProperty.comment">
                 <a href="">{{keyValueProperty.name }}<md-tooltip>{{ keyValueProperty.name }}</md-tooltip></a>
             </dt>
-            <dt style="width: 100%; text-align: left" ng-if="!keyValueProperty.comment">{{ keyValueProperty.name }}</dt>
+            <dt ng-if="!keyValueProperty.comment">{{ keyValueProperty.name }}</dt>
         </dl>
     </div>
     <h3 ng-show="model.iterable_properties.length > 0">Proprietes multiples :</h3>
-    <dl class="dl-horizontal text-overflow" style="margin-bottom:0" ng-animate="'animate'"
+    <dl class="dl-horizontal text-overflow model-property-iterable" ng-animate="'animate'"
         ng-repeat="iterableProperty in model.iterable_properties | orderBy:'name' track by $index">
         <dt>{{ iterableProperty.name }}</dt>
         <dd ng-repeat="field in iterableProperty.fields | orderBy:'name' track by $index">{{ field.name }}

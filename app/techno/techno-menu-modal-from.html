@@ -17,13 +17,20 @@
                                id="technoVersion" placeholder="Entrer un numero de version"/>
                     </md-input-container>
                     <md-input-container>
-                        <label>A partir de...</label>
-                        <input type="text" id="fromTechno"
-                               ng-model="technoSearched"
-                               placeholder="Rechercher une techno existante" required
-                               typeahead-editable="false"
-                               typeahead="techno as techno.title for techno in find_technos_by_name($viewValue)"
-                                />
+                        <label>Rechercher une techno existante...</label>
+                        <md-autocomplete
+                                required
+                                ng-model="technoSearched"
+                                md-no-cache="true"
+                                md-selected-item="ctrl.selectedItem"
+                                md-search-text="ctrl.searchText"
+                                md-items="techno in find_technos_by_name(ctrl.searchText)"
+                                md-item-text="techno.name"
+                                md-selected-item-change="(techno) ? technoSearched = techno : false"
+                                md-min-length="0"
+                                placeholder="Rechercher une techno existante...">
+                            <span md-highlight-text="ctrl.searchText">{{techno.name}} {{techno.version}}</span>
+                        </md-autocomplete>
                     </md-input-container>
                     <input type="submit" id="submit" value="Submit" ng-hide="true"/>
                 </form>

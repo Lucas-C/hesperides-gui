@@ -26,8 +26,9 @@ menuModule.controller('MenuTechnoCtrl', ['$scope', '$mdDialog', '$location', 'Te
         $mdDialog.show({
             templateUrl: 'techno/techno-menu-modal-from.html',
             controller: 'MenuTechnoCtrl',
-            preserveScope: true, // requiered for not freez menu
-            scope:$scope
+            preserveScope: true // requiered for not freez menu
+            // Remove scope cause else with autocomplete, window is closed
+            //scope:$scope
         });
     };
 

@@ -692,6 +692,7 @@ propertiesModule.factory('Properties', function () {
         angular.extend(this, {
             key_value_properties: [],
             iterable_properties: [],
+            is_sorted_desc: false,
             versionID: -1
         }, data);
 
@@ -817,6 +818,14 @@ propertiesModule.factory('Properties', function () {
                     }
                 })
             }
+        }
+
+        this.switchOrder = function () {
+          this.is_sorted_desc = !this.is_sorted_desc;
+        }
+
+        this.isReverseOrder = function () {
+          return this.is_sorted_desc;
         }
 
     };

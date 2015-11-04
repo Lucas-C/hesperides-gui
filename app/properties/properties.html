@@ -505,6 +505,15 @@
         <div flex="100">
             <form class="form-horizontal narrow" role="form">
                 <div class="form-group">
+                  <div class="col-md-1">
+                    <button id="diffGlobalPropertiesButton" ng-click="platform.global_properties.switchOrder()"
+                            class="btn btn-warn btn-raised">
+                        <span>Tri par nom de property</span>
+                        <span class="glyphicon" data-ng-class="{'glyphicon-sort-by-alphabet-alt': !platform.global_properties.isReverseOrder(), 'glyphicon-sort-by-alphabet': platform.global_properties.isReverseOrder()}" style="padding-left:10px"></span>
+                    </button>
+                  </div>
+                </div>
+                <div class="form-group">
                     <div class="col-md-1">
                         <md-button ng-click="platform.global_properties.addKeyValue({
                         'name': new_kv_name,
@@ -522,7 +531,7 @@
                         <input class="form-control" placeholder="Valorisation" ng-model="new_kv_value"/>
                     </div>
                 </div>
-                <div class="form-group" ng-repeat="kv_property in platform.global_properties.key_value_properties">
+                <div class="form-group" ng-repeat="kv_property in platform.global_properties.key_value_properties | orderBy:'name':platform.global_properties.isReverseOrder() track by $index">
                     <div class="col-md-1">
                         <md-button ng-really-message="Supprimer la property globale {{kv_property.name}} ?"
                                    tooltip="Supprimer"

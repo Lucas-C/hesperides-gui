@@ -3,7 +3,7 @@
  */
 var menuModule = angular.module('hesperides.menu', ['hesperides.techno', 'hesperides.application', 'hesperides.properties']);
 
-menuModule.controller('MenuTechnoCtrl', ['$scope', '$mdDialog', '$location', 'TechnoService', function ($scope, $mdDialog, $location, TechnoService) {
+menuModule.controller('MenuTechnoCtrl', ['$scope', '$mdDialog', '$location', '$timeout', 'TechnoService', function ($scope, $mdDialog, $location, $timeout, TechnoService) {
 
     $scope.closeDialog = function() {
         $mdDialog.hide();
@@ -38,7 +38,7 @@ menuModule.controller('MenuTechnoCtrl', ['$scope', '$mdDialog', '$location', 'Te
         });
     };
 
-    $scope.open_techno_page = function (name, version, is_working_copy) {
+    $scope.open_techno_page = function (name, version, is_working_copy, fakeButton) {
         if(is_working_copy) {
             $location.path('/techno/' + name + '/' + version).search({type : "workingcopy"});
         } else {
@@ -46,11 +46,18 @@ menuModule.controller('MenuTechnoCtrl', ['$scope', '$mdDialog', '$location', 'Te
         }
         $scope.technoSearched = "";
         $mdDialog.hide();
+
+        // Very bad trick to close menu :-(
+        if (fakeButton) {
+            $timeout(function() {
+                $(fakeButton).click();
+            }, 0);
+        }
     }
 
 }]);
 
-menuModule.controller('MenuModuleCtrl', ['$scope', '$mdDialog', '$location', 'ModuleService', 'Module', '$http',  function ($scope, $mdDialog, $location, ModuleService, Module, $http) {
+menuModule.controller('MenuModuleCtrl', ['$scope', '$mdDialog', '$location', '$timeout', 'ModuleService', 'Module',  function ($scope, $mdDialog, $location, $timeout, ModuleService, Module) {
 
     $scope.closeDialog = function() {
         $mdDialog.hide();
@@ -81,14 +88,20 @@ menuModule.controller('MenuModuleCtrl', ['$scope', '$mdDialog', '$location', 'Mo
         });
     };
 
-    $scope.open_module_page = function (name, version, is_working_copy) {
+    $scope.open_module_page = function (name, version, is_working_copy, fakeButton) {
         if(is_working_copy){
             $location.path('/module/' + name + '/' + version).search({type : "workingcopy"});
         } else {
             $location.path('/module/' + name + '/' + version).search({});
         }
         $scope.moduleSearched = "";
-        $mdDialog.hide();
+
+        // Very bad trick to close menu :-(
+        if (fakeButton) {
+            $timeout(function() {
+                $(fakeButton).click();
+            }, 0);
+        }
     };
 
     $scope.open_create_module_dialog = function () {
@@ -112,7 +125,7 @@ menuModule.controller('MenuModuleCtrl', ['$scope', '$mdDialog', '$location', 'Mo
 
 }]);
 
-menuModule.controller('MenuPropertiesCtrl', ['$scope', '$mdDialog', '$location', 'ApplicationService', 'Platform', function ($scope, $mdDialog, $location, ApplicationService, Platform) {
+menuModule.controller('MenuPropertiesCtrl', ['$scope', '$mdDialog', '$location', '$timeout', 'ApplicationService', 'Platform', function ($scope, $mdDialog, $location, $timeout, ApplicationService, Platform) {
 
     $scope.closeDialog = function() {
         $mdDialog.hide();
@@ -130,11 +143,17 @@ menuModule.controller('MenuPropertiesCtrl', ['$scope', '$mdDialog', '$location',
         return ApplicationService.get_platform_name_of_application(application_name);
     };
 
-    $scope.open_properties_page = function (application_name, platform_name) {
+    $scope.open_properties_page = function (application_name, platform_name, fakeButton) {
         var path = '/properties/' + application_name;
         $location.url(path).search({platform: platform_name});
         $scope.applicationSearched = "";
-        if (modal) modal.close();
+
+        // Very bad trick to close menu :-(
+        if (fakeButton) {
+            $timeout(function() {
+                $(fakeButton).click();
+            }, 0);
+        }
     };
 
     $scope.create_platform = function(application_name, platform_name, production, application_version){

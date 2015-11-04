@@ -331,6 +331,18 @@ h4.app-unit button {
     float: right;
 }
 
+#fakeButtonSearchTechno {
+    display:none;
+}
+
+#fakeButtonSearchModule {
+    display:none;
+}
+
+#fakeButtonSearchProperties {
+    display:none;
+}
+
 /******************************************************************************
  * Template
  */

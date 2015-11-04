@@ -20,13 +20,16 @@
                     </md-menu-item>
                     <md-menu-divider></md-menu-divider>
                     <md-menu-item >
+                        <md-button id="fakeButtonSearchTechno">
+                            fake
+                        </md-button>
                         <md-autocomplete
                                 md-no-cache="true"
                                 md-selected-item="ctrl.selectedItem"
                                 md-search-text="ctrl.searchText"
                                 md-items="item in find_technos_by_name(ctrl.searchText)"
                                 md-item-text="item.name"
-                                md-selected-item-change="(item) ? open_techno_page(item.name, item.version, item.is_working_copy) : false"
+                                md-selected-item-change="(item) ? open_techno_page(item.name, item.version, item.is_working_copy, '#fakeButtonSearchTechno') : false"
                                 md-min-length="0"
                                 placeholder="Rechercher...">
                             <span md-highlight-text="ctrl.searchText" ng-show="item.is_working_copy">{{item.name}} {{item.version}} (working copy)</span>
@@ -52,13 +55,16 @@
                     </md-menu-item>
                     <md-menu-divider></md-menu-divider>
                     <md-menu-item>
+                        <md-button id="fakeButtonSearchModule">
+                            fake
+                        </md-button>
                         <md-autocomplete
                                          md-no-cache="true"
                                          md-selected-item="ctrl.selectedItem"
                                          md-search-text="ctrl.searchText"
                                          md-items="item in find_modules_by_name(ctrl.searchText)"
                                          md-item-text="item.name"
-                                         md-selected-item-change="(item) ? open_module_page(item.name, item.version, item.is_working_copy) : false"
+                                         md-selected-item-change="(item) ? open_module_page(item.name, item.version, item.is_working_copy, 'fakeButtonSearchModule') : false"
                                          md-min-length="0"
                                          placeholder="Rechercher...">
                             <span md-highlight-text="ctrl.searchText" ng-show="item.is_working_copy">{{item.name}} {{item.version}} (working copy)</span>
@@ -85,13 +91,16 @@
                     </md-menu-item>
                     <md-menu-divider></md-menu-divider>
                     <md-menu-item>
+                        <md-button id="fakeButtonSearchProperties">
+                            fake
+                        </md-button>
                         <md-autocomplete
                                 md-no-cache="true"
                                 md-selected-item="ctrl.selectedItem"
                                 md-search-text="ctrl.searchText"
                                 md-items="item in find_applications_by_name(ctrl.searchText)"
                                 md-item-text="item.name"
-                                md-selected-item-change="(item) ? open_properties_page(item.name, null) : false"
+                                md-selected-item-change="(item) ? open_properties_page(item.name, null, 'fakeButtonSearchProperties') : false"
                                 md-min-length="0"
                                 placeholder="Rechercher une application pour y éditer/ajouter des properties">
                             <span md-highlight-text="ctrl.searchText">{{item.name}} {{item.version}}</span>

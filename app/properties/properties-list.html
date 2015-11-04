@@ -3,6 +3,13 @@
         <div class="col-md-12">
             <toggle-deleted-properties key-value-properties="properties.key_value_properties" toggle="displayDeletedProperties"></toggle-deleted-properties>
         </div>
+        <div class="col-md-12">
+          <button id="sortModulePropertiesButton" ng-click="properties.switchOrder()"
+                  class="btn btn-warn btn-raised">
+              <span>Tri par nom de property</span>
+              <span class="glyphicon" data-ng-class="{'glyphicon-sort-by-alphabet-alt': !properties.isReverseOrder(), 'glyphicon-sort-by-alphabet': properties.isReverseOrder()}" style="padding-left:10px"></span>
+          </button>
+        </div>
         <div class="col-md-4">
             <input class="form-control" placeholder="filtrer les properties par clé" ng-model="propertiesKeyFilter"/>
         </div>
@@ -11,7 +18,7 @@
         </div>
     </div>
 <div vs-repeat style="max-height: 450px; overflow: auto">
-    <div class="form-group" style="width: 100%" ng-class="{'property-not-used': !key_value_property.inModel}" ng-repeat="key_value_property in properties.key_value_properties | filter:{'name':propertiesKeyFilter, 'filtrable_value':propertiesValueFilter} | displayProperties:displayDeletedProperties | orderBy:'name'">
+    <div class="form-group" style="width: 100%" ng-class="{'property-not-used': !key_value_property.inModel}" ng-repeat="key_value_property in properties.key_value_properties | filter:{'name':propertiesKeyFilter, 'filtrable_value':propertiesValueFilter} | displayProperties:displayDeletedProperties | orderBy:'name':properties.isReverseOrder() track by $index">
         <label style="text-align: right; overflow: hidden; text-overflow: ellipsis" title="{{ key_value_property.name }}" for="input-{{ key_value_property.name }}" class="col-md-4 control-label">{{ key_value_property.name }}</label>
         <!-- Edit layout, and this key is not filled by global properties -->
         <div class="col-md-8" ng_if="!key_value_property.inGlobal">

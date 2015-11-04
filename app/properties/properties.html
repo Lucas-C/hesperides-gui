@@ -506,7 +506,7 @@
             <form class="form-horizontal narrow" role="form">
                 <div class="form-group">
                   <div class="col-md-1">
-                    <button id="diffGlobalPropertiesButton" ng-click="platform.global_properties.switchOrder()"
+                    <button id="sortGlobalPropertiesButton" ng-click="platform.global_properties.switchOrder()"
                             class="btn btn-warn btn-raised">
                         <span>Tri par nom de property</span>
                         <span class="glyphicon" data-ng-class="{'glyphicon-sort-by-alphabet-alt': !platform.global_properties.isReverseOrder(), 'glyphicon-sort-by-alphabet': platform.global_properties.isReverseOrder()}" style="padding-left:10px"></span>
@@ -624,8 +624,20 @@
             </h3>
             <toggle-deleted-properties key-value-properties="instance.key_values" toggle="displayDeletedProperties"></toggle-deleted-properties>
             <form class="form-horizontal narrow" role="form">
+
+
+                <div class="form-group">
+                  <div class="col-md-1">
+                    <button id="sortInstancePropertiesButton" ng-click="instance.switchOrder()"
+                            class="btn btn-warn btn-raised">
+                        <span>Tri par nom de property</span>
+                        <span class="glyphicon" data-ng-class="{'glyphicon-sort-by-alphabet-alt': !instance.isReverseOrder(), 'glyphicon-sort-by-alphabet': instance.isReverseOrder()}" style="padding-left:10px"></span>
+                    </button>
+                  </div>
+                </div>
+
                 <div class="form-group" ng-class="{'property-not-used': !key_value_property.inModel}"
-                     ng-repeat="key_value_property in instance.key_values | displayProperties:displayDeletedProperties | orderBy:'name' track by $index">
+                     ng-repeat="key_value_property in instance.key_values | displayProperties:displayDeletedProperties |  orderBy:'name':instance.isReverseOrder() track by $index">
                     <label for="input-{{ key_value_property.name }}" class="col-md-3 control-label">{{
                         key_value_property.name }}</label>
 

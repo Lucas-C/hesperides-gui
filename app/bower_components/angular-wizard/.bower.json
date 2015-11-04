@@ -27,6 +27,6 @@
     "commit": "61e18597f2b30596528bbd7012e4fe178393d453"
   },
   "_source": "git://github.com/mgonto/angular-wizard.git",
-  "_target": "*",
+  "_target": "0.5.5",
   "_originalSource": "angular-wizard"
 }

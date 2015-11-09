@@ -3,7 +3,7 @@
         <dl class="dl-horizontal text-overflow model-property-simple" ng-animate="'animate'"
             ng-repeat="keyValueProperty in model.key_value_properties | orderBy:'name' track by $index">
             <dt class="model-property-simple" ng-if="keyValueProperty.comment">
-                <a href="">{{keyValueProperty.name }}<md-tooltip>{{ keyValueProperty.name }}</md-tooltip></a>
+                <a href="">{{keyValueProperty.name }}<md-tooltip>{{ keyValueProperty.comment }}</md-tooltip></a>
             </dt>
             <dt ng-if="!keyValueProperty.comment">{{ keyValueProperty.name }}</dt>
         </dl>

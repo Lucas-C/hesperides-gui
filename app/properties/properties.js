@@ -759,6 +759,14 @@ propertiesModule.factory('Properties', function () {
             /* Mark key_values that are in the model */
             _.each(this.key_value_properties, function (key_value) {
                 key_value.inModel = model.hasKey(key_value.name);
+                // Add required
+                var prop = _.find(model.required, function(kvp) {
+                    return kvp.name === key_value.name;
+                });
+
+                key_value.required = prop.required;
+                key_value.defaultValue = prop.defaultValue;
+
             });
 
             _.each(this.iterable_properties, function (iterable) {
@@ -773,7 +781,9 @@ propertiesModule.factory('Properties', function () {
                     name: model_key_value.name,
                     comment: model_key_value.comment,
                     value: "",
-                    inModel: true
+                    inModel: true,
+                    required: model_key_value.required,
+                    defaultValue: model_key_value.defaultValue
                 });
             });
 

@@ -118,24 +118,22 @@ applicationModule.controller('ModuleCtrl', ['$scope', '$routeParams', '$location
     };
 
     $scope.open_create_release_dialog = function(module){
-        /*var modal = $modal.open({
-            templateUrl: 'module/create_release.html',
-            backdrop: 'static',
-            size: 'sm',
-            keyboard: false,
-            scope: $scope
-        });*/
+        var modalScope = $scope.$new(true);
+
+        modalScope.$closeDialog = function() {
+            $mdDialog.hide();
+        };
+
+        modalScope.$save = function(release_version) {
+            $scope.create_release(module, release_version);
+            $mdDialog.hide();
+        };
 
         $mdDialog.show({
             templateUrl: 'module/create_release.html',
             controller: 'ModuleCtrl',
-            preserveScope: true, // requiered for not freez menu see https://github.com/angular/material/issues/5041
-            scope:$scope
+            scope:modalScope
         });
-
-        /*modal.result.then(function(release_version){
-            $scope.create_release(module, release_version);
-        });*/
     };
 
 }]);

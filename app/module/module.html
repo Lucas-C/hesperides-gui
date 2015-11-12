@@ -1,76 +1,43 @@
-<div class="row">
-    <div class="col-md-12">
+<div>&nbsp;</div>
+<div flex="100">
+    <div flex="100">
         <div class="bg-light">
-            <script type="text/ng-template" id="module/create_release.html">
-                <div class="modal-header">
-                    <h3 class="modal-title">Créer une release</h3>
-                </div>
-                <div class="modal-body">
-                    <form name="createReleaseForm" novalidate ng-submit="createReleaseForm.$valid && $close(release_version)">
-                        <label for="release_version">Version de la release</label>
-                        <input type="text" class="form-control" id="release_version"
-                               ng-model="release_version" required />
-                        <input type="submit" id="submit" value="Submit" ng-hide="true"/>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-success" ng-disabled="createReleaseForm.$invalid"
-                            ng-really-message="Etes-vous sûr de vouloir créer la release {{release_version}} ? C'est une opération irreversible"
-                            ng-really-click="$close(release_version)">Ok
-                    </button>
-                    <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
-                </div>
-            </script>
-            <h3>Module <strong>{{module.name}}</strong>, Version <strong>{{module.version}}</strong> <span style="padding-left: 10px;"
-                    ng-show="is_workingcopy">(Working Copy)</span></span></strong>
-            <button ng-click="open_create_release_dialog(module)"
-                    class="btn btn-primary btn-raised" ng-show="is_workingcopy"
-                    style="margin-left: 30px;">
-                <span style="padding-right:10px">Créer la release</span>
-                <span class="glyphicon glyphicon-share-alt"></span>
-            </button>
+            <h3><span> Module <strong>{{module.name}}</strong>, Version <strong>{{module.version}}</strong></span>
+                <span ng-show="isWorkingCopy"> (Working Copy)</span></span>
+                <md-button class="md-raised md-primary"
+                           ng-click="open_create_release_dialog(module)"
+                        >Créer la release <i class="fa fa-share"></i></md-button>
             </h3>
         </div>
     </div>
 </div>
-
-<div class="row voffset1">
-    <div class="col-md-6">
-        <div class="row">
-            <div class="col-md-12">
-                <div class="bg-light">
-                    <h4>Les technos de ce module :</h4>
-                    <list-of-items items="module.technos"
-                                   createfunction="add_techno($name)"
-                                   ondelete="delete_techno($item)"
-                                   size="small"
-                                   label="$item.title"
-                                   selected-item="techno"
-                                   selectable="false"
-                                   editable="is_workingcopy"
-                                   typeaheadexpression="techno as techno.title for techno in $parent.$parent.$parent.search_technos($viewValue)"
-                            ></list-of-items>
-                </div>
-            </div>
+<div layout="row">
+    <div flex>
+        <div class="bg-light" flex>
+            <h4>Les technos de ce module</h4>
+            <list-of-items items="module.technos"
+                           createfunction="add_techno($name)"
+                           ondelete="delete_techno($item)"
+                           size="small"
+                           label="$item.title"
+                           selected-item="techno"
+                           selectable="true"
+                           editable="is_workingcopy"
+                           typeaheadexpression="techno in $parent.$parent.$parent.search_technos(ctrl.searchText)"
+                    ></list-of-items>
         </div>
-        <div class="row">
-            <div class="col-md-12">
-                <div class="bg-light">
-                    <h4>Les fichiers specifiques du module</h4>
-                    <hesperides-template-list template-entries="templateEntries"
-                                              add="add_template"
-                                              edit="edit_template"
-                                              delete="delete_template"
-                                              is-read-only="is_release"></hesperides-template-list>
-                </div>
-            </div>
+        <div class="bg-light" flex>
+            <h4>Les fichiers specifiques du module</h4>
+            <hesperides-template-list template-entries="templateEntries"
+                                      add="add_template"
+                                      edit="edit_template"
+                                      delete="delete_template"
+                                      is-read-only="is_release"></hesperides-template-list>
         </div>
     </div>
-    <div class="col-md-6">
-        <div class="bg-light" style="display: block; overflow:auto;">
-            <h3>Les properties associees</h3>
-            <hesperides-model model="model" loading="loading_model"></hesperides-model>
-        </div>
+    <div class="bg-light" flex>
+        <h3>Les properties associees</h3>
+        <hesperides-model model="model" loading="loading_model"></hesperides-model>
     </div>
 </div>
 

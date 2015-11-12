@@ -347,11 +347,9 @@ h4.app-unit button {
  * Template
  */
 .tempalte-list-item {
-    font-size: 14px;
     margin-bottom: 0px;
-    overflow: hidden;
+    margin-top:0;
     white-space: nowrap;
-    text-overflow: ellipsis
 }
 
 .template-list-item-name {
@@ -379,12 +377,35 @@ kbd {
     width: 100%;
     text-align: left;
     margin-bottom:0;
+    margin-top:0;
 }
 
 .model-property-iterable {
-    margin-bottom:0
+    margin-bottom:0;
+    margin-top:0;
 }
 
-.model-property-iterable dt {
-    padding-left: 10px
+/******************************************************************************
+ * Shared
+ */
+.shared-list-inline {
+    padding-left: 20px;
+}
+.shared-list-inline li {
+    list-style-type: none;
+}
+
+/******************************************************************************
+ * Material Design Button color
+ */
+.md-info {
+    background-color: #5bc0de !important;
+}
+
+.md-success {
+    background-color: #5cb85c !important;
+}
+
+.md-clear {
+    background-color: transparent !important;
 }

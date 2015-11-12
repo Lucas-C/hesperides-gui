@@ -1,6 +1,6 @@
-<div class="row">&nbsp;</div>
-<div class="row">
-    <div class="col-md-12">
+<div>&nbsp;</div>
+<div flex="100">
+    <div flex="100">
         <div class="bg-light">
             <h3><span> Techno <strong>{{techno.name}}</strong>, Version <strong>{{techno.version}}</strong></span>
                 <span ng-show="isWorkingCopy"> (Working Copy)</span></span>
@@ -13,13 +13,15 @@
     </div>
 </div>
 <div layout="row">
-    <div flex class="bg-light">
+    <div flex>
+        <div class="bg-light">
             <h3>Les fichiers associes a la techno</h3>
             <hesperides-template-list template-entries="templateEntries"
                                       add="add_template"
                                       edit="edit_template"
                                       delete="delete_template"
                                       is-read-only="isRelease"></hesperides-template-list>
+        </div>
     </div>
 
     <div flex class="bg-light">

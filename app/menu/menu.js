@@ -95,6 +95,7 @@ menuModule.controller('MenuModuleCtrl', ['$scope', '$mdDialog', '$location', '$t
             $location.path('/module/' + name + '/' + version).search({});
         }
         $scope.moduleSearched = "";
+        $mdDialog.hide();
 
         // Very bad trick to close menu :-(
         if (fakeButton) {
@@ -147,6 +148,7 @@ menuModule.controller('MenuPropertiesCtrl', ['$scope', '$mdDialog', '$location',
         var path = '/properties/' + application_name;
         $location.url(path).search({platform: platform_name});
         $scope.applicationSearched = "";
+        $mdDialog.hide();
 
         // Very bad trick to close menu :-(
         if (fakeButton) {

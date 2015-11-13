@@ -5,11 +5,12 @@
 
             <md-content layout-padding class="autoScroll">
                 <form name="templateForm" role="form" novalidate class="form-horizontal">
-                    <md-input-container md-no-float md-autofocus="true" class="md-block">
+                    <md-input-container md-no-float class="md-block">
                         <label>Titre</label>
                         <input type="text" required ng-trim="true" ng-model="template.name"
                                ng-disabled="isReadOnly"
                                ng-focus="true"
+                               md-autofocus="true"
                                id="templateName" placeholder="Le titre du template est unique" />
                     </md-input-container>
                     <md-input-container md-no-float class="md-block">

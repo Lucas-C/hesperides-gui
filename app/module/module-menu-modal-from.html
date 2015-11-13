@@ -6,17 +6,17 @@
             <md-content layout-padding class="autoScroll">
                 <form name="moduleForm" role="form" novalidate class="form-horizontal"
                       ng-submit="moduleForm.$valid && create_module_from(new_module.name, new_module.version, moduleSearched)">
-                    <md-input-container md-no-float>
+                    <md-input-container md-no-float class="md-block">
                         <label>Nom</label>
                         <input type="text" required ng-trim="true" ng-model="new_module.name"
                                id="moduleName" placeholder="Ce nom correspond à un package de la note de livraison. Par ex. wdiCore-war"/>
                     </md-input-container>
-                    <md-input-container md-no-float>
+                    <md-input-container md-no-float class="md-block">
                         <label>Numéro de version</label>
                         <input type="text" required ng-trim="true" ng-model="new_module.version"
                                id="moduleVersion" placeholder="Le numéro de version correspond à celui du package dans la note de livraison"/>
                     </md-input-container>
-                    <md-input-container>
+                    <md-input-container class="md-block">
                         <label>A partir de...</label>
                         <input type="text" id="fromModule"
                                ng-model="moduleSearched"

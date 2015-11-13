@@ -5,20 +5,20 @@
 
             <md-content layout-padding class="autoScroll">
                 <form name="templateForm" role="form" novalidate class="form-horizontal">
-                    <md-input-container md-no-float md-autofocus="true">
+                    <md-input-container md-no-float md-autofocus="true" class="md-block">
                         <label>Titre</label>
                         <input type="text" required ng-trim="true" ng-model="template.name"
                                ng-disabled="isReadOnly"
                                ng-focus="true"
                                id="templateName" placeholder="Le titre du template est unique" />
                     </md-input-container>
-                    <md-input-container md-no-float>
+                    <md-input-container md-no-float class="md-block">
                         <label>Nom du fichier final</label>
                         <input type="text" required ng-trim="true" ng-model="template.filename"
                                ng-disabled="isReadOnly"
                                id="templateFilename" placeholder="Indiquer le nom qu'aura le fichier sur le serveur. On peut utiliser des proprietes dans ce champ"/>
                     </md-input-container>
-                    <md-input-container md-no-float>
+                    <md-input-container md-no-float class="md-block">
                         <label>Dossier de destination</label>
                         <input type="text" required ng-trim="true" ng-model="template.location"
                                ng-disabled="isReadOnly"

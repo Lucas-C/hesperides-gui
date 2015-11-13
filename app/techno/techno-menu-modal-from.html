@@ -6,17 +6,17 @@
             <md-content layout-padding class="autoScroll">
                 <form name="technoForm" role="form" novalidate class="form-horizontal"
                       ng-submit="technoForm.$valid && create_techno_from(new_techno.name, new_techno.version, technoSearched.name, technoSearched.version, technoSearched.is_working_copy)">
-                    <md-input-container md-no-float>
+                    <md-input-container md-no-float class="md-block">
                         <label>Nom</label>
                         <input type="text" required ng-trim="true" ng-model="new_techno.name"
                                id="technoName" placeholder="Entrer un nom (tomcat, hadoop, flume, ...)" />
                     </md-input-container>
-                    <md-input-container md-no-float>
+                    <md-input-container md-no-float class="md-block">
                         <label>Numéro de version</label>
                         <input type="text" required ng-trim="true" ng-model="new_techno.version"
                                id="technoVersion" placeholder="Entrer un numero de version"/>
                     </md-input-container>
-                    <md-input-container>
+                    <md-input-container class="md-block">
                         <label>Rechercher une techno existante...</label>
                         <md-autocomplete
                                 required

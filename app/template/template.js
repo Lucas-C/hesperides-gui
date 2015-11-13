@@ -3,7 +3,7 @@
  */
 var templateModule = angular.module('hesperides.template', []);
 
-templateModule.factory('HesperidesTemplateModal', ['TemplateService', '$mdDialog', '$rootScope', function (TemplateService, $mdDialog, $rootScope) {
+templateModule.factory('HesperidesTemplateModal', ['TemplateService', '$mdDialog', '$timeout', '$mdConstant', '$rootScope', function (TemplateService, $mdDialog, $timeout, $mdConstant, $rootScope) {
 
     var hesperidesOverlay = {
         startState: function() {
@@ -59,6 +59,7 @@ templateModule.factory('HesperidesTemplateModal', ['TemplateService', '$mdDialog
     });
 
     var defaultScope = {
+        codemirrorFullscreenStatus: false,
         codemirrorModes: [
             { name: "Simple Hesperides", mimetype: ""},
             { name: "Properties File", mimetype:"text/x-properties"}
@@ -72,6 +73,7 @@ templateModule.factory('HesperidesTemplateModal', ['TemplateService', '$mdDialog
                     $('#templateContent').children().css("z-index", 100000);
                     cm.setOption('fullScreen', true);
                     cm.focus();
+                    defaultScope.codemirrorFullscreenStatus = true;
                 },
                 'Esc': function (cm) {
                     $('#templateContentParent').append($('#templateContent'));
@@ -82,9 +84,9 @@ templateModule.factory('HesperidesTemplateModal', ['TemplateService', '$mdDialog
             onLoad: function(_editor){
                 defaultScope.editor = _editor;
                 //This is some trick to avoid a bug. If not refresh, then we have to click on code mirror to see its content
-                setTimeout(function(){
+                $timeout(function(){
                     defaultScope.editor.refresh();
-                }, 100);
+                }, 500);
             }
         },
         changeCodeMirrorMode: function(new_mode){
@@ -112,6 +114,13 @@ templateModule.factory('HesperidesTemplateModal', ['TemplateService', '$mdDialog
 
             modalScope.$closeDialog = function() {
                 $mdDialog.hide();
+            };
+
+            modalScope.$checkIfCodeMirrorInFullScreen = function($event) {
+                if ($event.keyCode === $mdConstant.KEY_CODE.ESCAPE && defaultScope.codemirrorFullscreenStatus) {
+                    $event.stopPropagation();
+                    defaultScope.codemirrorFullscreenStatus = false;
+                }
             };
 
             defaultScope.codeMirrorOptions.readOnly = options.isReadOnly ? true : false;

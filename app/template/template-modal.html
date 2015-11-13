@@ -37,7 +37,7 @@
                     </div>
                     <div id="templateContentParent">
                         <ui-codemirror id="templateContent" ui-codemirror-opts="codeMirrorOptions"
-                                       ng-model="template.content"></ui-codemirror>
+                                       ng-model="template.content" ng-keydown="$checkIfCodeMirrorInFullScreen($event)"></ui-codemirror>
                     </div>
                 </form>
             </md-content>

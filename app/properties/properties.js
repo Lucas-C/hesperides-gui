@@ -761,12 +761,12 @@ propertiesModule.factory('Properties', function () {
             _.each(this.key_value_properties, function (key_value) {
                 key_value.inModel = model.hasKey(key_value.name);
                 // Add required
-                var prop = _.find(model.required, function(kvp) {
+                var prop = _.find(model.key_value_properties, function(kvp) {
                     return kvp.name === key_value.name;
                 });
 
-                key_value.required = prop.required;
-                key_value.defaultValue = prop.defaultValue;
+                key_value.required = (prop.required) ? prop.required : false;
+                key_value.defaultValue = (prop.defaultValue) ? prop.defaultValue : false;
 
             });
 
@@ -783,8 +783,8 @@ propertiesModule.factory('Properties', function () {
                     comment: model_key_value.comment,
                     value: "",
                     inModel: true,
-                    required: model_key_value.required,
-                    defaultValue: model_key_value.defaultValue
+                    required: (model_key_value.required) ? model_key_value.required : false,
+                    defaultValue: (model_key_value.defaultValue) ? model_key_value.defaultValue : false
                 });
             });
 

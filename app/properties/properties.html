@@ -505,6 +505,15 @@
         <div flex="100">
             <form class="form-horizontal narrow" role="form">
                 <div class="form-group">
+                  <div class="col-md-1">
+                    <button id="sortGlobalPropertiesButton" ng-click="platform.global_properties.switchOrder()"
+                            class="btn btn-warn btn-raised">
+                        <span>Tri par nom de property</span>
+                        <span class="glyphicon" data-ng-class="{'glyphicon-sort-by-alphabet-alt': !platform.global_properties.isReverseOrder(), 'glyphicon-sort-by-alphabet': platform.global_properties.isReverseOrder()}" style="padding-left:10px"></span>
+                    </button>
+                  </div>
+                </div>
+                <div class="form-group">
                     <div class="col-md-1">
                         <md-button ng-click="platform.global_properties.addKeyValue({
                         'name': new_kv_name,
@@ -522,7 +531,7 @@
                         <input class="form-control" placeholder="Valorisation" ng-model="new_kv_value"/>
                     </div>
                 </div>
-                <div class="form-group" ng-repeat="kv_property in platform.global_properties.key_value_properties">
+                <div class="form-group" ng-repeat="kv_property in platform.global_properties.key_value_properties | orderBy:'name':platform.global_properties.isReverseOrder() track by $index">
                     <div class="col-md-1">
                         <md-button ng-really-message="Supprimer la property globale {{kv_property.name}} ?"
                                    tooltip="Supprimer"
@@ -619,8 +628,19 @@
                 </button>
             </h3>
             <toggle-deleted-properties key-value-properties="instance.key_values" toggle="displayDeletedProperties"></toggle-deleted-properties>
+
+                <div class="form-group">
+                  <div class="col-md-1">
+                    <button id="sortInstancePropertiesButton" ng-click="instance.switchOrder()"
+                            class="btn btn-warn btn-raised">
+                        <span>Tri par nom de property</span>
+                        <span class="glyphicon" data-ng-class="{'glyphicon-sort-by-alphabet-alt': !instance.isReverseOrder(), 'glyphicon-sort-by-alphabet': instance.isReverseOrder()}" style="padding-left:10px"></span>
+                    </button>
+                  </div>
+                </div>
+
                 <div class="form-group" ng-class="{'property-not-used': !key_value_property.inModel}"
-                     ng-repeat="key_value_property in instance.key_values | displayProperties:displayDeletedProperties | orderBy:'name' track by $index">
+                     ng-repeat="key_value_property in instance.key_values | displayProperties:displayDeletedProperties |  orderBy:'name':instance.isReverseOrder() track by $index">
                     <label for="input-{{ key_value_property.name }}" class="col-md-3 control-label">{{
                         key_value_property.name }}</label> <span ng-show="key_value_property.required" style="color:red">*</span>
 
@@ -635,5 +655,8 @@
                 </div>
         </div>
     </div>
+
     </form>
 </div>
+
+

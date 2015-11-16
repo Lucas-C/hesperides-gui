@@ -154,7 +154,8 @@ applicationModule.factory('Instance', function () {
 
         angular.extend(this, {
             name: "",
-            key_values: []
+            key_values: [],
+            is_sorted_desc: false
         }, data);
 
         this.hasKey = function (name) {
@@ -197,6 +198,14 @@ applicationModule.factory('Instance', function () {
                     }
                 })
             }
+        }
+
+        this.switchOrder = function () {
+          this.is_sorted_desc = !this.is_sorted_desc;
+        }
+
+        this.isReverseOrder = function () {
+          return this.is_sorted_desc;
         }
 
     };

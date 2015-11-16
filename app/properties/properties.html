@@ -575,6 +575,8 @@
         </div>
     </div>
 
+    <form class="form-horizontal narrow" role="form" name="technoForm" ng-submit="technoForm.$valid">
+
     <div layout="row" ng-show="properties">
         <div flex="50">
             <h3><span style="margin-right: 30px">Les properties associees a <strong>{{selected_module.path.split('#').join('
@@ -589,6 +591,7 @@
                     <span>Nettoyer les valorisations inutiles</span>
                 </button>
                 <button id="savedPropertiesButton" ng-click="save_properties(properties, selected_module)"
+                        ng-disabled="technoForm.$invalid"
                         class="btn btn-primary btn-raised">
                     <span class="glyphicon glyphicon-saved" style="padding-right:10px"></span>
                     <span>Sauver les properties</span>
@@ -608,26 +611,29 @@
                 <span style="margin-right: 30px">Les properties d'instance associees a <strong>
                     <a href="" editable-text="instance.name"
                        onbeforesave="update_instance_name(instance, $data)">{{instance.name}}</a></strong></span>
-                <button ng-click="save_platform_from_box(mainBox)" class="btn btn-sm">
+                <button ng-click="save_platform_from_box(mainBox)"
+                        ng-disabled="technoForm.$invalid"
+                        class="btn btn-sm">
                     <span class="glyphicon glyphicon-saved" style="padding-right:10px"></span>
                     <span>Sauver les properties</span>
                 </button>
             </h3>
             <toggle-deleted-properties key-value-properties="instance.key_values" toggle="displayDeletedProperties"></toggle-deleted-properties>
-            <form class="form-horizontal narrow" role="form">
                 <div class="form-group" ng-class="{'property-not-used': !key_value_property.inModel}"
                      ng-repeat="key_value_property in instance.key_values | displayProperties:displayDeletedProperties | orderBy:'name' track by $index">
                     <label for="input-{{ key_value_property.name }}" class="col-md-3 control-label">{{
-                        key_value_property.name }}</label>
+                        key_value_property.name }}</label> <span ng-show="key_value_property.required" style="color:red">*</span>
 
                     <div class="col-md-9">
                         <input id="input-{{ key_value_property.name }}" type="text" class="form-control"
-                               placeholder="{{key_value_property.comment}}" ng-model="key_value_property.value"
+                               placeholder="{{key_value_property.defaultValue ? '[default=' + key_value_property.defaultValue + '] ' : ''}}{{key_value_property.comment}}"
+                               ng-model="key_value_property.value"
                                tooltip="{{key_value_property.comment}}" tooltip-trigger="focus"
+                               ng-required="key_value_property.required"
                                tooltip-placement="right"/>
                     </div>
                 </div>
-            </form>
         </div>
     </div>
+    </form>
 </div>

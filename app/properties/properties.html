@@ -47,6 +47,59 @@
         </div>
     </script>
 
+    <script type="text/ng-template" id="application/change_platform_version.html">
+        <div class="modal-header">
+            <h3 class="modal-title">Changer la version de {{platform.platform_name}}</h3>
+        </div>
+        <div class="modal-body">
+            <form name="platformVersionForm" autocomplete="off" novalidate class="form-horizontal"
+                  ng-submit="platformVersionForm.$valid && $close({new_version: newVersion, use_ndl: useNdl, copy_properties: copyProperties})">
+                <div class="form-group">
+                    <div class="col-lg-12">
+                        <input type="text" class="form-control" id="version"
+                               ng-model="newVersion"
+                               placeholder="Nouvelle version" required
+                               typeahead="version for version in ndlVersions | filter:$viewValue"
+                               typeahead-editable="true"
+                               typeahead-min-length="3"/>
+                    </div>
+                </div>
+                <div class="form-group vertical-align" ng-show="newVersion">
+                    <label class="col-lg-8 control-label" style="padding-top: 0"
+                           ng-style="{'text-decoration': (useNdl ? '' : 'line-through'), 'font-weight' : (useNdl ? 'bold' : 'normal')}">Utiliser la note de livraison json de la version {{newVersion}}</label>
+
+                    <div class="col-lg-4">
+                        <div class="togglebutton">
+                            <label>
+                                <input type="checkbox" id="useNdl" ng-model="useNdl"/>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group vertical-align" ng-show="useNdl">
+                    <label class="col-lg-8 control-label" style="padding-top: 0"
+                           ng-style="{'text-decoration': (copyProperties ? '' : 'line-through'), 'font-weight' : (copyProperties ? 'bold' : 'normal')}">Copier les properties valorisées de la version {{platform.application_version}} vers la version {{newVersion}}</label>
+
+                    <div class="col-lg-4">
+                        <div class="togglebutton">
+                            <label>
+                                <input type="checkbox" id="copyProperties" ng-model="copyProperties"/>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+                <input type="submit" id="submit" value="Submit" ng-hide="true"/>
+            </form>
+        </div>
+        <div class="modal-footer">
+            <button class="btn btn-success" ng-disabled="platformVersionForm.$invalid"
+                    ng-click="$close({new_version: newVersion, use_ndl: useNdl, copy_properties: copyProperties})"
+                    ng-hide="isReadOnly">Ok
+            </button>
+            <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
+        </div>
+    </script>
+
     <script type="text/ng-template" id="application/change_module_version.html">
         <div class="modal-header">
             <h3 class="modal-title">Changer la version de {{module.title}}</h3>
@@ -415,7 +468,9 @@
     <div layout="row" class="vertical-align">
         <div flex="66">
             <h3><span>Representation logique de <strong>{{platform.name}} (version
-                <a href="" editable-text="platform.application_version"
+                <a href="" ng-click="change_platform_version(platform)"
+                   title="Modifier la version de la plateforme"
+                   class="ng-binding"
                    onaftersave="save_platform_from_box(mainBox)">{{platform.application_version}}</a>
                 <md-tooltip>Modifier le label 'version de l'application'</md-tooltip>
                 )</strong></span>
@@ -456,6 +511,15 @@
         <div flex="100">
             <form class="form-horizontal narrow" role="form">
                 <div class="form-group">
+                  <div class="col-md-1">
+                    <button id="sortGlobalPropertiesButton" ng-click="platform.global_properties.switchOrder()"
+                            class="btn btn-warn btn-raised">
+                        <span>Tri par nom de property</span>
+                        <span class="glyphicon" data-ng-class="{'glyphicon-sort-by-alphabet-alt': !platform.global_properties.isReverseOrder(), 'glyphicon-sort-by-alphabet': platform.global_properties.isReverseOrder()}" style="padding-left:10px"></span>
+                    </button>
+                  </div>
+                </div>
+                <div class="form-group">
                     <div class="col-md-1">
                         <md-button ng-click="platform.global_properties.addKeyValue({
                         'name': new_kv_name,
@@ -474,7 +538,7 @@
                         <input class="form-control" placeholder="Valorisation" ng-model="new_kv_value"/>
                     </div>
                 </div>
-                <div class="form-group" ng-repeat="kv_property in platform.global_properties.key_value_properties">
+                <div class="form-group" ng-repeat="kv_property in platform.global_properties.key_value_properties | orderBy:'name':platform.global_properties.isReverseOrder() track by $index">
                     <div class="col-md-1">
                         <md-button ng-really-message="Supprimer la property globale {{kv_property.name}} ?"
                                    aria-label="Supprimer"
@@ -527,6 +591,8 @@
         </div>
     </div>
 
+    <form class="form-horizontal narrow" role="form" name="technoForm" ng-submit="technoForm.$valid" editable-form>
+
     <div layout="row" ng-show="properties">
         <div flex="50">
             <h3><span style="margin-right: 30px">Les properties associees a <strong>{{selected_module.path.split('#').join('
@@ -541,6 +607,7 @@
                     <span>Nettoyer les valorisations inutiles</span>
                 </button>
                 <button id="savedPropertiesButton" ng-click="save_properties(properties, selected_module)"
+                        ng-disabled="technoForm.$invalid"
                         class="btn btn-primary btn-raised">
                     <span class="glyphicon glyphicon-saved" style="padding-right:10px"></span>
                     <span>Sauver les properties</span>
@@ -560,27 +627,44 @@
                 <span style="margin-right: 30px">Les properties d'instance associees a <strong>
                     <a href="" editable-text="instance.name"
                        onbeforesave="update_instance_name(instance, $data)">{{instance.name}}</a></strong></span>
-                <button ng-click="save_platform_from_box(mainBox)" class="btn btn-sm">
+                <button ng-click="save_platform_from_box(mainBox)"
+                        ng-disabled="technoForm.$invalid"
+                        class="btn btn-sm">
                     <span class="glyphicon glyphicon-saved" style="padding-right:10px"></span>
                     <span>Sauver les properties</span>
                 </button>
             </h3>
             <toggle-deleted-properties key-value-properties="instance.key_values" toggle="displayDeletedProperties"></toggle-deleted-properties>
-            <form class="form-horizontal narrow" role="form">
+
+                <div class="form-group">
+                  <div class="col-md-1">
+                    <button id="sortInstancePropertiesButton" ng-click="instance.switchOrder()"
+                            class="btn btn-warn btn-raised">
+                        <span>Tri par nom de property</span>
+                        <span class="glyphicon" data-ng-class="{'glyphicon-sort-by-alphabet-alt': !instance.isReverseOrder(), 'glyphicon-sort-by-alphabet': instance.isReverseOrder()}" style="padding-left:10px"></span>
+                    </button>
+                  </div>
+                </div>
+
                 <div class="form-group" ng-class="{'property-not-used': !key_value_property.inModel}"
-                     ng-repeat="key_value_property in instance.key_values | displayProperties:displayDeletedProperties | orderBy:'name' track by $index">
+                     ng-repeat="key_value_property in instance.key_values | displayProperties:displayDeletedProperties |  orderBy:'name':instance.isReverseOrder() track by $index">
                     <label for="input-{{ key_value_property.name }}" class="col-md-3 control-label">{{
-                        key_value_property.name }}</label>
+                        key_value_property.name }}</label> <span ng-show="key_value_property.required" style="color:red">*</span>
 
                     <div class="col-md-9">
                         <input id="input-{{ key_value_property.name }}" type="text" class="form-control"
-                               placeholder="{{key_value_property.comment}}" ng-model="key_value_property.value"
-                               tooltip-trigger="focus"
+                               placeholder="{{key_value_property.defaultValue ? '[default=' + key_value_property.defaultValue + '] ' : ''}}{{key_value_property.comment}}"
+                               ng-model="key_value_property.value"
+                               tooltip="{{key_value_property.comment}}" tooltip-trigger="focus"
+                               ng-required="key_value_property.required"
                                tooltip-placement="right"/>
                         <md-tooltip>{{key_value_property.comment}}</md-tooltip>
                     </div>
                 </div>
-            </form>
         </div>
     </div>
+
+    </form>
 </div>
+
+

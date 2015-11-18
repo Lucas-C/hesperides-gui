@@ -119,7 +119,8 @@ menuModule.controller('MenuModuleCtrl', ['$scope', '$mdDialog', '$location', '$t
             templateUrl: 'module/module-menu-modal-from.html',
             controller: 'MenuModuleCtrl',
             preserveScope: true, // requiered for not freez menu
-            scope:$scope
+            // Remove scope cause else with autocomplete, window is closed
+            //scope:$scope
         });
     };
 

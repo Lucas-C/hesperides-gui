@@ -18,12 +18,19 @@
                     </md-input-container>
                     <md-input-container class="md-block">
                         <label>A partir de...</label>
-                        <input type="text" id="fromModule"
-                               ng-model="moduleSearched"
-                               placeholder="Rechercher un module existant, par nom et numéro de version" required
-                               typeahead-editable="false"
-                               typeahead="module as module.title for module in find_modules_by_name($viewValue)"
-                                />
+                        <md-autocomplete
+                                required
+                                ng-model="technoSearched"
+                                md-no-cache="true"
+                                md-selected-item="ctrl.selectedItem"
+                                md-search-text="ctrl.searchText"
+                                md-items="module in find_modules_by_name(ctrl.searchText)"
+                                md-item-text="techno.name"
+                                md-selected-item-change="(module) ? new_module = module : false"
+                                md-min-length="0"
+                                placeholder="Rechercher un module existant, par nom et numéro de version...">
+                            <span md-highlight-text="ctrl.searchText">{{module.title}} {{module.version}}</span>
+                        </md-autocomplete>
                     </md-input-container>
                     <input type="submit" id="submit" value="Submit" ng-hide="true"/>
                 </form>

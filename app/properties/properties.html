@@ -1,3 +1,4 @@
+<div>&nbsp;</div>
 <div layout="row">
     <div flex="100">
         <div class="bg-light">
@@ -11,8 +12,21 @@
                            onedit="on_edit_platform($item)"
                            selectable="true"
                            editable="false"
+                           css="md-warn"
                            size="small">
             </list-of-items>
+
+            <list-of-items items="module.technos"
+                           createfunction="add_techno($name)"
+                           ondelete="delete_techno($item)"
+                           size="small"
+                           label="$item.title"
+                           selected-item="techno"
+                           selectable="true"
+                           editable="is_workingcopy"
+                           css="md-warn"
+                           typeaheadexpression="techno in $parent.$parent.$parent.search_technos(ctrl.searchText)"
+                    ></list-of-items>
         </div>
     </div>
 </div>
@@ -42,59 +56,6 @@
         <div class="modal-footer">
             <button class="btn btn-success" ng-disabled="searchModuleForm.$invalid"
                     ng-click="$close(moduleSearched)" ng-hide="isReadOnly">Ok
-            </button>
-            <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
-        </div>
-    </script>
-
-    <script type="text/ng-template" id="application/change_platform_version.html">
-        <div class="modal-header">
-            <h3 class="modal-title">Changer la version de {{platform.platform_name}}</h3>
-        </div>
-        <div class="modal-body">
-            <form name="platformVersionForm" autocomplete="off" novalidate class="form-horizontal"
-                  ng-submit="platformVersionForm.$valid && $close({new_version: newVersion, use_ndl: useNdl, copy_properties: copyProperties})">
-                <div class="form-group">
-                    <div class="col-lg-12">
-                        <input type="text" class="form-control" id="version"
-                               ng-model="newVersion"
-                               placeholder="Nouvelle version" required
-                               typeahead="version for version in ndlVersions | filter:$viewValue"
-                               typeahead-editable="true"
-                               typeahead-min-length="3"/>
-                    </div>
-                </div>
-                <div class="form-group vertical-align" ng-show="newVersion">
-                    <label class="col-lg-8 control-label" style="padding-top: 0"
-                           ng-style="{'text-decoration': (useNdl ? '' : 'line-through'), 'font-weight' : (useNdl ? 'bold' : 'normal')}">Utiliser la note de livraison json de la version {{newVersion}}</label>
-
-                    <div class="col-lg-4">
-                        <div class="togglebutton">
-                            <label>
-                                <input type="checkbox" id="useNdl" ng-model="useNdl"/>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="form-group vertical-align" ng-show="useNdl">
-                    <label class="col-lg-8 control-label" style="padding-top: 0"
-                           ng-style="{'text-decoration': (copyProperties ? '' : 'line-through'), 'font-weight' : (copyProperties ? 'bold' : 'normal')}">Copier les properties valorisées de la version {{platform.application_version}} vers la version {{newVersion}}</label>
-
-                    <div class="col-lg-4">
-                        <div class="togglebutton">
-                            <label>
-                                <input type="checkbox"  ng-model="copyProperties"/>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <input type="submit" value="Submit" ng-hide="true"/>
-            </form>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-success" ng-disabled="platformVersionForm.$invalid"
-                    ng-click="$close({new_version: newVersion, use_ndl: useNdl, copy_properties: copyProperties})"
-                    ng-hide="isReadOnly">Ok
             </button>
             <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
         </div>
@@ -144,48 +105,6 @@
         </div>
     </script>
 
-    <script type="text/ng-template" id="application/add_box.html">
-        <div class="modal-header">
-            <h3 class="modal-title">Ajouter un groupe logique</h3>
-        </div>
-        <div class="modal-body">
-            <form name="addComponentForm" novalidate
-                  ng-submit="addComponentForm.$valid && $close(new_component_name)">
-                <label>Nom</label>
-                <input type="text" class="form-control" 
-                       ng-model="new_component_name"
-                       placeholder="Exemple WDIGST,..." required/>
-                <input type="submit" value="Submit" ng-hide="true"/>
-            </form>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-success" ng-disabled="addComponentForm.$invalid"
-                    ng-click="$close(new_component_name)" ng-hide="isReadOnly">Ok
-            </button>
-            <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
-        </div>
-    </script>
-
-    <script type="text/ng-template" id="application/add_instance.html">
-        <div class="modal-header">
-            <h3 class="modal-title">Ajouter une instance</h3>
-        </div>
-        <div class="modal-body">
-            <form name="addInstanceForm" novalidate
-                  ng-submit="addInstanceForm.$valid && $close(new_instance_name)">
-                <label>Nom</label>
-                <input type="text" class="form-control" 
-                       ng-model="new_instance_name" required/>
-                <input type="submit" value="Submit" ng-hide="true"/>
-            </form>
-        </div>
-        <div class="modal-footer">
-            <button class="btn btn-success" ng-disabled="addInstanceForm.$invalid"
-                    ng-click="$close(new_instance_name)" ng-hide="isReadOnly">Ok
-            </button>
-            <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
-        </div>
-    </script>
 
     <script type="text/ng-template" id="application/properties_diff_wizard.html">
         <div class="jumbotron" style="padding: 20px 20px 20px 20px">
@@ -465,7 +384,7 @@
         </ul>
     </script>
 
-    <div layout="row" class="vertical-align">
+    <div layout="row">
         <div flex="66">
             <h3><span>Representation logique de <strong>{{platform.name}} (version
                 <a href="" ng-click="change_platform_version(platform)"
@@ -476,17 +395,12 @@
                 )</strong></span>
             </h3>
         </div>
-        <div flex="33">
-            <div layout="row" layout-align="end center">
-                <h3 class="togglebutton">
-                    <span style="padding-right: 10px">Plateforme de production</span>
-                    <label>
-                        <input type="checkbox" ng-model="platform.production"
-                               ng-change="save_platform_from_box(mainBox)"
-                               id="isProduction"/>
-                    </label>
-                </h3>
-            </div>
+        <div flex="33" layout-align="center top">
+            <h3>
+                <md-switch class="md-primary properties-poduction" aria-label="Production" ng-model="platform.production" ng-change="save_platform_from_box(mainBox)" id="isProduction">
+                    Plateforme de production
+                </md-switch>
+            </h3>
         </div>
     </div>
 

@@ -421,3 +421,10 @@ kbd {
 .module-file blockquote {
     font-size: 14px;
 }
+
+/******************************************************************************
+ * Platform/Properties
+ */
+.properties-poduction {
+    margin-top: 0px;
+}

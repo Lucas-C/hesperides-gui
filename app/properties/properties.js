@@ -3,11 +3,14 @@
  */
 var propertiesModule = angular.module('hesperides.properties', ['hesperides.nexus']);
 
-propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal', '$location', '$route', '$timeout', 'ApplicationService', 'ModuleService', 'ApplicationModule', 'Page', 'NexusService', function ($scope, $routeParams, $modal, $location, $route, $timeout, ApplicationService, ModuleService, Module, Page, NexusService) {
+propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDialog', '$location', '$route', '$timeout', 'ApplicationService', 'ModuleService', 'ApplicationModule', 'Page', 'NexusService', function ($scope, $routeParams, $mdDialog, $location, $route, $timeout, ApplicationService, ModuleService, Module, Page, NexusService) {
     Page.setTitle("Properties");
 
     $scope.platform = $routeParams.platform;
     $scope.platforms = [];
+    $scope.$closeDialog = function() {
+        $mdDialog.hide();
+    };
 
     var Box = function (data) {
         return angular.extend(this, {
@@ -87,30 +90,32 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
     };
 
     $scope.open_add_box_dialog = function (box) {
-        var modal = $modal.open({
-            templateUrl: 'application/add_box.html',
-            backdrop: 'static',
-            size: 'sm',
-            keyboard: false,
-            scope: $scope
-        });
+        var modalScope = $scope.$new(true);
 
-        modal.result.then(function (name) {
+        modalScope.$add = function(name) {
             $scope.add_box(name, box);
+            $mdDialog.hide();
+        };
+
+        $mdDialog.show({
+            templateUrl: 'application/add_box.html',
+            keyboard: false,
+            scope: modalScope
         });
     };
 
     $scope.open_add_instance_dialog = function (module) {
-        var modal = $modal.open({
-            templateUrl: 'application/add_instance.html',
-            backdrop: 'static',
-            size: 'sm',
-            keyboard: false,
-            scope: $scope
-        });
+        var modalScope = $scope.$new(true);
 
-        modal.result.then(function (name) {
-            $scope.add_instance(name, module);
+        modalScope.$add = function(name) {
+            $scope.add_instance(name, box);
+            $mdDialog.hide();
+        };
+
+        $mdDialog.show({
+            templateUrl: 'application/add_instance.html',
+            keyboard: false,
+            scope: modalScope
         });
     };
 
@@ -128,15 +133,13 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
                 modalScope.platform = platform;
                 modalScope.ndlVersions = ndlVersions;
 
-                var modal = $modal.open({
+                $mdDialog.show({
                     templateUrl: 'application/change_platform_version.html',
-                    backdrop: 'static',
-                    size: 'lg',
                     keyboard: false,
                     scope: modalScope
                 });
 
-                modal.result.then(function (modal_data) {
+                modalScope.$change = function (modal_data) {
 
                     if (modal_data.use_ndl === true) {
                         // on met à jour les modules de l'application à partir des infos de la ndl
@@ -147,7 +150,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
                             .then(function (updatedModules) {
                                 // sauvegarde de la plateforme
                                 $scope.save_platform_from_box($scope.mainBox, modal_data.copy_properties)
-                                    .then(function (response) {
+                                    .then(function () {
                                         $scope.properties = undefined;
                                         $scope.instance = undefined;
 
@@ -164,12 +167,14 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
 
                         // sauvegarde de la plateforme
                         $scope.save_platform_from_box($scope.mainBox)
-                            .then(function (response) {
+                            .then(function () {
                                 $scope.properties = undefined;
                                 $scope.instance = undefined;
                             });
                     }
-                });
+
+                    $mdDialog.hide();
+                };
             });
     };
 

@@ -19,8 +19,13 @@ nexusModule.factory('NexusService', ['$http', 'x2js', function ($http, x2js) {
                 })
                 .then(function (response) {
                     var artifacts = x2js.xml_str2json(response.data).searchNGResponse.data.artifact;
+
+                    if (artifacts.constructor !== Array) {
+                        artifacts = [artifacts];
+                    }
+
                     return _.pluck(artifacts, 'version');
-                }, function (error) {
+                }, function () {
                     // l'erreur n'est pas bloquante
                     return [];
                 });

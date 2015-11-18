@@ -409,3 +409,15 @@ kbd {
 .md-clear {
     background-color: transparent !important;
 }
+
+/******************************************************************************
+ * Module
+ */
+.module-file {
+    text-overflow:ellipsis;
+    overflow: hidden;
+}
+
+.module-file blockquote {
+    font-size: 14px;
+}

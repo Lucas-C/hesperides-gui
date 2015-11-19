@@ -18,7 +18,8 @@ var hesperidesModule = angular.module('hesperides', [
     'xeditable',
     'ui.codemirror',
     'mgo-angular-wizard',
-    'vs-repeat'
+    'vs-repeat',
+    'scDateTime'
 ]);
 
 hesperidesModule.run(function (editableOptions) {

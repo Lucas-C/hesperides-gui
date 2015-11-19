@@ -104,7 +104,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         });
     };
 
-    $scope.open_add_instance_dialog = function (module) {
+    $scope.open_add_instance_dialog = function () {
         var modalScope = $scope.$new(true);
 
         modalScope.$add = function(name) {
@@ -251,18 +251,18 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         $location.path('/diff').search(urlParams);
     };
 
-    $scope.diff_global_properties = function (platform) {
-        $scope.from = {}
-        var modal = $modal.open({
-            templateUrl: 'application/global_properties_diff_wizard.html',
-            backdrop: 'static',
-            size: 'lg',
-            keyboard: false,
-            scope: $scope
-        });
+    $scope.diff_global_properties = function () {
+        var modalScope = $scope.$new(true);
 
-        modal.result.then(function (from) {
+        modalScope.$diff = function(from) {
+            $mdDialog.hide();
             $scope.open_global_diff_page(from);
+        };
+
+        $mdDialog.show({
+            templateUrl: 'application/global_properties_diff_wizard.html',
+            keyboard: false,
+            scope: modalScope
         });
     };
 

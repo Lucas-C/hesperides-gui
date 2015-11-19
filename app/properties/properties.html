@@ -232,71 +232,6 @@
         </div>
     </script>
 
-    <script type="text/ng-template" id="application/global_properties_diff_wizard.html">
-        <div class="jumbotron" style="padding: 20px 20px 20px 20px">
-            <wizard>
-                <wz-step title="Choisir la plateforme à comparer">
-                    <div class="modal-header">
-                        <h3 class="modal-title">Choisir la plateforme à laquelle comparer les properties globales de
-                            {{platform.application_name}} -
-                            {{platform.name}}</h3>
-                    </div>
-                    <div class="modal-body">
-                        <form class="form-horizontal" name="comparedPlatformForm">
-                            <fieldset>
-                                <div class="form-group">
-                                    <br/>
-                                    <input type="text" class="form-control"
-                                           placeholder="Application à laquelle comparer"
-                                           ng-model="from.application" required
-                                           data-hint="WDI, PAO, STF, ..."/>
-                                    <br/>
-                                    <input type="text" class="form-control" placeholder="Plateforme à laquelle comparer"
-                                           ng-model="from.platform" required
-                                           data-hint="WDI, PAO, STF, ..."/>
-                                    <br/>
-
-                                    <div class="togglebutton animate-show"
-                                         ng-show="from.application != null && from.platform != null">
-                                        <label>Comparer à {{from.application}} - {{from.platform}} à une date spécifique
-                                            ?
-                                            <input type="checkbox" ng-model="from.lookPast" style="margin-left: 10px"/>
-                                        </label>
-                                    </div>
-                                    <br/>
-
-                                    <div class="dropdown" ng-show="from.lookPast">
-                                        <a class="dropdown-toggle"  data-toggle="dropdown"
-                                           data-target="#"
-                                           href="javascipt:void(0)">
-                                            <div class="input-group">
-                                                <input type="text" class="form-control" data-ng-model="from.date"
-                                                       placeholder="Choisir une date"><span
-                                                    class="input-group-addon"><i
-                                                    class="glyphicon glyphicon-calendar"></i></span>
-                                            </div>
-                                        </a>
-                                        <ul class="dropdown-menu" role="menu">
-                                            <datetimepicker data-ng-model="from.date" ng-required="from.lookPast"
-                                                            data-datetimepicker-config="{ dropdownSelector: '#dropdownDate', minView: 'hour'}"/>
-                                        </ul>
-                                    </div>
-                                </div>
-                            </fieldset>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button class="btn btn-primary btn-raised" wz-next aria-label="Lancer le diff"
-                                ng-click="$close(from)">
-                            Lancer le diff
-                        </button>
-                        <button class="btn btn-warning btn-raised" ng-click="$dismiss('cancel')">Annuler</button>
-                    </div>
-                </wz-step>
-            </wizard>
-        </div>
-    </script>
-
     <script type="text/ng-template" id="box_renderer.html">
         <div  class="vertical-align">
             <div class="col-md-6 text-left" style="padding-left:10px">
@@ -406,18 +341,14 @@
 
     <div layout="row" class="vertical-align">
         <h3><span style="padding-right: 10px">Properties niveau plateforme</span>
-            <button class="btn btn-warn btn-raised" ng-click="showGlobalProperties = !showGlobalProperties"><span>Voir/Masquer</span>
-            </button>
-            <button ng-click="save_global_properties(platform.global_properties)"
-                    class="btn btn-primary btn-raised">
-                <span class="glyphicon glyphicon-saved" style="padding-right:10px"></span>
-                <span>Sauver les properties globales</span>
-            </button>
-            <button id="diffGlobalPropertiesButton" ng-click="diff_global_properties(platform)"
-                    class="btn btn-warn btn-raised">
-                <span class="glyphicon glyphicon-transfer" style="padding-right:10px"></span>
-                <span>Comparer les properties globales</span>
-            </button>
+            <md-button class="md-raised"
+                       ng-click="showGlobalProperties = !showGlobalProperties">Voir/Masquer</md-button>
+
+            <md-button class="md-raised md-primary"
+                       ng-click="save_global_properties(platform.global_properties)"><i class="fa fa-check"></i> Sauver les properties globales</md-button>
+
+            <md-button class="md-raised"
+                       ng-click="diff_global_properties(platform)"><i class="fa fa-exchange"></i> Comparer les properties globales</md-button>
         </h3>
     </div>
 

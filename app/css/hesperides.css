@@ -423,8 +423,29 @@ kbd {
 }
 
 /******************************************************************************
+ * Module
+ */
+.techno-file {
+    text-overflow:ellipsis;
+    overflow: hidden;
+}
+
+.techno-file blockquote {
+    font-size: 14px;
+}
+
+/******************************************************************************
  * Platform/Properties
  */
 .properties-poduction {
     margin-top: 0px;
+}
+
+.properties-add-logical-group {
+    color: black !important;
+    background-color: white !important;
+}
+
+.property-required {
+    color: red;
 }

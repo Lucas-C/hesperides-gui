@@ -232,92 +232,7 @@
         </div>
     </script>
 
-    <script type="text/ng-template" id="box_renderer.html">
-        <div  class="vertical-align">
-            <div class="col-md-6 text-left" style="padding-left:10px">
-                <a href="" editable-text="name" title="Modifier le nom du groupe logique"
-                   onbeforesave="update_box_name(box, name, $data)">{{name}}</a>
-            </div>
-            <div class="col-md-6" style="padding-right:10px; justify-content: flex-end">
-                <md-button ng-click="search_module(box)" aria-label="Ajouter un module"
-                           class="md-btn-xs">
-                    <md-tooltip>Ajouter un module</md-tooltip>
-                    <span class="glyphicon glyphicon-plus"></span>
-                </md-button>
-                <md-button ng-click="open_add_box_dialog(box)"
-                           aria-label="Ajouter un groupe logique"
-                           class="md-btn-xs">
-                    <md-tooltip>Ajouter un groupe logique</md-tooltip>
-                    <span class="glyphicon glyphicon-inbox"></span>
-                </md-button>
-                <md-button ng-really-message="Supprimer le groupe logique {{name}} ?"
-                           aria-label="Supprimer le groupe logique"
-                           ng-really-click="remove_box(name, box)" ng-if="box.isEmpty()"
-                           class="md-btn-xs md-warn">
-                    <md-tooltip>Supprimer le groupe logique</md-tooltip>
-                    <span class="glyphicon glyphicon-trash"></span>
-                </md-button>
-            </div>
-        </div>
-        <ul class="list-inline box">
-            <li class="jumbotron" ng-repeat="(name, box) in box.children"
-                ng-include="'box_renderer.html'"></li>
-            <li ng-if="box.modules.length > 0" class="jumbotron instance" ng-repeat="module in box.modules">
-                <div  style="height: 38px; width: 100%" class="col-md-12  vertical-align">
-                    <div class="col-md-6" style="padding-left:10px;white-space: nowrap;">
-                                <span><strong><a href="" ng-click="change_module(module)"
-                                                 title="Modifier la version du module">{{module.title}}</a></strong></span>
-                    </div>
-                    <div class="col-md-6" style="justify-content: flex-end">
-                        <md-button ng-click="open_add_instance_dialog(module)"
-                                   aria-label="Ajouter une instance"
-                                   class="md-btn-xs">
-                            <md-tooltip>Ajouter une instance</md-tooltip>
-                            <span class="glyphicon glyphicon-plus"></span>
-                        </md-button>
-                        <md-button class="md-btn-xs" aria-label="Editer les properties"
-                                   ng-click="edit_properties(platform, module)">
-                            <md-tooltip>Editer les properties</md-tooltip>
-                            <span class="glyphicon glyphicon-list"></span>
-                        </md-button>
-                        <md-button class="md-btn-xs"
-                                   aria-label="Comparer les properties"
-                                   ng-click="diff_properties(module)">
-                            <md-tooltip>Comparer les properties</md-tooltip>
-                            <span class="glyphicon glyphicon-transfer"></span>
-                        </md-button>
-                        <md-button ng-really-message="Supprimer le module {{module.title}} et toutes ses instances ?"
-                                   aria-label="Supprimer le module"
-                                   ng-really-click="delete_module(module, box)"
-                                   class="md-btn-xs md-warn">
-                            <md-tooltip>Supprimer le module</md-tooltip>
-                            <span class="glyphicon glyphicon-trash"></span>
-                        </md-button>
-                    </div>
-                </div>
-                <div>
-                    <ul class="list-inline" style="padding-top:10px; padding-bottom:10px;padding-left: 10px;">
-                        <li ng-repeat="instance in module.instances | orderBy:'name':false"
-                            ng-mouseover="instance.hover = true" ng-mouseleave="instance.hover = false">
-                            <md-button ng-click="edit_instance(instance, module.properties_path)"
-                                       aria-label="Editer les properties de l'instance"
-                                       class="">
-                                <md-tooltip>Editer les properties de l'instance</md-tooltip>
-                                <span class="glyphicon glyphicon-list" style="margin-right:10px"></span>{{instance.name}}
-                            </md-button>
-                            <md-button ng-really-message="Supprimer l'instance {{instance.name}} ?"
-                                       aria-label="Supprimer l'instance"
-                                       ng-really-click="delete_instance(instance, module)"
-                                       class="md-warn" ng-show="instance.hover">
-                                <md-tooltip>Supprimer l'instance</md-tooltip>
-                                <span class="glyphicon glyphicon-trash"></span>
-                            </md-button>
-                        </li>
-                    </ul>
-                </div>
-            </li>
-        </ul>
-    </script>
+
 
     <div layout="row">
         <div flex="66">
@@ -415,10 +330,9 @@
     -->
     <div layout="row" layout-wrap>
         <div flex="5">
-            <md-button ng-click="open_add_box_dialog(mainBox)" class="md-fab md-btn-xs"
-                       aria-label="Ajouter un groupe logique"
-                       style="color: black;background-color: white">
-                <span class="glyphicon glyphicon-inbox"></span>
+            <md-button ng-click="open_add_box_dialog(mainBox)" class="md-fab properties-add-logical-group"
+                       aria-label="Ajouter un groupe logique">
+                <span class="fa fa-inbox"></span>
                 <md-tooltip>
                     Ajouter un groupe logique
                 </md-tooltip>
@@ -426,7 +340,7 @@
         </div>
         <div flex="95">
             <ul class="list-inline box">
-                <li class="jumbotron" ng-repeat="(name, box) in mainBox.children" ng-include="'box_renderer.html'"/>
+                <li class="jumbotron" ng-repeat="(name, box) in mainBox.children" ng-include="'application/box_renderer.html'"/>
                 <li class="jumbotron" ng-if="box.modules.length > 0">
                     <button class="btn btn-info btn-sm" style="margin: 5px 5px 5px 5px"
                             ng-repeat="module in mainBox.modules">{{module.title}} <span
@@ -467,36 +381,35 @@
         </div>
     </div>
     <div layout="row" ng-show="instance">
-        <div class="col-md-12">
+        <div flex="100">
             <h3>
                 <span style="margin-right: 30px">Les properties d'instance associees a <strong>
                     <a href="" editable-text="instance.name"
                        onbeforesave="update_instance_name(instance, $data)">{{instance.name}}</a></strong></span>
-                <button ng-click="save_platform_from_box(mainBox)"
-                        ng-disabled="technoForm.$invalid"
-                        class="btn btn-sm">
-                    <span class="glyphicon glyphicon-saved" style="padding-right:10px"></span>
-                    <span>Sauver les properties</span>
-                </button>
+                <md-button ng-click="save_platform_from_box(mainBox)"
+                        ng-disabled="technoForm.$invalid">
+                    <i class="fa fa-check"></i>
+                    Sauver les properties
+                </md-button>
             </h3>
             <toggle-deleted-properties key-value-properties="instance.key_values" toggle="displayDeletedProperties"></toggle-deleted-properties>
 
-                <div class="form-group">
-                  <div class="col-md-1">
-                    <button id="sortInstancePropertiesButton" ng-click="instance.switchOrder()"
-                            class="btn btn-warn btn-raised">
-                        <span>Tri par nom de property</span>
-                        <span class="glyphicon" data-ng-class="{'glyphicon-sort-by-alphabet-alt': !instance.isReverseOrder(), 'glyphicon-sort-by-alphabet': instance.isReverseOrder()}" style="padding-left:10px"></span>
-                    </button>
+                <div>
+                  <div flex="8">
+                    <md-button id="sortInstancePropertiesButton" ng-click="instance.switchOrder()"
+                            class="md-clear md-raised">
+                        Tri par nom de property
+                        <span class="fa" data-ng-class="{'fa-sort-alpha-desc': !instance.isReverseOrder(), 'fa-sort-alpha-asc': instance.isReverseOrder()}"></span>
+                    </md-button>
                   </div>
                 </div>
 
-                <div class="form-group" ng-class="{'property-not-used': !key_value_property.inModel}"
+                <div ng-class="{'property-not-used': !key_value_property.inModel}"
                      ng-repeat="key_value_property in instance.key_values | displayProperties:displayDeletedProperties |  orderBy:'name':instance.isReverseOrder() track by $index">
-                    <label for="input-{{ key_value_property.name }}" class="col-md-3 control-label">{{
-                        key_value_property.name }}</label> <span ng-show="key_value_property.required" style="color:red">*</span>
+                    <label for="input-{{ key_value_property.name }}" class="control-label" flex="24">{{
+                        key_value_property.name }}</label> <span ng-show="key_value_property.required" class="property-required">*</span>
 
-                    <div class="col-md-9">
+                    <div flex="76">
                         <input id="input-{{ key_value_property.name }}" type="text" class="form-control"
                                placeholder="{{key_value_property.defaultValue ? '[default=' + key_value_property.defaultValue + '] ' : ''}}{{key_value_property.comment}}"
                                ng-model="key_value_property.value"

@@ -15,6 +15,7 @@ Récupération des dépendances :
 Plusieurs options pour lancer la GUI :
 --------------------------------------
 
+* Utiliser le backend comme serveur HTTP (vous ne pourrez pas faire fonctionner la note de livraison)
 * Utiliser son serveur http préféré: UP TO YOU !
 * Utiliser la commande `grunt server` ; démarre un serveur proxy pour gérer les problématiques Cross-Domain
 * Utiliser les helpers server.groovy ou server_unix.groovy qui permette de lance run serveur web minimaliste en vert.x (besoin donc d'installer vert.x)
@@ -35,4 +36,14 @@ Exemple avec Lighttpd 1.4
     $SERVER["socket"] == ":81" {
       url.rewrite-once = ( "^/rest/(.*)$" => "/rest/$1" )
       proxy.server  = ( "" => ( "" => ( "host" => "127.0.0.1", "port" => 8080, "fix-redirects" => 1 )))
+    }
+    
+    # Pour la note de livraison
+    $HTTP["url"] =~ "(^/nexus-api/)" {   
+      proxy.server  = ( "" => ("" => ( "host" => "127.0.0.1", "port" => 82 ))) 
+    }
+    
+    $SERVER["socket"] == ":82" {   
+      url.rewrite-once = ( "^/nexus-api/(.*)$" => "/$1" )   
+      proxy.server  = ( "" => ( "" => ( "host" => "10.101.108.254", "port" => 80, "fix-redirects" => 1 ))) 
     }

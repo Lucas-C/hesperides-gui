@@ -26,10 +26,10 @@
                 </form>
             </md-content>
         </div>
-        <div class="md-actions">
+        <md-dialog-actions>
             <md-button class="md-raised md-primary" ng-disabled="comparedPlatformForm.$invalid"
                        ng-click="$diff(from)">Lancer le diff</md-button>
             <md-button ng-click="$closeDialog()" class="md-raised md-warn">Annuler</md-button>
-        </div>
+        </md-dialog-actions>
     </md-dialog-content>
 </md-dialog>

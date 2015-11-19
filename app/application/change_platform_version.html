@@ -37,9 +37,9 @@
                 </form>
             </md-content>
         </div>
-        <div class="md-actions">
+        <md-dialog-actions>
             <md-button ng-click="$change({new_version: newVersion, use_ndl: useNdl, copy_properties: copyProperties})" class="md-raised md-primary" ng-disabled="platformVersionForm.$invalid">Creer</md-button>
             <md-button ng-click="$closeDialog()" class="md-raised md-warn">Annuler</md-button>
-        </div>
+        </md-dialog-actions>
     </md-dialog-content>
 </md-dialog>

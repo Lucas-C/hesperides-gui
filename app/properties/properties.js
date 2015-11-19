@@ -90,7 +90,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
     };
 
     $scope.open_add_box_dialog = function (box) {
-        var modalScope = $scope.$new(true);
+        var modalScope = $scope.$new();
 
         modalScope.$add = function(name) {
             $scope.add_box(name, box);
@@ -105,7 +105,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
     };
 
     $scope.open_add_instance_dialog = function () {
-        var modalScope = $scope.$new(true);
+        var modalScope = $scope.$new();
 
         modalScope.$add = function(name) {
             $scope.add_instance(name, box);
@@ -252,7 +252,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
     };
 
     $scope.diff_global_properties = function () {
-        var modalScope = $scope.$new(true);
+        var modalScope = $scope.$new();
 
         modalScope.$diff = function(from) {
             $mdDialog.hide();

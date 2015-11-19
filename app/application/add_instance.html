@@ -13,10 +13,10 @@
                 </form>
             </md-content>
         </div>
-        <div class="md-actions">
+        <md-dialog-actions>
             <md-button ng-disabled="addInstanceForm.$invalid"
                        ng-click="$add(new_instance_name)" ng-hide="isReadOnly" class="md-raised md-primary">Creer</md-button>
             <md-button ng-click="closeDialog()" class="md-raised md-warn">Annuler</md-button>
-        </div>
+        </md-dialog-actions>
     </md-dialog-content>
 </md-dialog>

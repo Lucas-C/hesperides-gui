@@ -1,0 +1,64 @@
+<md-dialog flex="30">
+    <md-dialog-content>
+        <div class="ng-binding">
+            <h2>Ajouter un module fdgjdfklgldhgldfhl</h2>
+            <md-content layout-padding class="autoScroll">
+                <form name="searchModuleForm" novalidate
+                      ng-submit="searchModuleForm.$valid && $add(moduleSearched)">
+                    <md-input-container class="md-block">
+                        <label>Rechercher...</label>
+                        <md-autocomplete
+                                required
+                                ng-model="newVersion"
+                                md-no-cache="true"
+                                md-selected-item="ctrl.selectedItem"
+                                md-search-text="ctrl.searchText"
+                                md-items="module in find_modules_by_name(ctrl.searchText)"
+                                md-item-text="module.name"
+                                md-selected-item-change="(module) ? moduleSearched = module : false"
+                                md-min-length="0"
+                                placeholder="Rechercher un module par nom">
+                            <span md-highlight-text="ctrl.searchText" ng-show="!module.is_working_copy">{{module.name}} {{module.version}}</span>
+                            <span md-highlight-text="ctrl.searchText" ng-show="module.is_working_copy">{{module.name}} {{module.version}} (working copy)</span>
+                        </md-autocomplete>
+                    </md-input-container>
+                    <input type="submit" id="submit" value="Submit" ng-hide="true"/>
+                </form>
+            </md-content>
+        </div>
+        <md-dialog-actions>
+            <md-button class="md-raised md-primary" ng-disabled="addComponentForm.$invalid"
+                       ng-click="$add(moduleSearched)" ng-hide="isReadOnly">Ajouter</md-button>
+            <md-button ng-click="$closeDialog()" class="md-raised md-warn">Annuler</md-button>
+        </md-dialog-actions>
+    </md-dialog-content>
+</md-dialog>
+<!--
+<script type="text/ng-template" id="application/search_module.html">
+    <div class="modal-header">
+        <h3 class="modal-title">Ajouter un module</h3>
+    </div>
+    <div class="modal-body">
+        <form name="searchModuleForm" novalidate
+              ng-submit="searchModuleForm.$valid && $close(moduleSearched)">
+            <div class="form-group">
+                <div class="col-lg-12">
+                    <input type="text" class="form-control"
+                           ng-model="moduleSearched"
+                           placeholder="Rechercher" required
+                           data-hint="par nom, version,..."
+                           typeahead-editable="false"
+                           typeahead="module as module.title for module in find_modules_by_name($viewValue)"
+                            />
+                </div>
+            </div>
+            <input type="submit" value="Submit" ng-hide="true"/>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <button class="btn btn-success" ng-disabled="searchModuleForm.$invalid"
+                ng-click="$close(moduleSearched)" ng-hide="isReadOnly">Ok
+        </button>
+        <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
+    </div>
+</script>-->

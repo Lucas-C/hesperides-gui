@@ -393,6 +393,7 @@ kbd {
 }
 .shared-list-inline li {
     list-style-type: none;
+    display: inline;
 }
 
 /******************************************************************************

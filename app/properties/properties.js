@@ -104,11 +104,11 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         });
     };
 
-    $scope.open_add_instance_dialog = function () {
+    $scope.open_add_instance_dialog = function (module) {
         var modalScope = $scope.$new();
 
         modalScope.$add = function(name) {
-            $scope.add_instance(name, box);
+            $scope.add_instance(name, module);
             $mdDialog.hide();
         };
 
@@ -179,16 +179,17 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
     };
 
     $scope.search_module = function (box) {
-        var modal = $modal.open({
-            templateUrl: 'application/search_module.html',
-            backdrop: 'static',
-            size: 'lg',
-            keyboard: false,
-            scope: $scope
-        });
+        var modalScope = $scope.$new();
 
-        modal.result.then(function (module) {
+        modalScope.$add = function(module) {
             $scope.add_module(module.name, module.version, module.is_working_copy, box);
+            $mdDialog.hide();
+        };
+
+        $mdDialog.show({
+            templateUrl: 'application/search_module.html',
+            keyboard: false,
+            scope: modalScope
         });
     };
 

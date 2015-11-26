@@ -1,10 +1,9 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.vsct.dt</groupId>
     <artifactId>hesperides-gui</artifactId>
-    <version>0.2.6-SNAPSHOT</version>
+    <version>0.2.6</version>
     <packaging>pom</packaging>
 
     <properties>
@@ -51,6 +50,6 @@
     <scm>
         <connection>scm:git:git@gitlab.socrate.vsct.fr:emeric_martineau/hesperides-gui.git</connection>
         <developerConnection>scm:git:git@gitlab.socrate.vsct.fr:emeric_martineau/hesperides-gui.git</developerConnection>
-        <tag>HEAD</tag>
+        <tag>release/0.2.6</tag>
     </scm>
 </project>

@@ -27,6 +27,14 @@
                     </execution>
                 </executions>
             </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-release-plugin</artifactId>
+                <version>2.5.3</version>
+                <configuration>
+                    <tagNameFormat>release/@{project.version}</tagNameFormat>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
@@ -40,6 +48,9 @@
             <url>http://nexus.socrate.vsct.fr:50080/nexus/content/repositories/dt-snapshots/</url>
         </snapshotRepository>
     </distributionManagement>
-
-
+    <scm>
+        <connection>scm:git:git@gitlab.socrate.vsct.fr:emeric_martineau/hesperides-gui.git</connection>
+        <developerConnection>scm:git:git@gitlab.socrate.vsct.fr:emeric_martineau/hesperides-gui.git</developerConnection>
+        <tag>HEAD</tag>
+    </scm>
 </project>

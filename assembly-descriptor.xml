@@ -9,7 +9,18 @@
             <includes>
                 <include>**/*</include>
             </includes>
+            <excludes>
+                <exclude>menu/menu.js</exclude>
+            </excludes>
+            <filtered>false</filtered>
             <outputDirectory>/</outputDirectory>
         </fileSet>
     </fileSets>
+    <files>
+        <file>
+            <source>app/menu/menu.js</source>
+            <outputDirectory>/menu</outputDirectory>
+            <filtered>true</filtered>
+        </file>
+    </files>
 </assembly>

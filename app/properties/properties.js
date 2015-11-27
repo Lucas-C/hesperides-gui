@@ -760,14 +760,16 @@ propertiesModule.factory('Properties', function () {
             /* Mark key_values that are in the model */
             _.each(this.key_value_properties, function (key_value) {
                 key_value.inModel = model.hasKey(key_value.name);
-                // Add required
-                var prop = _.find(model.key_value_properties, function(kvp) {
-                    return kvp.name === key_value.name;
-                });
 
-                key_value.required = (prop.required) ? prop.required : false;
-                key_value.defaultValue = (prop.defaultValue) ? prop.defaultValue : false;
+                if (key_value.inModel) {
+                    // Add required/default
+                    var prop = _.find(model.key_value_properties, function (kvp) {
+                        return kvp.name === key_value.name;
+                    });
 
+                    key_value.required = (prop.required) ? prop.required : false;
+                    key_value.defaultValue = (prop.defaultValue) ? prop.defaultValue : false;
+                }
             });
 
             _.each(this.iterable_properties, function (iterable) {

@@ -769,6 +769,9 @@ propertiesModule.factory('Properties', function () {
 
                     key_value.required = (prop.required) ? prop.required : false;
                     key_value.defaultValue = (prop.defaultValue) ? prop.defaultValue : false;
+                } else {
+                    key_value.required = false;
+                    key_value.defaultValue = false;
                 }
             });
 

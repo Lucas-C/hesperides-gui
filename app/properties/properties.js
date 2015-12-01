@@ -198,23 +198,21 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         var modalScope = $scope.$new();
         modalScope.module = module;
 
-        var modal = $modal.open({
-            templateUrl: 'application/change_module_version.html',
-            backdrop: 'static',
-            size: 'lg',
-            keyboard: false,
-            scope: modalScope
-        });
-
-        modal.result.then(function (modal_data) {
+        modalScope.$update = function (modal_data) {
             var new_module = modal_data.new_module;
             module.name = new_module.name;
             module.version = new_module.version;
             module.is_working_copy = new_module.is_working_copy;
-            $scope.save_platform_from_box($scope.mainBox, modal_data.copy_properties).then(function (response) {
+            $scope.save_platform_from_box($scope.mainBox, modal_data.copy_properties).then(function () {
                 $scope.properties = undefined;
                 $scope.instance = undefined;
+                $mdDialog.hide();
             });
+        };
+
+        $mdDialog.show({
+            templateUrl: 'application/change_module_version.html',
+            scope: modalScope
         });
     };
 

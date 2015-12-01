@@ -23,11 +23,12 @@
                         </md-autocomplete>
                     </md-input-container>
                     <md-switch class="md-primary md-block"
-                               ng-style="{'text-decoration': (copyProperties ? '' : 'line-through'), 'font-weight' : (copyProperties ? 'bold' : 'normal')}"
                                aria-label="Copier les properties"
                                ng-model="copyProperties"
                                ng-show="moduleSearched">
-                        Copier les properties valorisées de la version {{module.version}} vers la version {{moduleSearched.version}}
+                        <span ng-style="{'text-decoration': (copyProperties ? '' : 'line-through'), 'font-weight' : (copyProperties ? 'bold' : 'normal')}">
+                            Copier les properties valorisées de la version {{module.version}} vers la version {{moduleSearched.version}}
+                        </span>
                     </md-switch>
                     <input type="submit" id="submit" value="Submit" ng-hide="true"/>
                 </form>

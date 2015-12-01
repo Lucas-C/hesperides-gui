@@ -85,6 +85,7 @@ menuModule.controller('MenuModuleCtrl', ['$scope', '$mdDialog', '$location', '$t
     $scope.create_module_from = function (name, version, moduleFrom) {
         ModuleService.create_workingcopy_from(name, version, moduleFrom).then(function(){
             $scope.open_module_page(name, version, true);
+            $mdDialog.hide();
         });
     };
 
@@ -118,7 +119,7 @@ menuModule.controller('MenuModuleCtrl', ['$scope', '$mdDialog', '$location', '$t
         $mdDialog.show({
             templateUrl: 'module/module-menu-modal-from.html',
             controller: 'MenuModuleCtrl',
-            preserveScope: true, // requiered for not freez menu
+            preserveScope: true // requiered for not freez menu
             // Remove scope cause else with autocomplete, window is closed
             //scope:$scope
         });

@@ -217,18 +217,19 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
     };
 
     $scope.diff_properties = function (compare_module) {
-        var modalScope = $scope.$new();
-        modalScope.compare_module = compare_module;
+        // Need to be in global scope !
+        $scope.compare_module = compare_module;
 
-        modalScope.$diff = function() {
-            $scope.open_diff_page();
-            $mdDialog.hide();
-        };
+        var modalScope = $scope.$new();
 
         $mdDialog.show({
             templateUrl: 'application/properties_diff_wizard.html',
             keyboard: false,
             scope: modalScope
+        }).then(function() {
+            $scope.open_diff_page();;
+        }, function() {
+            // Cancel
         });
     };
 

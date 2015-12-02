@@ -5,8 +5,7 @@
                 <div class="ng-binding">
                     <h2>Choisir la plateforme à laquelle comparer {{platform.application_name}} - {{platform.name}}</h2>
                     <md-content layout-padding class="autoScroll">
-                        <form name="platformVersionForm" autocomplete="off" novalidate class="form-horizontal"
-                              ng-submit="platformVersionForm.$valid && $change({new_version: newVersion, use_ndl: useNdl, copy_properties: copyProperties})">
+                        <form name="comparedPlatformForm">
                             <md-input-container md-no-float class="md-block">
                                 <label>Nom</label>
                                 <input type="text" required ng-trim="true" ng-model="from.application" md-autofocus="true"
@@ -33,60 +32,58 @@
                 </md-dialog-actions>
             </wz-step>
             <wz-step title="Choisir le module à comparer">
-                <div class="modal-header">
-                    <h3 class="modal-title">Choisir le module de {{compare_platform.application_name}} -
+                <div class="ng-binding">
+                    <h2>Choisir le module de {{compare_platform.application_name}} -
                         {{compare_platform.name}} à comparer à {{compare_module.title}} sur
-                        {{platform.application_name}} - {{platform.name}}</h3>
-                </div>
-                <div class="modal-body">
-                    <div layout="row" style="align-items: center" layout-margin>
-                        <div flex="66">
-                            <ul class="breadcrumb" style="margin-bottom: 2px">
-                                <li>{{platform.application_name}}</li>
-                                <li>{{platform.name}}</li>
-                                <li ng-repeat="token in compare_module.path.substr(1).split('#')">{{token}}</li>
-                                <li class="active">{{compare_module.title}}</a>
-                                </li>
-                            </ul>
-                            <div layout="row" layout-align="space-around" layout-margin>
-                                <span class="glyphicon glyphicon-resize-vertical"></span>
-                                <span class="glyphicon glyphicon-resize-vertical"></span>
-                                <span class="glyphicon glyphicon-resize-vertical"></span>
+                        {{platform.application_name}} - {{platform.name}}</h2>
+                    <md-content layout-padding class="autoScroll">
+                        <div layout="row" style="align-items: center" layout-margin>
+                            <div flex="66">
+                                <ul class="breadcrumb" style="margin-bottom: 2px">
+                                    <li>{{platform.application_name}}</li>
+                                    <li>{{platform.name}}</li>
+                                    <li ng-repeat="token in compare_module.path.substr(1).split('#')">{{token}}</li>
+                                    <li class="active">{{compare_module.title}}</a>
+                                    </li>
+                                </ul>
+                                <div layout="row" layout-align="space-around" layout-margin>
+                                    <i class="fa fa-arrows-v"></i>
+                                    <i class="fa fa-arrows-v"></i>
+                                    <i class="fa fa-arrows-v"></i>
+                                </div>
+                                <ul class="breadcrumb" style="margin-bottom: 2px">
+                                    <li>{{compare_platform.application_name}}</li>
+                                    <li>{{compare_platform.name}}</li>
+                                    <li ng-repeat="token in compare_platform.chosen_module.path.substr(1).split('#')">
+                                        {{token}}
+                                    </li>
+                                    <li class="active">{{compare_platform.chosen_module.title}}</a>
+                                    </li>
+                                </ul>
                             </div>
-                            <ul class="breadcrumb" style="margin-bottom: 2px">
-                                <li>{{compare_platform.application_name}}</li>
-                                <li>{{compare_platform.name}}</li>
-                                <li ng-repeat="token in compare_platform.chosen_module.path.substr(1).split('#')">
-                                    {{token}}
-                                </li>
-                                <li class="active">{{compare_platform.chosen_module.title}}</a>
-                                </li>
-                            </ul>
+                            <div flex style="text-align: end">
+                                <md-button ng-click="$closeDialog()" class="md-raised md-primary" wz-next aria-label="Lancer le diff"
+                                           ng-disabled="!compare_platform.chosen_module" ng-click="answer()">Lancer le diff</md-button>
+                            </div>
                         </div>
-                        <div flex style="text-align: end">
-                            <button class="btn btn-primary btn-raised" wz-next aria-label="Lancer le diff"
-                                    ng-disabled="!compare_platform.chosen_module" ng-click="$diff()">
-                                Lancer le diff
-                            </button>
+                        <div layout="row" layout-margin>
+                            <a href="" ng-click="modules_toggle=!modules_toggle">Choisir un autre module de
+                                {{compare_platform.application_name}} -
+                                {{compare_platform.name}}</a>
                         </div>
-                    </div>
-                    <div layout="row" layout-margin>
-                        <a href="" ng-click="modules_toggle=!modules_toggle">Choisir un autre module de
-                            {{compare_platform.application_name}} -
-                            {{compare_platform.name}}</a>
-                    </div>
-                    <div layout="row" layout-sm="column" layout-align="space-around">
-                        <md-progress-circular class="md-warn md-hue-3" md-mode="indeterminate"
-                                              ng-show="loading_compare_platform"></md-progress-circular>
-                        <div flex ng-hide="loading_compare_platform">
-                            <ul class="breadcrumb" style="margin-bottom: 2px" ng-show="modules_toggle"
-                                ng-repeat="module in compare_platform.modules | orderBy:'path'">
-                                <li ng-repeat="token in module.path.split('#')">{{token}}</li>
-                                <li class="active"><a href="" ng-click="compare_platform.chosen_module = module">{{module.title}}</a>
-                                </li>
-                            </ul>
+                        <div layout="row" layout-sm="column" layout-align="space-around">
+                            <md-progress-circular class="md-warn md-hue-3" md-mode="indeterminate"
+                                                  ng-show="loading_compare_platform"></md-progress-circular>
+                            <div flex ng-hide="loading_compare_platform">
+                                <ul class="breadcrumb" style="margin-bottom: 2px" ng-show="modules_toggle"
+                                    ng-repeat="module in compare_platform.modules | orderBy:'path'">
+                                    <li ng-repeat="token in module.path.split('#')">{{token}}</li>
+                                    <li class="active"><a href="" ng-click="compare_platform.chosen_module = module">{{module.title}}</a>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
-                    </div>
+                    </md-content>
                 </div>
                 <md-dialog-actions>
                     <md-button ng-click="$closeDialog()" class="md-raised md-warn">Annuler</md-button>
@@ -95,129 +92,3 @@
         </wizard>
     </md-dialog-content>
 </md-dialog>
-
-<script type="text/ng-template" id="application/properties_diff_wizard.html">
-    <div class="jumbotron" style="padding: 20px 20px 20px 20px">
-        <wizard>
-            <wz-step title="Choisir la plateforme à comparer">
-                <div class="modal-header">
-                    <h3 class="modal-title">Choisir la plateforme à laquelle comparer {{platform.application_name}}
-                        -
-                        {{platform.name}}</h3>
-                </div>
-                <div class="modal-body">
-                    <form class="form-horizontal" name="comparedPlatformForm">
-                        <fieldset>
-                            <div class="form-group">
-                                <br/>
-                                <input type="text" class="form-control"
-                                       placeholder="Application à laquelle comparer"
-                                       ng-model="from.application" required
-                                       data-hint="WDI, PAO, STF, ..."/>
-                                <br/>
-                                <input type="text" class="form-control" placeholder="Plateforme à laquelle comparer"
-                                       ng-model="from.platform" required
-                                       data-hint="WDI, PAO, STF, ..."/>
-                                <br/>
-
-                                <div class="togglebutton animate-show"
-                                     ng-show="from.application != null && from.platform != null">
-                                    <label>Comparer à {{from.application}} - {{from.platform}} à une date spécifique
-                                        ?
-                                        <input type="checkbox" ng-model="from.lookPast" style="margin-left: 10px"/>
-                                    </label>
-                                </div>
-                                <br/>
-
-                                <div class="dropdown" ng-show="from.lookPast">
-                                    <a class="dropdown-toggle"  data-toggle="dropdown"
-                                       data-target="#"
-                                       href="javascipt:void(0)">
-                                        <div class="input-group">
-                                            <input type="text" class="form-control" data-ng-model="from.date"
-                                                   placeholder="Choisir une date"><span
-                                                class="input-group-addon"><i
-                                                class="glyphicon glyphicon-calendar"></i></span>
-                                        </div>
-                                    </a>
-                                    <ul class="dropdown-menu" role="menu">
-                                        <datetimepicker data-ng-model="from.date" ng-required="from.lookPast"
-                                                        data-datetimepicker-config="{ dropdownSelector: '#dropdownDate', minView: 'hour'}"/>
-                                    </ul>
-                                </div>
-                            </div>
-                        </fieldset>
-                    </form>
-                </div>
-                <div class="modal-footer">
-
-                    <button class="btn btn-primary btn-raised" wz-next ng-disabled="comparedPlatformForm.$invalid"
-                            ng-click="get_platform_to_compare(from.application, from.platform, from.lookPast, from.date)">
-                        Suivant
-                    </button>
-                    <button class="btn btn-warning btn-raised" ng-click="$dismiss('cancel')">Annuler</button>
-                </div>
-            </wz-step>
-            <wz-step title="Choisir le module à comparer">
-                <div class="modal-header">
-                    <h3 class="modal-title">Choisir le module de {{compare_platform.application_name}} -
-                        {{compare_platform.name}} à comparer à {{compare_module.title}} sur
-                        {{platform.application_name}} - {{platform.name}}</h3>
-                </div>
-                <div class="modal-body">
-                    <div layout="row" style="align-items: center" layout-margin>
-                        <div flex="66">
-                            <ul class="breadcrumb" style="margin-bottom: 2px">
-                                <li>{{platform.application_name}}</li>
-                                <li>{{platform.name}}</li>
-                                <li ng-repeat="token in compare_module.path.substr(1).split('#')">{{token}}</li>
-                                <li class="active">{{compare_module.title}}</a>
-                                </li>
-                            </ul>
-                            <div layout="row" layout-align="space-around" layout-margin>
-                                <span class="glyphicon glyphicon-resize-vertical"></span>
-                                <span class="glyphicon glyphicon-resize-vertical"></span>
-                                <span class="glyphicon glyphicon-resize-vertical"></span>
-                            </div>
-                            <ul class="breadcrumb" style="margin-bottom: 2px">
-                                <li>{{compare_platform.application_name}}</li>
-                                <li>{{compare_platform.name}}</li>
-                                <li ng-repeat="token in compare_platform.chosen_module.path.substr(1).split('#')">
-                                    {{token}}
-                                </li>
-                                <li class="active">{{compare_platform.chosen_module.title}}</a>
-                                </li>
-                            </ul>
-                        </div>
-                        <div flex style="text-align: end">
-                            <button class="btn btn-primary btn-raised" wz-next aria-label="Lancer le diff"
-                                    ng-disabled="!compare_platform.chosen_module" ng-click="$close()">
-                                Lancer le diff
-                            </button>
-                        </div>
-                    </div>
-                    <div layout="row" layout-margin>
-                        <a href="" ng-click="modules_toggle=!modules_toggle">Choisir un autre module de
-                            {{compare_platform.application_name}} -
-                            {{compare_platform.name}}</a>
-                    </div>
-                    <div layout="row" layout-sm="column" layout-align="space-around">
-                        <md-progress-circular class="md-warn md-hue-3" md-mode="indeterminate"
-                                              ng-show="loading_compare_platform"></md-progress-circular>
-                        <div flex ng-hide="loading_compare_platform">
-                            <ul class="breadcrumb" style="margin-bottom: 2px" ng-show="modules_toggle"
-                                ng-repeat="module in compare_platform.modules | orderBy:'path'">
-                                <li ng-repeat="token in module.path.split('#')">{{token}}</li>
-                                <li class="active"><a href="" ng-click="compare_platform.chosen_module = module">{{module.title}}</a>
-                                </li>
-                            </ul>
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <button class="btn btn-warning btn-raised" ng-click="$dismiss('cancel')">Annuler</button>
-                </div>
-            </wz-step>
-        </wizard>
-    </div>
-</script>

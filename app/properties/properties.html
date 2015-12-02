@@ -68,52 +68,54 @@
     <div layout="row" class="vertical-align" ng-show="showGlobalProperties">
         <div flex="100">
             <form class="form-horizontal narrow" role="form">
-                <div class="form-group">
-                  <div class="col-md-1">
-                    <button id="sortGlobalPropertiesButton" ng-click="platform.global_properties.switchOrder()"
-                            class="btn btn-warn btn-raised">
-                        <span>Tri par nom de property</span>
-                        <span class="glyphicon" data-ng-class="{'glyphicon-sort-by-alphabet-alt': !platform.global_properties.isReverseOrder(), 'glyphicon-sort-by-alphabet': platform.global_properties.isReverseOrder()}" style="padding-left:10px"></span>
-                    </button>
-                  </div>
+                <div>
+                      <md-button class="md-raised"
+                                 id="sortGlobalPropertiesButton"
+                                 ng-click="platform.global_properties.switchOrder()">
+                          <i class="fa" data-ng-class="{'fa-sort-alpha-asc': !platform.global_properties.isReverseOrder(), 'fa-sort-alpha-desc': platform.global_properties.isReverseOrder()}"></i>
+                          Tri par nom de property</md-button>
                 </div>
-                <div class="form-group">
-                    <div class="col-md-1">
+                <div layout="row">
+                    <div flex="8">
                         <md-button ng-click="platform.global_properties.addKeyValue({
                         'name': new_kv_name,
                         'value': new_kv_value,
                         'comment': ''
-                    });new_kv_name = ''; new_kv_value= ''" aria-label="Ajouter"
-                                   class="md-btn-xs">
+                    });new_kv_name = ''; new_kv_value= ''" aria-label="Ajouter">
                             <md-tooltip>Ajouter</md-tooltip>
-                            <span class="glyphicon glyphicon-plus"></span>
+                            <span class="fa fa-plus"></span>
                         </md-button>
                     </div>
-                    <div class="col-md-4">
-                        <input class="form-control" placeholder="Nouvelle property globale" ng-model="new_kv_name"/>
+                    <div flex="33">
+                        <md-input-container class="md-block">
+                            <label>Nouvelle property globale</label>
+                            <input type="text" required ng-trim="true" ng-model="new_kv_name" aria-label="Nouvelle property globale" />
+                        </md-input-container>
                     </div>
-                    <div class="col-md-7">
-                        <input class="form-control" placeholder="Valorisation" ng-model="new_kv_value"/>
+                    <div flex="59">
+                        <md-input-container class="md-block">
+                            <label>Valorisation</label>
+                            <input type="text" required ng-trim="true" ng-model="new_kv_value" aria-label="Valorisation" />
+                        </md-input-container>
                     </div>
                 </div>
-                <div class="form-group" ng-repeat="kv_property in platform.global_properties.key_value_properties | orderBy:'name':platform.global_properties.isReverseOrder() track by $index">
-                    <div class="col-md-1">
+                <div layout="row" ng-repeat="kv_property in platform.global_properties.key_value_properties | orderBy:'name':platform.global_properties.isReverseOrder() track by $index">
+                    <div flex="8">
                         <md-button ng-really-message="Supprimer la property globale {{kv_property.name}} ?"
                                    aria-label="Supprimer"
                                    ng-really-click="platform.global_properties.deleteKeyValue(kv_property)"
-                                   class="md-btn-xs md-warn">
+                                   class="md-warn">
                             <md-tooltip>Supprimer</md-tooltip>
-                            <span class="glyphicon glyphicon-trash"></span>
+                            <i class="fa fa-trash"></i>
                         </md-button>
                     </div>
-                    <div class="col-md-4">
-                        <label style="text-align: right; overflow: hidden; text-overflow: ellipsis"
-                               title="{{ kv_property.name }}" for="input-{{ kv_property.name }}"
-                               class="col-md-12 control-label">{{ kv_property.name }}</label>
+                    <div flex="33" class="property-global">
+                        {{ kv_property.name }}
                     </div>
-                    <div class="col-md-7">
-                        <input id="input-{{ kv_property.name }}" type="text" class="form-control"
-                               ng-model="kv_property.value"/>
+                    <div flex="59">
+                        <md-input-container class="md-block">
+                            <input type="text" required ng-trim="true" id="input-{{ kv_property.name }}" ng-model="kv_property.value" aria-label="{{ kv_property.name }}" />
+                        </md-input-container>
                     </div>
                 </div>
             </form>

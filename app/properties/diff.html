@@ -3,12 +3,12 @@
     {{compare_platform}} {{compare_path}}</span></h3>
 
 <div layout="row" layout-margin>
-    <button class="btn btn-primary btn-raised" ng-click="apply_diff()">
+    <md-button class="md-raised md-primary" ng-click="apply_diff()">
         1/ Pr&eacute;visualiser les changements <span class="diff-warning-text-button">ne sauvegarde pas</span>
-    </button>
-    <button class="btn btn-primary btn-raised" ng-really-click="save_diff()" ng-really-message="Les modifications vont &ecirc;tre appliqu&eacute;es sur {{application_name}} - {{platform_name}}. Continuer ?">
+    </md-button>
+    <md-button class="md-raised md-primary"  ng-really-click="save_diff()" ng-really-message="Les modifications vont &ecirc;tre appliqu&eacute;es sur {{application_name}} - {{platform_name}}. Continuer ?">
         2/ <span class="diff-warning-text-button">Sauvegarder</span> les changements (il faut avoir previsualis&eacute; avant)
-    </button>
+    </md-button>
 </div>
 
 <!-- Seulement à gauche -->
@@ -18,8 +18,8 @@
             <md-button ng-click="toggle0 = !toggle0" class="md-fab md-btn-xs md-primary"
                        aria-label="Deplier/Plier le menu"
                        ng-disabled="(diff_containers | filter:{'status':0}).length < 1">
-                <span class="glyphicon"
-                      ng-class="{'glyphicon-eye-open': !toggle0, 'glyphicon-eye-close': toggle0}"></span>
+                <i class="fa"
+                      ng-class="{'fa-eye': !toggle0, 'fa-eye-slash': toggle0}"></i>
             </md-button>
         </div>
         <div flex>
@@ -67,8 +67,8 @@
             <md-button ng-click="toggle1 = !toggle1" class="md-fab md-default md-btn-xs md-primary"
                        aria-label="deplier/Plier le menu"
                        ng-disabled="(diff_containers | filter:{'status': 1}).length < 1">
-                <span class="glyphicon"
-                      ng-class="{'glyphicon-eye-open': !toggle1, 'glyphicon-eye-close': toggle1}"></span>
+                <i class="fa"
+                   ng-class="{'fa-eye': !toggle1, 'fa-eye-slash': toggle1}"></i>
             </md-button>
         </div>
         <div flex>
@@ -329,11 +329,11 @@
 
 
 <div layout="row" layout-margin>
-    <button class="btn btn-primary btn-raised" ng-click="apply_diff()">
+    <md-button class="md-raised md-primary" ng-click="apply_diff()">
         1/ Pr&eacute;visualiser les changements <span class="diff-warning-text-button">ne sauvegarde pas</span>
-    </button>
-    <button class="btn btn-primary btn-raised" ng-really-click="save_diff()" ng-really-message="Les modifications vont &ecirc;tre appliqu&eacute;es sur {{application_name}} - {{platform_name}}. Continuer ?">
+    </md-button>
+    <md-button class="md-raised md-primary"  ng-really-click="save_diff()" ng-really-message="Les modifications vont &ecirc;tre appliqu&eacute;es sur {{application_name}} - {{platform_name}}. Continuer ?">
         2/ <span class="diff-warning-text-button">Sauvegarder</span> les changements (il faut avoir previsualis&eacute; avant)
-    </button>
+    </md-button>
 </div>
 

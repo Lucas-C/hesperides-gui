@@ -30,8 +30,8 @@
     <div layout="column" ng-show="toggle0" class="diff-row-property">
         <div layout="row" layout-align="center" layout-margin class="diff-header-row-property">
             <div flex="35" layout="row" layout-align="end center">
-                <div class="col-md-12">
-                    <input class="form-control" placeholder="filtrer les properties par clé"
+                <div flex="100">
+                    <inputplaceholder="filtrer les properties par clé"
                            ng-model="propertiesKeyFilter0"/>
                 </div>
             </div>
@@ -101,14 +101,14 @@
     <div layout="column" ng-show="toggle1" class="diff-row-property">
         <div layout="row" layout-align="center" layout-margin class="diff-header-row-property">
             <div flex="35" layout="row" layout-align="end center">
-                <div class="col-md-12">
-                <input class="form-control" placeholder="filtrer les properties par clé"
+                <div flex="100">
+                <input placeholder="filtrer les properties par clé"
                        ng-model="propertiesKeyFilter1"/>
                     </div>
             </div>
             <div flex="30" layout="row" layout-align="end">
-                <span>Selectionner les reports à annuler <span class="glyphicon glyphicon-stop diff-text-old"></span> =====&gt; <span
-                        class="glyphicon glyphicon-stop diff-text-modifiable"></span></span>
+                <span>Selectionner les reports à annuler <span class="fa fa-stop diff-text-old"></span> =====&gt; <span
+                        class="fa fa-stop diff-text-modifiable"></span></span>
             </div>
             <div flex="5" layout="row" layout-align="space-around">
                 <md-checkbox aria-label="Selectionner toutes les valeurs" ng-model="toggle_ident"
@@ -140,7 +140,7 @@
                       popover="{{diff_container.property_to_modify.value}}" popover-trigger="mouseenter">{{diff_container.property_to_modify.value ? diff_container.property_to_modify.value : "Aucune valeur renseignée"}}</span>
                 </div>
                 <div flex="5" layout="row" layout-align="space-around center">
-                    <span class="glyphicon glyphicon-ok" ng-hide="diff_container.modified"></span>
+                    <span class="fa fa-check" ng-hide="diff_container.modified"></span>
                     <md-checkbox aria-label="Reporter la valeur" ng-model="diff_container.selected"
                                  ng-show="diff_container.modified">
                     </md-checkbox>
@@ -161,8 +161,8 @@
         <div flex="5">
             <md-button ng-click="toggle2 = !toggle2" class="md-fab md-btn-xs" aria-label="Deplier/Plier le menu"
                        ng-disabled="(diff_containers | filter:{'status':2}).length < 1">
-                <span class="glyphicon"
-                      ng-class="{'glyphicon-eye-open': !toggle2, 'glyphicon-eye-close': toggle2}"></span>
+                <span class="fa"
+                      ng-class="{'fa-eye': !toggle2, 'fa-eye-slash': toggle2}"></span>
             </md-button>
         </div>
         <div flex>
@@ -189,15 +189,15 @@
     <div layout="column" ng-show="toggle2" class="diff-row-property">
         <div layout="row" layout-align="center" layout-margin class="diff-header-row-property">
             <div flex="35" layout="row" layout-align="end center">
-                <div class="col-md-12">
-                <input class="form-control" placeholder="filtrer les properties par clé"
+                <div flex="100">
+                <input placeholder="filtrer les properties par clé"
                        ng-model="propertiesKeyFilter2"/>
                     </div>
             </div>
             <div flex="30" layout="row" layout-align="end">
                 <span>Selectionner les valeurs à reporter <span
-                        class="glyphicon glyphicon-stop diff-text-unmodifiable"></span> =====&gt; <span
-                        class="glyphicon glyphicon-stop diff-text-modifiable"></span></span>
+                        class="fa fa-stop diff-text-unmodifiable"></span> =====&gt; <span
+                        class="fa fa-stop diff-text-modifiable"></span></span>
             </div>
             <div flex="5" layout="row" layout-align="space-around">
                 <md-checkbox aria-label="Selectionner toutes les valeurs" ng-model="toggle_diff"
@@ -250,8 +250,8 @@
         <div flex="5">
             <md-button ng-click="toggle3 = !toggle3" class="md-fab md-btn-xs" aria-label="Deplier/Plier le menu"
                        ng-disabled="(diff_containers | filter:{'status':3}).length < 1">
-                <span class="glyphicon"
-                      ng-class="{'glyphicon-eye-open': !toggle3, 'glyphicon-eye-close': toggle3}"></span>
+                <span class="fa"
+                      ng-class="{'fa-eye': !toggle3, 'fa-eye-slash': toggle3}"></span>
             </md-button>
         </div>
         <div flex>
@@ -276,15 +276,15 @@
     <div layout="column" ng-show="toggle3" class="diff-row-property">
         <div layout="row" layout-align="center" layout-margin class="diff-header-row-property">
             <div flex="35" layout="row" layout-align="end center">
-                <div class="col-md-12">
-                    <input class="form-control" placeholder="filtrer les properties par clé"
+                <div flex="100">
+                    <input placeholder="filtrer les properties par clé"
                            ng-model="propertiesKeyFilter3"/>
                 </div>
             </div>
             <div flex="30" layout="row" layout-align="end">
                 <span>Selectionner les valeurs à reporter <span
-                        class="glyphicon glyphicon-stop diff-text-unmodifiable"></span> =====&gt; <span
-                        class="glyphicon glyphicon-stop diff-text-modifiable"></span></span>
+                        class="fa fa-stop diff-text-unmodifiable"></span> =====&gt; <span
+                        class="fa fa-stop diff-text-modifiable"></span></span>
             </div>
             <div flex="5" layout="row" layout-align="space-around">
                 <md-checkbox aria-label="Selectionner toutes les valeurs" ng-model="toggle_right"

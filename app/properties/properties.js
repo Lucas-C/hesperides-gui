@@ -99,7 +99,6 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
         $mdDialog.show({
             templateUrl: 'application/add_box.html',
-            keyboard: false,
             scope: modalScope
         });
     };
@@ -114,7 +113,6 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
         $mdDialog.show({
             templateUrl: 'application/add_instance.html',
-            keyboard: false,
             scope: modalScope
         });
     };
@@ -135,7 +133,6 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
                 $mdDialog.show({
                     templateUrl: 'application/change_platform_version.html',
-                    keyboard: false,
                     scope: modalScope
                 });
 
@@ -188,7 +185,6 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
         $mdDialog.show({
             templateUrl: 'application/search_module.html',
-            keyboard: false,
             scope: modalScope
         });
     };
@@ -224,7 +220,6 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
         $mdDialog.show({
             templateUrl: 'application/properties_diff_wizard.html',
-            keyboard: false,
             scope: modalScope
         }).then(function() {
             $scope.open_diff_page();;
@@ -260,7 +255,6 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
         $mdDialog.show({
             templateUrl: 'application/global_properties_diff_wizard.html',
-            keyboard: false,
             scope: modalScope
         });
     };

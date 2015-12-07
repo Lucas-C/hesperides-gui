@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc4
+ * v1.0.0-rc6
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -125,7 +125,7 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
     } else {
       styles.top       = (top - offset) + 'px';
       styles.bottom    = 'auto';
-      styles.maxHeight = Math.min(MAX_HEIGHT, root.bottom - hrect.bottom - MENU_PADDING) + 'px';
+      styles.maxHeight = Math.min(MAX_HEIGHT, root.bottom + $mdUtil.scrollTop() - hrect.bottom - MENU_PADDING) + 'px';
     }
 
     elements.$.scrollContainer.css(styles);
@@ -185,8 +185,8 @@ function MdAutocompleteCtrl ($scope, $element, $mdUtil, $mdConstant, $mdTheming,
    */
   function configureWatchers () {
     var wait = parseInt($scope.delay, 10) || 0;
-    $attrs.$observe('disabled', function (value) { ctrl.isDisabled = value; });
-    $attrs.$observe('required', function (value) { ctrl.isRequired = value !== null; });
+    $attrs.$observe('disabled', function (value) { ctrl.isDisabled = !!value; });
+    $attrs.$observe('required', function (value) { ctrl.isRequired = !!value; });
     $scope.$watch('searchText', wait ? $mdUtil.debounce(handleSearchText, wait) : handleSearchText);
     $scope.$watch('selectedItem', selectedItemChange);
     angular.element($window).on('resize', positionDropdown);
@@ -947,6 +947,7 @@ function MdAutocomplete () {
               ng-mouseup="$mdAutocompleteCtrl.mouseUp()"\
               ng-hide="$mdAutocompleteCtrl.hidden"\
               class="md-autocomplete-suggestions-container md-whiteframe-z1"\
+              ng-class="{ \'md-not-found\': $mdAutocompleteCtrl.notFoundVisible() }"\
               role="presentation">\
             <ul class="md-autocomplete-suggestions"\
                 ng-class="::menuClass"\

@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc4
+ * v1.0.0-rc6
  */
 goog.provide('ng.material.components.virtualRepeat');
 goog.require('ng.material.core');
@@ -262,6 +262,8 @@ VirtualRepeatContainerController.prototype.autoShrink_ = function(size) {
       this.setSize_(this.originalSize);
       this.originalSize = null;
     }
+
+    this.repeater.containerUpdated();
   }
 };
 

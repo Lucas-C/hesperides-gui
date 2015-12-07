@@ -21,7 +21,7 @@
                    data-hint="Indiquer le dossier dans lequel sera copie le fichier sur le serveur. On peut utiliser des proprietes dans ce champ"/>
         </div>
         <div class="form-group" id="templateContentParent" style="padding-top: 10px">
-            <label for="templateContent" style="width: 100%">Contenu du fichier
+            <label style="width: 100%">Contenu du fichier
                 <small class="text-right" style="padding-left: 10px; color: grey;font-weight:normal"><kbd>F11</kbd>
                     Activer / <kbd>Esc</kbd> Desactiver l'edtion en plein ecran
                 </small>
@@ -32,6 +32,70 @@
             </label>
             <ui-codemirror id="templateContent" ui-codemirror-opts="codeMirrorOptions"
                            ng-model="template.content"></ui-codemirror>
+        </div>
+        <div class="template-right">
+            <fieldset class="standard">
+                <legend>User</legend>
+                R <select ng-model="template.rights.user.read">
+                    <option value="" ng-selected="template.rights.user.read == null"></option>
+                    <option value="true" ng-selected="template.rights.user.read === true">O</option>
+                    <option value="false" ng-selected="template.rights.user.read === false">N</option>
+                </select>
+
+                W <select ng-model="template.rights.user.write">
+                    <option value="" ng-selected="template.rights.user.write == null"></option>
+                    <option value="true" ng-selected="template.rights.user.write === true">O</option>
+                    <option value="false" ng-selected="template.rights.user.write === false">N</option>
+                </select>
+
+                X <select ng-model="template.rights.user.execute">
+                    <option value="" ng-selected="template.rights.user.execute == null"></option>
+                    <option value="true" ng-selected="template.rights.user.execute === true">O</option>
+                    <option value="false" ng-selected="template.rights.user.execute === false">N</option>
+                </select>
+            </fieldset>
+
+            <fieldset class="standard">
+                <legend>Group</legend>
+                R <select ng-model="template.rights.group.read">
+                    <option value="" ng-selected="template.rights.group.read == null"></option>
+                    <option value="true" ng-selected="template.rights.group.read === true">O</option>
+                    <option value="false" ng-selected="template.rights.group.read === false">N</option>
+                </select>
+
+                    W <select ng-model="template.rights.group.write">
+                    <option value="" ng-selected="template.rights.group.write == null"></option>
+                    <option value="true" ng-selected="template.rights.group.write === true">O</option>
+                    <option value="false" ng-selected="template.rights.group.write === false">N</option>
+                </select>
+
+                    X <select ng-model="template.rights.group.execute">
+                    <option value="" ng-selected="template.rights.group.execute == null"></option>
+                    <option value="true" ng-selected="template.rights.group.execute === true">O</option>
+                    <option value="false" ng-selected="template.rights.group.execute === false">N</option>
+                </select>
+            </fieldset>
+
+            <fieldset class="standard">
+                <legend>Other</legend>
+                R <select ng-model="template.rights.other.read">
+                    <option value="" ng-selected="template.rights.other.read == null"></option>
+                    <option value="true" ng-selected="template.rights.other.read === true">O</option>
+                    <option value="false" ng-selected="template.rights.other.read === false">N</option>
+                </select>
+
+                    W <select ng-model="template.rights.other.write">
+                    <option value="" ng-selected="template.rights.other.write == null"></option>
+                    <option value="true" ng-selected="template.rights.other.write === true">O</option>
+                    <option value="false" ng-selected="template.rights.other.write === false">N</option>
+                </select>
+
+                    X <select ng-model="template.rights.other.execute">
+                    <option value="" ng-selected="template.rights.other.execute == null"></option>
+                    <option value="true" ng-selected="template.rights.other.execute === true">O</option>
+                    <option value="false" ng-selected="template.rights.other.execute === false">N</option>
+                </select>
+            </fieldset>
         </div>
     </form>
 </div>

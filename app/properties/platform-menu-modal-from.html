@@ -17,14 +17,14 @@
                     </md-input-container>
                     <md-input-container md-no-float class="md-block">
                         <label>Nom de la plateforme</label>
-                        <input type="text" class="form-control" required ng-trim="true"
+                        <input type="text" required ng-trim="true"
                                ng-model="new_platform.platform_name"
                                id="platformName"
                                placeholder="Par ex. USN1, REC2, PRD3 …"/>
                     </md-input-container>
                     <md-input-container md-no-float class="md-block">
                         <label>Version de l'application sur cette plateforme</label>
-                        <input type="text" required ng-trim="true" class="form-control"
+                        <input type="text" required ng-trim="true"
                                ng-model="new_platform.application_version"
                                id="platformApplicationVersion"
                                placeholder="Cette information est purement indicative et pourra être changée par la suite"/>
@@ -33,14 +33,14 @@
                         Est-ce une plateforme de production ?
                     </md-switch>
                     <md-input-container md-no-float class="md-block">
-                        <input type="text" class="form-control" required ng-trim="true"
+                        <input type="text"required ng-trim="true"
                                ng-model="new_platform.from_application"
                                id="fromApplication"
                                placeholder="Nom de l'application source" required
                                typeahead="application.name for application in find_applications_by_name($viewValue)">
                     </md-input-container>
                     <md-input-container md-no-float class="md-block">
-                        <input type="text" class="form-control" required ng-trim="true"
+                        <input type="text" required ng-trim="true"
                                ng-model="new_platform.from_platform"
                                id="fromPlatform"
                                placeholder="Nom de la plateforme source" required

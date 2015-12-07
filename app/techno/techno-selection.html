@@ -15,7 +15,7 @@
         <button ng-click="show_input = true;focus_choose_techno()" ng-hide="show_input"
                 class="btn btn-success btn-sm"><span class="glyphicon glyphicon-plus"></span>
         </button>
-        <input id="chooseTechnoInput" type="text" class="form-control" style="height: 31px"
+        <input id="chooseTechnoInput" type="text" style="height: 31px"
                ng-show="show_input" ng-blur="show_input=false; asyncTechnoSelected=''"
                ng-model="asyncTechnoSelected" placeholder="Rechercher une techno"
                typeahead-on-select="add_techno(asyncTechnoSelected, editing_unit); asyncTechnoSelected=''; show_input=false"

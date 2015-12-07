@@ -215,7 +215,7 @@
                         key_value_property.name }}</label> <span ng-show="key_value_property.required" class="property-required">*</span>
 
                     <div flex="76">
-                        <input id="input-{{ key_value_property.name }}" type="text" class="form-control"
+                        <input id="input-{{ key_value_property.name }}" type="text"
                                placeholder="{{key_value_property.defaultValue ? '[default=' + key_value_property.defaultValue + '] ' : ''}}{{key_value_property.comment}}"
                                ng-model="key_value_property.value"
                                tooltip="{{key_value_property.comment}}" tooltip-trigger="focus"

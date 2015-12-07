@@ -36,7 +36,7 @@
                                 />
                     </div>
                 </div>
-                <input type="submit" id="submit" value="Submit" ng-hide="true"/>
+                <input type="submit" value="Submit" ng-hide="true"/>
             </form>
         </div>
         <div class="modal-footer">
@@ -83,12 +83,12 @@
                     <div class="col-lg-4">
                         <div class="togglebutton">
                             <label>
-                                <input type="checkbox" id="copyProperties" ng-model="copyProperties"/>
+                                <input type="checkbox" ng-model="copyProperties"/>
                             </label>
                         </div>
                     </div>
                 </div>
-                <input type="submit" id="submit" value="Submit" ng-hide="true"/>
+                <input type="submit" value="Submit" ng-hide="true"/>
             </form>
         </div>
         <div class="modal-footer">
@@ -109,7 +109,7 @@
                   ng-submit="searchModuleForm.$valid && $close({new_module: moduleSearched, copy_properties: copyProperties})">
                 <div class="form-group">
                     <div class="col-lg-12">
-                        <input type="text" class="form-control" id="module"
+                        <input type="text" class="form-control"
                                ng-model="moduleSearched"
                                placeholder="Rechercher la nouvelle version" required
                                data-hint="entrer juste la version, la recherche filtre déjà sur le nom du module"
@@ -132,7 +132,7 @@
                         </div>
                     </div>
                 </div>
-                <input type="submit" id="submit" value="Submit" ng-hide="true"/>
+                <input type="submit" value="Submit" ng-hide="true"/>
             </form>
         </div>
         <div class="modal-footer">
@@ -152,10 +152,10 @@
             <form name="addComponentForm" novalidate
                   ng-submit="addComponentForm.$valid && $close(new_component_name)">
                 <label for="name">Nom</label>
-                <input type="text" class="form-control" id="name"
+                <input type="text" class="form-control"
                        ng-model="new_component_name"
                        placeholder="Exemple WDIGST,..." required/>
-                <input type="submit" id="submit" value="Submit" ng-hide="true"/>
+                <input type="submit" value="Submit" ng-hide="true"/>
             </form>
         </div>
         <div class="modal-footer">
@@ -221,7 +221,7 @@
                                     <br/>
 
                                     <div class="dropdown" ng-show="from.lookPast">
-                                        <a class="dropdown-toggle" id="dropdownDate" data-toggle="dropdown"
+                                        <a class="dropdown-toggle" data-toggle="dropdown"
                                            data-target="#"
                                            href="javascipt:void(0)">
                                             <div class="input-group">
@@ -347,7 +347,7 @@
                                     <br/>
 
                                     <div class="dropdown" ng-show="from.lookPast">
-                                        <a class="dropdown-toggle" id="dropdownDate" data-toggle="dropdown"
+                                        <a class="dropdown-toggle" data-toggle="dropdown"
                                            data-target="#"
                                            href="javascipt:void(0)">
                                             <div class="input-group">
@@ -379,7 +379,7 @@
     </script>
 
     <script type="text/ng-template" id="box_renderer.html">
-        <div id="header" class="vertical-align">
+        <div class="vertical-align">
             <div class="col-md-6 text-left" style="padding-left:10px">
                 <a href="" editable-text="name" title="Modifier le nom du groupe logique"
                    onbeforesave="update_box_name(box, name, $data)">{{name}}</a>
@@ -584,8 +584,6 @@
         </div>
     </div>
 
-    <form class="form-horizontal narrow" role="form" name="technoForm" ng-submit="technoForm.$valid" editable-form>
-
     <div layout="row" ng-show="properties">
         <div flex="50">
             <h3><span style="margin-right: 30px">Les properties associees a <strong>{{selected_module.path.split('#').join('
@@ -599,7 +597,7 @@
                     <span class="glyphicon glyphicon-trash" style="padding-right:10px"></span>
                     <span>Nettoyer les valorisations inutiles</span>
                 </button>
-                <button id="savedPropertiesButton" ng-click="save_properties(properties, selected_module)"
+                <button ng-click="save_properties(properties, selected_module)"
                         ng-disabled="technoForm.$invalid"
                         class="btn btn-primary btn-raised">
                     <span class="glyphicon glyphicon-saved" style="padding-right:10px"></span>
@@ -621,12 +619,12 @@
                     <a href="" editable-text="instance.name"
                        onbeforesave="update_instance_name(instance, $data)">{{instance.name}}</a></strong></span>
                 <button ng-click="save_platform_from_box(mainBox)"
-                        ng-disabled="technoForm.$invalid"
                         class="btn btn-sm">
                     <span class="glyphicon glyphicon-saved" style="padding-right:10px"></span>
                     <span>Sauver les properties</span>
                 </button>
             </h3>
+            <form class="form-horizontal narrow" role="form" name="technoForm" ng-submit="technoForm.$valid" editable-form>
             <toggle-deleted-properties key-value-properties="instance.key_values" toggle="displayDeletedProperties"></toggle-deleted-properties>
 
                 <div class="form-group">
@@ -653,10 +651,9 @@
                                tooltip-placement="right"/>
                     </div>
                 </div>
+            </form>
         </div>
     </div>
-
-    </form>
 </div>
 
 

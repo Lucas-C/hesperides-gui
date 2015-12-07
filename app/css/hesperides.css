@@ -20,38 +20,6 @@
   z-index: 200000;
 }
 
-
-/* Buttons */
-
-.btn-red:hover {
-	color: #E00000;
-	margin-left: -5px;
-	margin-right: -4px;
-	margin-top: -4px;
-	margin-bottom: -4px;
-	
-}
-
-.btn-red {
-	color: #780000;
-}
-
-.btn-red:hover span {
-	font-size: 1.6em;
-}
-
-.btn-no-padding {
-	padding: 0 !important;
-}
-
-.btn-resize {
-	background-color: #F0F0F0;
-}
-
-.btn-resize:hover {
-	background-color: #B8B8B8;
-}
-
 /* Forms */
 .form-horizontal.narrow  input[type=text] {
 	padding-top: 2px;
@@ -154,12 +122,12 @@ h4.app-unit button {
     to   {-webkit-transform: rotate(359deg);}
 }
 
-.input-sm {
-    height: 31px;
-}
-
 .box li {
     vertical-align: top;
+}
+
+.list-inline {
+    list-style-type: none;
 }
 
 .box .jumbotron {
@@ -193,12 +161,6 @@ h4.app-unit button {
 .cm-hesperides {color: #cc051e;}
 .cm-hesperides-token {color: #a100cc;}
 
-/* Divers Bootstrap */
-.md-btn-xs {
-    width: 40px !important;
-    height: 40px !important;
-}
-
 .vertical-align {
     display: flex;
     flex-direction: row;
@@ -212,9 +174,6 @@ h4.app-unit button {
                               horizontally inside the column */
 }
 
-.popover {
-    word-wrap: break-word;
-}
 
 /******************************************************************************
  * Diff page
@@ -473,4 +432,14 @@ kbd {
 .property-global {
     font-weight: bold;
     text-align: right;
+}
+
+.property-required {
+    color:red
+}
+
+.property-label {
+    text-align: right;
+    font-weight: bold;
+    width: 100%;
 }

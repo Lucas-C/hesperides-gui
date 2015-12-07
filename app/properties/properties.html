@@ -109,12 +109,14 @@
                             <i class="fa fa-trash"></i>
                         </md-button>
                     </div>
-                    <div flex="33" class="property-global">
-                        {{ kv_property.name }}
+                    <div flex="33" >
+                        <md-input-container class="property-label">
+                            {{ kv_property.name }}
+                        </md-input-container>
                     </div>
                     <div flex="59">
                         <md-input-container class="md-block">
-                            <input type="text" required ng-trim="true" id="input-{{ kv_property.name }}" ng-model="kv_property.value" aria-label="{{ kv_property.name }}" />
+                            <input type="text" ng-trim="true" id="input-{{ kv_property.name }}" ng-model="kv_property.value" aria-label="{{ kv_property.name }}" />
                         </md-input-container>
                     </div>
                 </div>
@@ -138,14 +140,17 @@
                 </md-tooltip>
             </md-button>
         </div>
-        <div flex="95">
-            <ul class="list-inline box">
+        <div flex="95" class="list-inline">
+            <ul class="box list-inline">
                 <li class="jumbotron" ng-repeat="(name, box) in mainBox.children" ng-include="'application/box_renderer.html'"/>
+                <!-- TODO comment apparait le truc ci-dessous -->
                 <li class="jumbotron" ng-if="box.modules.length > 0">
-                    <button class="btn btn-info btn-sm" style="margin: 5px 5px 5px 5px"
-                            ng-repeat="module in mainBox.modules">{{module.title}} <span
-                            class="glyphicon glyphicon-list"></span></button>
+                    <md-button ng-repeat="module in mainBox.modules" class="md-fab"
+                               aria-label="Ajouter un groupe logique">
+                        {{module.title}}<span class="fa fa-list"></span>
+                    </md-button>
                 </li>
+                <!-- TODO -->
             </ul>
         </div>
     </div>
@@ -160,17 +165,17 @@
         </div>
         <div flex="50">
             <div id="propertiesButtonsContainer" layout="row" layout-align="space-around" style="z-index: 1000">
-                <button id="cleanPropertiesButton" ng-click="clean_properties(properties)"
-                        class="btn btn-warn btn-raised" style="z-index: 1000">
-                    <span class="glyphicon glyphicon-trash" style="padding-right:10px"></span>
+                <md-button id="cleanPropertiesButton" ng-click="clean_properties(properties)"
+                        class="md-raised" style="z-index: 1000">
+                    <span class="fa fa-trash"></span>
                     <span>Nettoyer les valorisations inutiles</span>
-                </button>
-                <button ng-click="save_properties(properties, selected_module)"
+                    </md-button>
+                <md-button ng-click="save_properties(properties, selected_module)"
                         ng-disabled="technoForm.$invalid"
-                        class="btn btn-primary btn-raised">
-                    <span class="glyphicon glyphicon-saved" style="padding-right:10px"></span>
+                        class="md-raised md-primary">
+                    <span class="fa fa-check"></span>
                     <span>Sauver les properties</span>
-                </button>
+                </md-button>
             </div>
         </div>
     </div>

@@ -26,12 +26,12 @@
     <li class="jumbotron" ng-repeat="(name, box) in box.children"
         ng-include="'application/box_renderer.html'"></li>
     <li ng-if="box.modules.length > 0" class="jumbotron instance" ng-repeat="module in box.modules">
-        <div  style="height: 38px; width: 100%" class="col-md-12  vertical-align">
-            <div class="col-md-6" style="padding-left:10px;white-space: nowrap;">
-                            <span><strong><a href="" ng-click="change_module(module)"
-                                             title="Modifier la version du module">{{module.title}}</a></strong></span>
+        <div style="height: 38px; width: 100%" class="vertical-align">
+            <div style="padding-left:10px;white-space: nowrap">
+                <span><strong><a href="" ng-click="change_module(module)"
+                                 title="Modifier la version du module">{{module.title}}</a></strong></span>
             </div>
-            <div flex="50" style="justify-content: flex-end">
+            <div style="justify-content: flex-end">
                 <md-button ng-click="open_add_instance_dialog(module)"
                            aria-label="Ajouter une instance">
                     <md-tooltip>Ajouter une instance</md-tooltip>

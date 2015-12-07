@@ -33,32 +33,3 @@
         </md-dialog-actions>
     </md-dialog-content>
 </md-dialog>
-<!--
-<script type="text/ng-template" id="application/search_module.html">
-    <div class="modal-header">
-        <h3 class="modal-title">Ajouter un module</h3>
-    </div>
-    <div class="modal-body">
-        <form name="searchModuleForm" novalidate
-              ng-submit="searchModuleForm.$valid && $close(moduleSearched)">
-            <div class="form-group">
-                <div class="col-lg-12">
-                    <input type="text" class="form-control"
-                           ng-model="moduleSearched"
-                           placeholder="Rechercher" required
-                           data-hint="par nom, version,..."
-                           typeahead-editable="false"
-                           typeahead="module as module.title for module in find_modules_by_name($viewValue)"
-                            />
-                </div>
-            </div>
-            <input type="submit" value="Submit" ng-hide="true"/>
-        </form>
-    </div>
-    <div class="modal-footer">
-        <button class="btn btn-success" ng-disabled="searchModuleForm.$invalid"
-                ng-click="$close(moduleSearched)" ng-hide="isReadOnly">Ok
-        </button>
-        <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
-    </div>
-</script>-->

@@ -20,33 +20,6 @@
   z-index: 200000;
 }
 
-/* Forms */
-.form-horizontal.narrow  input[type=text] {
-	padding-top: 2px;
-	padding-bottom: 2px;
-	height: 30px;
-}
-
-.form-horizontal.narrow label {
-	padding-top: 3px;
-}
-
-.form-horizontal.narrow  div {
-	margin-bottom: 2px;
-}
-
-.form-group.property-not-used {
-	color: #888888;
-}
-
-.form-group.property-not-used label{
-	text-decoration: line-through;
-}
-
-.form-group.property-not-used input[type=text]{
-	background-color: #F0F0F0;
-}
-
 .property-using-global {
     color: #009587;
 }

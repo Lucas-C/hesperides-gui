@@ -766,10 +766,15 @@ propertiesModule.factory('Properties', function () {
                     return kvp.name === key_value.name;
                 });
 
-                key_value.required = (prop.required) ? prop.required : false;
-                key_value.defaultValue = (prop.defaultValue) ? prop.defaultValue : false;
-                key_value.comment = prop.comment;
-
+                if (key_value.inModel) {
+                    key_value.required = (prop.required) ? prop.required : false;
+                    key_value.defaultValue = (prop.defaultValue) ? prop.defaultValue : false;
+                    key_value.comment = prop.comment;
+                } else {
+                    key_value.required = false;
+                    key_value.defaultValue = false;
+                    key_value.comment = "";
+                }
 
             });
 

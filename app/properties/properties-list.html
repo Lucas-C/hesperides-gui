@@ -23,10 +23,11 @@
                 </md-input-container>
             </div>
         </div>
-        <!-- TODO bug dans le filtrage des valeurs sur le module demoKatana -->
-        <div layout="row" ng-repeat="key_value_property in properties.key_value_properties | filter:{'name':propertiesKeyFilter} | displayPropertiesByValue:propertiesValueFilter | displayProperties:displayDeletedProperties | orderBy:'name':properties.isReverseOrder() track by $index">
+
+        <div layout="row" ng-repeat="key_value_property in properties.key_value_properties | filter:{'name':propertiesKeyFilter} | displayPropertiesByValue:propertiesValueFilter | displayProperties:displayDeletedProperties | orderBy:'name':properties.isReverseOrder() track by $index"
+                >
             <div flex="33">
-                <md-input-container class="property-label">
+                <md-input-container class="property-label" ng-class="{'text-stroke':!key_value_property.inModel}">
                 {{ key_value_property.name }}<span ng-show="key_value_property.required" class="property-required">*</span>
                 </md-input-container>
             </div>
@@ -38,7 +39,7 @@
                         ng-required="key_value_property.required"
                         >
                     <label>{{key_value_property.defaultValue ? '[default=' + key_value_property.defaultValue + '] ' : ''}} {{key_value_property.comment}}</label>
-                    <input type="text" ng-trim="true" ng-model="key_value_property.value" aria-label="Filtrer les properties par valeur (les valeurs modifiées ne seront filtrables que suite &agrave; une sauvegarde)" />
+                    <input type="text" ng-trim="true" ng-model="key_value_property.value" readonly="!key_value_property.inModel"  aria-label="Filtrer les properties par valeur (les valeurs modifiées ne seront filtrables que suite &agrave; une sauvegarde)" ng-class="{'text-stroke':!key_value_property.inModel}"/>
                 </md-input-container>
 
                 <!-- Edit layout, but this key is filled by global properties -->

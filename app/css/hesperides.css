@@ -1,7 +1,9 @@
+body {
+    font-size: 12px;
+}
 /*
  * Header
  */
- 
 #header  input:focus{
 	outline-width: 0;
 }
@@ -9,8 +11,7 @@
 
 /*
  * CodeMirror
- */ 
-
+ */
 .CodeMirror {
   border: 1px solid #ddd;
   height: auto;

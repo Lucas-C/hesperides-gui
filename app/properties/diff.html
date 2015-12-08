@@ -22,7 +22,7 @@
                       ng-class="{'fa-eye': !toggle0, 'fa-eye-slash': toggle0}"></i>
             </md-button>
         </div>
-        <div flex>
+        <div flex="95" class="diff-title">
             <h3>Seulement sur <span class="diff-text-modifiable">{{application_name}} - {{platform_name}}</span>
                 ({{(diff_containers | filter:{'status':0}).length}})</h3>
         </div>
@@ -31,11 +31,14 @@
         <div layout="row" layout-align="center" layout-margin class="diff-header-row-property">
             <div flex="35" layout="row" layout-align="end center">
                 <div flex="100">
-                    <inputplaceholder="filtrer les properties par clé"
-                           ng-model="propertiesKeyFilter0"/>
+                    <md-input-container class="md-block">
+                        <label>filtrer les properties par clé</label>
+                        <input type="text"required ng-trim="true"
+                               ng-model="propertiesKeyFilter0">
+                    </md-input-container>
                 </div>
             </div>
-            <div flex="56">
+            <div flex="65">
             </div>
         </div>
     </div>
@@ -71,7 +74,7 @@
                    ng-class="{'fa-eye': !toggle1, 'fa-eye-slash': toggle1}"></i>
             </md-button>
         </div>
-        <div flex>
+        <div flex="95" class="diff-title">
             <h3>Identiques sur <span class="diff-text-modifiable">{{application_name}} - {{platform_name}}</span> et <span
                     class="diff-text-unmodifiable">{{compare_application}} -
                 {{compare_platform}}</span>
@@ -100,22 +103,23 @@
     </div>
     <div layout="column" ng-show="toggle1" class="diff-row-property">
         <div layout="row" layout-align="center" layout-margin class="diff-header-row-property">
-            <div flex="35" layout="row" layout-align="end center">
-                <div flex="100">
-                <input placeholder="filtrer les properties par clé"
-                       ng-model="propertiesKeyFilter1"/>
-                    </div>
+            <div flex="20" layout-align="end center">
+                    <md-input-container class="md-block">
+                        <label>filtrer les properties par clé</label>
+                        <input type="text"required ng-trim="true"
+                               ng-model="propertiesKeyFilter1">
+                    </md-input-container>
             </div>
-            <div flex="30" layout="row" layout-align="end">
+            <div flex="37" layout="row" layout-align="end">
                 <span>Selectionner les reports à annuler <span class="fa fa-stop diff-text-old"></span> =====&gt; <span
                         class="fa fa-stop diff-text-modifiable"></span></span>
             </div>
-            <div flex="5" layout="row" layout-align="space-around">
+            <div flex="6" layout="row" layout-align="space-around">
                 <md-checkbox aria-label="Selectionner toutes les valeurs" ng-model="toggle_ident"
                              ng-click="toggle_selected_to_containers_with_filter({'status':1, 'modified': true}, !toggle_ident)">
                 </md-checkbox>
             </div>
-            <div flex="30" layout="row" layout-align="start">
+            <div flex="37" layout="row" layout-align="start">
                 Tous
             </div>
         </div>
@@ -157,6 +161,7 @@
 
 <!-- Diff -->
 <div layout="column" class="bg-light">
+    <!--
     <div layout="row" layout-align="space-around center">
         <div flex="5">
             <md-button ng-click="toggle2 = !toggle2" class="md-fab md-btn-xs" aria-label="Deplier/Plier le menu"
@@ -165,7 +170,7 @@
                       ng-class="{'fa-eye': !toggle2, 'fa-eye-slash': toggle2}"></span>
             </md-button>
         </div>
-        <div flex>
+        <div flex="95" class="diff-title">
             <h3>Différents sur <span class="diff-text-modifiable">{{application_name}} - {{platform_name}}</span> et <span
                     class="diff-text-unmodifiable">{{compare_application}} -
                 {{compare_platform}}</span>
@@ -186,60 +191,143 @@
             </div>
         </div>
     </div>
-    <div layout="column" ng-show="toggle2" class="diff-row-property">
-        <div layout="row" layout-align="center" layout-margin class="diff-header-row-property">
-            <div flex="35" layout="row" layout-align="end center">
-                <div flex="100">
-                <input placeholder="filtrer les properties par clé"
-                       ng-model="propertiesKeyFilter2"/>
-                    </div>
+    <div layout="row" ng-show="toggle2">
+        <div flex="20" layout="row" layout-align="end center">
+            <div flex="100">
+                <md-input-container class="md-block">
+                    <label>filtrer les properties par clé</label>
+                    <input type="text"required ng-trim="true"
+                           ng-model="propertiesKeyFilter2">
+                </md-input-container>
             </div>
-            <div flex="30" layout="row" layout-align="end">
+        </div>
+        <div flex="37" layout="row" layout-align="end">
+            <span>Selectionner les valeurs à reporter <span
+                    class="fa fa-stop diff-text-unmodifiable"></span> =====&gt; <span
+                    class="fa fa-stop diff-text-modifiable"></span></span>
+        </div>
+        <div flex="6" layout="row" layout-align="space-around">
+            <md-checkbox aria-label="Selectionner toutes les valeurs" ng-model="toggle_diff"
+                         ng-click="toggle_selected_to_containers_with_filter({'status': 2}, !toggle_diff)">
+            </md-checkbox>
+        </div>
+        <div flex="37" layout="row" layout-align="start">
+            <span>Tous</span>
+        </div>
+    </div>
+    <md-divider ng-show="toggle2"></md-divider>
+    <div layout="row" ng-show="toggle2" ng-repeat="diff_container in diff_containers2 = (diff_containers | filter:{'status':2, 'property_name': propertiesKeyFilter2}  | orderBy:'property_name')">
+        <div flex="20" layout="row" layout-align="end center">
+            <div flex="100">
+                <label class="diff-value">{{diff_container.property_name}}</label>
+            </div>
+        </div>
+        <div flex="37" layout="row" layout-align="end">
+            <span class="diff-text-modifiable diff-value">
+                        {{diff_container.property_to_modify.value ? diff_container.property_to_modify.value : "Aucune valeur renseignée"}}
+                    </span>
+        </div>
+        <div flex="6" layout="row" layout-align="space-around">
+            <md-checkbox aria-label="Reporter la valeur" ng-model="diff_container.selected" class="diff-checkbox"></md-checkbox>
+        </div>
+        <div flex="37" layout="row" layout-align="start">
+            <span class="diff-text-unmodifiable diff-value">
+                        {{diff_container.property_to_compare_to.value ? diff_container.property_to_compare_to.value : "Aucune valeur renseignée"}}
+                    </span>
+        </div>
+    </div>-->
+<!--------------------------------------------------------------------------------------------------------------------->
+    <div layout="row">
+        <div flex="10">
+            <md-button ng-click="toggle2 = !toggle2" class="md-fab md-btn-xs" aria-label="Deplier/Plier le menu"
+                       ng-disabled="(diff_containers | filter:{'status':2}).length < 1">
+                <span class="fa"
+                      ng-class="{'fa-eye': !toggle2, 'fa-eye-slash': toggle2}"></span>
+            </md-button>
+        </div>
+
+        <div flex>
+            <h3>Différents sur <span class="diff-text-modifiable">{{application_name}} - {{platform_name}}</span> et <span
+                    class="diff-text-unmodifiable">{{compare_application}} -
+                {{compare_platform}}</span>
+                ({{(diff_containers | filter:{'status':2}).length}})</h3>
+        </div>
+    </div>
+    <div layout="row" layout-wrap ng-show="toggle2">
+        <div flex="20">
+
+        </div>
+        <div flex="35" layout-align="end start" layout="row">
+            <div><span class="diff-text-modifiable">{{application_name}} - {{platform_name}} (destination =&gt; modifiable)</span></div>
+        </div>
+        <div flex="5">
+
+        </div>
+        <div flex="40">
+            <span class="diff-text-unmodifiable">{{compare_application}} - {{compare_platform}} (source =&gt; non modifiable)</span>
+        </div>
+    </div>
+    <div layout="row" layout-wrap ng-show="toggle2">
+        <div flex="20">
+            <md-input-container class="md-block">
+                <label>filtrer les properties par clé</label>
+                <input type="text"required ng-trim="true"
+                       ng-model="propertiesKeyFilter2">
+            </md-input-container>
+        </div>
+        <div flex="35" layout-align="end start" layout="row">
+            <div>
                 <span>Selectionner les valeurs à reporter <span
                         class="fa fa-stop diff-text-unmodifiable"></span> =====&gt; <span
                         class="fa fa-stop diff-text-modifiable"></span></span>
             </div>
-            <div flex="5" layout="row" layout-align="space-around">
+        </div>
+        <div flex="5" layout="row" layout-align="center start">
+            <div>
                 <md-checkbox aria-label="Selectionner toutes les valeurs" ng-model="toggle_diff"
-                             ng-click="toggle_selected_to_containers_with_filter({'status': 2}, !toggle_diff)">
+                         ng-click="toggle_selected_to_containers_with_filter({'status': 2}, !toggle_diff)">
                 </md-checkbox>
             </div>
-            <div flex="30" layout="row" layout-align="start">
-                <span>Tous</span>
-            </div>
+        </div>
+        <div flex="40">
+            Tous
         </div>
     </div>
     <md-divider ng-show="toggle2"></md-divider>
-    <div vs-repeat class="diff-area" ng-show="toggle2"
-         layout-align="start">
-
-        <div layout="column" class="diff-row-property"
-             ng-repeat="diff_container in diff_containers2 = (diff_containers | filter:{'status':2, 'property_name': propertiesKeyFilter2}  | orderBy:'property_name')">
-
-            <div layout="row" layout-align="center" layout-margin
-                 class="diff-property"
-                 id="different-row-{{dot_to_underscore(diff_container.property_name)}}">
-                <div flex="35" class="diff-value" layout="row" layout-align="end">
-                    <label class="diff-value">{{diff_container.property_name}}</label>
-                </div>
-                <div flex="30" layout="row" layout-align="end center">
-                    <span class="diff-text-modifiable diff-value"
-                      id="value_to_replace-{{dot_to_underscore(diff_container.property_name)}}">
-                        {{diff_container.property_to_modify.value ? diff_container.property_to_modify.value : "Aucune valeur renseignée"}}
-                    </span>
-                </div>
-                <div flex="5" layout="row" layout-align="space-around">
-                    <md-checkbox aria-label="Reporter la valeur" ng-model="diff_container.selected" class="diff-checkbox"></md-checkbox>
-                </div>
-                <div flex="30" layout="row" layout-align="start">
-                    <span class="diff-text-unmodifiable diff-value"
-                      id="value_to_use-{{dot_to_underscore(diff_container.property_name)}}">
-                        {{diff_container.property_to_compare_to.value ? diff_container.property_to_compare_to.value : "Aucune valeur renseignée"}}
-                    </span>
-                </div>
+    <div layout="row" ng-show="toggle2" ng-repeat="diff_container in diff_containers2 = (diff_containers | filter:{'status':2, 'property_name': propertiesKeyFilter2}  | orderBy:'property_name')">
+        <div flex="20" layout-align="end start" layout="row">
+            <div class="diff-property-name">{{diff_container.property_name}}</div>
+        </div>
+        <div flex="35" layout-align="end start" layout="row">
+            <div class="diff-text-modifiable diff-value">
+                    {{diff_container.property_to_modify.value ? diff_container.property_to_modify.value : "Aucune valeur renseignée"}}
             </div>
+        </div>
+        <div flex="5" layout="row" layout-align="center start">
+            <div>
+                <md-checkbox aria-label="Reporter la valeur" ng-model="diff_container.selected" class="diff-checkbox"></md-checkbox>
+            </div>
+        </div>
+        <div flex="40">
+            <span class="diff-text-unmodifiable diff-value">
+              {{diff_container.property_to_compare_to.value ? diff_container.property_to_compare_to.value : "Aucune valeur renseignée"}}
+            </span>
+        </div>
+    </div>
 
-            <md-divider></md-divider>
+
+    <div layout="row" layout-wrap ng-show="toggle2">
+        <div flex="20">
+            [flex="20"]
+        </div>
+        <div flex="35" layout-align="end center" layout="row">
+            <div>[flex="35"]</div>
+        </div>
+        <div flex="5">
+            [flex="5"]
+        </div>
+        <div flex="40">
+            [flex="40"]
         </div>
     </div>
 </div>
@@ -254,7 +342,7 @@
                       ng-class="{'fa-eye': !toggle3, 'fa-eye-slash': toggle3}"></span>
             </md-button>
         </div>
-        <div flex>
+        <div flex="95" class="diff-title">
             <h3>Seulement sur <span class="diff-text-unmodifiable">{{compare_application}} - {{compare_platform}}</span>
                 ({{(diff_containers | filter:{'status':3}).length}})</h3>
         </div>
@@ -275,23 +363,26 @@
     </div>
     <div layout="column" ng-show="toggle3" class="diff-row-property">
         <div layout="row" layout-align="center" layout-margin class="diff-header-row-property">
-            <div flex="35" layout="row" layout-align="end center">
+            <div flex="20" layout="row" layout-align="end center">
                 <div flex="100">
-                    <input placeholder="filtrer les properties par clé"
-                           ng-model="propertiesKeyFilter3"/>
+                    <md-input-container class="md-block">
+                        <label>filtrer les properties par clé</label>
+                        <input type="text"required ng-trim="true"
+                               ng-model="propertiesKeyFilter3">
+                    </md-input-container>
                 </div>
             </div>
-            <div flex="30" layout="row" layout-align="end">
+            <div flex="37" layout="row" layout-align="end">
                 <span>Selectionner les valeurs à reporter <span
                         class="fa fa-stop diff-text-unmodifiable"></span> =====&gt; <span
                         class="fa fa-stop diff-text-modifiable"></span></span>
             </div>
-            <div flex="5" layout="row" layout-align="space-around">
+            <div flex="6" layout="row" layout-align="space-around">
                 <md-checkbox aria-label="Selectionner toutes les valeurs" ng-model="toggle_right"
                              ng-click="toggle_selected_to_containers_with_filter({'status': 3}, !toggle_right)">
                 </md-checkbox>
             </div>
-            <div flex="30" layout="row" layout-align="start">
+            <div flex="37" layout="row" layout-align="start">
                 <span>Tous</span>
             </div>
         </div>

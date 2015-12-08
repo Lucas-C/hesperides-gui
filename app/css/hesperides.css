@@ -197,6 +197,13 @@ h4.app-unit button {
     width: 100%;
 }
 
+/* Property name */
+.diff-property-name {
+    font-weight: bold;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
 /* Property name, value, checkbox... */
 .diff-value {
     overflow: hidden;
@@ -251,6 +258,10 @@ h4.app-unit button {
     overflow: hidden;
     text-overflow: ellipsis;
     text-align: right;
+}
+
+.diff-title {
+    padding-left: 10px;
 }
 
 .breadcrumb {

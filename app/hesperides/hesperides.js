@@ -22,8 +22,13 @@ var hesperidesModule = angular.module('hesperides', [
     'scDateTime'
 ]);
 
-hesperidesModule.run(function (editableOptions) {
-    editableOptions.theme = 'bs3';
+hesperidesModule.run(function (editableOptions, editableThemes) {
+    editableOptions.theme = 'default';
+
+    // overwrite submit button template
+    editableThemes['default'].submitTpl = '<md-button class="md-raised md-primary" ng-click="$form.$submit()"><i class="fa fa-check"></i></md-button>';
+    editableThemes['default'].cancelTpl = '<md-button class="md-raised md-warn" ng-click="$form.$cancel()"><i class="fa fa-times"></i></md-button>';
+
     //Init bootstrap ripples
     /*$(document).ready(function () {
         $.material.init();

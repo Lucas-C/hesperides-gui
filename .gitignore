@@ -6,6 +6,8 @@ tmp
 .idea
 **/*.iml
 *.iml
-
-target/hesperides-gui-0.2-SNAPSHOT.zip
+target/
+pom.xml.releaseBackup
+release.properties
+target/
 .gitignore

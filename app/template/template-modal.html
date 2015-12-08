@@ -40,9 +40,75 @@
                         <ui-codemirror id="templateContent" ui-codemirror-opts="codeMirrorOptions"
                                        ng-model="template.content" ng-keydown="$checkIfCodeMirrorInFullScreen($event)"></ui-codemirror>
                     </div>
+
+                    <div class="template-right">
+                        <fieldset class="standard">
+                            <legend>User</legend>
+                            R <select ng-model="template.rights.user.read">
+                            <option value="" ng-selected="template.rights.user.read == null"></option>
+                            <option value="true" ng-selected="template.rights.user.read === true">O</option>
+                            <option value="false" ng-selected="template.rights.user.read === false">N</option>
+                        </select>
+
+                            W <select ng-model="template.rights.user.write">
+                            <option value="" ng-selected="template.rights.user.write == null"></option>
+                            <option value="true" ng-selected="template.rights.user.write === true">O</option>
+                            <option value="false" ng-selected="template.rights.user.write === false">N</option>
+                        </select>
+
+                            X <select ng-model="template.rights.user.execute">
+                            <option value="" ng-selected="template.rights.user.execute == null"></option>
+                            <option value="true" ng-selected="template.rights.user.execute === true">O</option>
+                            <option value="false" ng-selected="template.rights.user.execute === false">N</option>
+                        </select>
+                        </fieldset>
+
+                        <fieldset class="standard">
+                            <legend>Group</legend>
+                            R <select ng-model="template.rights.group.read">
+                            <option value="" ng-selected="template.rights.group.read == null"></option>
+                            <option value="true" ng-selected="template.rights.group.read === true">O</option>
+                            <option value="false" ng-selected="template.rights.group.read === false">N</option>
+                        </select>
+
+                            W <select ng-model="template.rights.group.write">
+                            <option value="" ng-selected="template.rights.group.write == null"></option>
+                            <option value="true" ng-selected="template.rights.group.write === true">O</option>
+                            <option value="false" ng-selected="template.rights.group.write === false">N</option>
+                        </select>
+
+                            X <select ng-model="template.rights.group.execute">
+                            <option value="" ng-selected="template.rights.group.execute == null"></option>
+                            <option value="true" ng-selected="template.rights.group.execute === true">O</option>
+                            <option value="false" ng-selected="template.rights.group.execute === false">N</option>
+                        </select>
+                        </fieldset>
+
+                        <fieldset class="standard">
+                            <legend>Other</legend>
+                            R <select ng-model="template.rights.other.read">
+                            <option value="" ng-selected="template.rights.other.read == null"></option>
+                            <option value="true" ng-selected="template.rights.other.read === true">O</option>
+                            <option value="false" ng-selected="template.rights.other.read === false">N</option>
+                        </select>
+
+                            W <select ng-model="template.rights.other.write">
+                            <option value="" ng-selected="template.rights.other.write == null"></option>
+                            <option value="true" ng-selected="template.rights.other.write === true">O</option>
+                            <option value="false" ng-selected="template.rights.other.write === false">N</option>
+                        </select>
+
+                            X <select ng-model="template.rights.other.execute">
+                            <option value="" ng-selected="template.rights.other.execute == null"></option>
+                            <option value="true" ng-selected="template.rights.other.execute === true">O</option>
+                            <option value="false" ng-selected="template.rights.other.execute === false">N</option>
+                        </select>
+                        </fieldset>
+                    </div>
                 </form>
             </md-content>
         </div>
+
         <md-dialog-actions>
             <md-button ng-click="$save(template)" class="md-raised md-primary" ng-disabled="templateForm.$invalid" ng-hide="isReadOnly">Sauver le template</md-button>
             <md-button ng-click="$close(template)" class="md-raised md-success" ng-disabled="templateForm.$invalid" ng-hide="isReadOnly">Sauver et fermer</md-button>

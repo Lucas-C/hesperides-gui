@@ -201,7 +201,8 @@ templateModule.factory('Template', function () {
               filename: this.filename,
               location: this.location,
               content: this.content,
-              version_id: this.version_id
+              version_id: this.version_id,
+              rights: this.rights
           }
         };
 

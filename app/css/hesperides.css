@@ -288,6 +288,37 @@ body {
     font-weight: bold;
 }
 
+
+.template-file-right {
+    display: inline;
+    margin-left: 10px;
+    margin-right: 0px;
+}
+
+.template-right legend {
+    display: inline;
+    padding-left: 2px;
+    padding-right: 2px;
+    border: none;
+    width: auto;
+    font-weight: bold;
+    font-size: 13px;
+    margin:0px;
+    margin-left: 4px;
+    margin-right: 2px;
+}
+
+.template-right fieldset.standard {
+    display: inline;
+    margin-left: 2px;
+    margin-right: 2px;
+    padding-top: 0.35em;
+    padding-bottom: 0.625em;
+    padding-left: 0px;
+    padding-right: 0.75em;
+    border: 1px solid #DDDDDD;
+}
+
 kbd {
     padding: 2px 4px;
     font-size: 90%;

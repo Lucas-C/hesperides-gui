@@ -24,7 +24,7 @@
             </div>
         </div>
         <!-- TODO bug dans le filtrage des valeurs sur le module demoKatana -->
-        <div layout="row" ng-repeat="key_value_property in properties.key_value_properties | filter:{'name':propertiesKeyFilter, 'filtrable_value':propertiesValueFilter} | displayProperties:displayDeletedProperties | orderBy:'name':properties.isReverseOrder() track by $index">
+        <div layout="row" ng-repeat="key_value_property in properties.key_value_properties | filter:{'name':propertiesKeyFilter} | displayPropertiesByValue:propertiesValueFilter | displayProperties:displayDeletedProperties | orderBy:'name':properties.isReverseOrder() track by $index">
             <div flex="33">
                 <md-input-container class="property-label">
                 {{ key_value_property.name }}<span ng-show="key_value_property.required" class="property-required">*</span>

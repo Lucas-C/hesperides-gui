@@ -862,3 +862,20 @@ propertiesModule.filter('displayProperties', function () {
         return filtered;
     };
 });
+
+propertiesModule.filter('displayPropertiesByValue', function () {
+    return function (items, display) {
+        display = display.toLowerCase();
+        var filtered = [];
+
+        angular.forEach(items, function (item) {
+            //filtrable_value
+            if (display == undefined || display === ""
+                || (item.filtrable_value !== undefined && item.filtrable_value.toLowerCase().includes(display))) {
+                filtered.push(item);
+            }
+        });
+
+        return filtered;
+    };
+});

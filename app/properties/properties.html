@@ -155,8 +155,6 @@
         </div>
     </div>
 
-    <form name="technoForm" ng-submit="technoForm.$valid" editable-form>
-
     <div layout="row" ng-show="properties">
         <div flex="50">
             <h3><span style="margin-right: 30px">Les properties associees a <strong>{{selected_module.path.split('#').join('
@@ -197,7 +195,10 @@
                     Sauver les properties
                 </md-button>
             </h3>
-            <toggle-deleted-properties key-value-properties="instance.key_values" toggle="displayDeletedProperties"></toggle-deleted-properties>
+
+            <form name="technoForm" ng-submit="technoForm.$valid" editable-form>
+
+                <toggle-deleted-properties key-value-properties="instance.key_values" toggle="displayDeletedProperties"></toggle-deleted-properties>
 
                 <div>
                   <div flex="8">
@@ -224,10 +225,9 @@
                         <md-tooltip>{{key_value_property.comment}}</md-tooltip>
                     </div>
                 </div>
+            </form>
         </div>
     </div>
-
-    </form>
 </div>
 
 

@@ -33,7 +33,7 @@ angular.module('scDateTime', [])
 	require: 'ngModel'
 	templateUrl: (tElement, tAttrs) ->
 		if not tAttrs.theme? or tAttrs.theme is '' then tAttrs.theme = scDateTimeConfig.defaultTheme
-		return "scDateTime-#{tAttrs.theme}.tpl"
+		return if tAttrs.theme.indexOf('/') <= 0 then "scDateTime-#{tAttrs.theme}.tpl" else tAttrs.theme
 	link: (scope, element, attrs, ngModel) ->
 		attrs.$observe 'defaultMode', (val) ->
 			if val isnt 'time' and val isnt 'date' then val = scDateTimeConfig.defaultMode
@@ -107,20 +107,26 @@ angular.module('scDateTime', [])
 			scope.calendar.yearChange save
 		scope.display =
 			fullTitle: ->
-				if scope._displayMode is 'full' and not scope._verticalMode then _dateFilter scope.date, 'EEEE d MMMM yyyy, h:mm a'
-				else if scope._displayMode is 'time' then _dateFilter scope.date, 'h:mm a'
+				_timeString = if scope._hours24 then 'HH:mm' else 'h:mm a'
+				if scope._displayMode is 'full' and not scope._verticalMode
+					_dateFilter scope.date, "EEEE d MMMM yyyy, #{_timeString}"
+				else if scope._displayMode is 'time' then _dateFilter scope.date, _timeString
 				else if scope._displayMode is 'date' then _dateFilter scope.date, 'EEE d MMM yyyy'
-				else _dateFilter scope.date, 'd MMM yyyy, h:mm a'
+				else _dateFilter scope.date, "d MMM yyyy, #{_timeString}"
 			title: ->
 				if scope._mode is 'date'
-					_dateFilter scope.date, (if scope._displayMode is 'date' then 'EEEE' else 'EEEE h:mm a')
+					_dateFilter scope.date, (if scope._displayMode is 'date' then 'EEEE' else "EEEE #{
+						if scope._hours24 then 'HH:mm' else 'h:mm a'
+					}")
 				else _dateFilter scope.date, 'MMMM d yyyy'
 			super: ->
 				if scope._mode is 'date' then _dateFilter scope.date, 'MMM'
 				else ''
 			main: -> $sce.trustAsHtml(
 				if scope._mode is 'date' then _dateFilter scope.date, 'd'
-				else "#{_dateFilter scope.date, 'h:mm'}<small>#{_dateFilter scope.date, 'a'}</small>"
+				else
+					if scope._hours24 then _dateFilter scope.date, 'HH:mm'
+					else "#{_dateFilter scope.date, 'h:mm'}<small>#{_dateFilter scope.date, 'a'}</small>"
 			)
 			sub: ->
 				if scope._mode is 'date' then _dateFilter scope.date, 'yyyy'
@@ -138,9 +144,14 @@ angular.module('scDateTime', [])
 				mindate = scope.restrictions.mindate
 				maxdate = scope.restrictions.maxdate
 				(mindate? and currentDate < mindate) or (maxdate? and currentDate > maxdate)
-			isVisibleMonthButton: (minOrMax) ->
-				date = scope.restrictions[minOrMax]
-				date? and @_month <= date.getMonth() and @_year <= date.getFullYear()
+			isPrevMonthButtonHidden: () ->
+                date = scope.restrictions["mindate"]
+                date? and @_month <= date.getMonth() and @_year <= date.getFullYear()
+            },
+            isNextMonthButtonHidden: () ->
+                date = scope.restrictions["maxdate"]
+                date? and @_month >= date.getMonth() and @_year >= date.getFullYear()
+            },            
 			class: (d) ->
 				classString = ''
 				# coffeelint: disable=max_line_length

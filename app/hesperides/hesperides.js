@@ -20,9 +20,19 @@ var hesperidesModule = angular.module('hesperides', [
     'mgo-angular-wizard',
     'vs-repeat',
     'scDateTime'
-]);
+]).value('scDateTimeConfig', {
+    defaultTheme: 'sc-date-time/hesperides.tpl',
+    autosave: false,
+    defaultMode: 'date',
+    defaultDate: undefined, //should be date object!!
+    displayMode: undefined,
+    defaultOrientation: false,
+    displayTwentyfour: true,
+    compact: true,
+    autosave:true
+});
 
-hesperidesModule.run(function (editableOptions, editableThemes) {
+hesperidesModule.run(function (editableOptions, editableThemes, $rootScope) {
     editableOptions.theme = 'default';
 
     // overwrite submit button template
@@ -35,6 +45,36 @@ hesperidesModule.run(function (editableOptions, editableThemes) {
     });*/
     //Prevent anoying behavior of bootstrap with dropdowns
     $(document).unbind('keydown.bs.dropdown.data-api');
+
+    /**
+     * Hack to calculate correctly margin of calendar.
+     *
+     * @param calendar calendar var in scope of calendar
+     * @param cssClass css class of fisrt day
+     * @returns {string}
+     */
+    $rootScope.offsetMargin = function(calendar, cssClass) {
+        var obj = $('.' + cssClass);
+        var selectedObj;
+
+        for (var index = 0; index < obj.length; index++) {
+            selectedObj = obj[index];
+
+            if (selectedObj.getAttribute("aria-label") === "1") {
+                break;
+            }
+        }
+
+        var calendarOffsetMagin;
+
+        if (selectedObj.clientWidth) {
+            calendarOffsetMagin = (new Date(calendar._year, calendar._month).getDay() * selectedObj.clientWidth);
+        } else {
+            calendarOffsetMagin = 0;
+        }
+
+        return calendarOffsetMagin + 'px';
+    };
 });
 
 hesperidesModule.factory('Page', function () {

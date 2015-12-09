@@ -410,8 +410,8 @@ kbd {
 }
 
 .property-global {
-    font-weight: bold;
-    text-align: right;
+    font-style: italic;
+    border: none !important;
 }
 
 .property-required {

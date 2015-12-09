@@ -39,7 +39,7 @@
                         ng-required="key_value_property.required"
                         >
                     <label>{{key_value_property.defaultValue ? '[default=' + key_value_property.defaultValue + '] ' : ''}} {{key_value_property.comment}}</label>
-                    <input type="text" ng-trim="true" ng-model="key_value_property.value" readonly="!key_value_property.inModel"  aria-label="Filtrer les properties par valeur (les valeurs modifiées ne seront filtrables que suite &agrave; une sauvegarde)" ng-class="{'text-stroke':!key_value_property.inModel}"/>
+                    <input type="text" ng-trim="true" ng-model="key_value_property.value" ng-readonly="!key_value_property.inModel" aria-label="Filtrer les properties par valeur (les valeurs modifiées ne seront filtrables que suite &agrave; une sauvegarde)" ng-class="{'text-stroke':!key_value_property.inModel}"/>
                 </md-input-container>
 
                 <!-- Edit layout, but this key is filled by global properties -->
@@ -47,11 +47,12 @@
                         class="md-block"
                         ng_if="key_value_property.inGlobal"
                         >
-                    <label class="control-label">{{key_value_property.value}}
-                        <md-tooltip md-direction="right">
-                            Valeur automatiquement valorisée <br/>par la variable globale du même nom.<br/>Pour la modifier, changez son nom dans le template <br/>ou éditez la variable globale.
-                        </md-tooltip>
-                    </label>
+                    <input type="text" ng-model="key_value_property.value" ng-readonly="true" aria-label="Ancienne property" class="property-global" />
+
+                    <md-tooltip md-direction="right">
+                        Valeur automatiquement valorisée <br/>par la variable globale du même nom.<br/>Pour la modifier, changez son nom dans le template <br/>ou éditez la variable globale.
+                    </md-tooltip>
+
                 </md-input-container>
             </div>
         </div>

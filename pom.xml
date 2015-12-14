@@ -48,8 +48,8 @@
         </snapshotRepository>
     </distributionManagement>
     <scm>
-        <connection>scm:git:git@gitlab.socrate.vsct.fr:emeric_martineau/hesperides-gui.git</connection>
-        <developerConnection>scm:git:git@gitlab.socrate.vsct.fr:emeric_martineau/hesperides-gui.git</developerConnection>
+        <connection>scm:git:git@gitlab.socrate.vsct.fr:dt/hesperides-gui.git</connection>
+        <developerConnection>scm:git:git@gitlab.socrate.vsct.fr:dt/hesperides-gui.git</developerConnection>
         <tag>0.2.6.2</tag>
     </scm>
 </project>

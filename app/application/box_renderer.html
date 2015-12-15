@@ -3,63 +3,67 @@
         <a href="" editable-text="name" title="Modifier le nom du groupe logique"
            onbeforesave="update_box_name(box, name, $data)">{{name}}</a>
     </div>
-    <div flex="50" style="padding-right:10px; justify-content: flex-end">
-        <md-button ng-click="search_module(box)" aria-label="Ajouter un module">
+    <div flex="50" style="padding-right:10px;" layout="row" layout-align="end start">
+        <md-button ng-click="search_module(box)" aria-label="Ajouter un module" class="md-xs">
             <md-tooltip>Ajouter un module</md-tooltip>
             <i class="fa fa-plus"></i>
         </md-button>
         <md-button ng-click="open_add_box_dialog(box)"
-                   aria-label="Ajouter un groupe logique">
+                   aria-label="Ajouter un groupe logique" class="md-xs">
             <md-tooltip>Ajouter un groupe logique</md-tooltip>
             <i class="fa fa-inbox"></i>
         </md-button>
         <md-button ng-really-message="Supprimer le groupe logique {{name}} ?"
                    aria-label="Supprimer le groupe logique"
                    ng-really-click="remove_box(name, box)" ng-if="box.isEmpty()"
-                   class="md-warn">
+                   class="md-warn md-xs">
             <md-tooltip>Supprimer le groupe logique</md-tooltip>
             <i class="fa fa-trash"></i>
         </md-button>
     </div>
 </div>
 <ul class="list-inline box">
+
     <li class="jumbotron" ng-repeat="(name, box) in box.children"
         ng-include="'application/box_renderer.html'"></li>
+
     <li ng-if="box.modules.length > 0" class="jumbotron instance" ng-repeat="module in box.modules">
         <div style="height: 38px; width: 100%" class="vertical-align">
-            <div style="padding-left:10px;white-space: nowrap">
-                <span><strong><a href="" ng-click="change_module(module)"
-                                 title="Modifier la version du module">{{module.title}}</a></strong></span>
+            <div style="padding-left:10px;white-space: nowrap" layout="row" layout-align="start center">
+                <span><strong><a href="" ng-click="change_module(module)">{{module.title}}
+                    <md-tooltip>Modifier la version du module</md-tooltip>
+                </a></strong></span>
             </div>
             <div style="justify-content: flex-end">
                 <md-button ng-click="open_add_instance_dialog(module)"
-                           aria-label="Ajouter une instance">
+                           aria-label="Ajouter une instance" class="md-xs">
                     <md-tooltip>Ajouter une instance</md-tooltip>
                     <i class="fa fa-plus"></i>
                 </md-button>
-                <md-button class="md-btn-xs" aria-label="Editer les properties"
+                <md-button class="md-xs" aria-label="Editer les properties"
                            ng-click="edit_properties(platform, module)">
                     <md-tooltip>Editer les properties</md-tooltip>
                     <i class="fa fa-list"></i>
                 </md-button>
                 <md-button aria-label="Comparer les properties"
-                           ng-click="diff_properties(module)">
+                           ng-click="diff_properties(module)" class="md-xs">
                     <md-tooltip>Comparer les properties</md-tooltip>
                     <i class="fa fa-exchange"></i>
                 </md-button>
                 <md-button ng-really-message="Supprimer le module {{module.title}} et toutes ses instances ?"
                            aria-label="Supprimer le module"
                            ng-really-click="delete_module(module, box)"
-                           class="md-warn">
+                           class="md-warn md-xs">
                     <md-tooltip>Supprimer le module</md-tooltip>
                     <i class="fa fa-trash"></i>
                 </md-button>
             </div>
         </div>
+
         <div>
             <ul class="list-inline" style="padding-top:10px; padding-bottom:10px;padding-left: 10px;">
                 <li ng-repeat="instance in module.instances | orderBy:'name':false"
-                    ng-mouseover="instance.hover = true" ng-mouseleave="instance.hover = false">
+                    ng-mouseover="instance.hover = true" ng-mouseleave="instance.hover = false" class="property-instance">
                     <md-button ng-click="edit_instance(instance, module.properties_path)"
                                aria-label="Editer les properties de l'instance"
                                class="">
@@ -76,5 +80,7 @@
                 </li>
             </ul>
         </div>
+
     </li>
+
 </ul>

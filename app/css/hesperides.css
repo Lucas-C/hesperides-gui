@@ -69,6 +69,7 @@ body {
 }
 
 .box .jumbotron {
+    display: inline-block;
     margin-top: 5px;
     margin-bottom: 0px;
     margin-left: 0px;
@@ -369,6 +370,11 @@ kbd {
     background-color: transparent !important;
 }
 
+.md-xs {
+    min-width: 0px !important;
+    min-height: 0px !important;
+}
+
 /******************************************************************************
  * Module
  */
@@ -422,4 +428,8 @@ kbd {
     text-align: right;
     font-weight: bold;
     width: 100%;
+}
+
+.property-instance {
+    display: inline;
 }

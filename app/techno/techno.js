@@ -11,6 +11,13 @@ technoModule.controller('TechnoCtrl', ['$scope', '$location', '$routeParams', 'T
     $scope.techno = new Techno($routeParams.name, $routeParams.version, ($routeParams.type === "workingcopy") ? true : false);
     $scope.templateEntries = [];
 
+    // Label for rights
+    $scope.rights = [
+        {label: '<default>', value: null},
+        {label: 'O', value: true},
+        {label: 'N', value: false}
+    ];
+
     if ($scope.techno.is_working_copy) {
         TechnoService.get_all_templates_from_workingcopy($scope.techno.name, $scope.techno.version).then(function (templateEntries) {
             $scope.templateEntries = templateEntries;

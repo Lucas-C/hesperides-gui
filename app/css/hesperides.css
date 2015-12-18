@@ -375,6 +375,18 @@ kbd {
     min-height: 0px !important;
 }
 
+button.md-warn  {
+    color: red !important;
+}
+
+a.md-button.md-default-theme.md-warn.md-raised:not([disabled]):hover, a.md-button.md-warn.md-raised:not([disabled]):hover, a.md-button.md-default-theme.md-warn.md-fab:not([disabled]):hover, a.md-button.md-warn.md-fab:not([disabled]):hover, .md-button.md-default-theme.md-warn.md-raised:not([disabled]):hover, .md-button.md-warn.md-raised:not([disabled]):hover, .md-button.md-default-theme.md-warn.md-fab:not([disabled]):hover, .md-button.md-warn.md-fab:not([disabled]):hover {
+    color: white !important;
+}
+
+a.md-button.md-default-theme.md-warn.md-raised:not([disabled]), a.md-button.md-warn.md-raised:not([disabled]), a.md-button.md-default-theme.md-warn.md-fab:not([disabled]), a.md-button.md-warn.md-fab:not([disabled]), .md-button.md-default-theme.md-warn.md-raised:not([disabled]), .md-button.md-warn.md-raised:not([disabled]), .md-button.md-default-theme.md-warn.md-fab:not([disabled]), .md-button.md-warn.md-fab:not([disabled]) {
+    color: white !important;
+}
+
 /******************************************************************************
  * Module
  */

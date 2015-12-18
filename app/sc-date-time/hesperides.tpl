@@ -57,19 +57,44 @@
       </div>
 
       <div class="time-control">
-        <div class="time-inputs">
-            <div>
-                <md-button ng-click="clock._incHours(1); save()" aria-label="{{:: translations.incrementHours}}" class="hours up"><i class="fa fa-caret-up"></i></md-button>
+          <div layout="row">
+            <div flex>
+                <md-button ng-click="clock._incHours(1); save()" aria-label="{{:: translations.incrementHours}}" class="hours up md-xs"><i class="fa fa-caret-up"></i></md-button>
+            </div>
+            <div flex>
                 <input type="number" min="0" max="23" ng-model="clock._hours" ng-click="save()" />
-                <md-button ng-click="clock._incHours(-1); save()" aria-label="{{:: translations.decrementHours}}" class="hours down"><i class="fa fa-caret-down"></i></md-button>
+            </div>
+            <div flex>
+                <md-button ng-click="clock._incHours(-1); save()" aria-label="{{:: translations.decrementHours}}" class="hours down md-xs"><i class="fa fa-caret-down"></i></md-button>
+            </div>
+          </div>
+
+          <div layout="row">
+            <div flex>
+                <md-button ng-click="clock._incMinutes(1); save()" aria-label="{{:: translations.incrementMinutes}}" class="minutes up md-xs"><i class="fa fa-caret-up"></i></md-button>
+            </div>
+            <div flex>
+                <input type="number" min="0" max="59" ng-model="clock._minutes" ng-click="save()" />
+            </div>
+            <div flex>
+                <md-button ng-click="clock._incMinutes(-1); save()" aria-label="{{:: translations.decrementMinutes}}" class="minutes down md-xs"><i class="fa fa-caret-down"></i></md-button>
+            </div>
+          </div>
+          <!--
+        <div class="time-inputs">
+            <div style="display:inline">
+                <md-button ng-click="clock._incHours(1); save()" aria-label="{{:: translations.incrementHours}}" class="hours up md-xs"><i class="fa fa-caret-up"></i></md-button>
+                <input type="number" min="0" max="23" ng-model="clock._hours" ng-click="save()" />
+                <md-button ng-click="clock._incHours(-1); save()" aria-label="{{:: translations.decrementHours}}" class="hours down md-xs"><i class="fa fa-caret-down"></i></md-button>
             </div>
 
             <div>
-                <md-button ng-click="clock._incMinutes(1); save()" aria-label="{{:: translations.incrementMinutes}}" class="minutes up"><i class="fa fa-caret-up"></i></md-button>
+                <md-button ng-click="clock._incMinutes(1); save()" aria-label="{{:: translations.incrementMinutes}}" class="minutes up md-xs"><i class="fa fa-caret-up"></i></md-button>
                 <input type="number" min="0" max="59" ng-model="clock._minutes" ng-click="save()" />
-                <md-button ng-click="clock._incMinutes(-1); save()" aria-label="{{:: translations.decrementMinutes}}" class="minutes down"><i class="fa fa-caret-down"></i></md-button>
+                <md-button ng-click="clock._incMinutes(-1); save()" aria-label="{{:: translations.decrementMinutes}}" class="minutes down md-xs"><i class="fa fa-caret-down"></i></md-button>
             </div>
         </div>
+        -->
       </div>
     </div>
   </div>

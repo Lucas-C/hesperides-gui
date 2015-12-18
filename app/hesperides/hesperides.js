@@ -30,6 +30,9 @@ var hesperidesModule = angular.module('hesperides', [
     displayTwentyfour: true,
     compact: true,
     autosave:true
+}).value('scDateTimeI18n', {
+    weekdays: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+    calendar: 'Calendrier'
 });
 
 hesperidesModule.run(function (editableOptions, editableThemes, $rootScope) {

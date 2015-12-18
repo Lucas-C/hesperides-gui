@@ -667,7 +667,12 @@ propertiesModule.directive('toggleDeletedProperties', function () {
             keyValueProperties: '=',
             toggle: '='
         },
-        template: '<md-checkbox type="checkbox" ng-model="toggle" ng-init="toggle=false"/> Afficher les propri&eacute;t&eacute;s supprim&eacute;es ({{ getNumberOfDeletedProperties(keyValueProperties) }})',
+        template: '<md-switch class="md-primary md-block" ' +
+                  'ng-model="toggle"' +
+                  'ng-init="toggle=false" ' +
+                  'aria-label="Afficher les propri&eacute;t&eacute;s supprim&eacute;es">' +
+                  'Afficher les propri&eacute;t&eacute;s supprim&eacute;es ({{ getNumberOfDeletedProperties(keyValueProperties) }})' +
+                  '</md-switch>',
         link: function (scope, element, attrs) {
             scope.getNumberOfDeletedProperties = function (tab) {
                 var count = 0;
@@ -685,6 +690,9 @@ propertiesModule.directive('toggleDeletedProperties', function () {
     }
 
 });
+
+
+
 
 propertiesModule.factory('Properties', function () {
 

@@ -142,14 +142,28 @@ hesperidesModule.config(['$routeProvider', '$mdThemingProvider', '$ariaProvider'
 
 }]);
 
-hesperidesModule.directive('ngReallyClick', [function () {
+hesperidesModule.directive('ngReallyClick', ['$mdDialog', function ($mdDialog) {
     return {
         restrict: 'A',
         link: function (scope, element, attrs) {
             element.bind('click', function () {
-                var message = attrs.ngReallyMessage;
-                if (message && confirm(message)) {
-                    scope.$apply(attrs.ngReallyClick);
+                // To herite apply function
+                var modalScope = scope.$new(true);
+
+                if (attrs.ngReallyMessage) {
+                    var confirm = $mdDialog.confirm()
+                        .title('Question ?')
+                        .textContent(attrs.ngReallyMessage)
+                        .ariaLabel(attrs.ngReallyMessage)
+                        //.targetEvent(ev)
+                        .theme('confirm-hesperides-dialog')
+                        .ok('Oui')
+                        .cancel('Non');
+                    $mdDialog.show(confirm).then(function() {
+                        modalScope.$apply(attrs.ngReallyClick);
+                    }, function() {
+                        //$scope.status = 'You decided to keep your debt.';
+                    });
                 }
             });
         }

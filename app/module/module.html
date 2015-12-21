@@ -5,6 +5,7 @@
             <h3><span> Module <strong>{{module.name}}</strong>, Version <strong>{{module.version}}</strong></span>
                 <span ng-show="isWorkingCopy"> (Working Copy)</span></span>
                 <md-button class="md-raised md-primary"
+                           ng-show="is_workingcopy"
                            ng-click="open_create_release_dialog(module)"
                         >Créer la release <i class="fa fa-share"></i></md-button>
             </h3>

@@ -357,17 +357,32 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
                 $scope.selected_module = module;
                 $scope.instance = undefined; //hide the instance panel if opened
-
-                //Scroll to properties
-                $timeout(function () {
-                    $('html, body').animate({
-                        scrollTop: $('#propertiesButtonsContainer').offset().top
-                    }, 1000, 'swing');
-                }, 0);
+                $scope.showGlobalProperties = undefined;
 
             });
         });
 
+    };
+
+    $scope.movePropertiesDivHolderToCursorPosition = function(event){
+        var specificOffset = 10;
+        var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+
+        if(isChrome) {
+            specificOffset += 11;
+        }
+
+        var parentY = $('#propertiesDivHolder').parent().offset().top;
+        var clickedElementPosition = event.target.getBoundingClientRect().top + window.pageYOffset;
+        var padding = clickedElementPosition - parentY - specificOffset;
+        $('#propertiesDivHolder').css('padding-top', padding);
+
+        //Scroll to properties
+        $timeout(function () {
+            $('html, body').animate({
+                scrollTop: clickedElementPosition - 15
+            }, 1000, 'swing');
+        }, 0);
     };
 
     $scope.clean_properties = function (properties) {
@@ -383,7 +398,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
             //Increase platform number
             $scope.platform.version_id = $scope.platform.version_id + 1;
         });
-    }
+    };
 
     $scope.save_properties = function (properties, module) {
         ApplicationService.save_properties($routeParams.application, $scope.platform, properties, module.properties_path).then(function (properties) {
@@ -408,7 +423,14 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         ApplicationService.get_instance_model($routeParams.application, $scope.platform, properties_path).then(function (model) {
             $scope.instance = instance.mergeWithModel(model);
             $scope.properties = undefined; //hide the properties panel if opened
+            $scope.showGlobalProperties = undefined;
         });
+    };
+
+    $scope.showGlobalPropertiesDisplay = function () {
+        $scope.instance = undefined;
+        $scope.properties = undefined;
+        $scope.showGlobalProperties = true;
     };
 
     $scope.get_platform_to_compare = function (application, platform, lookPast, date) {
@@ -894,4 +916,105 @@ propertiesModule.filter('displayPropertiesByValue', function () {
 
         return filtered;
     };
+});
+
+propertiesModule.filter('filterProperties', ['$filter', function ($filter) {
+    return function (boxes_object, searchString) {
+
+        //A box is filtered by its name or its modules names or its children boxes
+        var filter_one_box = function(box){
+            //See if the parent box was previously fitered thanks to its name
+            if(box.parent_box != undefined && box.parent_box.name_filtered == true){
+                //If the parent box was filtered by its name, we want to display the children boxes, jsut return true
+                return true;
+            }
+
+            //See if this box can be filtered by its name
+            if(box.name.indexOf($filter('uppercase')(searchString)) > -1 ||
+                box.name.indexOf(searchString) > -1) {
+
+                //If so, hold a boolean on that box. It will be helpful when the filter will be called by one of the box's children
+                box.name_filtered = true;
+                return true;
+            }
+
+            //We couldn't filter by name so we try to iterate over the modules directly located in that box and filter by their name
+            var found_matching_module = false;
+            angular.forEach(box.modules, function(module){
+                if(module.name.indexOf($filter('uppercase')(searchString)) > -1 ||
+                    module.name.indexOf(searchString) > -1) {
+
+                    found_matching_module = true;
+                }
+            });
+
+            if(found_matching_module){
+                box.name_filtered = false;
+                return true;
+            }
+
+            var found_matching_children_box = false;
+            angular.forEach(box.children, function(box){
+                if(filter_one_box(box)){
+                    found_matching_children_box = true;
+                }
+            });
+
+            box.name_filtered = false;
+            return found_matching_children_box;
+        };
+
+        if (searchString != undefined && searchString != "") {
+            var picked = _.pick(boxes_object, function(box){
+                return filter_one_box(box);
+            });
+            return picked;
+        } else return boxes_object;
+    };
+}]);
+
+propertiesModule.directive('initInstanceFunctions', function () {
+
+    return {
+        restrict: 'E',
+        replace: true,
+        template: "<div></div>",
+        link: function (scope, element, attrs) {
+            scope.treedisplay = false;
+            scope.sign = "+";
+
+            scope.displayInstanceDetails = function () {
+                scope.treedisplay = !scope.treedisplay;
+
+                if(scope.sign == "+") {
+                    scope.sign = "-";
+                } else {
+                    scope.sign = "+";
+                }
+            };
+        }
+    }
+});
+
+propertiesModule.directive('initInstances', function () {
+
+    return {
+        restrict: 'E',
+        replace: true,
+        template: "<div></div>",
+        link: function (scope, element, attrs) {
+            scope.instancedisplay = false;
+            scope.sign = "+";
+
+            scope.displayInstances = function () {
+                scope.instancedisplay = !scope.instancedisplay;
+
+                if(scope.sign == "+") {
+                    scope.sign = "-";
+                } else {
+                    scope.sign = "+";
+                }
+            };
+        }
+    }
 });

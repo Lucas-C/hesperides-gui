@@ -142,14 +142,11 @@ hesperidesModule.config(['$routeProvider', '$mdThemingProvider', '$ariaProvider'
 
 }]);
 
-hesperidesModule.directive('ngReallyClick', ['$mdDialog', function ($mdDialog) {
+hesperidesModule.directive('ngReallyClick', ['$mdDialog', '$timeout', function ($mdDialog, $timeout) {
     return {
         restrict: 'A',
         link: function (scope, element, attrs) {
             element.bind('click', function () {
-                // To herite apply function
-                var modalScope = scope.$new(true);
-
                 if (attrs.ngReallyMessage) {
                     var confirm = $mdDialog.confirm()
                         .title('Question ?')
@@ -159,8 +156,13 @@ hesperidesModule.directive('ngReallyClick', ['$mdDialog', function ($mdDialog) {
                         .theme('confirm-hesperides-dialog')
                         .ok('Oui')
                         .cancel('Non');
+
                     $mdDialog.show(confirm).then(function() {
-                        modalScope.$apply(attrs.ngReallyClick);
+                        // To prevent '$digest already in progress' message
+                        // see https://stackoverflow.com/questions/12729122/angularjs-prevent-error-digest-already-in-progress-when-calling-scope-apply
+                        $timeout(function() {
+                            scope.$apply(attrs.ngReallyClick);
+                        });
                     }, function() {
                         //$scope.status = 'You decided to keep your debt.';
                     });

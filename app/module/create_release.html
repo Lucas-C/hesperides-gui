@@ -1,17 +1,17 @@
 <md-dialog flex="30">
     <md-dialog-content>
-        <div class="modal-header">
-            <h3 class="modal-title">Créer une release</h3>
-        </div>
-        <div class="modal-body">
-            <form name="createReleaseForm" novalidate ng-submit="createReleaseForm.$valid && $close(release_version)">
-                <md-input-container md-no-float>
-                    <label>Version de la release</label>
-                    <input type="text" required ng-trim="true" ng-model="release_version"
-                           id="release_version" placeholder="Le numéro..."/>
-                </md-input-container>
-                <input type="submit" id="submit" value="Submit" ng-hide="true"/>
-            </form>
+        <div class="ng-binding">
+            <h2>Créer une release</h2>
+            <md-content layout-padding class="autoScroll">
+                <form name="createReleaseForm" novalidate ng-submit="createReleaseForm.$valid && $close(release_version)">
+                    <md-input-container md-no-float>
+                        <label>Version de la release</label>
+                        <input type="text" required ng-trim="true" ng-model="release_version"
+                               id="release_version" placeholder="Le numéro..."/>
+                    </md-input-container>
+                    <input type="submit" id="submit" value="Submit" ng-hide="true"/>
+                </form>
+            </md-content>
         </div>
         <md-dialog-actions>
             <md-button ng-really-message="Etes-vous sûr de vouloir créer la release {{release_version}} ? C'est une opération irreversible !"

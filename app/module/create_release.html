@@ -6,7 +6,7 @@
                 <form name="createReleaseForm" novalidate ng-submit="createReleaseForm.$valid && $close(release_version)">
                     <md-input-container md-no-float>
                         <label>Version de la release</label>
-                        <input type="text" required ng-trim="true" ng-model="release_version"
+                        <input type="text" required ng-trim="true" ng-model="release_version" md-autofocus="true"
                                id="release_version" placeholder="Le numéro..."/>
                     </md-input-container>
                     <input type="submit" id="submit" value="Submit" ng-hide="true"/>

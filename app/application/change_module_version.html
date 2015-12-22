@@ -18,6 +18,7 @@
                                 md-selected-item-change="(module) ? moduleSearched = module : false"
                                 md-min-length="0"
                                 md-autoselect="true"
+                                md-autofocus="true"
                                 placeholder="Rechercher la nouvelle version">
                             <span md-highlight-text="ctrl.searchText" ng-show="!module.is_working_copy">{{module.name}} {{module.version}}</span>
                             <span md-highlight-text="ctrl.searchText" ng-show="module.is_working_copy">{{module.name}} {{module.version}} (working copy)</span>

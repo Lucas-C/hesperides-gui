@@ -1,3 +1,4 @@
+<form class="form-horizontal narrow" role="form">
     <div class="form-group">
         <div class="col-md-12">
             <toggle-deleted-properties key-value-properties="properties.key_value_properties" toggle="displayDeletedProperties"></toggle-deleted-properties>
@@ -16,12 +17,12 @@
             <input class="form-control" placeholder="filtrer les properties par valeur (les valeurs modifiées ne seront filtrables que suite &agrave; une sauvegarde)" ng-model="propertiesValueFilter"/>
         </div>
     </div>
-<div vs-repeat style="max-height: 450px; overflow: auto">
+    <div vs-repeat style="max-height: 450px; overflow: auto">
         <div class="form-group" style="width: 100%" ng-class="{'property-not-used': !key_value_property.inModel}" ng-repeat="key_value_property in properties.key_value_properties | filter:{'name':propertiesKeyFilter, 'filtrable_value':propertiesValueFilter} | displayProperties:displayDeletedProperties | orderBy:'name':properties.isReverseOrder() track by $index">
-        <label style="text-align: right; overflow: hidden; text-overflow: ellipsis" title="{{ key_value_property.name }}" for="input-{{ key_value_property.name }}" class="col-md-4 control-label">{{ key_value_property.name }}</label> <span ng-show="key_value_property.required" style="color:red">*</span>
-        <!-- Edit layout, and this key is not filled by global properties -->
-        <div class="col-md-8" ng_if="!key_value_property.inGlobal">
-            <input id="input-{{ key_value_property.name }}"
+            <label style="text-align: right; overflow: hidden; text-overflow: ellipsis" title="{{ key_value_property.name }}" for="input-{{ key_value_property.name }}" class="col-md-4 control-label">{{ key_value_property.name }}</label> <span ng-show="key_value_property.required" style="color:red">*</span>
+            <!-- Edit layout, and this key is not filled by global properties -->
+            <div class="col-md-8" ng_if="!key_value_property.inGlobal">
+                <input id="input-{{ key_value_property.name }}"
                    type="text" class="form-control"
                    ng-class="{'property-using-global': key_value_property.useGlobal}"
                    placeholder="{{key_value_property.defaultValue ? '[default=' + key_value_property.defaultValue + '] ' : ''}}{{key_value_property.comment}}"
@@ -29,19 +30,20 @@
                    tooltip-trigger="focus"
                    ng-required="key_value_property.required"
                    tooltip-placement="top" />
-        </div>
-        <!-- Edit layout, but this key is filled by global properties -->
-        <div class="col-md-8" ng_if="key_value_property.inGlobal">
-            <label id="view-{{ key_value_property.name }}" class="control-label">{{key_value_property.value}}
-            <md-tooltip md-direction="right">
-                Valeur automatiquement valorisée <br/>par la variable globale du même nom.<br/>Pour la modifier, changez son nom dans le template <br/>ou éditez la variable globale.
-            </md-tooltip>
-            </label>
+            </div>
+            <!-- Edit layout, but this key is filled by global properties -->
+            <div class="col-md-8" ng_if="key_value_property.inGlobal">
+                <label id="view-{{ key_value_property.name }}" class="control-label">{{key_value_property.value}}
+                <md-tooltip md-direction="right">
+                    Valeur automatiquement valorisée <br/>par la variable globale du même nom.<br/>Pour la modifier, changez son nom dans le template <br/>ou éditez la variable globale.
+                </md-tooltip>
+                </label>
+            </div>
         </div>
     </div>
-</div>
-<h3 ng-show="properties.iterable_properties.length > 0">Proprietes multiples :</h3>
-<dl class="dl-horizontal text-overflow" style="margin-bottom:0" ng-repeat="iterable_property in properties.iterable_properties | orderBy:'name' track by $index">
-    <dt>{{ iterable_property.name }}</dt>
-    <dd ng-repeat="field in iterable_property.fields | orderBy:'name' track by $index">{{ field.name }}<small style="padding-left: 10px;"><em>{{ field.comment }}</em></small></dd>
-</dl>
+    <h3 ng-show="properties.iterable_properties.length > 0">Proprietes multiples :</h3>
+    <dl class="dl-horizontal text-overflow" style="margin-bottom:0" ng-repeat="iterable_property in properties.iterable_properties | orderBy:'name' track by $index">
+        <dt>{{ iterable_property.name }}</dt>
+        <dd ng-repeat="field in iterable_property.fields | orderBy:'name' track by $index">{{ field.name }}<small style="padding-left: 10px;"><em>{{ field.comment }}</em></small></dd>
+    </dl>
+</form>

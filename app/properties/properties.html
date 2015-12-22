@@ -624,9 +624,9 @@
                     <span>Sauver les properties</span>
                 </button>
             </h3>
-            <form class="form-horizontal narrow" role="form" name="technoForm" ng-submit="technoForm.$valid" editable-form>
-            <toggle-deleted-properties key-value-properties="instance.key_values" toggle="displayDeletedProperties"></toggle-deleted-properties>
 
+            <toggle-deleted-properties key-value-properties="instance.key_values" toggle="displayDeletedProperties"></toggle-deleted-properties>
+            <form class="form-horizontal narrow" role="form" editable-form>
                 <div class="form-group">
                   <div class="col-md-1">
                     <button id="sortInstancePropertiesButton" ng-click="instance.switchOrder()"

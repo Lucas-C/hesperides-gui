@@ -455,11 +455,14 @@ button.md-primary.md-button.md-confirm-hesperides-dialog-theme.md-ink-ripple {
     font-weight: bold;
     border: 0px !important;
     width: 100%;
-    padding-bottom: 2px!important;
+    padding-bottom: 2px !important;
 }
 
 .property-instance {
     display: inline;
+    display:inline-block;
 }
 
-.pro
+.instance-delete-button-hide {
+    visibility: hidden;
+}

@@ -141,7 +141,10 @@
 
                         <div flex="33">
                             <md-input-container class="property-label" ng-class="{'text-stroke':!key_value_property.inModel}">
-                                <input type="text" ng-trim="true" ng-model="key_value_property.name" aria-label="{{ key_value_property.name }}" ng-readonly="true" class="property-label" />
+                                <input type="text" ng-trim="true" ng-model="key_value_property.name" aria-label="{{key_value_property.name}}" ng-readonly="true" class="property-label" />
+                                <md-tooltip md-direction="top">
+                                    {{key_value_property.name}}
+                                </md-tooltip>
                             </md-input-container>
                         </div>
 

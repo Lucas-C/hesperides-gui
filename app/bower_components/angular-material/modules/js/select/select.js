@@ -2,7 +2,7 @@
  * Angular Material Design
  * https://github.com/angular/material
  * @license MIT
- * v1.0.0-rc6
+ * v1.0.1
  */
 (function( window, angular, undefined ){
 "use strict";
@@ -194,13 +194,8 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $par
     attr.tabindex = attr.tabindex || '0';
 
     return function postLink(scope, element, attr, ctrls) {
+      var untouched = true;
       var isDisabled, ariaLabelBase;
-
-      // Remove event ngModel's blur listener for touched and untouched
-      // we will do it ourself.
-      $mdUtil.nextTick(function() {
-        element.off('blur');
-      });
 
       var containerCtrl = ctrls[0];
       var mdSelectCtrl = ctrls[1];
@@ -256,6 +251,7 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $par
         inputCheckValue();
       };
 
+
       attr.$observe('placeholder', ngModelCtrl.$render);
 
 
@@ -290,11 +286,22 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $par
             if (containerCtrl && containerCtrl.element.hasClass('md-input-has-value')) {
               containerCtrl.setFocused(true);
             }
-          })
-          .on('blur', function(ev) {
+          });
+
+        // Wait until postDigest so that we attach after ngModel's 
+        // blur listener so we can set untouched.
+        $mdUtil.nextTick(function () {
+          element.on('blur', function() {
+            if (untouched) {
+              untouched = false;
+              ngModelCtrl.$setUntouched();
+            }
+
+            if (selectScope.isOpen) return;
             containerCtrl && containerCtrl.setFocused(false);
             inputCheckValue();
           });
+        });
       }
 
       mdSelectCtrl.triggerClose = function() {
@@ -395,6 +402,10 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $par
       if (!element[0].hasAttribute('id')) {
         ariaAttrs.id = 'select_' + $mdUtil.nextUid();
       }
+
+      var containerId = 'select_container_' + $mdUtil.nextUid();
+      selectContainer.attr('id', containerId);
+      ariaAttrs['aria-owns'] = containerId;
       element.attr(ariaAttrs);
 
       scope.$on('$destroy', function() {
@@ -406,6 +417,7 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $par
               containerCtrl.setHasValue(false);
               containerCtrl.input = null;
             }
+            ngModelCtrl.$setTouched();
           });
       });
 
@@ -421,12 +433,16 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $par
         selectContainer = angular.element(
           element[0].querySelector('.md-select-menu-container')
         );
-        selectScope = selectContainer.scope();
+        selectScope = scope;
         if (element.attr('md-container-class')) {
           var value = selectContainer[0].getAttribute('class') + ' ' + element.attr('md-container-class');
           selectContainer[0].setAttribute('class', value);
         }
         selectMenuCtrl = selectContainer.find('md-select-menu').controller('mdSelectMenu');
+        selectMenuCtrl.init(ngModelCtrl, attr.ngModel);
+        element.on('$destroy', function() {
+          selectContainer.remove();
+        });
       }
 
       function handleKeypress(e) {
@@ -450,7 +466,7 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $par
         }
       }
 
-      function openSelect(e) {
+      function openSelect() {
         selectScope.isOpen = true;
         element.attr('aria-expanded', 'true');
 
@@ -460,11 +476,13 @@ function SelectDirective($mdSelect, $mdUtil, $mdTheming, $mdAria, $compile, $par
           skipCompile: true,
           element: selectContainer,
           target: element[0],
+          selectCtrl: mdSelectCtrl,
           preserveElement: true,
           hasBackdrop: true,
           loadingAsync: attr.mdOnOpen ? scope.$eval(attr.mdOnOpen) || true : false
         }).finally(function() {
           selectScope.isOpen = false;
+          element.focus();
           element.attr('aria-expanded', 'false');
           ngModelCtrl.$setTouched();
         });
@@ -479,7 +497,7 @@ function SelectMenuDirective($parse, $mdUtil, $mdTheming) {
   SelectMenuController.$inject = ["$scope", "$attrs", "$element"];
   return {
     restrict: 'E',
-    require: ['mdSelectMenu', '^ngModel'],
+    require: ['mdSelectMenu'],
     scope: true,
     controller: SelectMenuController,
     link: {pre: preLink}
@@ -489,12 +507,10 @@ function SelectMenuDirective($parse, $mdUtil, $mdTheming) {
   // its child options run postLink.
   function preLink(scope, element, attr, ctrls) {
     var selectCtrl = ctrls[0];
-    var ngModel = ctrls[1];
 
     $mdTheming(element);
     element.on('click', clickListener);
     element.on('keypress', keyListener);
-    if (ngModel) selectCtrl.init(ngModel);
 
     function keyListener(e) {
       if (e.keyCode == 13 || e.keyCode == 32) {
@@ -562,7 +578,7 @@ function SelectMenuDirective($parse, $mdUtil, $mdTheming) {
 
         // watchCollection on the model because by default ngModel only watches the model's
         // reference. This allowed the developer to also push and pop from their array.
-        $scope.$watchCollection($attrs.ngModel, function(value) {
+        $scope.$watchCollection(self.modelBinding, function(value) {
           if (validateArray(value)) renderMultiple(value);
           self.ngModel.$setPristine();
         });
@@ -609,8 +625,9 @@ function SelectMenuDirective($parse, $mdUtil, $mdTheming) {
       }
     };
 
-    self.init = function(ngModel) {
+    self.init = function(ngModel, binding) {
       self.ngModel = ngModel;
+      self.modelBinding = binding;
 
       // Allow users to provide `ng-model="foo" ng-model-options="{trackBy: 'foo.id'}"` so
       // that we can properly compare objects set on the model to the available options
@@ -795,7 +812,15 @@ function OptionDirective($mdButtonInkRipple, $mdUtil) {
     $mdButtonInkRipple.attach(scope, element);
     configureAria();
 
-    function setOptionValue(newValue, oldValue) {
+    function setOptionValue(newValue, oldValue, prevAttempt) {
+      if (!selectCtrl.hashGetter) {
+        if (!prevAttempt) {
+          scope.$$postDigest(function() {
+            setOptionValue(newValue, oldValue, true);
+          });
+        }
+        return;
+      }
       var oldHashKey = selectCtrl.hashGetter(oldValue, scope);
       var newHashKey = selectCtrl.hashGetter(newValue, scope);
 
@@ -1253,7 +1278,7 @@ function SelectProvider($$interimElementProvider) {
      * trigger the [optional] user-defined expression
      */
     function announceClosed(opts) {
-      var mdSelect = opts.target.controller('mdSelect');
+      var mdSelect = opts.selectCtrl;
       if (mdSelect) {
         var menuController = opts.selectEl.controller('mdSelectMenu');
         mdSelect.setLabelText(menuController.selectedLabels());
@@ -1266,7 +1291,7 @@ function SelectProvider($$interimElementProvider) {
      * Calculate the
      */
     function calculateMenuPositions(scope, element, opts) {
-      var 
+      var
         containerNode = element[0],
         targetNode = opts.target[0].children[0], // target the label
         parentNode = $document[0].body,
@@ -1288,13 +1313,13 @@ function SelectProvider($$interimElementProvider) {
           bottom: bounds.bottom - (targetRect.top + targetRect.height)
         },
         maxWidth = parentRect.width - SELECT_EDGE_MARGIN * 2,
-        isScrollable = contentNode.scrollHeight > contentNode.offsetHeight,
         selectedNode = selectNode.querySelector('md-option[selected]'),
         optionNodes = selectNode.getElementsByTagName('md-option'),
-        optgroupNodes = selectNode.getElementsByTagName('md-optgroup');
+        optgroupNodes = selectNode.getElementsByTagName('md-optgroup'),
+        isScrollable = calculateScrollable(element, contentNode),
+        centeredNode;
 
       var loading = isPromiseLike(opts.loadingAsync);
-      var centeredNode;
       if (!loading) {
         // If a selected node, center around that
         if (selectedNode) {
@@ -1376,7 +1401,7 @@ function SelectProvider($$interimElementProvider) {
       } else {
         left = (targetRect.left + centeredRect.left - centeredRect.paddingLeft) + 2;
         top = Math.floor(targetRect.top + targetRect.height / 2 - centeredRect.height / 2 -
-            centeredRect.top + contentNode.scrollTop) + 5;
+            centeredRect.top + contentNode.scrollTop) + 2;
 
         transformOrigin = (centeredRect.left + targetRect.width / 2) + 'px ' +
           (centeredRect.top + centeredRect.height / 2 - contentNode.scrollTop) + 'px 0px';
@@ -1426,6 +1451,25 @@ function SelectProvider($$interimElementProvider) {
       width: node.offsetWidth,
       height: node.offsetHeight
     } : {left: 0, top: 0, width: 0, height: 0};
+  }
+
+  function calculateScrollable(element, contentNode) {
+    var isScrollable = false;
+
+    try {
+      var oldDisplay = element[0].style.display;
+
+      // Set the element's display to block so that this calculation is correct
+      element[0].style.display = 'block';
+
+      isScrollable = contentNode.scrollHeight > contentNode.offsetHeight;
+
+      // Reset it back afterwards
+      element[0].style.display = oldDisplay;
+    } finally {
+      // Nothing to do
+    }
+    return isScrollable;
   }
 }
 SelectProvider.$inject = ["$$interimElementProvider"];

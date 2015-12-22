@@ -443,6 +443,7 @@ button.md-primary.md-button.md-confirm-hesperides-dialog-theme.md-ink-ripple {
 .property-global {
     font-style: italic;
     border: none !important;
+    padding-bottom: 2px!important;
 }
 
 .property-required {
@@ -452,9 +453,13 @@ button.md-primary.md-button.md-confirm-hesperides-dialog-theme.md-ink-ripple {
 .property-label {
     text-align: right;
     font-weight: bold;
+    border: 0px !important;
     width: 100%;
+    padding-bottom: 2px!important;
 }
 
 .property-instance {
     display: inline;
 }
+
+.pro

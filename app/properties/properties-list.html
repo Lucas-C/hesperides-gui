@@ -26,12 +26,14 @@
 
         <div layout="row" ng-repeat="key_value_property in properties.key_value_properties | filter:{'name':propertiesKeyFilter} | displayPropertiesByValue:propertiesValueFilter | displayProperties:displayDeletedProperties | orderBy:'name':properties.isReverseOrder() track by $index"
                 >
+
             <div flex="33">
                 <md-input-container class="property-label" ng-class="{'text-stroke':!key_value_property.inModel}">
-                {{ key_value_property.name }}<span ng-show="key_value_property.required" class="property-required">*</span>
+                    <input type="text" ng-trim="true" ng-model="key_value_property.name" aria-label="{{ key_value_property.name }}" ng-readonly="true" class="property-label" /> <span ng-show="key_value_property.required" class="property-required">*</span>
                 </md-input-container>
             </div>
-            <div flex="100">
+
+            <div flex>
                 <md-input-container
                         class="md-block"
                         ng_if="!key_value_property.inGlobal"

@@ -28,6 +28,7 @@
                                 md-item-text="techno.name"
                                 md-selected-item-change="(techno) ? technoSearched = techno : false"
                                 md-min-length="0"
+                                md-autoselect="true"
                                 placeholder="Rechercher une techno existante...">
                             <span md-highlight-text="ctrl.searchText">{{techno.name}} {{techno.version}}</span>
                         </md-autocomplete>

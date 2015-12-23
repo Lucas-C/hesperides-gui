@@ -436,7 +436,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
     $scope.get_platform_to_compare = function (application, platform, lookPast, date) {
         $scope.loading_compare_platform = true;
         if (lookPast) {
-            if (typeof date == 'undefined') {
+            if (_.isUndefined(date)) {
                 date = new Date();
             }
             var platform_promise = ApplicationService.get_platform(application, platform, date.getTime());

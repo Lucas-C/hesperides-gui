@@ -494,3 +494,7 @@ button.md-primary.md-button.md-confirm-hesperides-dialog-theme.md-ink-ripple {
     height: 40px;
     min-height: 40px;
 }
+
+.property-box-module-name {
+    white-space: nowrap;
+}

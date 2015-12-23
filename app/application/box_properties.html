@@ -56,8 +56,11 @@
                     </md-button>
                 </div>
                 <div flex="33" >
-                    <md-input-container class="property-label">
-                        {{ kv_property.name }}
+                    <md-input-container class="property-label" ng-class="{'text-stroke':!key_value_property.inModel}">
+                        <input type="text" ng-trim="true" ng-model="kv_property.name" aria-label="{{kv_property.name}}" ng-readonly="true" class="property-label" />
+                        <md-tooltip md-direction="top">
+                            {{kv_property.name}}
+                        </md-tooltip>
                     </md-input-container>
                 </div>
                 <div flex="59">
@@ -89,14 +92,14 @@
     <div flex="95" class="list-inline">
         <ul class="box list-inline">
             <li class="jumbotron" ng-repeat="box in (mainBox.children | orderObjectBy:'name')" ng-include="'application/box_renderer.html'"/>
-            <!-- TODO comment apparait le truc ci-dessous -->
+
             <li class="jumbotron" ng-if="box.modules.length > 0">
                 <md-button ng-repeat="module in mainBox.modules" class="md-fab"
                            aria-label="Ajouter un groupe logique">
                     {{module.title}}<span class="fa fa-list"></span>
                 </md-button>
             </li>
-            <!-- TODO -->
+
         </ul>
     </div>
 </div>

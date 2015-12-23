@@ -375,6 +375,10 @@ kbd {
     min-height: 20px !important;
 }
 
+.md-instance {
+    margin: 0px !important;
+}
+
 button.md-warn  {
     color: red !important;
 }
@@ -465,4 +469,28 @@ button.md-primary.md-button.md-confirm-hesperides-dialog-theme.md-ink-ripple {
 
 .instance-delete-button-hide {
     visibility: hidden;
+}
+
+.property-tree-logic-bloc {
+    height: 40px;
+    min-height: 40px;
+}
+
+.property-tree-module {
+    height: 40px;
+    min-height: 40px;
+    padding-left: 20px;
+}
+
+.property-tree-sign {
+    margin-right:15px;
+    cursor:pointer;
+    font-size: 25px;
+}
+
+.property-tree-techno {
+    padding-left: 20px;
+    display: inline-block;
+    height: 40px;
+    min-height: 40px;
 }

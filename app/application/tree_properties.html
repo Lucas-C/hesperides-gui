@@ -31,7 +31,7 @@
         <!-- Elements enfants -->
         <div style="margin-left: 10px;">
             <div class="arbre-application" style="width: 100%; display: inline-block; min-height: 40px;"
-                 ng-repeat="(name, box) in mainBox.children | filterProperties:searchInTree"
+                 ng-repeat="box in (mainBox.children | orderObjectBy:'name') | filterProperties:searchInTree"
                  ng-include="'application/tree_renderer.html'"/>
         </div>
     </div>

@@ -3,8 +3,8 @@
     <div class="col-md-6 text-left" style="padding-left:10px; width: auto;"
          ng-mouseenter="componentButtonsVisible=true">
         <span ng-click="displayInstanceDetails()" style="margin-right:15px; cursor:pointer; font-size: 25px;">{{sign}}</span>
-        <a href="" buttons="no" editable-text="name" title="Modifier le nom du groupe logique"
-           onbeforesave="update_box_name(box, name, $data)"> {{name}}</a>
+        <a href="" buttons="no" editable-text="box.name" title="Modifier le nom du groupe logique"
+           onbeforesave="update_box_name(box, box.name, $data)"> {{box.name}}</a>
     </div>
     <div class="col-md-6" style="padding-right:10px; width: auto;" ng-show="componentButtonsVisible">
         <md-button ng-click="search_module(box)" tooltip="Ajouter un module" aria-label="Ajouter un module"
@@ -16,10 +16,10 @@
                    class="md-xs">
             <span class="fa fa-inbox"></span>
         </md-button>
-        <md-button ng-really-message="Supprimer le groupe logique {{name}} ?"
+        <md-button ng-really-message="Supprimer le groupe logique {{box.name}} ?"
                    tooltip="Supprimer le groupe logique"
                    aria-label="Supprimer le groupe logique"
-                   ng-really-click="remove_box(name, box)" ng-if="box.isEmpty()"
+                   ng-really-click="remove_box(box.name, box)" ng-if="box.isEmpty()"
                    class="md-xs md-warn">
             <span class="fa fa-trash"></span>
         </md-button>
@@ -28,7 +28,7 @@
 
 <div class="arbre-techno" ng-if="treedisplay">
     <div style="padding-left: 20px; display: inline-block; width: 100%; min-height: 40px;"
-         ng-repeat="(name, box) in box.children | filterProperties:searchInTree"
+         ng-repeat="box in (box.children | orderObjectBy:'name') | filterProperties:searchInTree"
          ng-include="'application/tree_renderer.html'"></div>
 
     <!-- Debut des box affichant les modules -->

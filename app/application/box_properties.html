@@ -88,7 +88,7 @@
     </div>
     <div flex="95" class="list-inline">
         <ul class="box list-inline">
-            <li class="jumbotron" ng-repeat="(name, box) in mainBox.children" ng-include="'application/box_renderer.html'"/>
+            <li class="jumbotron" ng-repeat="box in (mainBox.children | orderObjectBy:'name')" ng-include="'application/box_renderer.html'"/>
             <!-- TODO comment apparait le truc ci-dessous -->
             <li class="jumbotron" ng-if="box.modules.length > 0">
                 <md-button ng-repeat="module in mainBox.modules" class="md-fab"

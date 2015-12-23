@@ -1,7 +1,7 @@
 <div  class="vertical-align">
     <div class="text-left" style="padding-left:10px" flex="50">
-        <a href="" editable-text="name" title="Modifier le nom du groupe logique"
-           onbeforesave="update_box_name(box, name, $data)">{{name}}</a>
+        <a href="" editable-text="box.name" title="Modifier le nom du groupe logique"
+           onbeforesave="update_box_name(box, box.name, $data)">{{box.name}}</a>
     </div>
     <div flex="50" style="padding-right:10px;" layout="row" layout-align="end start">
         <md-button ng-click="search_module(box)" aria-label="Ajouter un module" class="md-xs">
@@ -13,9 +13,9 @@
             <md-tooltip>Ajouter un groupe logique</md-tooltip>
             <i class="fa fa-inbox"></i>
         </md-button>
-        <md-button ng-really-message="Supprimer le groupe logique {{name}} ?"
+        <md-button ng-really-message="Supprimer le groupe logique {{box.name}} ?"
                    aria-label="Supprimer le groupe logique"
-                   ng-really-click="remove_box(name, box)" ng-if="box.isEmpty()"
+                   ng-really-click="remove_box(box.name, box)" ng-if="box.isEmpty()"
                    class="md-warn md-xs">
             <md-tooltip>Supprimer le groupe logique</md-tooltip>
             <i class="fa fa-trash"></i>
@@ -23,8 +23,7 @@
     </div>
 </div>
 <ul class="list-inline box">
-
-    <li class="jumbotron" ng-repeat="(name, box) in box.children"
+    <li class="jumbotron" ng-repeat="box in (box.children | orderObjectBy:'name')"
         ng-include="'application/box_renderer.html'"></li>
 
     <li ng-if="box.modules.length > 0" class="jumbotron instance" ng-repeat="module in box.modules">

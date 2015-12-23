@@ -1018,3 +1018,21 @@ propertiesModule.directive('initInstances', function () {
         }
     }
 });
+
+
+propertiesModule.filter('orderObjectBy', function() {
+    return function(items, field) {
+        // items as an object 'children' where key is name
+        var filtered = [];
+
+        angular.forEach(items, function(item) {
+            filtered.push(item);
+        });
+
+        filtered.sort(function (a, b) {
+            return a[field].localeCompare(b[field]);
+        });
+
+        return filtered;
+    };
+});

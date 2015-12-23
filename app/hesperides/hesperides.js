@@ -147,6 +147,11 @@ hesperidesModule.directive('ngReallyClick', ['$mdDialog', '$timeout', function (
         restrict: 'A',
         link: function (scope, element, attrs) {
             element.bind('click', function () {
+                if (attrs.ngReallyMessage && confirm(attrs.ngReallyMessage)) {
+                    scope.$apply(attrs.ngReallyClick);
+                }
+
+                /* Why some time working, sometime not working ?
                 if (attrs.ngReallyMessage) {
                     var confirm = $mdDialog.confirm()
                         .title('Question ?')
@@ -166,7 +171,7 @@ hesperidesModule.directive('ngReallyClick', ['$mdDialog', '$timeout', function (
                     }, function() {
                         //$scope.status = 'You decided to keep your debt.';
                     });
-                }
+                }*/
             });
         }
     }

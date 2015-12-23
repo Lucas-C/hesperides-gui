@@ -38,10 +38,20 @@
              ng-mouseleave="moduleButtonsVisible=false">
             <div class="col-md-6" style="padding-left:10px; width: 65%;"
                  ng-mouseenter="moduleButtonsVisible=true">
-                        <span><strong><span ng-click="displayInstances()"
-                                            style="margin-right:15px; cursor:pointer; font-size: 25px; position: relative; float: left;">{{sign}}</span>
-                            <a style="padding-top: 8px; padding-left: 5px; position: absolute; float: left;" href="" ng-click="change_module(module)" title="Modifier la version du module"> {{module.title}}</a>
-                        </strong></span>
+                        <span>
+                            <span ng-click="displayInstances()"
+                                  style="margin-right:15px; cursor:pointer; font-size: 25px; position: relative; float: left;">
+                                {{sign}}
+                            </span>
+                            <strong>
+                                <a style="padding-top: 8px; padding-left: 5px; position: absolute; float: left;"
+                                   href=""
+                                   ng-click="change_module(module)"
+                                   title="Modifier la version du module">
+                                    {{module.title}}
+                                </a>
+                            </strong>
+                        </span>
             </div>
             <div class="col-md-6" style="width: 35%; min-width: 35%;" ng-if="moduleButtonsVisible">
                 <md-button ng-click="open_add_instance_dialog(module)" tooltip="Ajouter une instance"

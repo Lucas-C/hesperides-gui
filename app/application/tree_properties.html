@@ -1,7 +1,7 @@
 <div layout="row" layout-wrap>
     <div flex="30">
         <!-- Filtre sur l'arbre -->
-        <div style="width: 65%; margin-bottom: 10px;">
+        <div>
             <md-input-container class="md-block">
                 <label>Filtrer sur l'arbre</label>
                 <input type="text" ng-trim="true" ng-model="searchInTree" />
@@ -9,9 +9,9 @@
         </div>
 
         <!-- Element root de l'arbre -->
-        <div id="header" class="vertical-align" style="height: 40px;">
-            <div class="col-md-6 text-left" style="padding-left:10px; width: auto;">Plateforme</div>
-            <div class="col-md-6" style="padding-right:10px; width: auto;">
+        <div id="header" layout="row">
+            <div flex="none" layout="row" layout-align="none center">Plateforme</div>
+            <div flex="grow" layout="row" layout-align="none center">
                 <md-button ng-click="open_add_box_dialog(mainBox)" class="md-xs"
                            aria-label="Ajouter un groupe logique" tooltip="Ajouter un groupe logique">
                     <i class="fa fa-inbox"></i>
@@ -29,8 +29,8 @@
         </div>
 
         <!-- Elements enfants -->
-        <div style="margin-left: 10px;">
-            <div class="arbre-application" style="width: 100%; display: inline-block; min-height: 40px;"
+        <div>
+            <div class="arbre-application"
                  ng-repeat="box in (mainBox.children | orderObjectBy:'name') | filterProperties:searchInTree"
                  ng-include="'application/tree_renderer.html'"/>
         </div>
@@ -48,7 +48,7 @@
             </md-button>
         </div>
         <div layout="row" ng-show="showGlobalProperties" flex="100">
-            <form class="form-horizontal narrow" role="form" style="width: 100%;">
+            <form>
                 <div layout="row">
                     <div flex="8">
                         <md-button ng-click="platform.global_properties.addKeyValue({
@@ -99,17 +99,17 @@
 
         <div style="margin-top: 5px;" layout="row" ng-show="properties">
             <div flex="50">
-                <h3><span style="margin-right: 30px">Les properties associees a <strong>{{selected_module.path.split('#').join('
+                <h3><span>Les properties associees a <strong>{{selected_module.path.split('#').join('
                     | ')}} | {{selected_module.title}}</strong></span>
                 </h3>
             </div>
             <div flex="50">
                 <md-button id="cleanPropertiesButton" ng-click="clean_properties(properties)">
-                    <i class="fa fa-trash" style="padding-right:10px"></i>
+                    <i class="fa fa-trash"></i>
                     <span>Nettoyer les valorisations inutiles</span>
                 </md-button>
                 <md-button id="savedPropertiesButton" ng-click="save_properties(properties, selected_module)" class="md-primary">
-                    <i class="fa fa-check" style="padding-right:10px"></i>
+                    <i class="fa fa-check"></i>
                     <span>Sauver les properties</span>
                 </md-button>
             </div>
@@ -121,13 +121,13 @@
             </div>
         </div>
         <div layout="row" ng-show="instance">
-            <div class="col-md-12">
+            <div>
                 <h3 style="margin-top: 0;">
                 <span style="margin-right: 30px">Les properties d'instance associees a <strong>
                     <a href="" editable-text="instance.name"
                        onbeforesave="update_instance_name(instance, $data)">{{instance.name}}</a></strong></span>
                     <md-button ng-click="save_platform_from_box(mainBox)" class="md-primary">
-                        <i class="fa fa-check" style="padding-right:10px"></i>
+                        <i class="fa fa-check"></i>
                         <span>Sauver les properties</span>
                     </md-button>
                 </h3>

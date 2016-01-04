@@ -23,6 +23,7 @@ components.directive('listOfItems', ['$parse', function ($parse) {
             }
             scope.size = attrs.size;
             scope.input = {};
+            scope.tooltip = attrs.tooltip;
             scope.cssClass = function(item) {
                 var listClass = "";
 

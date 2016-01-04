@@ -15,6 +15,8 @@
                        ng-mouseleave="hover = false"
                        ng-if="editable"
                     ><i class="fa fa-trash"></i></md-button>
+
+            <md-tooltip ng-if="tooltip">{{ tooltip }}</md-tooltip>
         </md-button>
 
     </li>
@@ -37,7 +39,6 @@
                 <label>Entrer un nom...</label>
                 <md-autocomplete
                         id="nameInput"
-                        ng-blur="resetAndHideInput()"
                         ng-model="input.inputText"
                         md-no-cache="true"
                         md-selected-item="ctrl.selectedItem"

@@ -29,7 +29,7 @@
     <li class="jumbotron" ng-repeat="box in (box.children | orderObjectBy:'name')"
         ng-include="'application/box_renderer.html'"></li>
 
-    <li ng-if="box.modules.length > 0" class="jumbotron instance" ng-repeat="module in box.modules">
+    <li ng-if="box.modules.length > 0" class="jumbotron instance" ng-repeat="module in box.modules | orderObjectBy:'name'">
         <div layout="row">
             <div class="property-box-module-name" layout="row" layout-align="start center" flex="none">
                 <span><strong><a href="" ng-click="change_module(module)">{{module.title}}
@@ -63,7 +63,7 @@
         </div>
 
         <div layout="row" layout-wrap>
-            <div ng-repeat="instance in module.instances | orderBy:'name':false"
+            <div ng-repeat="instance in module.instances | orderObjectBy:'name'"
                 ng-mouseover="instance.hover = true"
                 ng-mouseleave="instance.hover = false"
                 class="property-instance" flex="nogrow">

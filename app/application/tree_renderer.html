@@ -46,7 +46,7 @@
     <!-- Debut des box affichant les modules -->
     <div
          ng-if="box.modules.length > 0"
-         ng-repeat="module in box.modules"
+         ng-repeat="module in box.modules | orderObjectBy:'name'"
          ng-mouseleave="moduleButtonsVisible=false">
 
         <init-instances></init-instances>
@@ -98,7 +98,7 @@
         <!-- Debut des box affichant les instances -->
         <div ng-if="instancedisplay">
             <ul >
-                <li ng-repeat="instance in module.instances | orderBy:'name':false"
+                <li ng-repeat="instance in module.instances | orderObjectBy:'name'"
                     class="list-inline"
                     ng-mouseover="instance.hover = true" ng-mouseleave="instance.hover = false">
                     <md-button ng-click="edit_instance(instance, module.properties_path);movePropertiesDivHolderToCursorPosition($event);"

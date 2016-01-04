@@ -30,7 +30,7 @@
 
         <!-- Elements enfants -->
         <div>
-            <div class="arbre-application"
+            <div
                  ng-repeat="box in (mainBox.children | orderObjectBy:'name') | filterProperties:searchInTree"
                  ng-include="'application/tree_renderer.html'"/>
         </div>

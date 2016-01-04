@@ -476,6 +476,10 @@ button.md-primary.md-button.md-confirm-hesperides-dialog-theme.md-ink-ripple {
     min-height: 40px;
 }
 
+.property-tree-logic-bloc-subbloc {
+    padding-left: 20px;
+}
+
 .property-tree-module {
     height: 40px;
     min-height: 40px;

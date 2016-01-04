@@ -1,7 +1,7 @@
 <!-- Debut bloc logic -->
 <init-instance-functions></init-instance-functions>
 
-<div ng-mouseleave="componentButtonsVisible=false" class="property-tree-logic-bloc" layout="row">
+<div class="property-tree-logic-bloc" layout="row">
     <div flex="1" layout="row" layout-align="none center">
         <span ng-click="displayInstanceDetails()" class="property-tree-sign">{{sign}}</span>
     </div>
@@ -14,7 +14,7 @@
            <md-tooltip>Modifier le nom du groupe logique</md-tooltip>
         </a>
     </div>
-    <div flex ng-show="componentButtonsVisible" layout="row" layout-align="none center">
+    <div flex ng-show="componentButtonsVisible" layout="row" layout-align="none center" ng-mouseleave="componentButtonsVisible=false">
         <md-button ng-click="search_module(box)"aria-label="Ajouter un module"
                    class="md-xs">
             <span class="fa fa-plus"></span>
@@ -37,17 +37,16 @@
 </div>
 
 <!-- fin bloc logic -->
-
-<div class="arbre-techno" ng-if="treedisplay">
-    <div class="property-tree-techno"
+<div ng-if="treedisplay" flex="100">
+    <div class="property-tree-logic-bloc-subbloc" flex="100"
          ng-repeat="box in (box.children | orderObjectBy:'name') | filterProperties:searchInTree"
          ng-include="'application/tree_renderer.html'"></div>
 
     <!-- Debut des box affichant les modules -->
     <div
+         ng-init="moduleButtonsVisible=false"
          ng-if="box.modules.length > 0"
-         ng-repeat="module in box.modules | orderObjectBy:'name'"
-         ng-mouseleave="moduleButtonsVisible=false">
+         ng-repeat="module in box.modules | orderObjectBy:'name'">
 
         <init-instances></init-instances>
         <div layout="row" class="property-tree-module">
@@ -97,7 +96,7 @@
 
         <!-- Debut des box affichant les instances -->
         <div ng-if="instancedisplay">
-            <ul >
+            <ul>
                 <li ng-repeat="instance in module.instances | orderObjectBy:'name'"
                     class="list-inline"
                     ng-mouseover="instance.hover = true" ng-mouseleave="instance.hover = false">

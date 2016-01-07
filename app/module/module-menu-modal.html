@@ -6,7 +6,7 @@
                 <form name="moduleForm" novalidate
                       ng-submit="moduleForm.$valid && create_module(new_module.name, new_module.version)">
                     <md-input-container md-no-float class="md-block">
-                        <label>Nom</label>
+                        <label >Nom</label>
                         <input type="text" required ng-trim="true" ng-model="new_module.name" md-autofocus="true"
                                id="moduleName" placeholder="Ce nom correspond à un package de la note de livraison. Par ex. wdiCore-war"/>
                     </md-input-container>

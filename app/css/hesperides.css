@@ -399,6 +399,14 @@ a.md-button.md-default-theme.md-warn.md-raised:not([disabled]), a.md-button.md-w
 }
 
 /******************************************************************************
+ * Material Design input label
+ */
+.md-input-has-placeholder label {
+    -webkit-transform: translate3d(0, 6px, 0) scale(1) !important;
+    transform: translate3d(0, 6px, 0) scale(1) !important;
+}
+
+/******************************************************************************
  * Confirm button
  */
 button.md-primary.md-button.ng-scope.md-confirm-hesperides-dialog-theme.md-ink-ripple {

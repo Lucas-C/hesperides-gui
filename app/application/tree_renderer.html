@@ -47,7 +47,7 @@
          ng-init="moduleButtonsVisible=false"
          ng-if="box.modules.length > 0"
          ng-repeat="module in box.modules | orderObjectBy:'name'">
-
+        <property-tool-button></property-tool-button>
         <init-instances></init-instances>
         <div layout="row" class="property-tree-module">
             <div flex="1" layout="row" layout-align="none center">
@@ -66,7 +66,7 @@
                     </a>
                 </strong>
             </div>
-            <div flex="nogrow" ng-if="moduleButtonsVisible" layout="row" layout-align="none center">
+            <!--<div flex="nogrow" ng-if="moduleButtonsVisible" layout="row" layout-align="none center">
                 <md-button ng-click="open_add_instance_dialog(module)"
                            aria-label="Ajouter une instance"
                            class="md-xs">
@@ -91,7 +91,7 @@
                     <span class="fa fa-trash"></span>
                     <md-tooltip>Supprimer le module</md-tooltip>
                 </md-button>
-            </div>
+            </div>-->
         </div>
 
         <!-- Debut des box affichant les instances -->

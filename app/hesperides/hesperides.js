@@ -198,6 +198,73 @@ hesperidesModule.directive('newChildScope', function () {
     };
 });
 
+/**
+ * Popover button.
+ *
+ * Partial code from Material Design.
+ */
+hesperidesModule.directive('propertyToolButton', function ($mdUtil) {
+    return {
+        restrict: 'E',
+        scope: true,
+        template: '<div class="popover">' +
+                    '        <md-button ng-click="open_add_instance_dialog(module)"' +
+                    '        aria-label="Ajouter une instance"' +
+                    '        class="md-xs">' +
+                    '            <span class="fa fa-plus"></span>' +
+                    '            <md-tooltip>Ajouter une instance</md-tooltip>' +
+                    '        </md-button>' +
+                    '    <md-button class="md-xs" aria-label="Editer les properties"' +
+                    '    ng-click="edit_properties(platform, module);movePropertiesDivHolderToCursorPosition($event);"><span' +
+                    '    class="fa fa-list"></span>' +
+                    '        <md-tooltip>Editer les properties</md-tooltip>' +
+                    '    </md-button>' +
+                    '        <md-button class="md-xs"' +
+                    '        aria-label="Comparer les properties"' +
+                    '        ng-click="diff_properties(module)"><span' +
+                    '        class="fa fa-exchange"></span>' +
+                    '            <md-tooltip>Comparer les properties</md-tooltip>' +
+                    '        </md-button>' +
+                    '        <md-button ng-really-message="Supprimer le module {{module.title}} et toutes ses instances ?"' +
+                    '        aria-label="Supprimer le module"' +
+                    '        ng-really-click="delete_module(module, box)"' +
+                    '        class="md-xs md-warn">' +
+                    '            <span class="fa fa-trash"></span>' +
+                    '            <md-tooltip>Supprimer le module</md-tooltip>' +
+                    '        </md-button>' +
+                    '</div>',
+        link: function (scope, element) {
+            var parent = element.parent();
+            var popover = element.children();
+
+            // Display popup
+            parent.on('mouseenter', function() {
+                var tooltipParent = angular.element(document.body);
+                var tipRect = $mdUtil.offsetRect(popover, tooltipParent);
+                var parentRect = $mdUtil.offsetRect(parent, tooltipParent);
+
+                var newPosition = {
+                    left: parentRect.left + parentRect.width / 2 - tipRect.width / 2,
+                    top: parentRect.top - tipRect.height
+                };
+
+                popover.css({
+                    left: newPosition.left + 'px',
+                    top: newPosition.top + 'px'
+                });
+
+                element.children().addClass('popover-hover');
+            });
+
+            // Hide popup
+            popover.on('mouseleave', function() {
+                element.children().removeClass('popover-hover');
+            });
+        }
+    };
+});
+
+
 hesperidesModule.filter('interpolate', ['version', function (version) {
     return function (text) {
         return String(text).replace(/\%VERSION\%/mg, version);

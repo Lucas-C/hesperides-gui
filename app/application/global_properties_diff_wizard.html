@@ -21,7 +21,9 @@
                         Comparer à {{from.application}} - {{from.platform}} à une date spécifique ?
                     </md-switch>
 
-                    <time-date-picker ng-model="dateValue" display-twentyfour compact="true" ng-show="from.lookPast"></time-date-picker>
+                    <div ng-show="from.lookPast">
+                        <time-date-picker ng-model="dateValue" display-twentyfour compact="true"></time-date-picker>
+                    </div>
                 </form>
             </md-content>
         </div>

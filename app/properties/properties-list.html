@@ -24,7 +24,7 @@
             </div>
         </div>
 
-        <div layout="row" ng-repeat="key_value_property in properties.key_value_properties | filter:{'name':propertiesKeyFilter} | displayPropertiesByValue:propertiesValueFilter | displayProperties:displayDeletedProperties | orderBy:'name':properties.isReverseOrder() track by $index"
+        <div layout="row" ng-repeat="key_value_property in properties.key_value_properties | filterProperties:{'name':propertiesKeyFilter, 'filtrable_value':propertiesValueFilter} | displayProperties:displayDeletedProperties | orderBy:'name':properties.isReverseOrder() track by $index"
                 >
 
             <div flex="33">

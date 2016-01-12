@@ -901,23 +901,6 @@ propertiesModule.filter('displayProperties', function () {
     };
 });
 
-propertiesModule.filter('displayPropertiesByValue', function () {
-    return function (items, display) {
-        display = display.toLowerCase();
-        var filtered = [];
-
-        angular.forEach(items, function (item) {
-            //filtrable_value
-            if (display == undefined || display === ""
-                || (item.filtrable_value !== undefined && item.filtrable_value.toLowerCase().includes(display))) {
-                filtered.push(item);
-            }
-        });
-
-        return filtered;
-    };
-});
-
 propertiesModule.filter('filterProperties', ['$filter', function ($filter) {
     return function (boxes_object, searchString) {
 
@@ -1034,5 +1017,36 @@ propertiesModule.filter('orderObjectBy', function() {
         });
 
         return filtered;
+    };
+});
+
+/**
+ * Function wich filter the properties' display with string or regex.
+ */
+propertiesModule.filter('filterProperties', function() {
+    return function(input, filter) {
+        if (!filter) {
+            return input;
+        }
+
+        name = '.*' + filter.name.toLowerCase().split(' ').join('.*');
+        value = '.*' + filter.filtrable_value.toLowerCase().split(' ').join('.*');
+
+        try {
+            var regex_name = new RegExp(name, 'i');
+            var regex_value = new RegExp(value, 'i');
+        } catch(e) {
+            return input;
+        }
+
+        var output = [];
+
+        angular.forEach(input, function(item) {
+            if (regex_name.test(item.name) && regex_value.test(item.filtrable_value)) {
+                output.push(item);
+            }
+        });
+
+        return output;
     };
 });

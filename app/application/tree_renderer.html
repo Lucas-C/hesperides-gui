@@ -1,7 +1,7 @@
 <!-- Debut bloc logic -->
 <init-instance-functions></init-instance-functions>
 
-<div class="property-tree-logic-bloc" layout="row">
+<div class="property-tree-logic-bloc" layout="row"  ng-mouseleave="componentButtonsVisible=false">
     <div flex="1" layout="row" layout-align="none center">
         <span ng-click="displayInstanceDetails()" class="property-tree-sign">{{sign}}</span>
     </div>
@@ -14,7 +14,7 @@
            <md-tooltip>Modifier le nom du groupe logique</md-tooltip>
         </a>
     </div>
-    <div flex ng-show="componentButtonsVisible" layout="row" layout-align="none center" ng-mouseleave="componentButtonsVisible=false">
+    <div flex ng-show="componentButtonsVisible" layout="row" layout-align="none center">
         <md-button ng-click="search_module(box)"aria-label="Ajouter un module"
                    class="md-xs">
             <span class="fa fa-plus"></span>

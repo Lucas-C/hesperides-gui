@@ -70,7 +70,7 @@ hesperidesModule.run(function (editableOptions, editableThemes, $rootScope) {
 
         var calendarOffsetMagin;
 
-        if (selectedObj.clientWidth) {
+        if (selectedObj && selectedObj.clientWidth) {
             calendarOffsetMagin = (new Date(calendar._year, calendar._month).getDay() * selectedObj.clientWidth);
         } else {
             calendarOffsetMagin = 0;
@@ -203,7 +203,11 @@ hesperidesModule.directive('newChildScope', function () {
  *
  * Partial code from Material Design.
  */
-hesperidesModule.directive('propertyToolButton', function ($mdUtil) {
+hesperidesModule.factory('$propertyToolButtonService', [function(){
+    return { currentPopup: null };
+}]);
+
+hesperidesModule.directive('propertyToolButton', function ($mdUtil, $propertyToolButtonService) {
     return {
         restrict: 'E',
         scope: true,
@@ -253,12 +257,18 @@ hesperidesModule.directive('propertyToolButton', function ($mdUtil) {
                     top: newPosition.top + 'px'
                 });
 
+                if ($propertyToolButtonService.currentPopup)  {
+                    $propertyToolButtonService.currentPopup.removeClass('popover-hover');
+                }
+
                 element.children().addClass('popover-hover');
+                $propertyToolButtonService.currentPopup = element.children();
             });
 
             // Hide popup
             popover.on('mouseleave', function() {
                 element.children().removeClass('popover-hover');
+                $propertyToolButtonService.currentPopup = null;
             });
         }
     };

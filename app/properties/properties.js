@@ -18,6 +18,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
             name: "",
             children: {},
             modules: [],
+            opened: false,
             isEmpty: function () {
                 return _.keys(this.children).length === 0 && this.modules.length === 0;
             },
@@ -30,10 +31,10 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
                     module.path = me.get_path();
                 });
                 return this.modules.concat(
-                    _.flatten(_.map(this.children, function (box) {
-                        return box.to_modules();
-                    }))
-                );
+                _.flatten(_.map(this.children, function (box) {
+                    return box.to_modules();
+                }))
+            );
             }
         }, data);
     };
@@ -42,6 +43,32 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
         //Try to build the view depending on the different paths of the modules
         var mainBox = new Box({parent_box: null});
+
+        var oldMainBox = $scope.mainBox;
+
+        var search_old_box = function(oldBoxes, box) {
+            var currentBox = box;
+
+            if (oldBoxes) {
+                var path = [];
+
+                // Recreate path
+                while (currentBox.parent_box) {
+                    path.push(currentBox.name);
+                    currentBox = currentBox.parent_box;
+                }
+
+                // Search box in path
+                var currentName;
+                currentBox = oldBoxes;
+
+                while (path.length && currentBox) {
+                    currentName = path.pop();
+                    currentBox = currentBox["children"][currentName];
+                }
+            }
+            return currentBox;
+        };
 
         var add_to_box = function (box, folders, level, module) {
             if (level > folders.length) {
@@ -54,6 +81,12 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
                 var name = folders[level];
                 if (_.isUndefined(box["children"][name])) {
                     box["children"][name] = new Box({parent_box: box, name: name});
+
+                    var oldBox = search_old_box(oldMainBox, box["children"][name]);
+
+                    if (oldBox) {
+                        box["children"][name].opened = oldBox.opened;
+                    }
                 }
                 return add_to_box(box["children"][name], folders, level + 1, module);
             }
@@ -74,6 +107,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
     $scope.add_box = function (name, box) {
         box["children"][name] = new Box({parent_box: box, name: name});
+        return box["children"][name];
     };
 
     $scope.remove_box = function (name, box) {
@@ -93,7 +127,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         var modalScope = $scope.$new();
 
         modalScope.$add = function(name) {
-            $scope.add_box(name, box);
+            var newBox = $scope.add_box(name, box);
             $mdDialog.hide();
         };
 
@@ -962,19 +996,27 @@ propertiesModule.directive('initInstanceFunctions', function () {
         restrict: 'E',
         replace: true,
         template: "<div></div>",
+        scope: false,
         link: function (scope, element, attrs) {
-            scope.treedisplay = false;
-            scope.sign = "+";
-
-            scope.displayInstanceDetails = function () {
-                scope.treedisplay = !scope.treedisplay;
-
-                if(scope.sign == "+") {
-                    scope.sign = "-";
-                } else {
-                    scope.sign = "+";
-                }
+            var setSign = function() {
+                scope.treedisplay = scope.ngModel.opened;
+                scope.sign = scope.ngModel.opened ? '-' : '+';
             };
+
+            var displayInstanceDetails = function () {
+                scope.ngModel.opened = !scope.ngModel.opened;
+
+                setSign();
+            };
+
+            // We can't use isolate scope. We take attribut and parse it.
+            if(attrs.ngModel){
+                scope.ngModel = scope.$eval(attrs.ngModel);
+            }
+
+            scope.displayInstanceDetails = displayInstanceDetails;
+
+            setSign();
         }
     }
 });

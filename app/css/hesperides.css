@@ -243,7 +243,21 @@ body {
 
 .menu-header {
     font-size: 14px;
+    color: #003123;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    background-color: transparent;
+    height: 40px;
 }
+
+.menu-title {
+    color: #004032;
+    font-size: 14px;
+    margin: 0;
+    text-align: center;
+}
+
 
 .menu-search-input {
     border: none;
@@ -409,6 +423,14 @@ a.md-button.md-default-theme.md-warn.md-raised:not([disabled]), a.md-button.md-w
 md-input-container.md-default-theme label, md-input-container label, md-input-container.md-default-theme .md-placeholder, md-input-container .md-placeholder {
     color: rgba(0,0,0,0.6) !important;
     font-size: 14px !important;
+}
+
+/******************************************************************************
+ * Material Design menu
+ */
+md-menu-bar.md-default-theme md-menu.md-open > button, md-menu-bar md-menu.md-open > button, md-menu-bar.md-default-theme md-menu > button:focus, md-menu-bar md-menu > button:focus {
+    outline: none;
+    background: #007C6E;
 }
 
 /******************************************************************************

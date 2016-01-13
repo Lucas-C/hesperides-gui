@@ -87,7 +87,7 @@ hesperidesModule.factory('Page', function () {
             return title;
         },
         setTitle: function (newTitle) {
-            title = "Hesperides - Release PHOBOS - " + newTitle
+            title = "Hesperides > " + newTitle
         }
     }
 });

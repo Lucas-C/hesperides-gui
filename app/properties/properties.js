@@ -3,11 +3,13 @@
  */
 var propertiesModule = angular.module('hesperides.properties', ['hesperides.nexus']);
 
-propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal', '$location', '$route', '$timeout', 'ApplicationService', 'ModuleService', 'ApplicationModule', 'Page', 'NexusService', function ($scope, $routeParams, $modal, $location, $route, $timeout, ApplicationService, ModuleService, Module, Page, NexusService) {
+propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal', '$location', '$route', '$timeout', 'ApplicationService', 'FileService', 'ModuleService', 'ApplicationModule', 'Page', 'NexusService', function ($scope, $routeParams, $modal, $location, $route, $timeout, ApplicationService, FileService, ModuleService, Module, Page, NexusService) {
     Page.setTitle("Properties");
 
     $scope.platform = $routeParams.platform;
     $scope.platforms = [];
+
+    $scope.fileEntries = [];
 
     var Box = function (data) {
         return angular.extend(this, {
@@ -305,6 +307,25 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
         $scope.save_platform_from_box($scope.mainBox);
     };
 
+    $scope.preview_instance = function (box, application, platform, instance, module) {
+        var modalScope = $scope.$new(true);
+
+        modalScope.codeMirrorOptions = {'readOnly' : true };
+        modalScope.instance = instance;
+
+        FileService.get_files_entries(application.name, platform.name, box.get_path(), module.name, module.version, instance.name, module.is_working_copy).then(function (entries){
+            modalScope.fileEntries = entries;
+
+            var modal = $modal.open({
+                        templateUrl: 'file/file-modal.html',
+                        backdrop: 'static',
+                        size: 'lg',
+                        keyboard: false,
+                        scope: modalScope
+                    });
+        });
+    };
+
     $scope.delete_instance = function (instance, module) {
         module.delete_instance(instance);
         $scope.save_platform_from_box($scope.mainBox);
@@ -430,6 +451,14 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
                 return module.name == $scope.compare_module.name;
             });
         });
+    };
+
+    $scope.open_module_page = function (name, version, is_working_copy) {
+        if(is_working_copy){
+            $location.path('/module/' + name + '/' + version).search({type : "workingcopy"});
+        } else {
+            $location.path('/module/' + name + '/' + version).search({});
+        }
     };
 
     /* Get the application */

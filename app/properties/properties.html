@@ -427,6 +427,11 @@
                                    ng-click="diff_properties(module)"><span
                                 class="glyphicon glyphicon-transfer"></span>
                         </md-button>
+                        <md-button ng-click="open_module_page(module.name, module.version, module.is_working_copy)" tooltip="Afficher le module {{module.title}}"
+                                   aria-label="Afficher le module"
+                                   class="md-btn-xs">
+                            <span class="glyphicon glyphicon-pencil"></span>
+                        </md-button>
                         <md-button ng-really-message="Supprimer le module {{module.title}} et toutes ses instances ?"
                                    aria-label="Supprimer le module"
                                    tooltip="Supprimer le module"
@@ -445,6 +450,11 @@
                                        aria-label="Editer les properties de l'instance"
                                        class="">
                                 <span class="glyphicon glyphicon-list" style="margin-right:10px"></span>{{instance.name}}
+                            </md-button>
+                            <md-button ng-click="preview_instance(box, application, platform, instance, module)"
+                                       tooltip="Prévisualiser l'instance"
+                                       class="md-warn" ng-show="instance.hover">
+                                <span class="glyphicon glyphicon-eye-open"></span>
                             </md-button>
                             <md-button ng-really-message="Supprimer l'instance {{instance.name}} ?"
                                        aria-label="Supprimer l'instance"

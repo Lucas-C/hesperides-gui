@@ -1,0 +1,30 @@
+<div class="modal-header">
+    <h3 class="modal-title">Prévisualisation de {{instance.name}}</h3>
+</div>
+<div class="modal-body">
+    <form ng-repeat="item in fileEntries track by $index" role="form">
+        <div class="form-group">
+            <input type="text" class="form-control" required ng-trim="true" ng-model="item.location"
+                   id="fileLocation" placeholder="Location" ng-disabled="true"
+                    data-hint="le titre du template est unique"/>
+        </div>
+        <div class="form-group">
+            <input type="text" class="form-control" ng-trim="true" ng-model="item.rights" ng-disabled="true"
+                   id="fileRights"
+                   placeholder="Rights"
+                   data-hint="Rights"/>
+        </div>
+        <div class="form-group" id="templateContentParent" style="padding-top: 10px">
+            <label style="width: 100%">Contenu du fichier
+                <small class="text-right" style="padding-left: 10px; color: grey;font-weight:normal"><kbd>F11</kbd>
+                    Activer / <kbd>Esc</kbd> Desactiver l'edtion en plein ecran
+                </small>
+            </label>
+            <ui-codemirror id="fileContent" ui-codemirror-opts="codeMirrorOptions"
+                           ng-model="item.content"></ui-codemirror>
+        </div>
+    </form>
+</div>
+<div class="modal-footer">
+    <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
+</div>

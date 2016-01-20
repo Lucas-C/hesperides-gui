@@ -323,3 +323,9 @@ h4.app-unit button {
     padding-right: 0.75em;
     border: 1px solid #DDDDDD;
 }
+
+/* Change default values fore color*/
+input.default-value-color::-moz-placeholder{color: #428BCA;}
+input.default-value-color::-webkit-input-placeholder{color: #428BCA;}
+input.default-value-color:-ms-input-placeholder{color: #428BCA;}
+input.default-value-color:placeholder-shown{color: #428BCA;}

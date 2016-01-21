@@ -330,7 +330,7 @@ hesperidesModule.factory('$hesperidesHttp', ['$http', function($http){
         put: function(url, data, config) {
             $('#loading').show();
 
-            return $http.post(url, data, config).then(returnResponseAndHideLoading);
+            return $http.put(url, data, config).then(returnResponseAndHideLoading);
         },
         delete: function(url, config) {
             $('#loading').show();
@@ -345,7 +345,7 @@ hesperidesModule.factory('$hesperidesHttp', ['$http', function($http){
         patch: function(url, data, config) {
             $('#loading').show();
 
-            return $http.post(url, data, config).then(returnResponseAndHideLoading);
+            return $http.patch(url, data, config).then(returnResponseAndHideLoading);
         }
         };
 }]);

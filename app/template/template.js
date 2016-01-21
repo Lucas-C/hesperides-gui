@@ -226,7 +226,7 @@ templateModule.factory('TemplateEntry', function () {
     return TemplateEntry;
 });
 
-templateModule.factory('TemplateService', ['$http', 'Template', 'TemplateEntry', function ($http, Template, TemplateEntry) {
+templateModule.factory('TemplateService', ['$hesperidesHttp', 'Template', 'TemplateEntry', function ($http, Template, TemplateEntry) {
 
     return {
         get: function (namespace, name) {

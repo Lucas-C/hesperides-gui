@@ -138,7 +138,7 @@ technoModule.factory('Techno', function () {
     return Techno;
 });
 
-technoModule.factory('TechnoService', ['$http', '$q', 'Techno', 'Template', 'TemplateEntry', 'Properties', function ($http, $q, Techno, Template, TemplateEntry, Properties) {
+technoModule.factory('TechnoService', ['$hesperidesHttp', '$q', 'Techno', 'Template', 'TemplateEntry', 'Properties', function ($http, $q, Techno, Template, TemplateEntry, Properties) {
 
     return {
         get_model: function (name, version, isWorkingCopy){

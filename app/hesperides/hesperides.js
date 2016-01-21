@@ -96,7 +96,7 @@ hesperidesModule.controller("TitleCtrl", ['$scope', 'Page', function ($scope, Pa
     $scope.Page = Page;
 }]);
 
-hesperidesModule.config(['$routeProvider', '$mdThemingProvider', '$ariaProvider', function ($routeProvider, $mdThemingProvider, $ariaProvider) {
+hesperidesModule.config(['$routeProvider', '$mdThemingProvider', '$ariaProvider', '$httpProvider', function ($routeProvider, $mdThemingProvider, $ariaProvider, $httpProvider) {
     $routeProvider.
         when('/module/:name/:version', {
             templateUrl: 'module/module.html',
@@ -139,7 +139,6 @@ hesperidesModule.config(['$routeProvider', '$mdThemingProvider', '$ariaProvider'
         tabindex: false,
         bindKeypress: false
     });
-
 }]);
 
 hesperidesModule.directive('ngReallyClick', ['$mdDialog', '$timeout', function ($mdDialog, $timeout) {
@@ -305,3 +304,48 @@ hesperidesModule.directive('konami', function() {
 hesperidesModule.config(function($mdIconProvider) {
     $mdIconProvider.fontSet('fa', 'fontawesome');
 });
+
+hesperidesModule.factory('$hesperidesHttp', ['$http', function($http){
+    var returnResponseAndHideLoading = function(response) {
+        $('#loading').hide();
+        return response;
+    };
+
+    return {
+        get: function(url, config) {
+            $('#loading').show();
+
+            return $http.get(url, config).then(returnResponseAndHideLoading);
+        },
+        head: function(url, config) {
+            $('#loading').show();
+
+            return $http.head(url, config).then(returnResponseAndHideLoading);
+        },
+        post: function(url, data, config) {
+            $('#loading').show();
+
+            return $http.post(url, data, config).then(returnResponseAndHideLoading);
+        },
+        put: function(url, data, config) {
+            $('#loading').show();
+
+            return $http.post(url, data, config).then(returnResponseAndHideLoading);
+        },
+        delete: function(url, config) {
+            $('#loading').show();
+
+            return $http.delete(url, config).then(returnResponseAndHideLoading);
+        },
+        jsonp: function(url, config) {
+            $('#loading').show();
+
+            return $http.jsonp(url, config).then(returnResponseAndHideLoading);
+        },
+        patch: function(url, data, config) {
+            $('#loading').show();
+
+            return $http.post(url, data, config).then(returnResponseAndHideLoading);
+        }
+        };
+}]);

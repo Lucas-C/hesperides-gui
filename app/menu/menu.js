@@ -193,7 +193,7 @@ menuModule.controller('MenuPropertiesCtrl', ['$scope', '$mdDialog', '$location',
     };
 }]);
 
-menuModule.controller('MenuHelpCtrl', ['$scope', '$mdDialog', '$http', function($scope, $mdDialog, $http){
+menuModule.controller('MenuHelpCtrl', ['$scope', '$mdDialog', '$hesperidesHttp', function($scope, $mdDialog, $http){
 
     $scope.closeDialog = function() {
         $mdDialog.hide();

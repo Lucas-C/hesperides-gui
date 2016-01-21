@@ -547,7 +547,7 @@ button.md-primary.md-button.md-confirm-hesperides-dialog-theme.md-ink-ripple {
 
 /******************************************************************************
  * Popover
- From : http://codepen.io/derekpcollins/pen/JCLhG
+ * From : http://codepen.io/derekpcollins/pen/JCLhG
  */
 .popover {
     background-color: rgba(0, 0, 0, 0.85);
@@ -652,3 +652,17 @@ button.md-primary.md-button.md-confirm-hesperides-dialog-theme.md-ink-ripple {
     from   { bottom: 30px; }
     to { bottom: 42px; }
 }
+
+/******************************************************************************
+ * Loading screen.
+ */
+#loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -50px;
+    margin-left: -50px;
+    width: 32px;
+    height: 32px;
+    display: none;
+}​

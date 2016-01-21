@@ -202,7 +202,7 @@ applicationModule.factory('Module', ['Techno', function (Techno) {
 
 }]);
 
-applicationModule.factory('ModuleService', ['$http', '$q', 'Module', 'Template', 'TemplateEntry', 'Properties', function ($http, $q, Module, Template, TemplateEntry, Properties) {
+applicationModule.factory('ModuleService', ['$hesperidesHttp', '$q', 'Module', 'Template', 'TemplateEntry', 'Properties', function ($http, $q, Module, Template, TemplateEntry, Properties) {
 
     return {
         get: function (name, version, is_working_copy) {

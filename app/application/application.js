@@ -74,9 +74,6 @@ applicationModule.factory('Platform', ['ApplicationModule', 'Properties', functi
 applicationModule.factory('ApplicationModule', ['Instance', function (Instance) {
 
     var ApplicationModule = function (data) {
-
-        var me = this;
-
         angular.extend(this, {
             id: 0,
             name: "",
@@ -214,7 +211,7 @@ applicationModule.factory('Instance', function () {
 
 });
 
-applicationModule.factory('ApplicationService', ['$http', 'Application', 'Platform', 'Properties', 'InstanceModel', function ($http, Application, Platform, Properties, InstanceModel) {
+applicationModule.factory('ApplicationService', ['$hesperidesHttp', 'Application', 'Platform', 'Properties', 'InstanceModel', function ($http, Application, Platform, Properties, InstanceModel) {
 
     return {
         get: function (name) {

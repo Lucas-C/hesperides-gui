@@ -935,7 +935,7 @@ propertiesModule.filter('displayProperties', function () {
     };
 });
 
-propertiesModule.filter('filterProperties', ['$filter', function ($filter) {
+propertiesModule.filter('filterBox', ['$filter', function ($filter) {
     return function (boxes_object, searchString) {
 
         //A box is filtered by its name or its modules names or its children boxes

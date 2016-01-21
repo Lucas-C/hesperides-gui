@@ -39,7 +39,7 @@
 <!-- fin bloc logic -->
 <div ng-if="treedisplay" flex="100">
     <div class="property-tree-logic-bloc-subbloc" flex="100"
-         ng-repeat="box in (box.children | orderObjectBy:'name') | filterProperties:searchInTree"
+         ng-repeat="box in (box.children | orderObjectBy:'name') | filterBox:searchInTree"
          ng-include="'application/tree_renderer.html'"></div>
 
     <!-- Debut des box affichant les modules -->

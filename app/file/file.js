@@ -7,13 +7,17 @@ var fileModule = angular.module('hesperides.file', []);
 fileModule.factory('FileEntry', ['$http', function ($http) {
 
     var clearRight = function(right) {
-        var a = _.toArray(right);
+        var a = _.filter(_.toArray(right), function (c) {
+            return c != ' ' & c != '-'
+        });
 
-        return _.join(
-            _.filter(a, function (c) {
-                return c != ' ' & c != '-'
-            })
-        );
+        var r = "";
+
+        for (var i = 0; i < a.length; i++) {
+            r += a[i];
+        }
+
+        return r;
     }
 
     var FileEntry = function (data) {

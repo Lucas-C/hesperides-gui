@@ -249,7 +249,12 @@ applicationModule.factory('ModuleService', ['$http', '$q', 'Module', 'Template',
         get_all_templates: function (module) {
             return $http.get('rest/modules/' + encodeURIComponent(module.name) + '/' + encodeURIComponent(module.version) + '/'+ (module.is_working_copy ? "workingcopy" : "release") +'/templates').then(function (response) {
                 return response.data.map(function (data) {
-                    return new TemplateEntry(data);
+                    var entry = new TemplateEntry(data);
+                    var url ='rest/modules/' + encodeURIComponent(module.name) + '/' + encodeURIComponent(module.version) + '/'+ (module.is_working_copy ? "workingcopy" : "release") +'/templates/' + encodeURIComponent(entry.name);
+                    entry.getRights(url).then (function (template){
+                        entry.rights = template.rights != null ? template.rights : 'Rien à afficher';
+                    });
+                    return entry;
                 }, function (error) {
                     if (error.status != 404) {
                         $.notify(error.data.message, "error");

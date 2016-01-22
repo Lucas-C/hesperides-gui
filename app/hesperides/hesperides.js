@@ -96,7 +96,9 @@ hesperidesModule.controller("TitleCtrl", ['$scope', 'Page', function ($scope, Pa
     $scope.Page = Page;
 }]);
 
-hesperidesModule.config(['$routeProvider', '$mdThemingProvider', '$ariaProvider', '$httpProvider', function ($routeProvider, $mdThemingProvider, $ariaProvider, $httpProvider) {
+hesperidesModule.config(['$routeProvider', '$mdThemingProvider', '$ariaProvider', '$mdIconProvider', function ($routeProvider, $mdThemingProvider, $ariaProvider, $mdIconProvider) {
+    $mdIconProvider.fontSet('fa', 'fontawesome');
+
     $routeProvider.
         when('/module/:name/:version', {
             templateUrl: 'module/module.html',
@@ -299,10 +301,6 @@ hesperidesModule.directive('konami', function() {
             });
         }
     }
-});
-
-hesperidesModule.config(function($mdIconProvider) {
-    $mdIconProvider.fontSet('fa', 'fontawesome');
 });
 
 hesperidesModule.factory('$hesperidesHttp', ['$http', function($http){

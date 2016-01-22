@@ -27,7 +27,7 @@ fileModule.factory('FileEntry', ['$http', function ($http) {
 
                 newRights = 'user: ' + user + ' group:' + group;
             } else {
-                newRights = 'Rien à afficher';;
+                newRights = 'Rien à afficher';
             }
 
             this.location = data.location;

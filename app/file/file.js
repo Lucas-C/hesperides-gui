@@ -6,12 +6,33 @@ var fileModule = angular.module('hesperides.file', []);
 
 fileModule.factory('FileEntry', ['$http', function ($http) {
 
+    var clearRight = function(right) {
+        var a = _.toArray(right);
+
+        return _.join(
+            _.filter(a, function (c) {
+                return c != ' ' & c != '-'
+            })
+        );
+    }
+
     var FileEntry = function (data) {
             var me = this;
 
+            var newRights;
+
+            if (data.rights) {
+                var user = clearRight(data.rights.user);
+                var group = clearRight(data.rights.user);
+
+                newRights = 'user: ' + user + ' group:' + group;
+            } else {
+                newRights = 'Rien à afficher';;
+            }
+
             this.location = data.location;
             this.url = data.url;
-            this.rights = data.rights != null ? JSON.stringify(data.rights) : 'Rien à afficher';
+            this.rights = newRights;
             this.content = "En attente de chargement...";
 
             // methods

@@ -24,7 +24,7 @@
             <!-- Edit layout, and this key is not filled by global properties -->
             <div class="col-md-8" ng_if="!key_value_property.inGlobal">
                 <input id="input-{{ key_value_property.name }}"
-                   type="text" class="form-control"
+                   type="text" class="form-control default-value-color"
                    ng-class="{'property-using-global': key_value_property.useGlobal}"
                    placeholder="{{key_value_property.defaultValue ? '[default=' + key_value_property.defaultValue + '] ' : ''}}{{key_value_property.comment}}"
                    ng-model="key_value_property.value" tooltip="{{key_value_property.comment}}"

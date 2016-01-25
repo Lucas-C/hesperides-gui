@@ -942,7 +942,7 @@ propertiesModule.filter('filterBox', ['$filter', function ($filter) {
         var filter_one_box = function(box){
             //See if the parent box was previously fitered thanks to its name
             if(box.parent_box != undefined && box.parent_box.name_filtered == true){
-                //If the parent box was filtered by its name, we want to display the children boxes, jsut return true
+                //If the parent box was filtered by its name, we want to display the children boxes, just return true
                 return true;
             }
 
@@ -1028,19 +1028,6 @@ propertiesModule.directive('initInstances', function () {
         replace: true,
         template: "<div></div>",
         link: function (scope, element, attrs) {
-            /*
-            scope.instancedisplay = false;
-            scope.sign = "+";
-
-            scope.displayInstances = function () {
-                scope.instancedisplay = !scope.instancedisplay;
-
-                if(scope.sign == "+") {
-                    scope.sign = "-";
-                } else {
-                    scope.sign = "+";
-                }
-            };*/
             var setSign = function() {
                 scope.instancedisplay = scope.ngModel.opened;
                 scope.sign = scope.ngModel.opened ? '-' : '+';

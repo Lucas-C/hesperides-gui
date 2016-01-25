@@ -11,12 +11,16 @@ fileModule.factory('FileEntry', ['$http', function ($http) {
             this.location = data.location;
             this.url = data.url;
             this.rights = data.rights;
-            this.content = "En attente de chargement...";
+            this.name = "";                                 // the filename, to be displayed on the donwload link
+            this.content = "En attente de chargement...";   // the content of the file
+            this.display_donwload = true;                   // indicates if the donwload link will be displayed or not
 
             // methods
             this.getContent = function () {
                 return $http.get(me.url).then(function (response) {
                     return response.data;
+                },function (error){
+                    return error.status;
                 });
             };
     };
@@ -68,6 +72,12 @@ fileModule.factory('FileService', ['$http', 'Application', 'Platform', 'Properti
         return newRights;
     };
 
+    // Gets file name
+    var get_file_name = function(location) {
+        var tabs = location.split("/");
+        return tabs[tabs.length - 1];
+    };
+
     return {
 
         get_files_entries: function (application_name, platform_name, path, module_name, module_version, instance_name, is_working_copy) {
@@ -79,9 +89,20 @@ fileModule.factory('FileService', ['$http', 'Application', 'Platform', 'Properti
                     entry.rights = files_rights_to_string(data.rights);
 
                     entry.getContent().then(function(data) {
-                        entry.content = data;
+
+                        if ( typeof(data) === 'number') {
+                            entry.display_donwload = false;
+                            if ( data == 404){
+                                entry.content = "Erreur de lors de la récupération du contenu tu fichier. \nCette erreur peut se produire lorsque les attributs '@required' ne sont pas renseignés.";
+                            }else {
+                                entry.content = "Erreur de lors de la récupération du contenu tu fichier.";
+                            }
+                        }else {
+                            entry.content = data;
+                        }
                     });
 
+                    entry.name = get_file_name( data.location );
                     return entry;
                 }, function (error) {
                     if (error.status != 404) {

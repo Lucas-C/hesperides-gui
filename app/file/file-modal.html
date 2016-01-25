@@ -4,15 +4,14 @@
 <div class="modal-body">
     <form ng-repeat="item in fileEntries track by $index" role="form">
         <div class="form-group">
-            <input type="text" class="form-control" required ng-trim="true" ng-model="item.location"
-                   id="fileLocation" placeholder="Location" ng-disabled="true"
-                    data-hint="le titre du template est unique"/>
+            <input type="text" class="form-control" required ng-trim="true" value= "{{item.location}} ( {{item.rights}} )"
+                   id="fileLocation" placeholder="Enplacement et droits sur le fichier" ng-disabled="true"
+                    data-hint="L'emplacement du template et les droits sur le fichier"/>
         </div>
-        <div class="form-group">
-            <input type="text" class="form-control" ng-trim="true" ng-model="item.rights" ng-disabled="true"
-                   id="fileRights"
-                   placeholder="Rights"
-                   data-hint="Rights"/>
+        <div class="form-group" ng-if ="item.display_donwload">
+            <a id="donwload" href = "{{item.url}}" download="{{item.name}}" target="_blank">
+                {{item.name}}
+            </a>
         </div>
         <div class="form-group" id="templateContentParent" style="padding-top: 10px">
             <label style="width: 100%">Contenu du fichier

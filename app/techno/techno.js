@@ -160,7 +160,12 @@ technoModule.factory('TechnoService', ['$http', '$q', 'Techno', 'Template', 'Tem
         get_all_templates_from_workingcopy: function (wc_name, wc_version) {
             return $http.get('rest/templates/packages/' + encodeURIComponent(wc_name) + '/' + encodeURIComponent(wc_version) + '/workingcopy/templates').then(function (response) {
                 return response.data.map(function (data) {
-                    return new TemplateEntry(data);
+                    var entry = new TemplateEntry(data);
+                    var url ='rest/templates/packages/' + encodeURIComponent(wc_name) + '/' + encodeURIComponent(wc_version) + '/workingcopy/templates/' + encodeURIComponent(entry.name);
+                    entry.getRights(url).then (function (template){
+                        entry.rights = template.rights != null ? template.rights : 'Rien à afficher';
+                    });
+                    return entry;
                 }, function (error) {
                     if (error.status != 404) {
                         $.notify(error.data.message, "error");
@@ -174,7 +179,12 @@ technoModule.factory('TechnoService', ['$http', '$q', 'Techno', 'Template', 'Tem
         get_all_templates_from_release: function (r_name, r_version) {
             return $http.get('rest/templates/packages/' + encodeURIComponent(r_name) + '/' + encodeURIComponent(r_version) + '/release/templates').then(function (response) {
                 return response.data.map(function (data) {
-                    return new TemplateEntry(data);
+                    var entry = new TemplateEntry(data);
+                    var url ='rest/templates/packages/' + encodeURIComponent(r_name) + '/' + encodeURIComponent(r_version) + '/release/templates/' + encodeURIComponent(entry.name);
+                    entry.getRights(url).then (function (template){
+                        entry.rights = template.rights != null ? template.rights : 'Rien à afficher';
+                    });
+                    return entry;
                 }, function (error) {
                     if (error.status != 404) {
                         $.notify(error.data.message, "error");

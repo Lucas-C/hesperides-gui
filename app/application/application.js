@@ -79,6 +79,7 @@ applicationModule.factory('ApplicationModule', ['Instance', function (Instance) 
             name: "",
             version: "",
             is_working_copy: true,
+            opened: false,
             instances: []
         }, data);
 

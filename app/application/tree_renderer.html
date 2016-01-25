@@ -48,7 +48,7 @@
          ng-if="box.modules.length > 0"
          ng-repeat="module in box.modules | orderObjectBy:'name'">
         <property-tool-button></property-tool-button>
-        <init-instances></init-instances>
+        <init-instances ng-model="box"></init-instances>
         <div layout="row" class="property-tree-module">
             <div flex="1" layout="row" layout-align="none center">
                 <span ng-click="displayInstances()"

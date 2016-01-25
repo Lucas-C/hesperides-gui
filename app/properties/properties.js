@@ -367,7 +367,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
             $scope.platforms[existing_index] = platform;
             //Update the view
             $scope.update_main_box(platform);
-        }, function (error) {
+        }, function () {
             //If an error occurs, reload the platform, thus avoiding having a non synchronized $scope model object
             $location.url('/properties/' + $scope.platform.application_name).search({platform: $scope.platform.name});
             $route.reload(); //Force reload if needed
@@ -1028,6 +1028,7 @@ propertiesModule.directive('initInstances', function () {
         replace: true,
         template: "<div></div>",
         link: function (scope, element, attrs) {
+            /*
             scope.instancedisplay = false;
             scope.sign = "+";
 
@@ -1039,7 +1040,26 @@ propertiesModule.directive('initInstances', function () {
                 } else {
                     scope.sign = "+";
                 }
+            };*/
+            var setSign = function() {
+                scope.instancedisplay = scope.ngModel.opened;
+                scope.sign = scope.ngModel.opened ? '-' : '+';
             };
+
+            var displayInstances = function () {
+                scope.ngModel.opened = !scope.ngModel.opened;
+
+                setSign();
+            };
+
+            // We can't use isolate scope. We take attribut and parse it.
+            if(attrs.ngModel){
+                scope.ngModel = scope.$eval(attrs.ngModel);
+            }
+
+            scope.displayInstances = displayInstances;
+
+            setSign();
         }
     }
 });

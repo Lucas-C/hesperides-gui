@@ -5,38 +5,12 @@
 var fileModule = angular.module('hesperides.file', []);
 
 fileModule.factory('FileEntry', ['$http', function ($http) {
-
-    var clearRight = function(right) {
-        var a = _.filter(_.toArray(right), function (c) {
-            return c != ' ' & c != '-'
-        });
-
-        var r = "";
-
-        for (var i = 0; i < a.length; i++) {
-            r += a[i];
-        }
-
-        return r;
-    }
-
     var FileEntry = function (data) {
             var me = this;
 
-            var newRights;
-
-            if (data.rights) {
-                var user = clearRight(data.rights.user);
-                var group = clearRight(data.rights.user);
-
-                newRights = 'user: ' + user + ' group:' + group;
-            } else {
-                newRights = 'Rien à afficher';
-            }
-
             this.location = data.location;
             this.url = data.url;
-            this.rights = newRights;
+            this.rights = data.rights;
             this.content = "En attente de chargement...";
 
             // methods
@@ -51,6 +25,48 @@ fileModule.factory('FileEntry', ['$http', function ($http) {
 }]);
 
 fileModule.factory('FileService', ['$http', 'Application', 'Platform', 'Properties', 'InstanceModel', 'FileEntry', function ($http, Application, Platform, Properties, InstanceModel, FileEntry) {
+    // Convert file right to string
+    var files_rights_to_string = function(filesRights) {
+        var clearRight = function(right) {
+            var r = "";
+
+            if (_.isString(right)) {
+                var a = _.filter(_.toArray(right), function (c) {
+                    return c != ' ' & c != '-'
+                });
+
+                for (var i = 0; i < a.length; i++) {
+                    r += a[i];
+                }
+            } else {
+                if (right.read) {
+                    r += 'r';
+                }
+                if (right.write) {
+                    r += 'w';
+                }
+                if (right.execute) {
+                    r += 'x';
+                }
+
+            }
+
+            return r;
+        };
+
+        var newRights;
+
+        if (filesRights) {
+            var user = clearRight(filesRights.user);
+            var group = clearRight(filesRights.group);
+
+            newRights = 'user: ' + user + ' group:' + group;
+        } else {
+            newRights = 'Aucun droit positionné';
+        }
+
+        return newRights;
+    };
 
     return {
 
@@ -60,6 +76,7 @@ fileModule.factory('FileService', ['$http', 'Application', 'Platform', 'Properti
             return $http.get(url).then(function (response) {
                 return response.data.map(function (data) {
                     var entry = new FileEntry(data);
+                    entry.rights = files_rights_to_string(data.rights);
 
                     entry.getContent().then(function(data) {
                         entry.content = data;
@@ -75,7 +92,8 @@ fileModule.factory('FileService', ['$http', 'Application', 'Platform', 'Properti
                     }
                 });
             });
-        }
+        },
+        files_rights_to_string: files_rights_to_string
     };
 
 }]);

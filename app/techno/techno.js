@@ -131,13 +131,14 @@ technoModule.factory('Techno', function () {
     return Techno;
 });
 
-technoModule.factory('TechnoService', ['$http', '$q', 'Techno', 'Template', 'TemplateEntry', 'Properties', function ($http, $q, Techno, Template, TemplateEntry, Properties) {
+technoModule.factory('TechnoService', [
+    '$http', '$q', 'Techno', 'Template', 'TemplateEntry', 'Properties', 'FileService', function ($http, $q, Techno, Template, TemplateEntry, Properties, FileService) {
 
     return {
         get_model: function (name, version, isWorkingCopy){
             return $http.get('rest/templates/packages/' + encodeURIComponent(name) + '/' + encodeURIComponent(version) + '/' + (isWorkingCopy ? "workingcopy" : "release") + '/model').then(function(response){
                 return new Properties(response.data);
-            }, function (error) {
+            }, function () {
                 return new Properties({});
             });
         },
@@ -158,13 +159,17 @@ technoModule.factory('TechnoService', ['$http', '$q', 'Techno', 'Template', 'Tem
             });
         },
         get_all_templates_from_workingcopy: function (wc_name, wc_version) {
-            return $http.get('rest/templates/packages/' + encodeURIComponent(wc_name) + '/' + encodeURIComponent(wc_version) + '/workingcopy/templates').then(function (response) {
+            var baseUrl = 'rest/templates/packages/' + encodeURIComponent(wc_name) + '/' + encodeURIComponent(wc_version) + '/workingcopy/templates';
+
+            return $http.get(baseUrl).then(function (response) {
                 return response.data.map(function (data) {
                     var entry = new TemplateEntry(data);
-                    var url ='rest/templates/packages/' + encodeURIComponent(wc_name) + '/' + encodeURIComponent(wc_version) + '/workingcopy/templates/' + encodeURIComponent(entry.name);
+                    var url = baseUrl + '/' + encodeURIComponent(entry.name);
+
                     entry.getRights(url).then (function (template){
-                        entry.rights = template.rights != null ? template.rights : 'Rien à afficher';
+                        entry.rights = FileService.files_rights_to_string(template.rights);
                     });
+
                     return entry;
                 }, function (error) {
                     if (error.status != 404) {

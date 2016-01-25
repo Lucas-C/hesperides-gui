@@ -4,7 +4,9 @@
 var applicationModule = angular.module('hesperides.module', []);
 
 
-applicationModule.controller('ModuleCtrl', ['$scope', '$routeParams', '$location', '$modal', 'TechnoService', 'ModuleService', 'HesperidesTemplateModal', 'Template', 'Page', function ($scope, $routeParams, $location, $modal, TechnoService, ModuleService, HesperidesTemplateModal, Template, Page) {
+applicationModule.controller('ModuleCtrl', [
+    '$scope', '$routeParams', '$location', '$modal', 'TechnoService', 'ModuleService', 'HesperidesTemplateModal', 'Template', 'Page',
+    function ($scope, $routeParams, $location, $modal, TechnoService, ModuleService, HesperidesTemplateModal, Template, Page) {
 
     Page.setTitle('Module');
 
@@ -136,9 +138,6 @@ applicationModule.controller('ModuleCtrl', ['$scope', '$routeParams', '$location
 applicationModule.factory('Module', ['Techno', function (Techno) {
 
     var Module = function (data) {
-
-        var me = this;
-
         angular.extend(this, {
             name: "",
             version: "",
@@ -197,7 +196,9 @@ applicationModule.factory('Module', ['Techno', function (Techno) {
 
 }]);
 
-applicationModule.factory('ModuleService', ['$http', '$q', 'Module', 'Template', 'TemplateEntry', 'Properties', function ($http, $q, Module, Template, TemplateEntry, Properties) {
+applicationModule.factory('ModuleService', [
+    '$http', '$q', 'Module', 'Template', 'TemplateEntry', 'Properties', 'FileService',
+    function ($http, $q, Module, Template, TemplateEntry, Properties, FileService) {
 
     return {
         get: function (name, version, is_working_copy) {
@@ -234,7 +235,7 @@ applicationModule.factory('ModuleService', ['$http', '$q', 'Module', 'Template',
         get_model: function (module){
             return $http.get('rest/modules/' + encodeURIComponent(module.name) + '/' + encodeURIComponent(module.version) + '/' + (module.is_working_copy ? "workingcopy" : "release") + '/model').then(function(response){
                 return new Properties(response.data);
-            }, function (error) {
+            }, function () {
                 return new Properties({});
             });
         },
@@ -247,12 +248,15 @@ applicationModule.factory('ModuleService', ['$http', '$q', 'Module', 'Template',
             });
         },
         get_all_templates: function (module) {
-            return $http.get('rest/modules/' + encodeURIComponent(module.name) + '/' + encodeURIComponent(module.version) + '/'+ (module.is_working_copy ? "workingcopy" : "release") +'/templates').then(function (response) {
+            var baseUrl = 'rest/modules/' + encodeURIComponent(module.name) + '/' + encodeURIComponent(module.version) + '/'+ (module.is_working_copy ? "workingcopy" : "release") +'/templates';
+
+            return $http.get(baseUrl).then(function (response) {
                 return response.data.map(function (data) {
                     var entry = new TemplateEntry(data);
-                    var url ='rest/modules/' + encodeURIComponent(module.name) + '/' + encodeURIComponent(module.version) + '/'+ (module.is_working_copy ? "workingcopy" : "release") +'/templates/' + encodeURIComponent(entry.name);
+                    var url = baseUrl + '/' + encodeURIComponent(entry.name);
+
                     entry.getRights(url).then (function (template){
-                        entry.rights = template.rights != null ? template.rights : 'Rien à afficher';
+                        entry.rights = FileService.files_rights_to_string(template.rights);
                     });
                     return entry;
                 }, function (error) {

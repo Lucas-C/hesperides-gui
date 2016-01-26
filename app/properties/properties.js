@@ -238,7 +238,8 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
             properties_path: $scope.compare_module.properties_path,
             compare_application: $scope.compare_platform.application_name,
             compare_platform: $scope.compare_platform.name,
-            compare_path: $scope.compare_platform.chosen_module.properties_path
+            compare_path: $scope.compare_platform.chosen_module.properties_path,
+            module: $scope.compare_module
         };
         if (!_.isUndefined($scope.compare_platform.timestamp)) {
             urlParams.timestamp = $scope.compare_platform.timestamp;
@@ -456,7 +457,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
 
 }]);
 
-propertiesModule.controller('DiffCtrl', ['$scope', '$routeParams', '$timeout', '$route', 'ApplicationService', function ($scope, $routeParams, $timeout, $route, ApplicationService) {
+propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$timeout', '$route', 'ApplicationService', 'ModuleService', function ($filter, $scope, $routeParams, $timeout, $route, ApplicationService, ModuleService) {
 
     var DiffContainer = function (status, property_name, property_to_modify, property_to_compare_to) {
         // 0 -> only on to_modify
@@ -485,6 +486,14 @@ propertiesModule.controller('DiffCtrl', ['$scope', '$routeParams', '$timeout', '
     $scope.propertiesKeyFilter2 = "";
     $scope.propertiesKeyFilter3 = "";
 
+    $scope.module = $routeParams.module;
+    $scope.model = "";
+
+    // Get model
+    ModuleService.get_model($scope.module).then(function(model) {
+        $scope.model = model;
+    })
+
     //Get the platform to get the version id
     //Then get the properties, version id could have changed but it is really marginal
     ApplicationService.get_platform($routeParams.application, $routeParams.platform).then(function (platform) {
@@ -492,11 +501,11 @@ propertiesModule.controller('DiffCtrl', ['$scope', '$routeParams', '$timeout', '
     }).then(function () {
         return ApplicationService.get_properties($routeParams.application, $routeParams.platform, $routeParams.properties_path);
     }).then(function (properties) {
-        $scope.properties_to_modify = properties;
+        $scope.properties_to_modify = properties.mergeWithModel($scope.model);
     }).then(function () {
         return ApplicationService.get_properties($routeParams.compare_application, $routeParams.compare_platform, $routeParams.compare_path, $routeParams.timestamp);
     }).then(function (properties) {
-        $scope.properties_to_compare_to = properties;
+        $scope.properties_to_compare_to = properties.mergeWithModel($scope.model);
     }).then(function () {
         $scope.generate_diff_containers();
     });
@@ -513,6 +522,11 @@ propertiesModule.controller('DiffCtrl', ['$scope', '$routeParams', '$timeout', '
         //        - with identical value -> status 1
         //        - with different value -> status 2
         //  - if no matching property -> status 0
+
+        // There's not need to keep removed properties because readability is better without them
+        $scope.properties_to_modify.key_value_properties = $filter('filter')($scope.properties_to_modify.key_value_properties, {inModel: true});
+        $scope.properties_to_compare_to.key_value_properties = $filter('filter')($scope.properties_to_compare_to.key_value_properties, {inModel: true});
+
         _.each($scope.properties_to_modify.key_value_properties, function (prop_to_modify) {
 
             if (prop_to_modify.value === '') {
@@ -833,11 +847,11 @@ propertiesModule.factory('Properties', function () {
         }
 
         this.switchOrder = function () {
-          this.is_sorted_desc = !this.is_sorted_desc;
+            this.is_sorted_desc = !this.is_sorted_desc;
         }
 
         this.isReverseOrder = function () {
-          return this.is_sorted_desc;
+            return this.is_sorted_desc;
         }
 
     };

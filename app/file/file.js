@@ -13,7 +13,7 @@ fileModule.factory('FileEntry', ['$http', function ($http) {
             this.rights = data.rights;
             this.name = "";                                 // the filename, to be displayed on the donwload link
             this.content = "En attente de chargement...";   // the content of the file
-            this.display_donwload = true;                   // indicates if the donwload link will be displayed or not
+            this.on_error = false;                          // indicates if there where an error or not !
 
             // methods
             this.getContent = function () {
@@ -91,9 +91,9 @@ fileModule.factory('FileService', ['$http', 'Application', 'Platform', 'Properti
                     entry.getContent().then(function(data) {
 
                         if ( typeof(data) === 'number') {
-                            entry.display_donwload = false;
+                            entry.on_error = true;
                             if ( data == 404){
-                                entry.content = "Erreur de lors de la récupération du contenu tu fichier. \nCette erreur peut se produire lorsque les attributs '@required' ne sont pas renseignés.";
+                                entry.content = "Erreur de lors de la récupération du contenu tu fichier. Cette erreur peut se produire lorsque les attributs '@required' ne sont pas renseignés.";
                             }else {
                                 entry.content = "Erreur de lors de la récupération du contenu tu fichier.";
                             }
@@ -113,6 +113,22 @@ fileModule.factory('FileService', ['$http', 'Application', 'Platform', 'Properti
                     }
                 });
             });
+        },
+        download_files : function (entries, name){
+            // The JSZip Object
+            var zip = new JSZip();
+
+            // Adding files to zip
+            entries.map(function (entry){
+                if ( !entry.on_error ){
+                   zip.file(entry.name, entry.content);
+                }
+            });
+
+            // Generate and save the zip file
+            var content = zip.generate({type:"blob"});
+            saveAs(content, name + ".zip");
+
         },
         files_rights_to_string: files_rights_to_string
     };

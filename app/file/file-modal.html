@@ -8,7 +8,7 @@
                    id="fileLocation" placeholder="Enplacement et droits sur le fichier" ng-disabled="true"
                     data-hint="L'emplacement du template et les droits sur le fichier"/>
         </div>
-        <div class="form-group" ng-if ="item.display_donwload">
+        <div class="form-group" ng-if ="item.on_error == false">
             <a id="donwload" href = "{{item.url}}" download="{{item.name}}" target="_blank">
                 {{item.name}}
             </a>
@@ -19,11 +19,20 @@
                     Activer / <kbd>Esc</kbd> Desactiver l'edtion en plein ecran
                 </small>
             </label>
-            <ui-codemirror id="fileContent" ui-codemirror-opts="codeMirrorOptions"
-                           ng-model="item.content"></ui-codemirror>
+
+            <div ng-switch = "item.on_error">
+                <div ng-switch-when="true" class="alert alert-danger" style = "background-color:#f2dede;border-color:#eed3d7;color:#b94a48;">
+                    <strong>Erreur !</i></strong> {{item.content}}
+                </div>
+
+                <ui-codemirror ng-switch-when="false" id="fileContent" ui-codemirror-opts="codeMirrorOptions"
+                               ng-model="item.content"></ui-codemirror>
+            </div>
+
         </div>
     </form>
 </div>
 <div class="modal-footer">
+    <button class="btn btn-success" ng-click="download_all_instance_files()">Télécharger tous</button>
     <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
 </div>

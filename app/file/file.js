@@ -18,9 +18,9 @@ fileModule.factory('FileEntry', ['$http', function ($http) {
             // methods
             this.getContent = function () {
                 return $http.get(me.url).then(function (response) {
-                    return response.data;
+                    return response;
                 },function (error){
-                    return error.status;
+                    return error;
                 });
             };
     };
@@ -88,17 +88,13 @@ fileModule.factory('FileService', ['$http', 'Application', 'Platform', 'Properti
                     var entry = new FileEntry(data);
                     entry.rights = files_rights_to_string(data.rights);
 
-                    entry.getContent().then(function(data) {
+                    entry.getContent().then(function(output) {
 
-                        if ( typeof(data) === 'number') {
+                        if ( output.status != 200) {
                             entry.on_error = true;
-                            if ( data == 404){
-                                entry.content = "Erreur de lors de la récupération du contenu tu fichier. Cette erreur peut se produire lorsque les attributs '@required' ne sont pas renseignés.";
-                            }else {
-                                entry.content = "Erreur de lors de la récupération du contenu tu fichier.";
-                            }
+                            entry.content = output.data.message;
                         }else {
-                            entry.content = data;
+                            entry.content = output.data;
                         }
                     });
 

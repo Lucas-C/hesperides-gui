@@ -70,24 +70,46 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
             return currentBox;
         };
 
+        var update_modules = function(module, oldModules) {
+            var currentModule;
+
+            currentModule = _.filter(oldModules, { name: module.name });
+
+            if (currentModule.length > 0) {
+                module.opened = currentModule[0].opened;
+            }
+        }
+
         var add_to_box = function (box, folders, level, module) {
             if (level > folders.length) {
                 throw "Should have nether been here, wrong use of add_to_box recursive function";
             }
+
+            var oldBox;
+
             if (level === folders.length) {
                 //Found terminal level
                 box.modules.push(module);
+
+                oldBox = search_old_box(oldMainBox, box);
+
+                if (oldBox && oldBox.modules && oldBox.modules.length > 0) {
+                    update_modules(module, oldBox.modules);
+                }
             } else {
                 var name = folders[level];
-                if (_.isUndefined(box["children"][name])) {
-                    box["children"][name] = new Box({parent_box: box, name: name});
 
-                    var oldBox = search_old_box(oldMainBox, box["children"][name]);
+                if (_.isUndefined(box["children"][name])) {
+                    var newBox = new Box({parent_box: box, name: name});
+                    box["children"][name] = newBox;
+
+                    oldBox = search_old_box(oldMainBox, newBox);
 
                     if (oldBox) {
-                        box["children"][name].opened = oldBox.opened;
+                        newBox.opened = oldBox.opened;
                     }
                 }
+
                 return add_to_box(box["children"][name], folders, level + 1, module);
             }
         };

@@ -238,8 +238,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
             properties_path: $scope.compare_module.properties_path,
             compare_application: $scope.compare_platform.application_name,
             compare_platform: $scope.compare_platform.name,
-            compare_path: $scope.compare_platform.chosen_module.properties_path,
-            module: $scope.compare_module
+            compare_path: $scope.compare_platform.chosen_module.properties_path
         };
         if (!_.isUndefined($scope.compare_platform.timestamp)) {
             urlParams.timestamp = $scope.compare_platform.timestamp;
@@ -475,9 +474,13 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
     $scope.application_name = $routeParams.application;
     $scope.platform_name = $routeParams.platform;
     $scope.properties_path = $routeParams.properties_path;
+    $scope.splited_properties_path = $routeParams.properties_path.split('#');
+    $scope.module = "";
     $scope.compare_application = $routeParams.compare_application;
     $scope.compare_platform = $routeParams.compare_platform;
     $scope.compare_path = $routeParams.compare_path;
+    $scope.compare_splited_path = $routeParams.compare_path.split('#');
+    $scope.compare_module = "";
 
     $scope.show_only_modified = true;
 
@@ -486,13 +489,17 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
     $scope.propertiesKeyFilter2 = "";
     $scope.propertiesKeyFilter3 = "";
 
-    $scope.module = $routeParams.module;
-    $scope.model = "";
+    $scope.module = {
+        "name" : $scope.splited_properties_path[3],
+        "version" : $scope.splited_properties_path[4],
+        "is_working_copy" : $scope.splited_properties_path[5] == "WORKINGCOPY" ? true : false
+    }
 
-    // Get model
-    ModuleService.get_model($scope.module).then(function(model) {
-        $scope.model = model;
-    })
+    $scope.compare_module = {
+        "name" : $scope.compare_splited_path[3],
+        "version" : $scope.compare_splited_path[4],
+        "is_working_copy" : $scope.compare_splited_path[5] == "WORKINGCOPY" ? true : false
+    };
 
     //Get the platform to get the version id
     //Then get the properties, version id could have changed but it is really marginal
@@ -501,11 +508,19 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
     }).then(function () {
         return ApplicationService.get_properties($routeParams.application, $routeParams.platform, $routeParams.properties_path);
     }).then(function (properties) {
-        $scope.properties_to_modify = properties.mergeWithModel($scope.model);
+        $scope.properties_to_modify = properties;
+    }).then(function () {
+        return ModuleService.get_model($scope.module);
+    }).then(function(model) {
+        $scope.properties_to_modify = $scope.properties_to_modify.mergeWithModel(model);
     }).then(function () {
         return ApplicationService.get_properties($routeParams.compare_application, $routeParams.compare_platform, $routeParams.compare_path, $routeParams.timestamp);
     }).then(function (properties) {
-        $scope.properties_to_compare_to = properties.mergeWithModel($scope.model);
+        $scope.properties_to_compare_to = properties;
+    }).then(function () {
+        return ModuleService.get_model($scope.compare_module);
+    }).then(function(model) {
+        $scope.properties_to_compare_to = $scope.properties_to_compare_to.mergeWithModel(model);
     }).then(function () {
         $scope.generate_diff_containers();
     });

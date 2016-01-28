@@ -514,6 +514,11 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
     }).then(function(model) {
         $scope.properties_to_modify = $scope.properties_to_modify.mergeWithModel(model);
     }).then(function () {
+        // Get global properties
+        return ApplicationService.get_properties($routeParams.application, $routeParams.platform, '#');
+    }).then(function(model) {
+        $scope.properties_to_modify = $scope.properties_to_modify.mergeWithGlobalProperties(model);
+    }).then(function () {
         return ApplicationService.get_properties($routeParams.compare_application, $routeParams.compare_platform, $routeParams.compare_path, $routeParams.timestamp);
     }).then(function (properties) {
         $scope.properties_to_compare_to = properties;
@@ -521,6 +526,11 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
         return ModuleService.get_model($scope.compare_module);
     }).then(function(model) {
         $scope.properties_to_compare_to = $scope.properties_to_compare_to.mergeWithModel(model);
+    }).then(function () {
+        // Get global properties
+        return ApplicationService.get_properties($routeParams.application, $routeParams.platform, '#');
+    }).then(function(model) {
+        $scope.properties_to_compare_to = $scope.properties_to_compare_to.mergeWithGlobalProperties(model);
     }).then(function () {
         $scope.generate_diff_containers();
     });

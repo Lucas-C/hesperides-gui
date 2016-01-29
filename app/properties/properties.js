@@ -411,7 +411,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
     $scope.save_global_properties = function (properties) {
 
         // Check if there is new global property then add before saving
-        if ( ! ($scope.new_kv_name === '') && !($scope.new_kv_value === '')){
+        if ( !(_.isEmpty($scope.new_kv_name) || _.isEmpty($scope.new_kv_value))){
             properties.addKeyValue({'name':  $scope.new_kv_name, 'value': $scope.new_kv_value,'comment': ''});
             $scope.new_kv_name = '';
             $scope.new_kv_value = '';

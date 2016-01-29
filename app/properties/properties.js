@@ -532,6 +532,8 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
     }).then(function(model) {
         $scope.properties_to_compare_to = $scope.properties_to_compare_to.mergeWithGlobalProperties(model);
     }).then(function () {
+        $scope.properties_to_modify = $scope.properties_to_modify.mergeWithDefaultValue();
+        $scope.properties_to_compare_to = $scope.properties_to_compare_to.mergeWithDefaultValue();
         $scope.generate_diff_containers();
     });
 
@@ -807,7 +809,7 @@ propertiesModule.factory('Properties', function () {
                     });
 
                     key_value.required = (prop.required) ? prop.required : false;
-                    key_value.defaultValue = (prop.defaultValue) ? prop.defaultValue : false;
+                    key_value.defaultValue = (prop.defaultValue) ? prop.defaultValue : "";
                 }
             });
 
@@ -825,7 +827,7 @@ propertiesModule.factory('Properties', function () {
                     value: "",
                     inModel: true,
                     required: (model_key_value.required) ? model_key_value.required : false,
-                    defaultValue: (model_key_value.defaultValue) ? model_key_value.defaultValue : false
+                    defaultValue: (model_key_value.defaultValue) ? model_key_value.defaultValue : ""
                 });
             });
 
@@ -879,6 +881,28 @@ propertiesModule.factory('Properties', function () {
             return this.is_sorted_desc;
         }
 
+        this.mergeWithDefaultValue = function () {
+            var me = this;
+
+            _.each(me.key_value_properties, function (key_value) {
+                if (key_value.inModel) {
+                    // Default value are not avaible for deleted properties
+                    if (_.isString(key_value.value) && _.isEmpty(key_value.value)
+                        && _.isString(key_value.defaultValue) && !_.isEmpty(key_value.defaultValue)) {
+                        key_value.inDefault = true;
+                        key_value.value = key_value.defaultValue;
+                    } else {
+                        key_value.inDefault = false;
+                    }
+                }
+            });
+
+            _.each(me.iterable_properties, function (iterable) {
+                // TODO
+            });
+
+            return this;
+        }
     };
 
     return Properties;

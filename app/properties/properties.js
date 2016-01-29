@@ -404,7 +404,19 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
         properties.filter_according_to_model();
     };
 
+    // The new global property info
+    $scope.new_kv_name = '';
+    $scope.new_kv_value = '';
+
     $scope.save_global_properties = function (properties) {
+
+        // Check if there is new global property then add before saving
+        if ( ! ($scope.new_kv_name === '') && !($scope.new_kv_value === '')){
+            properties.addKeyValue({'name':  $scope.new_kv_name, 'value': $scope.new_kv_value,'comment': ''});
+            $scope.new_kv_name = '';
+            $scope.new_kv_value = '';
+        }
+
         ApplicationService.save_properties($routeParams.application, $scope.platform, properties, '#').then(function (properties) {
             if (!_.isUndefined($scope.properties)) {
                 $scope.properties = $scope.properties.mergeWithGlobalProperties(properties);

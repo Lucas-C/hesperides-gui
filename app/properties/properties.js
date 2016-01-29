@@ -456,7 +456,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
 
 }]);
 
-propertiesModule.controller('DiffCtrl', ['$scope', '$routeParams', '$timeout', '$route', 'ApplicationService', function ($scope, $routeParams, $timeout, $route, ApplicationService) {
+propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$timeout', '$route', 'ApplicationService', 'ModuleService', function ($filter, $scope, $routeParams, $timeout, $route, ApplicationService, ModuleService) {
 
     var DiffContainer = function (status, property_name, property_to_modify, property_to_compare_to) {
         // 0 -> only on to_modify
@@ -474,9 +474,13 @@ propertiesModule.controller('DiffCtrl', ['$scope', '$routeParams', '$timeout', '
     $scope.application_name = $routeParams.application;
     $scope.platform_name = $routeParams.platform;
     $scope.properties_path = $routeParams.properties_path;
+    $scope.splited_properties_path = $routeParams.properties_path.split('#');
+    $scope.module = "";
     $scope.compare_application = $routeParams.compare_application;
     $scope.compare_platform = $routeParams.compare_platform;
     $scope.compare_path = $routeParams.compare_path;
+    $scope.compare_splited_path = $routeParams.compare_path.split('#');
+    $scope.compare_module = "";
 
     $scope.show_only_modified = true;
 
@@ -484,6 +488,18 @@ propertiesModule.controller('DiffCtrl', ['$scope', '$routeParams', '$timeout', '
     $scope.propertiesKeyFilter1 = "";
     $scope.propertiesKeyFilter2 = "";
     $scope.propertiesKeyFilter3 = "";
+
+    $scope.module = {
+        "name" : $scope.splited_properties_path[3],
+        "version" : $scope.splited_properties_path[4],
+        "is_working_copy" : $scope.splited_properties_path[5] == "WORKINGCOPY" ? true : false
+    }
+
+    $scope.compare_module = {
+        "name" : $scope.compare_splited_path[3],
+        "version" : $scope.compare_splited_path[4],
+        "is_working_copy" : $scope.compare_splited_path[5] == "WORKINGCOPY" ? true : false
+    };
 
     //Get the platform to get the version id
     //Then get the properties, version id could have changed but it is really marginal
@@ -494,10 +510,30 @@ propertiesModule.controller('DiffCtrl', ['$scope', '$routeParams', '$timeout', '
     }).then(function (properties) {
         $scope.properties_to_modify = properties;
     }).then(function () {
+        return ModuleService.get_model($scope.module);
+    }).then(function(model) {
+        $scope.properties_to_modify = $scope.properties_to_modify.mergeWithModel(model);
+    }).then(function () {
+        // Get global properties
+        return ApplicationService.get_properties($routeParams.application, $routeParams.platform, '#');
+    }).then(function(model) {
+        $scope.properties_to_modify = $scope.properties_to_modify.mergeWithGlobalProperties(model);
+    }).then(function () {
         return ApplicationService.get_properties($routeParams.compare_application, $routeParams.compare_platform, $routeParams.compare_path, $routeParams.timestamp);
     }).then(function (properties) {
         $scope.properties_to_compare_to = properties;
     }).then(function () {
+        return ModuleService.get_model($scope.compare_module);
+    }).then(function(model) {
+        $scope.properties_to_compare_to = $scope.properties_to_compare_to.mergeWithModel(model);
+    }).then(function () {
+        // Get global properties
+        return ApplicationService.get_properties($routeParams.application, $routeParams.platform, '#');
+    }).then(function(model) {
+        $scope.properties_to_compare_to = $scope.properties_to_compare_to.mergeWithGlobalProperties(model);
+    }).then(function () {
+        $scope.properties_to_modify = $scope.properties_to_modify.mergeWithDefaultValue();
+        $scope.properties_to_compare_to = $scope.properties_to_compare_to.mergeWithDefaultValue();
         $scope.generate_diff_containers();
     });
 
@@ -513,6 +549,11 @@ propertiesModule.controller('DiffCtrl', ['$scope', '$routeParams', '$timeout', '
         //        - with identical value -> status 1
         //        - with different value -> status 2
         //  - if no matching property -> status 0
+
+        // There's not need to keep removed properties because readability is better without them
+        $scope.properties_to_modify.key_value_properties = $filter('filter')($scope.properties_to_modify.key_value_properties, {inModel: true});
+        $scope.properties_to_compare_to.key_value_properties = $filter('filter')($scope.properties_to_compare_to.key_value_properties, {inModel: true});
+
         _.each($scope.properties_to_modify.key_value_properties, function (prop_to_modify) {
 
             if (prop_to_modify.value === '') {
@@ -685,6 +726,28 @@ propertiesModule.directive('toggleDeletedProperties', function () {
 
 });
 
+/**
+ * Diplay warning message when value is same/or not and source of value is different.
+ */
+propertiesModule.directive('warningValue', function () {
+
+    return {
+        restrict: 'E',
+        scope: {
+            propertyToModify: '=',
+            propertyToCompareTo: '='
+        },
+        template: '<span class="glyphicon glyphicon-exclamation-sign" ng-if="propertyToModify.inGlobal != propertyToCompareTo.inGlobal || propertyToModify.inDefault != propertyToCompareTo.inDefault">' +
+                  '<md-tooltip ng-if="propertyToModify.inGlobal != propertyToCompareTo.inGlobal">Valorisé depuis un propriété globale</md-tooltip>' +
+                  '<md-tooltip ng-if="propertyToModify.inDefault != propertyToCompareTo.inDefault">' +
+                  'La valeur sur l\'application' +
+                  'est valorisée depuis une valeur par défaut' +
+                  '</md-tooltip>' +
+                  '</span>'
+    }
+
+});
+
 propertiesModule.factory('Properties', function () {
 
     var Properties = function (data) {
@@ -768,10 +831,10 @@ propertiesModule.factory('Properties', function () {
                     });
 
                     key_value.required = (prop.required) ? prop.required : false;
-                    key_value.defaultValue = (prop.defaultValue) ? prop.defaultValue : false;
+                    key_value.defaultValue = (prop.defaultValue) ? prop.defaultValue : "";
                 } else {
                     key_value.required = false;
-                    key_value.defaultValue = false;
+                    key_value.defaultValue = "";
                 }
             });
 
@@ -789,7 +852,7 @@ propertiesModule.factory('Properties', function () {
                     value: "",
                     inModel: true,
                     required: (model_key_value.required) ? model_key_value.required : false,
-                    defaultValue: (model_key_value.defaultValue) ? model_key_value.defaultValue : false
+                    defaultValue: (model_key_value.defaultValue) ? model_key_value.defaultValue : ""
                 });
             });
 
@@ -836,13 +899,35 @@ propertiesModule.factory('Properties', function () {
         }
 
         this.switchOrder = function () {
-          this.is_sorted_desc = !this.is_sorted_desc;
+            this.is_sorted_desc = !this.is_sorted_desc;
         }
 
         this.isReverseOrder = function () {
-          return this.is_sorted_desc;
+            return this.is_sorted_desc;
         }
 
+        this.mergeWithDefaultValue = function () {
+            var me = this;
+
+            _.each(me.key_value_properties, function (key_value) {
+                if (key_value.inModel) {
+                    // Default value are not avaible for deleted properties
+                    if (_.isString(key_value.value) && _.isEmpty(key_value.value)
+                        && _.isString(key_value.defaultValue) && !_.isEmpty(key_value.defaultValue)) {
+                        key_value.inDefault = true;
+                        key_value.value = key_value.defaultValue;
+                    } else {
+                        key_value.inDefault = false;
+                    }
+                }
+            });
+
+            _.each(me.iterable_properties, function (iterable) {
+                // TODO
+            });
+
+            return this;
+        }
     };
 
     return Properties;

@@ -726,6 +726,28 @@ propertiesModule.directive('toggleDeletedProperties', function () {
 
 });
 
+/**
+ * Diplay warning message when value is same/or not and source of value is different.
+ */
+propertiesModule.directive('warningValue', function () {
+
+    return {
+        restrict: 'E',
+        scope: {
+            propertyToModify: '=',
+            propertyToCompareTo: '='
+        },
+        template: '<span class="glyphicon glyphicon-exclamation-sign" ng-if="propertyToModify.inGlobal != propertyToCompareTo.inGlobal || propertyToModify.inDefault != propertyToCompareTo.inDefault">' +
+                  '<md-tooltip ng-if="propertyToModify.inGlobal != propertyToCompareTo.inGlobal">Valorisé depuis un propriété globale</md-tooltip>' +
+                  '<md-tooltip ng-if="propertyToModify.inDefault != propertyToCompareTo.inDefault">' +
+                  'La valeur sur l\'application' +
+                  'est valorisée depuis une valeur par défaut' +
+                  '</md-tooltip>' +
+                  '</span>'
+    }
+
+});
+
 propertiesModule.factory('Properties', function () {
 
     var Properties = function (data) {

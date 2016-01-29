@@ -140,6 +140,7 @@
                       popover="{{diff_container.property_to_modify.value}}" popover-trigger="mouseenter">{{diff_container.property_to_modify.value ? diff_container.property_to_modify.value : "Aucune valeur renseignée"}}</span>
                 </div>
                 <div flex="5" layout="row" layout-align="space-around center">
+                    <warning-value property-to-modify="diff_container.property_to_modify" property-to-compare-to="diff_container.property_to_compare_to"></warning-value>
                     <span class="glyphicon glyphicon-ok" ng-hide="diff_container.modified"></span>
                     <md-checkbox aria-label="Reporter la valeur" ng-model="diff_container.selected"
                                  ng-show="diff_container.modified">
@@ -229,6 +230,7 @@
                     </span>
                 </div>
                 <div flex="5" layout="row" layout-align="space-around">
+                    <warning-value property-to-modify="diff_container.property_to_modify" property-to-compare-to="diff_container.property_to_compare_to"></warning-value>
                     <md-checkbox aria-label="Reporter la valeur" ng-model="diff_container.selected" class="diff-checkbox"></md-checkbox>
                 </div>
                 <div flex="30" layout="row" layout-align="start">

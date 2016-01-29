@@ -11,12 +11,16 @@ fileModule.factory('FileEntry', ['$http', function ($http) {
             this.location = data.location;
             this.url = data.url;
             this.rights = data.rights;
-            this.content = "En attente de chargement...";
+            this.name = "";                                 // the filename, to be displayed on the donwload link
+            this.content = "En attente de chargement...";   // the content of the file
+            this.on_error = false;                          // indicates if there where an error or not !
 
             // methods
             this.getContent = function () {
                 return $http.get(me.url).then(function (response) {
-                    return response.data;
+                    return response;
+                },function (error){
+                    return error;
                 });
             };
     };
@@ -68,6 +72,12 @@ fileModule.factory('FileService', ['$http', 'Application', 'Platform', 'Properti
         return newRights;
     };
 
+    // Gets file name
+    var get_file_name = function(location) {
+        var tabs = location.split("/");
+        return tabs[tabs.length - 1];
+    };
+
     return {
 
         get_files_entries: function (application_name, platform_name, path, module_name, module_version, instance_name, is_working_copy) {
@@ -78,10 +88,17 @@ fileModule.factory('FileService', ['$http', 'Application', 'Platform', 'Properti
                     var entry = new FileEntry(data);
                     entry.rights = files_rights_to_string(data.rights);
 
-                    entry.getContent().then(function(data) {
-                        entry.content = data;
+                    entry.getContent().then(function(output) {
+
+                        if ( output.status != 200) {
+                            entry.on_error = true;
+                            entry.content = output.data.message;
+                        }else {
+                            entry.content = output.data;
+                        }
                     });
 
+                    entry.name = get_file_name( data.location );
                     return entry;
                 }, function (error) {
                     if (error.status != 404) {
@@ -92,6 +109,22 @@ fileModule.factory('FileService', ['$http', 'Application', 'Platform', 'Properti
                     }
                 });
             });
+        },
+        download_files : function (entries, name){
+            // The JSZip Object
+            var zip = new JSZip();
+
+            // Adding files to zip
+            entries.map(function (entry){
+                if ( !entry.on_error ){
+                   zip.file(entry.name, entry.content);
+                }
+            });
+
+            // Generate and save the zip file
+            var content = zip.generate({type:"blob"});
+            saveAs(content, name + ".zip");
+
         },
         files_rights_to_string: files_rights_to_string
     };

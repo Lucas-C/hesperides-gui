@@ -324,6 +324,12 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
                         scope: modalScope
                     });
         });
+
+        // Donwload all the files
+        modalScope.download_all_instance_files = function (){
+            FileService.download_files (modalScope.fileEntries, modalScope.instance.name);
+        };
+
     };
 
     $scope.delete_instance = function (instance, module) {

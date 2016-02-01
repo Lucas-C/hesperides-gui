@@ -856,16 +856,76 @@ propertiesModule.factory('Properties', function () {
                 });
             });
 
-            _(model.iterable_properties).filter(function (model_iterable) {
-                return !me.hasIterable(model_iterable.name);
-            }).each(function (model_iterable) {
-                me.iterable_properties.push({
-                    name: model_iterable.name,
-                    comment: model_iterable.comment,
-                    fields: model_iterable.fields,
-                    inModel: true
+            /**
+             * Merge model and value for iterate value.
+             *
+             * @param iterable_properties -> array with properties
+             *                              {
+             *                                  comment: "",
+             *                                  defaultValue: "",
+             *                                  fields: Array[2],
+             *                                  name: "iterable",
+             *                                  password: false,
+             *                                  pattern: "",
+             *                                  required: false
+             *                              }
+             * @param current_item_value -> array with value of properties
+             *                              {
+             *                                  inModel: true,
+             *                                  iterable_valorisation_items: [
+             *                                      {
+             *                                          title: "blockOfProperties",
+             *                                          values: [
+             *                                              {
+             *                                                  iterable_valorisation_items: Array[1],
+             *                                                  name: "iterable2"
+             *                                              },
+             *                                              {
+             *                                                  name: "name2",
+             *                                                  value: "value2"
+             *                                              }
+             *                                          ]
+             *                                      }
+             *                                  ]
+             *                                  name: "iterable"
+             *                              }
+             */
+            var scanIterableItems = function(iterable_model, iterable_properties) {
+                _(iterable_model).each(function(model_iterable) {
+                    // Found iterate properties for iterable_model
+                    var it = _(iterable_properties).filter({name: model_iterable.name});
+                    // Get current model part
+                    var currentModel = model_iterable.fields;
+
+                    // For each item in iterate found
+                    it.each(function(itProp) {
+                        // For each valorisation of iterate
+                        _(itProp.iterable_valorisation_items).each(function (val) {
+                            // For each values in iterate
+                            _(val.values).each(function(item) {
+                                if (item.iterable_valorisation_items) {
+                                    // New iterate
+                                    _(currentModel).filter({name: item.name}).each(function (prop) {
+                                        item.iterable_valorisation_items.inModel = true;
+
+                                        scanIterableItems([prop], [item]);
+                                    });
+                                } else {
+                                    // Search model
+                                    _(currentModel).filter({name: item.name}).each(function (prop) {
+                                        item.comment = prop.comment;
+                                        item.inModel = true;
+                                        item.required = (prop.required) ? prop.required : false;
+                                        item.defaultValue = (prop.defaultValue) ? prop.defaultValue : "";
+                                    });
+                                }
+                            });
+                        });
+                    });
                 });
-            });
+            };
+
+            scanIterableItems(model.iterable_properties, me.iterable_properties);
 
             return this;
         };

@@ -713,7 +713,7 @@ propertiesModule.directive('toggleDeletedProperties', function () {
             keyValueProperties: '=',
             toggle: '='
         },
-        template: '<md-checkbox type="checkbox" ng-model="toggle" ng-init="toggle=false"/> Afficher les propri&eacute;t&eacute;s supprim&eacute;es ({{ getNumberOfDeletedProperties(keyValueProperties) }})',
+        template: '<md-checkbox type="checkbox" ng-model="toggle" ng-init="toggle=false" style="float : left;"/> Afficher les propri&eacute;t&eacute;s supprim&eacute;es ({{ getNumberOfDeletedProperties(keyValueProperties) }})',
         link: function (scope, element, attrs) {
             scope.getNumberOfDeletedProperties = function (tab) {
                 var count = 0;
@@ -721,6 +721,34 @@ propertiesModule.directive('toggleDeletedProperties', function () {
                 if (tab) {
                     for (var index = 0; index < tab.length; index++) {
                         if (!tab[index].inModel) {
+                            count++;
+                        }
+                    }
+                }
+                return count;
+            };
+
+        }
+    }
+
+});
+
+propertiesModule.directive('toggleUnspecifiedProperties', function () {
+
+    return {
+        restrict: 'E',
+        scope: {
+            keyValueProperties: '=',
+            display: '='
+        },
+        template: '<md-checkbox type="checkbox" ng-model="display" ng-init="display=false"/> Afficher les propri&eacute;t&eacute;s non renseign&eacute;es ({{ getNumberOfUnspecifiedProperties(keyValueProperties) }})',
+        link: function (scope, element, attrs) {
+            scope.getNumberOfUnspecifiedProperties = function (tab) {
+                var count = 0;
+
+                if (tab) {
+                    for (var index = 0; index < tab.length; index++) {
+                        if (_.isEmpty(tab[index].value)) {
                             count++;
                         }
                     }
@@ -900,15 +928,23 @@ propertiesModule.filter('displayProperties', function () {
     return function (items, display) {
         var filtered = [];
 
-        angular.forEach(items, function (item) {
-            if (display == undefined || display == true) {
-                filtered.push(item);
-            } else if (item.inModel) {
-                filtered.push(item);
-            }
-        });
+        return _.filter(items, function(item) {
+                   return (_.isUndefined(display) || display || item.inModel);
+               });;
+    };
+});
 
-        return filtered;
+/**
+ * Display only the 'empty' properties
+ */
+propertiesModule.filter('displayUnspecifiedProperties', function () {
+
+    return function (items, display) {
+        var filtered = [];
+
+        return _.filter(items, function(item) {
+                 return _.isUndefined(display) || !display || _.isEmpty(item.value);
+               });;
     };
 });
 

@@ -212,7 +212,7 @@ templateModule.factory('Template', function () {
 
 });
 
-templateModule.factory('TemplateEntry', ['$http', 'Template',function ($http, Template) {
+templateModule.factory('TemplateEntry', ['$hesperidesHttp', 'Template',function ($http, Template) {
 
     var TemplateEntry = function (data) {
         angular.extend(this, {

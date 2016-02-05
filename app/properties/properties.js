@@ -363,7 +363,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
     };
 
     $scope.preview_instance = function (box, application, platform, instance, module) {
-        var modalScope = $scope.$new(true);
+        var modalScope = $scope.$new();
 
         modalScope.codeMirrorOptions = {'readOnly' : true };
         modalScope.instance = instance;
@@ -377,7 +377,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
             });
         });
 
-        // Donwload all the files
+        // Download all the files
         modalScope.download_all_instance_files = function (){
             FileService.download_files (modalScope.fileEntries, modalScope.instance.name);
         };

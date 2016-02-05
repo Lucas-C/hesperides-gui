@@ -7,7 +7,7 @@
   "private": true,
   "dependencies": {
     "arrive": "latest",
-    "angular": "1.4.8",
+    "angular": "1.4.9",
     "angular-route": "1.3.x",
     "angular-loader": "1.3.x",
     "angular-mocks": "~1.2.15",
@@ -16,7 +16,7 @@
     "angular-dragdrop": "1.0.5",
     "underscore": "1.6.0",
     "angular-ui-codemirror": "0.3.0",
-    "angular-material": "1.0.3",
+    "angular-material": "1.0.5",
     "sc-date-time":"1.1.6",
     "angular-wizard": "0.5.5",
     "momentjs": "2.10.6",

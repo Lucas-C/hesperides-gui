@@ -25,11 +25,11 @@
         </div>
 
         <!-- Warning ! We need vs-repeat to have reactive UI -->
-        <div vs-repeat style="max-height: 450px; overflow: auto">
+        <div vs-repeat style="max-height: 450px; overflow: auto" layout="row">
             <div layout="row" ng-repeat="key_value_property in properties.key_value_properties | filterProperties:{'name':propertiesKeyFilter, 'filtrable_value':propertiesValueFilter} | displayProperties:displayDeletedProperties | orderBy:'name':properties.isReverseOrder() track by $index"
-                >
-
-                <div flex="33">
+                style="width: 100%">
+                <!-- flex is 25 not 33 cause vs-repeat have strange behaviour -->
+                <div flex="25">
                     <md-input-container class="property-label" ng-class="{'text-stroke':!key_value_property.inModel}">
                         <input type="text" ng-trim="true" ng-model="key_value_property.name" aria-label="{{ key_value_property.name }}" ng-readonly="true" class="property-label" /> <span ng-show="key_value_property.required" class="property-required">*</span>
                         <md-tooltip md-direction="top">

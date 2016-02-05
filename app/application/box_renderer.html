@@ -52,6 +52,12 @@
                     <md-tooltip>Comparer les properties</md-tooltip>
                     <i class="fa fa-exchange"></i>
                 </md-button>
+                <md-button ng-click="open_module_page(module.name, module.version, module.is_working_copy)"
+                           aria-label="Afficher le module"
+                           class="md-xs">
+                    <i class="fa fa-pencil"></i>
+                    <md-tooltip>Afficher le module {{module.title}}</md-tooltip>
+                </md-button>
                 <md-button ng-really-message="Supprimer le module {{module.title}} et toutes ses instances ?"
                            aria-label="Supprimer le module"
                            ng-really-click="delete_module(module, box)"
@@ -71,6 +77,11 @@
                            aria-label="Editer les properties de l'instance">
                     <md-tooltip>Editer les properties de l'instance</md-tooltip>
                     <i class="fa fa-list"></i>{{instance.name}}
+                </md-button>
+                <md-button ng-click="preview_instance(box, application, platform, instance, module)"
+                           class="md-xs" ng-show="instance.hover">
+                    <md-tooltip>Prévisualiser l'instance</md-tooltip>
+                    <i class="fa fa-eye"></i>
                 </md-button>
                 <md-button ng-really-message="Supprimer l'instance {{instance.name}} ?"
                            aria-label="Supprimer l'instance"

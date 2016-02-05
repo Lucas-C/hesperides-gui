@@ -212,7 +212,7 @@ templateModule.factory('Template', function () {
 
 });
 
-templateModule.factory('TemplateEntry', function () {
+templateModule.factory('TemplateEntry', ['$http', 'Template',function ($http, Template) {
 
     var TemplateEntry = function (data) {
         angular.extend(this, {
@@ -221,10 +221,16 @@ templateModule.factory('TemplateEntry', function () {
             filename: "",
             location: ""
         }, data);
+
+    this.getRights = function (url) {
+            return $http.get(url).then(function (response) {
+                return (new Template(response.data)).toHesperidesEntity();
+            });
+        };
     };
 
     return TemplateEntry;
-});
+}]);
 
 templateModule.factory('TemplateService', ['$hesperidesHttp', 'Template', 'TemplateEntry', function ($http, Template, TemplateEntry) {
 

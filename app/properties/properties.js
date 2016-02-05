@@ -3,11 +3,14 @@
  */
 var propertiesModule = angular.module('hesperides.properties', ['hesperides.nexus']);
 
-propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDialog', '$location', '$route', '$timeout', 'ApplicationService', 'ModuleService', 'ApplicationModule', 'Page', 'NexusService', function ($scope, $routeParams, $mdDialog, $location, $route, $timeout, ApplicationService, ModuleService, Module, Page, NexusService) {
+propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDialog', '$location', '$route', '$timeout', 'ApplicationService', 'FileService', 'ModuleService', 'ApplicationModule', 'Page', 'NexusService', function ($scope, $routeParams, $mdDialog, $location, $route, $timeout, ApplicationService, FileService, ModuleService, Module, Page, NexusService) {
     Page.setTitle("Properties");
 
     $scope.platform = $routeParams.platform;
     $scope.platforms = [];
+
+    $scope.fileEntries = [];
+
     $scope.$closeDialog = function() {
         $mdDialog.hide();
     };
@@ -31,10 +34,10 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
                     module.path = me.get_path();
                 });
                 return this.modules.concat(
-                _.flatten(_.map(this.children, function (box) {
-                    return box.to_modules();
-                }))
-            );
+                    _.flatten(_.map(this.children, function (box) {
+                        return box.to_modules();
+                    }))
+                );
             }
         }, data);
     };
@@ -359,6 +362,28 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         $scope.save_platform_from_box($scope.mainBox);
     };
 
+    $scope.preview_instance = function (box, application, platform, instance, module) {
+        var modalScope = $scope.$new(true);
+
+        modalScope.codeMirrorOptions = {'readOnly' : true };
+        modalScope.instance = instance;
+
+        FileService.get_files_entries(application.name, platform.name, box.get_path(), module.name, module.version, instance.name, module.is_working_copy).then(function (entries){
+            modalScope.fileEntries = entries;
+
+            var modal = $mdDialog.show({
+                templateUrl: 'file/file-modal.html',
+                scope: modalScope
+            });
+        });
+
+        // Donwload all the files
+        modalScope.download_all_instance_files = function (){
+            FileService.download_files (modalScope.fileEntries, modalScope.instance.name);
+        };
+
+    };
+
     $scope.delete_instance = function (instance, module) {
         module.delete_instance(instance);
         $scope.save_platform_from_box($scope.mainBox);
@@ -446,7 +471,17 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         properties.filter_according_to_model();
     };
 
+    // The new global property info
+    $scope.new_kv_name = '';
+    $scope.new_kv_value = '';
     $scope.save_global_properties = function (properties) {
+        // Check if there is new global property then add before saving
+        if ( !(_.isEmpty($scope.new_kv_name) || _.isEmpty($scope.new_kv_value))){
+            properties.addKeyValue({'name':  $scope.new_kv_name, 'value': $scope.new_kv_value,'comment': ''});
+            $scope.new_kv_name = '';
+            $scope.new_kv_value = '';
+        }
+
         ApplicationService.save_properties($routeParams.application, $scope.platform, properties, '#').then(function (properties) {
             if (!_.isUndefined($scope.properties)) {
                 $scope.properties = $scope.properties.mergeWithGlobalProperties(properties);
@@ -509,6 +544,14 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
                 return module.name == $scope.compare_module.name;
             });
         });
+    };
+
+    $scope.open_module_page = function (name, version, is_working_copy) {
+        if(is_working_copy){
+            $location.path('/module/' + name + '/' + version).search({type : "workingcopy"});
+        } else {
+            $location.path('/module/' + name + '/' + version).search({});
+        }
     };
 
     /* Get the application */
@@ -657,7 +700,7 @@ propertiesModule.controller('DiffCtrl', ['$scope', '$routeParams', '$timeout', '
          depending on the status apply different behaviors
          if status == 0 : this should not happened because it is values that are only in the destination platform, so just ignore it
          if status == 1 : normaly the only selected containers should be the one that have been modified, but it does not really matter
-                          because the other ones have the same values. We can just apply the 'revert modification' mecanism
+         because the other ones have the same values. We can just apply the 'revert modification' mecanism
          if status == 2 : this is when we want to apply modification from sourc epltfm to destination pltfm
          if status == 3 : same behavior as status == 2
          */
@@ -745,12 +788,13 @@ propertiesModule.directive('toggleDeletedProperties', function () {
             keyValueProperties: '=',
             toggle: '='
         },
+
         template: '<md-switch class="md-primary md-block" ' +
-                  'ng-model="toggle"' +
-                  'ng-init="toggle=false" ' +
-                  'aria-label="Afficher les propri&eacute;t&eacute;s supprim&eacute;es">' +
-                  'Afficher les propri&eacute;t&eacute;s supprim&eacute;es ({{ getNumberOfDeletedProperties(keyValueProperties) }})' +
-                  '</md-switch>',
+            'ng-model="toggle"' +
+            'ng-init="toggle=false" ' +
+            'aria-label="Afficher les propri&eacute;t&eacute;s supprim&eacute;es">' +
+            'Afficher les propri&eacute;t&eacute;s supprim&eacute;es ({{ getNumberOfDeletedProperties(keyValueProperties) }})' +
+            '</md-switch>',
         link: function (scope, element, attrs) {
             scope.getNumberOfDeletedProperties = function (tab) {
                 var count = 0;
@@ -768,9 +812,6 @@ propertiesModule.directive('toggleDeletedProperties', function () {
     }
 
 });
-
-
-
 
 propertiesModule.factory('Properties', function () {
 
@@ -831,14 +872,12 @@ propertiesModule.factory('Properties', function () {
                 } else {
                     //Try to check if it uses a global in the valorisation
                     if (_.some(global_properties.key_value_properties, function (kvp) {
-                            return key_value.value.indexOf("{{" + kvp.name + "}}") > -1;
-                        })) {
-
+                        return key_value.value.indexOf("{{" + kvp.name + "}}") > -1;
+                    })) {
                         key_value.useGlobal = true;
                     }
                 }
                 ;
-
             });
 
             return this;
@@ -850,7 +889,6 @@ propertiesModule.factory('Properties', function () {
             _.each(this.key_value_properties, function (key_value) {
                 key_value.inModel = model.hasKey(key_value.name);
                 // Add required
-
                 var prop = _.find(model.key_value_properties, function(kvp) {
                     return kvp.name === key_value.name;
                 });
@@ -928,11 +966,11 @@ propertiesModule.factory('Properties', function () {
         }
 
         this.switchOrder = function () {
-          this.is_sorted_desc = !this.is_sorted_desc;
+            this.is_sorted_desc = !this.is_sorted_desc;
         }
 
         this.isReverseOrder = function () {
-          return this.is_sorted_desc;
+            return this.is_sorted_desc;
         }
 
     };

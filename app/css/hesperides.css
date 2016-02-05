@@ -545,6 +545,12 @@ button.md-primary.md-button.md-confirm-hesperides-dialog-theme.md-ink-ripple {
     white-space: nowrap;
 }
 
+/* Change default values fore color*/
+input.default-value-color::-moz-placeholder{color: #428BCA;}
+input.default-value-color::-webkit-input-placeholder{color: #428BCA;}
+input.default-value-color:-ms-input-placeholder{color: #428BCA;}
+input.default-value-color:placeholder-shown{color: #428BCA;}
+
 /******************************************************************************
  * Popover
  * From : http://codepen.io/derekpcollins/pen/JCLhG

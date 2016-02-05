@@ -138,13 +138,15 @@ technoModule.factory('Techno', function () {
     return Techno;
 });
 
-technoModule.factory('TechnoService', ['$hesperidesHttp', '$q', 'Techno', 'Template', 'TemplateEntry', 'Properties', function ($http, $q, Techno, Template, TemplateEntry, Properties) {
+technoModule.factory('TechnoService',
+    ['$hesperidesHttp', '$q', 'Techno', 'Template', 'TemplateEntry', 'Properties', 'FileService',
+     function ($http, $q, Techno, Template, TemplateEntry, Properties, FileService) {
 
     return {
         get_model: function (name, version, isWorkingCopy){
             return $http.get('rest/templates/packages/' + encodeURIComponent(name) + '/' + encodeURIComponent(version) + '/' + (isWorkingCopy ? "workingcopy" : "release") + '/model').then(function(response){
                 return new Properties(response.data);
-            }, function (error) {
+            }, function () {
                 return new Properties({});
             });
         },
@@ -165,9 +167,18 @@ technoModule.factory('TechnoService', ['$hesperidesHttp', '$q', 'Techno', 'Templ
             });
         },
         get_all_templates_from_workingcopy: function (wc_name, wc_version) {
-            return $http.get('rest/templates/packages/' + encodeURIComponent(wc_name) + '/' + encodeURIComponent(wc_version) + '/workingcopy/templates').then(function (response) {
+            var baseUrl = 'rest/templates/packages/' + encodeURIComponent(wc_name) + '/' + encodeURIComponent(wc_version) + '/workingcopy/templates';
+
+            return $http.get(baseUrl).then(function (response) {
                 return response.data.map(function (data) {
-                    return new TemplateEntry(data);
+                    var entry = new TemplateEntry(data);
+                    var url = baseUrl + '/' + encodeURIComponent(entry.name);
+
+                    entry.getRights(url).then (function (template){
+                        entry.rights = FileService.files_rights_to_string(template.rights);
+                    });
+
+                    return entry;
                 }, function (error) {
                     if (error.status != 404) {
                         $.notify(error.data.message, "error");
@@ -181,7 +192,12 @@ technoModule.factory('TechnoService', ['$hesperidesHttp', '$q', 'Techno', 'Templ
         get_all_templates_from_release: function (r_name, r_version) {
             return $http.get('rest/templates/packages/' + encodeURIComponent(r_name) + '/' + encodeURIComponent(r_version) + '/release/templates').then(function (response) {
                 return response.data.map(function (data) {
-                    return new TemplateEntry(data);
+                    var entry = new TemplateEntry(data);
+                    var url ='rest/templates/packages/' + encodeURIComponent(r_name) + '/' + encodeURIComponent(r_version) + '/release/templates/' + encodeURIComponent(entry.name);
+                    entry.getRights(url).then (function (template){
+                        entry.rights = template.rights != null ? template.rights : 'Rien à afficher';
+                    });
+                    return entry;
                 }, function (error) {
                     if (error.status != 404) {
                         $.notify(error.data.message, "error");

@@ -21,7 +21,8 @@
     "angular-wizard": "0.5.5",
     "momentjs": "2.10.6",
     "angular-xml": "~2.2.1",
-    "x2js": "~1.1.7"
+    "x2js": "~1.1.7",
+    "jszip": "Stuk/jszip#^2.5.0"
   },
   "resolutions": {
     "angular": "1.4.7"

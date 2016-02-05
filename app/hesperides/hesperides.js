@@ -230,6 +230,12 @@ hesperidesModule.directive('propertyToolButton', function ($mdUtil, $propertyToo
                     '        class="fa fa-exchange"></span>' +
                     '            <md-tooltip>Comparer les properties</md-tooltip>' +
                     '        </md-button>' +
+                    '        <md-button ng-click="open_module_page(module.name, module.version, module.is_working_copy)"' +
+                    '            aria-label="Afficher le module"'+
+                    '            class="md-xs">' +
+                    '          <i class="fa fa-pencil"></i>' +
+                    '          <md-tooltip>Afficher le module {{module.title}}</md-tooltip>' +
+                    '        </md-button>' +
                     '        <md-button ng-really-message="Supprimer le module {{module.title}} et toutes ses instances ?"' +
                     '        aria-label="Supprimer le module"' +
                     '        ng-really-click="delete_module(module, box)"' +

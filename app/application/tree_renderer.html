@@ -66,32 +66,6 @@
                     </a>
                 </strong>
             </div>
-            <!--<div flex="nogrow" ng-if="moduleButtonsVisible" layout="row" layout-align="none center">
-                <md-button ng-click="open_add_instance_dialog(module)"
-                           aria-label="Ajouter une instance"
-                           class="md-xs">
-                    <span class="fa fa-plus"></span>
-                    <md-tooltip>Ajouter une instance</md-tooltip>
-                </md-button>
-                <md-button class="md-xs" aria-label="Editer les properties"
-                           ng-click="edit_properties(platform, module);movePropertiesDivHolderToCursorPosition($event);"><span
-                        class="fa fa-list"></span>
-                    <md-tooltip>Editer les properties</md-tooltip>
-                </md-button>
-                <md-button class="md-xs"
-                           aria-label="Comparer les properties"
-                           ng-click="diff_properties(module)"><span
-                        class="fa fa-exchange"></span>
-                    <md-tooltip>Comparer les properties</md-tooltip>
-                </md-button>
-                <md-button ng-really-message="Supprimer le module {{module.title}} et toutes ses instances ?"
-                           aria-label="Supprimer le module"
-                           ng-really-click="delete_module(module, box)"
-                           class="md-xs md-warn">
-                    <span class="fa fa-trash"></span>
-                    <md-tooltip>Supprimer le module</md-tooltip>
-                </md-button>
-            </div>-->
         </div>
 
         <!-- Debut des box affichant les instances -->
@@ -105,6 +79,11 @@
                                class="md-instance">
                         <span class="fa fa-list" style="margin-right:10px"></span>{{instance.name}}
                         <md-tooltip>Editer les properties de l'instance</md-tooltip>
+                    </md-button>
+                    <md-button ng-click="preview_instance(box, application, platform, instance, module)"
+                               class="md-xs" ng-show="instance.hover">
+                        <md-tooltip>Prévisualiser l'instance</md-tooltip>
+                        <i class="fa fa-eye"></i>
                     </md-button>
                     <md-button ng-really-message="Supprimer l'instance {{instance.name}} ?"
                                aria-label="Supprimer l'instance"

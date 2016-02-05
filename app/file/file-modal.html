@@ -4,16 +4,9 @@
             <h2>Prévisualisation de {{instance.name}}</h2>
             <md-content layout-padding class="autoScroll">
                 <form ng-repeat="item in fileEntries track by $index" role="form" novalidate>
-                    <md-input-container md-no-float class="md-block">
-                        <label>Nom</label>
-                        <input type="text" value= "{{item.location}} ( {{item.rights}} )" md-autofocus="true"
-                               ng-disabled="true" placeholder="Dieu se rit des hommes qui déplorent les effets dont ils chérissent les causes. - Jacques-Bénigne Bossuet" />
-                    </md-input-container>
 
                     <md-input-container md-no-float class="md-block">
-                        <a id="donwload" href = "{{item.url}}" download="{{item.name}}" target="_blank">
-                            {{item.name}}
-                        </a>
+                        <a id="donwload" href = "{{item.url}}" download="{{item.name}}" target="_blank">{{item.location}}</a> ( {{item.rights}} )
                     </md-input-container>
 
                     <div layout="row">

@@ -40,14 +40,17 @@
 
                 <div flex>
                     <md-input-container
-                            class="md-block default-value-color"
+                            class="md-block "
                             ng_if="!key_value_property.inGlobal"
                             ng-class="{'property-using-global': key_value_property.useGlobal}"
                             ng-required="key_value_property.required"
                             >
                         <label ng-if="!(key_value_property.value)">{{key_value_property.defaultValue ? '[default=' + key_value_property.defaultValue + '] ' : ''}} {{key_value_property.comment}}</label>
-                        <input type="text" ng-trim="true" ng-model="key_value_property.value" ng-readonly="!key_value_property.inModel" aria-label="Valeur de la property {{key_value_property.name}}" ng-class="{'text-stroke':!key_value_property.inModel}"/>
-                        <md-tooltip ng-if="key_value_property.value">{{key_value_property.defaultValue ? '[default=' + key_value_property.defaultValue + '] ' : ''}} {{key_value_property.comment}}</md-tooltip>
+                        <input type="text" ng-trim="true" ng-model="key_value_property.value" ng-readonly="!key_value_property.inModel"
+                               aria-label="Valeur de la property {{key_value_property.name}}"
+                               ng-class="{'text-stroke':!key_value_property.inModel, 'default-value-color': key_value_property.defaultValue && !key_value_property.value}"
+                               />
+                        <md-tooltip ng-if="key_value_property.comment || key_value_property.defaultValue">{{key_value_property.defaultValue ? '[default=' + key_value_property.defaultValue + '] ' : ''}} {{key_value_property.comment}}</md-tooltip>
                     </md-input-container>
 
                     <!-- Edit layout, but this key is filled by global properties -->

@@ -490,15 +490,15 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
     $scope.propertiesKeyFilter3 = "";
 
     $scope.module = {
-        "name" : $scope.splited_properties_path[3],
-        "version" : $scope.splited_properties_path[4],
-        "is_working_copy" : $scope.splited_properties_path[5] == "WORKINGCOPY" ? true : false
+        "name": $scope.splited_properties_path[3],
+        "version": $scope.splited_properties_path[4],
+        "is_working_copy": $scope.splited_properties_path[5] == "WORKINGCOPY" ? true : false
     }
 
     $scope.compare_module = {
-        "name" : $scope.compare_splited_path[3],
-        "version" : $scope.compare_splited_path[4],
-        "is_working_copy" : $scope.compare_splited_path[5] == "WORKINGCOPY" ? true : false
+        "name": $scope.compare_splited_path[3],
+        "version": $scope.compare_splited_path[4],
+        "is_working_copy": $scope.compare_splited_path[5] == "WORKINGCOPY" ? true : false
     };
 
     //Get the platform to get the version id
@@ -511,12 +511,12 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
         $scope.properties_to_modify = properties;
     }).then(function () {
         return ModuleService.get_model($scope.module);
-    }).then(function(model) {
+    }).then(function (model) {
         $scope.properties_to_modify = $scope.properties_to_modify.mergeWithModel(model);
     }).then(function () {
         // Get global properties
         return ApplicationService.get_properties($routeParams.application, $routeParams.platform, '#');
-    }).then(function(model) {
+    }).then(function (model) {
         $scope.properties_to_modify = $scope.properties_to_modify.mergeWithGlobalProperties(model);
     }).then(function () {
         return ApplicationService.get_properties($routeParams.compare_application, $routeParams.compare_platform, $routeParams.compare_path, $routeParams.timestamp);
@@ -524,12 +524,12 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
         $scope.properties_to_compare_to = properties;
     }).then(function () {
         return ModuleService.get_model($scope.compare_module);
-    }).then(function(model) {
+    }).then(function (model) {
         $scope.properties_to_compare_to = $scope.properties_to_compare_to.mergeWithModel(model);
     }).then(function () {
         // Get global properties
         return ApplicationService.get_properties($routeParams.application, $routeParams.platform, '#');
-    }).then(function(model) {
+    }).then(function (model) {
         $scope.properties_to_compare_to = $scope.properties_to_compare_to.mergeWithGlobalProperties(model);
     }).then(function () {
         $scope.properties_to_modify = $scope.properties_to_modify.mergeWithDefaultValue();
@@ -726,6 +726,19 @@ propertiesModule.directive('toggleDeletedProperties', function () {
 
 });
 
+propertiesModule.directive("addIterableProperty", function () {
+    return {
+        restrict: "E",
+        template: "<button><span>{{ iterable_property.name }}</span><span class='glyphicon' style='padding-left:10px'></span></button>"
+    }
+});
+
+propertiesModule.directive("displayIterableProperty", function () {
+    return {
+        templateUrl: 'properties/iterate.html'
+    };
+});
+
 /**
  * Diplay warning message when value is same/or not and source of value is different.
  */
@@ -738,12 +751,12 @@ propertiesModule.directive('warningValue', function () {
             propertyToCompareTo: '='
         },
         template: '<span class="glyphicon glyphicon-exclamation-sign" ng-if="propertyToModify.inGlobal != propertyToCompareTo.inGlobal || propertyToModify.inDefault != propertyToCompareTo.inDefault">' +
-                  '<md-tooltip ng-if="propertyToModify.inGlobal != propertyToCompareTo.inGlobal">Valorisé depuis un propriété globale</md-tooltip>' +
-                  '<md-tooltip ng-if="propertyToModify.inDefault != propertyToCompareTo.inDefault">' +
-                  'La valeur sur l\'application' +
-                  'est valorisée depuis une valeur par défaut' +
-                  '</md-tooltip>' +
-                  '</span>'
+        '<md-tooltip ng-if="propertyToModify.inGlobal != propertyToCompareTo.inGlobal">Valorisé depuis un propriété globale</md-tooltip>' +
+        '<md-tooltip ng-if="propertyToModify.inDefault != propertyToCompareTo.inDefault">' +
+        'La valeur sur l\'application' +
+        'est valorisée depuis une valeur par défaut' +
+        '</md-tooltip>' +
+        '</span>'
     }
 
 });
@@ -890,19 +903,19 @@ propertiesModule.factory('Properties', function () {
              *                                  name: "iterable"
              *                              }
              */
-            var scanIterableItems = function(iterable_model, iterable_properties) {
-                _(iterable_model).each(function(model_iterable) {
+            var scanIterableItems = function (iterable_model, iterable_properties) {
+                _(iterable_model).each(function (model_iterable) {
                     // Found iterate properties for iterable_model
                     var it = _(iterable_properties).filter({name: model_iterable.name});
                     // Get current model part
                     var currentModel = model_iterable.fields;
 
                     // For each item in iterate found
-                    it.each(function(itProp) {
+                    it.each(function (itProp) {
                         // For each valorisation of iterate
                         _(itProp.iterable_valorisation_items).each(function (val) {
                             // For each values in iterate
-                            _(val.values).each(function(item) {
+                            _(val.values).each(function (item) {
                                 if (item.iterable_valorisation_items) {
                                     // New iterate
                                     _(currentModel).filter({name: item.name}).each(function (prop) {

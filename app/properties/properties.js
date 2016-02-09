@@ -528,7 +528,7 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
         $scope.properties_to_compare_to = $scope.properties_to_compare_to.mergeWithModel(model);
     }).then(function () {
         // Get global properties
-        return ApplicationService.get_properties($routeParams.application, $routeParams.platform, '#');
+        return ApplicationService.get_properties($routeParams.compare_application, $routeParams.compare_platform, '#');
     }).then(function (model) {
         $scope.properties_to_compare_to = $scope.properties_to_compare_to.mergeWithGlobalProperties(model);
     }).then(function () {

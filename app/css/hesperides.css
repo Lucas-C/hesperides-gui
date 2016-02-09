@@ -67,15 +67,15 @@
 	margin-bottom: 2px;
 }
 
-.form-group.property-not-used {
+.property-not-used {
 	color: #888888;
 }
 
-.form-group.property-not-used label{
+.property-not-used label{
 	text-decoration: line-through;
 }
 
-.form-group.property-not-used input[type=text]{
+.property-not-used input[type=text]{
 	background-color: #F0F0F0;
 }
 

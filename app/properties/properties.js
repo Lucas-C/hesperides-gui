@@ -534,11 +534,16 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
     }).then(function () {
         $scope.properties_to_modify = $scope.properties_to_modify.mergeWithDefaultValue();
         $scope.properties_to_compare_to = $scope.properties_to_compare_to.mergeWithDefaultValue();
-        $scope.generate_diff_containers();
+        $scope.generate_diff_containers($routeParams.properties_path !== '#');
     });
 
     //Everything needs to be in scope for this function to work
-    $scope.generate_diff_containers = function () {
+    /**
+     * Generate diff container.
+     *
+     * @param filterInModel Global properties are store in root path '#'. If we compare this path, don't remove properties are not in model.
+     */
+    $scope.generate_diff_containers = function (filterInModel) {
         $scope.diff_containers = [];
         //Group properties, this is a O(n^2) algo but is enough for the use case
         //Only focus on key/value properties
@@ -550,9 +555,11 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
         //        - with different value -> status 2
         //  - if no matching property -> status 0
 
-        // There's not need to keep removed properties because readability is better without them
-        $scope.properties_to_modify.key_value_properties = $filter('filter')($scope.properties_to_modify.key_value_properties, {inModel: true});
-        $scope.properties_to_compare_to.key_value_properties = $filter('filter')($scope.properties_to_compare_to.key_value_properties, {inModel: true});
+        if (filterInModel) {
+            // There's not need to keep removed properties because readability is better without them
+            $scope.properties_to_modify.key_value_properties = $filter('filter')($scope.properties_to_modify.key_value_properties, {inModel: true});
+            $scope.properties_to_compare_to.key_value_properties = $filter('filter')($scope.properties_to_compare_to.key_value_properties, {inModel: true});
+        }
 
         _.each($scope.properties_to_modify.key_value_properties, function (prop_to_modify) {
 

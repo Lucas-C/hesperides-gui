@@ -370,6 +370,9 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
     };
 
     $scope.on_edit_platform = function (platform) {
+        //http://hesperides:51100
+        $location.url('/properties/' + platform.application_name + '?platform=' + platform.name);
+
         $scope.platform = platform;
         $scope.selected_module = undefined;
         $scope.instance = undefined;

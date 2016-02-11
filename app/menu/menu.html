@@ -316,6 +316,18 @@
                     </div>
                 </div>
             </div>
+            <div class="form-group vertical-align">
+                <label for="platformApplication" class="col-lg-6 control-label" style="padding-top: 0">Copier les instances</label>
+
+                <div class="col-lg-6">
+                    <div class="togglebutton">
+                        <label>
+                            <input type="checkbox" ng-model="new_platform.copyInstances"
+                                   id="copyInstances"/>
+                        </label>
+                    </div>
+                </div>
+            </div>
             <input type="submit" id="submit" value="Submit" ng-hide="true"/>
         </form>
     </div>
@@ -336,7 +348,7 @@
     </div>
     <div class="modal-body">
         <form name="platformForm" role="form" novalidate class="form-horizontal"
-              ng-submit="platformForm.$valid && create_platform_from(new_platform.application_name, new_platform.platform_name, new_platform.application_version, new_platform.from_application, new_platform.from_platform)">
+              ng-submit="platformForm.$valid && create_platform_from(new_platform.application_name, new_platform.platform_name, new_platform.production, new_platform.application_version, new_platform.from_application, new_platform.from_platform, new_platform.copyInstances)">
             <fieldset>
                 <div class="form-group">
                     <div class="col-lg-12">
@@ -377,6 +389,18 @@
                         </div>
                     </div>
                 </div>
+                <div class="form-group vertical-align">
+                    <label for="platformApplication" class="col-lg-6 control-label" style="padding-top: 0">Copier les instances</label>
+
+                    <div class="col-lg-6">
+                        <div class="togglebutton">
+                            <label>
+                                <input type="checkbox" ng-model="new_platform.copyInstances"
+                                       id="copyInstances"/>
+                            </label>
+                        </div>
+                    </div>
+                </div>
                 <div class="form-group">
                     <div class="col-lg-12">
                         <input type="text" class="form-control" required ng-trim="true"
@@ -402,7 +426,7 @@
     <div class="modal-footer">
         <div class="col-lg-9 col-lg-offset-3">
             <button class="btn btn-primary" ng-disabled="platformForm.$invalid"
-                    ng-click="create_platform_from(new_platform.application_name, new_platform.platform_name, new_platform.production, new_platform.application_version, new_platform.from_application, new_platform.from_platform)">
+                    ng-click="create_platform_from(new_platform.application_name, new_platform.platform_name, new_platform.production, new_platform.application_version, new_platform.from_application, new_platform.from_platform, new_platform.copyInstances)">
                 Creer
             </button>
             <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>

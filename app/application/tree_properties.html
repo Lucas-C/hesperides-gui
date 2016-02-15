@@ -134,8 +134,10 @@
                         <span>Sauver les properties</span>
                     </md-button>
                 </h3>
-                <toggle-deleted-properties key-value-properties="instance.key_values"
-                                           toggle="displayDeletedProperties"></toggle-deleted-properties>
+
+                <toggle-deleted-properties key-value-properties="instance.key_values" toggle="displayDeletedProperties"></toggle-deleted-properties>
+                <toggle-unspecified-properties key-value-properties="properties.key_value_properties" display = "displayUnspecified"></toggle-unspecified-properties>
+
                 <form class="form-horizontal narrow" role="form">
 
                     <div class="form-group" ng-class="{'property-not-used': !key_value_property.inModel}"

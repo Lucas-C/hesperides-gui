@@ -54,7 +54,7 @@
             <div class="diff-property-name">{{diff_container.property_name}}</div>
         </div>
         <div flex="35" layout-align="end start" layout="row">
-            <div class="diff-text-modifiable diff-value">
+            <div class="diff-text-modifiable diff-value diff-line">
                 {{diff_container.property_to_modify.value ? diff_container.property_to_modify.value : "Aucune valeur renseignée"}}
             </div>
         </div>
@@ -142,7 +142,7 @@
         <div flex="5" layout="row" layout-align="center start">
             <div>
                 <span class="fa fa-check" ng-hide="diff_container.modified"></span>
-                <md-checkbox aria-label="Reporter la valeur" ng-model="diff_container.selected"
+                <md-checkbox aria-label="Reporter la valeur" ng-model="diff_container.selected" class="diff"
                              ng-show="diff_container.modified">
                 </md-checkbox>
             </div>
@@ -225,7 +225,7 @@
         </div>
         <div flex="5" layout="row" layout-align="center start">
             <div>
-                <md-checkbox aria-label="Reporter la valeur" ng-model="diff_container.selected" class="diff-checkbox"></md-checkbox>
+                <md-checkbox aria-label="Reporter la valeur" ng-model="diff_container.selected" class="diff-checkbox" class="diff"></md-checkbox>
             </div>
         </div>
         <div flex="40">
@@ -281,7 +281,7 @@
         </div>
         <div flex="5" layout="row" layout-align="center start">
             <div>
-                <md-checkbox aria-label="Selectionner toutes les valeurs" ng-model="toggle_right"
+                <md-checkbox aria-label="Selectionner toutes les valeurs" ng-model="toggle_right" class="diff"
                              ng-click="toggle_selected_to_containers_with_filter({'status': 3}, !toggle_right)">
                 </md-checkbox>
             </div>
@@ -297,12 +297,12 @@
         </div>
         <div flex="35" layout-align="end start" layout="row">
             <div class="diff-text-modifiable diff-value">
-                {{diff_container.property_to_modify.value ? diff_container.property_to_modify.value : "Aucune valeur renseignée"}}
+                {{diff_container.property_to_modify.value ? diff_container.property_to_modify.value : "Propriété non présente"}}
             </div>
         </div>
         <div flex="5" layout="row" layout-align="center start">
             <div>
-                <md-checkbox aria-label="Reporter la valeur" ng-model="diff_container.selected">
+                <md-checkbox aria-label="Reporter la valeur" ng-model="diff_container.selected" class="diff">
                 </md-checkbox>
             </div>
         </div>

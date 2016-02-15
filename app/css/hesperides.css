@@ -203,6 +203,15 @@ body {
     padding-left: 10px;
 }
 
+md-checkbox.diff {
+    margin: 0 0 4px 0 !important;
+}
+
+.diff-line {
+    min-height: 20px;
+    padding-bottom: 4px;
+}
+
 .breadcrumb {
     padding: 8px 15px;
     margin-bottom: 20px;

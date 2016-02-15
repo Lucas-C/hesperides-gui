@@ -680,13 +680,16 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
         //  - if no matching property -> status 0
         if (filterInModel) {
             // There's not need to keep removed properties because readability is better without them
-            $scope.properties_to_modify.key_value_properties = $filter('filter')($scope.properties_to_modify.key_value_properties, {inModel: true});
-            $scope.properties_to_compare_to.key_value_properties = $filter('filter')($scope.properties_to_compare_to.key_value_properties, {inModel: true});
+            $scope.properties_to_modify.key_value_properties = _.filter($scope.properties_to_modify.key_value_properties, {inModel: true});
+            $scope.properties_to_compare_to.key_value_properties = _.filter($scope.properties_to_compare_to.key_value_properties, {inModel: true});
         }
 
         _.each($scope.properties_to_modify.key_value_properties, function (prop_to_modify) {
 
-            if (prop_to_modify.value === '') {
+            // Search if property found on other platform
+            var countItem = _.findIndex($scope.properties_to_compare_to.key_value_properties, prop_to_modify.name);
+
+            if (countItem === 0) {
                 //Avoid null pointer create prop to compare to with an empty value
                 var prop_to_compare_to = angular.copy(prop_to_modify);
                 prop_to_compare_to.value = '';

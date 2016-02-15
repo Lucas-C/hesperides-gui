@@ -6,15 +6,15 @@
             <toggle-unspecified-properties key-value-properties="properties.key_value_properties" display = "displayUnspecified"></toggle-unspecified-properties>
         </div>
 
-        <div class="col-md-12">
-            <!-- TODO ajout des boutons permettant l'ajout de properties iterables -->
+        <!-- TODO ajout des boutons permettant l'ajout de properties iterables -->
+        <!--<div class="col-md-12">
             <add-iterable-property
                     ng-repeat="iterable_property in properties.iterable_properties | orderBy:'name' track by $index"
                     class="btn btn-warn btn-raised">
-                <!--<span>{{ iterable_property.name }}</span>
-                <span class="glyphicon" data-ng-class="{'glyphicon-sort-by-alphabet-alt': !properties.isReverseOrder(), 'glyphicon-sort-by-alphabet': properties.isReverseOrder()}" style="padding-left:10px"></span>-->
+                <span>{{ iterable_property.name }}</span>
+                <span class="glyphicon" data-ng-class="{'glyphicon-sort-by-alphabet-alt': !properties.isReverseOrder(), 'glyphicon-sort-by-alphabet': properties.isReverseOrder()}" style="padding-left:10px"></span>
             </add-iterable-property>
-        </div>
+        </div>-->
 
         <div class="col-md-12">
             <button id="sortModulePropertiesButton" ng-click="properties.switchOrder()"

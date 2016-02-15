@@ -45,7 +45,7 @@
              ng-repeat="diff_container in diff_containers0 = (diff_containers | filter:{'status':0, 'property_name': propertiesKeyFilter0} | orderBy:'property_name')">
             <div layout="row" layout-align="center" layout-margin
                  class="diff-property">
-                <div flex="35" class="diff-value property-not-used" layout="row" layout-align="end center">
+                <div flex="35" class="diff-value" layout="row" layout-align="end center">
                     <label class="diff-value">{{diff_container.property_name}}</label>
                 </div>
                 <div flex="30" layout="row" layout-align="end">
@@ -304,7 +304,7 @@
         <div layout="column" class="diff-row-property"
              ng-repeat="diff_container in diff_containers3 = (diff_containers | filter:{'status':3, 'property_name': propertiesKeyFilter3}  | orderBy:'property_name')">
             <div layout="row" layout-align="center" layout-margin
-                 class="diff-property"
+                 class="diff-property property-not-used"
                  id="different-row-{{dot_to_underscore(diff_container.property_name)}}">
                 <div flex="35" class="diff-value" layout="row" layout-align="end center">
                     <label class="diff-value">{{diff_container.property_name}}</label>
@@ -312,7 +312,7 @@
                 <div flex="30" layout="row" layout-align="end">
             <span class="diff-value diff-text-modifiable"
                   id="value_to_replace-{{dot_to_underscore(diff_container.property_name)}}"
-                    >{{diff_container.property_to_modify.value ? diff_container.property_to_modify.value : "Aucune valeur renseignée"}}</span>
+                    >{{diff_container.property_to_modify.value ? diff_container.property_to_modify.value : "Propriété non présente"}}</span>
                 </div>
                 <div flex="5" layout="row" layout-align="space-around">
                     <md-checkbox aria-label="Reporter la valeur" ng-model="diff_container.selected">

@@ -310,7 +310,13 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
     $scope.preview_instance = function (box, application, platform, instance, module) {
         var modalScope = $scope.$new(true);
 
-        modalScope.codeMirrorOptions = {'readOnly' : true };
+        modalScope.codeMirrorOptions = {'readOnly' : true};
+
+        modalScope.codemirrorLoaded = function (_editor){
+            _editor.setOption ('readOnly', true);
+            _editor.refresh();
+        };
+
         modalScope.instance = instance;
 
         FileService.get_files_entries(application.name, platform.name, box.get_path(), module.name, module.version, instance.name, module.is_working_copy).then(function (entries){
@@ -318,11 +324,12 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
 
             var modal = $modal.open({
                         templateUrl: 'file/file-modal.html',
-                        backdrop: 'static',
+                        backdrop: true,
                         size: 'lg',
-                        keyboard: false,
+                        keyboard: true,
                         scope: modalScope
                     });
+
         });
 
         // Donwload all the files

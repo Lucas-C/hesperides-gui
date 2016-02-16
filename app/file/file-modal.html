@@ -2,6 +2,43 @@
     <h3 class="modal-title">Prévisualisation de {{instance.name}}</h3>
 </div>
 <div class="modal-body">
+
+    <accordion close-others="true">
+
+        <accordion-group ng-repeat="elem in fileEntries track by $index" heading="{{elem.name}}" is-open="true">
+            <input type="text" class="form-control" required ng-trim="true" value= "{{elem.location}} ( {{elem.rights}} )"
+                   id="fileLocation" placeholder="Enplacement et droits sur le fichier" ng-disabled="true"
+                   data-hint="L'emplacement du template et les droits sur le fichier"/>
+
+            <div class="form-group" id="templateContentParent" style="padding-top: 10px">
+                <label style="width: 100%">Contenu du fichier
+                    <!--
+                    <small class="text-right" style="padding-left: 10px; color: grey;font-weight:normal"><kbd>F11</kbd>
+                        Activer / <kbd>Esc</kbd> Desactiver l'edtion en plein ecran
+                    </small>
+                    -->
+                </label>
+
+                <div ng-switch = "elem.on_error">
+                    <div ng-switch-when="true" class="alert alert-danger" style = "background-color:#f2dede;border-color:#eed3d7;color:#b94a48;">
+                        <strong>Erreur !</i></strong> {{elem.content}}
+                    </div>
+
+                    <ui-codemirror ng-switch-when="false" ui-codemirror-opts="{onLoad : codemirrorLoaded}" ng-model="elem.content"></ui-codemirror>
+                </div>
+
+                <div ng-if ="elem.on_error == false">
+                    <a class = "btn btn-success" id="donwload" href = "{{elem.url}}" download="{{elem.name}}" target="_blank">
+                        Télécharger
+                    </a>
+                </div>
+
+            </div>
+        </accordion-group>
+
+    </accordion>
+
+    <!--
     <form ng-repeat="item in fileEntries track by $index" role="form">
         <div class="form-group">
             <input type="text" class="form-control" required ng-trim="true" value= "{{item.location}} ( {{item.rights}} )"
@@ -31,6 +68,7 @@
 
         </div>
     </form>
+    -->
 </div>
 <div class="modal-footer">
     <button class="btn btn-success" ng-click="download_all_instance_files()">Télécharger tous</button>

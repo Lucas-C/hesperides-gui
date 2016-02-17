@@ -310,14 +310,13 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
     $scope.preview_instance = function (box, application, platform, instance, module) {
         var modalScope = $scope.$new(true);
 
-        modalScope.codeMirrorOptions = {'readOnly' : true};
-
-        modalScope.codemirrorLoaded = function (_editor){
-            _editor.setOption ('readOnly', true);
-            _editor.refresh();
+        modalScope.codeMirrorOptions = {
+            'readOnly' : true,
+            'autoRefresh' : true
         };
 
         modalScope.instance = instance;
+        modalScope.isOpen = false;
 
         FileService.get_files_entries(application.name, platform.name, box.get_path(), module.name, module.version, instance.name, module.is_working_copy).then(function (entries){
             modalScope.fileEntries = entries;

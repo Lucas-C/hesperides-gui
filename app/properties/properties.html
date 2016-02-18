@@ -409,8 +409,7 @@
             <li ng-if="box.modules.length > 0" class="jumbotron instance" ng-repeat="module in box.modules">
                 <div id="header" style="height: 38px; width: 100%" class="col-md-12  vertical-align">
                     <div class="col-md-6" style="padding-left:10px;white-space: nowrap;">
-                                <span><strong><a href="" ng-click="change_module(module)"
-                                                 title="Modifier la version du module">{{module.title}}</a></strong></span>
+                                <span><strong>{{module.title}}</strong></span>
                     </div>
                     <div class="col-md-6" style="justify-content: flex-end">
                         <md-button ng-click="open_add_instance_dialog(module)" tooltip="Ajouter une instance"
@@ -431,6 +430,12 @@
                                    aria-label="Afficher le module"
                                    class="md-btn-xs">
                             <span class="glyphicon glyphicon-pencil"></span>
+                        </md-button>
+                        <md-button aria-label="Modifier la version du module"
+                                   tooltip="Modifier la version du module"
+                                   class="md-btn-xs"
+                                   ng-click="change_module(module)">
+                            <span class="glyphicon glyphicon-tag"></span>
                         </md-button>
                         <md-button ng-really-message="Supprimer le module {{module.title}} et toutes ses instances ?"
                                    aria-label="Supprimer le module"

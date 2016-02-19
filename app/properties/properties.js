@@ -829,6 +829,21 @@ propertiesModule.directive("displayIterableProperty", function () {
 });
 
 /**
+ * Ths directive is for saving the global properties when the 'enter' key is pressed
+ * on global properties fields.
+ */
+propertiesModule.directive('focusSaveGlobalProperties', function () {
+    return function (scope, element, attrs) {
+        element.bind("keydown keypress", function (event) {
+            if(event.which === 13) {
+                scope.save_global_properties(scope.platform.global_properties);
+                event.preventDefault();
+            }
+        });
+    };
+});
+
+/**
  * Diplay warning message when value is same/or not and source of value is different.
  */
 propertiesModule.directive('warningValue', function () {

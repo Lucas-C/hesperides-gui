@@ -118,26 +118,24 @@ menuModule.controller('MenuPropertiesCtrl', ['$http','$scope', '$modal', '$locat
         });
     };
 
-    /*
-    Create a new platform from existing platform by copying all the characteristics.
-    This function presents two options to the user: copying the instances or not.
-    Modified by Sahar CHAILLOU on 25/01/2015.
+    /**
+     * Create a new platform from existing platform by copying all the characteristics.
+     * This function presents two options to the user: copying the instances or not.
+     * Modified by Sahar CHAILLOU on 25/01/2015.
     */
     $scope.create_platform_from = function(application_name, platform_name, production, application_version, from_application, from_platform, copyInstances){
         var platform;
-        var prop;
 
-        if(copyInstances){
-            //Clone the platform
+        if (copyInstances){
+            // Clone the platform
             platform = new Platform({name: platform_name, application_name: application_name, application_version: application_version, production: production});
             ApplicationService.create_platform_from(platform, from_application, from_platform).then(function(platform){
                 $scope.open_properties_page(platform.application_name,  platform.name);
             });
-        }else {
+        } else {
             //Get the existing platform
             $http.get('rest/applications/' + encodeURIComponent(from_application) + '/platforms/'+ encodeURIComponent(from_platform)).then(function (response) {
-
-                //Create a new platform from the get's response and change the main properties with the target values
+                // Create a new platform from the get's response and change the main properties with the target values
                 platform = new Platform(response.data);
                 platform.name = platform_name;
                 platform.application_name = application_name;
@@ -149,31 +147,34 @@ menuModule.controller('MenuPropertiesCtrl', ['$http','$scope', '$modal', '$locat
                 _.each(platform.modules, function (module) {
                     module.delete_instances();
                 });
-                //Saving the platform as a creation
+
+                // Saving the platform as a creation
                 ApplicationService.save_platform(platform, true);
                 platform.version_id = 0;
 
-                //Save the properties for each module
+                // Save the properties for each module
                 _.each(platform.modules, function (module) {
                     var module_type;
+
                     //Get the module's type
                     if(module.is_working_copy){
                         module_type = 'WORKINGCOPY';
                     }else{
                         module_type = 'RELEASE';
                     }
-                    //Instantiate the properties path
-                    var path = module.path+'#'+module.name+'#'+module.version+'#'+module_type;
 
-                    //Get the properties from the existing platform
+                    // Instantiate the properties path
+                    var path = module.path + '#'+module.name + '#' + module.version + '#' + module_type;
+
+                    // Get the properties from the existing platform
                     ApplicationService.get_properties(from_application, from_platform, path).then(function (properties) {
                         properties = properties.to_rest_entity();
-                        //Save the properties for the new platform
+                        // Save the properties for the new platform
                         $http.post('rest/applications/' + encodeURIComponent(platform.application_name) + '/platforms/' + encodeURIComponent(platform.name) + '/properties?path=' + encodeURIComponent(path) + '&platform_vid=' + encodeURIComponent(platform.version_id), properties);
                     });
                 });
-                $scope.open_properties_page(platform.application_name, platform.name);
 
+                $scope.open_properties_page(platform.application_name, platform.name);
             }, function (error) {
                 $.notify(error.data.message, "error");
                 throw error;

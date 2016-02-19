@@ -802,7 +802,8 @@ propertiesModule.directive('toggleUnspecifiedProperties', function () {
 
                 if (tab) {
                     for (var index = 0; index < tab.length; index++) {
-                        if (_.isEmpty(tab[index].value)) {
+                        // if default value is present, so the prop is nat counted as unspecified
+                        if (_.isEmpty(tab[index].value) && _.isEmpty(tab[index].defaultValue)) {
                             count++;
                         }
                     }
@@ -1114,7 +1115,7 @@ propertiesModule.filter('displayUnspecifiedProperties', function () {
         var filtered = [];
 
         return _.filter(items, function(item) {
-                 return _.isUndefined(display) || !display || _.isEmpty(item.value);
+                 return _.isUndefined(display) || !display || _.isEmpty(item.value) && _.isEmpty(item.defaultValue);
                });;
     };
 });

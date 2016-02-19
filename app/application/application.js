@@ -108,6 +108,10 @@ applicationModule.factory('ApplicationModule', ['Instance', function (Instance) 
             this.instances = _.without(this.instances, instance);
         };
 
+        this.delete_instances = function () {
+            this.instances = [];
+        };
+
         this.to_rest_entity = function () {
             return {
                 id: this.id,

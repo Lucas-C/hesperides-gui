@@ -535,10 +535,10 @@
                         </md-button>
                     </div>
                     <div class="col-md-4">
-                        <input class="form-control" placeholder="Nouvelle property globale" ng-model="new_kv_name"/>
+                        <input class="form-control" placeholder="Nouvelle property globale" ng-model="new_kv_name" focus-save-global-properties/>
                     </div>
                     <div class="col-md-7">
-                        <input class="form-control" placeholder="Valorisation" ng-model="new_kv_value"/>
+                        <input class="form-control" placeholder="Valorisation" ng-model="new_kv_value" focus-save-global-properties/>
                     </div>
                 </div>
                 <div class="form-group" ng-repeat="kv_property in platform.global_properties.key_value_properties | orderBy:'name':platform.global_properties.isReverseOrder() track by $index">
@@ -558,7 +558,7 @@
                     </div>
                     <div class="col-md-7">
                         <input id="input-{{ kv_property.name }}" type="text" class="form-control"
-                               ng-model="kv_property.value"/>
+                               ng-model="kv_property.value" focus-save-global-properties/>
                     </div>
                 </div>
             </form>

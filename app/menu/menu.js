@@ -121,7 +121,7 @@ menuModule.controller('MenuPropertiesCtrl', ['$http','$scope', '$modal', '$locat
     /**
      * Create a new platform from existing platform by copying all the characteristics.
      * This function presents two options to the user: copying the instances or not.
-     * Modified by Sahar CHAILLOU on 25/01/2015.
+     * Modified by Sahar CHAILLOU on 25/01/2016.
     */
     $scope.create_platform_from = function(application_name, platform_name, production, application_version, from_application, from_platform, copyInstances){
         var platform;

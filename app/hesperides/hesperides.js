@@ -213,8 +213,7 @@ hesperidesModule.directive('propertyToolButton', function ($mdUtil, $propertyToo
     return {
         restrict: 'E',
         scope: true,
-        template: '<div class="popover">' +
-                    '        <md-button ng-click="open_add_instance_dialog(module)"' +
+        template:   '        <md-button ng-click="open_add_instance_dialog(module)"' +
                     '        aria-label="Ajouter une instance"' +
                     '        class="md-xs">' +
                     '            <span class="fa fa-plus"></span>' +
@@ -237,14 +236,27 @@ hesperidesModule.directive('propertyToolButton', function ($mdUtil, $propertyToo
                     '          <i class="fa fa-pencil"></i>' +
                     '          <md-tooltip>Afficher le module {{module.title}}</md-tooltip>' +
                     '        </md-button>' +
+                    '        <md-button aria-label="Modifier la version du module"' +
+                    '          class="md-xs"' +
+                    '          ng-click="change_module(module)">' +
+                    '            <md-tooltip>Modifier la version du module</md-tooltip>' +
+                    '          <span class="fa fa-tag"></span>' +
+                    '        </md-button>' +
                     '        <md-button ng-really-message="Supprimer le module {{module.title}} et toutes ses instances ?"' +
                     '        aria-label="Supprimer le module"' +
                     '        ng-really-click="delete_module(module, box)"' +
                     '        class="md-xs md-warn">' +
                     '            <span class="fa fa-trash"></span>' +
                     '            <md-tooltip>Supprimer le module</md-tooltip>' +
-                    '        </md-button>' +
-                    '</div>',
+                    '        </md-button>'
+    };
+});
+
+hesperidesModule.directive('propertyToolButtonOver', function ($mdUtil, $propertyToolButtonService) {
+    return {
+        restrict: 'E',
+        scope: true,
+        template: '<div class="popover"><property-tool-button /></div>',
         link: function (scope, element) {
             var parent = element.parent();
             var popover = element.children();
@@ -281,7 +293,6 @@ hesperidesModule.directive('propertyToolButton', function ($mdUtil, $propertyToo
         }
     };
 });
-
 
 hesperidesModule.filter('interpolate', ['version', function (version) {
     return function (text) {

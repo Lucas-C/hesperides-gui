@@ -47,7 +47,7 @@
          ng-init="moduleButtonsVisible=false"
          ng-if="box.modules.length > 0"
          ng-repeat="module in box.modules | orderObjectBy:'name'">
-        <property-tool-button></property-tool-button>
+        <property-tool-button-over></property-tool-button-over>
         <init-instances ng-model="module"></init-instances>
         <div layout="row" class="property-tree-module">
             <div flex="1" layout="row" layout-align="none center">
@@ -58,13 +58,7 @@
             </div>
 
             <div flex="noshrink" ng-mouseenter="moduleButtonsVisible=true" layout="row" layout-align="none center">
-                <strong>
-                    <a href=""
-                       ng-click="change_module(module)">
-                        {{module.title}}
-                        <md-tooltip>Modifier la version du module</md-tooltip>
-                    </a>
-                </strong>
+                <strong>{{module.title}}</strong>
             </div>
         </div>
 

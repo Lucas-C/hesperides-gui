@@ -32,39 +32,10 @@
     <li ng-if="box.modules.length > 0" class="jumbotron instance" ng-repeat="module in box.modules | orderObjectBy:'name'">
         <div layout="row">
             <div class="property-box-module-name" layout="row" layout-align="start center" flex="none">
-                <span><strong><a href="" ng-click="change_module(module)">{{module.title}}
-                    <md-tooltip>Modifier la version du module</md-tooltip>
-                </a></strong></span>
+                <strong>{{module.title}}</strong>
             </div>
             <div flex>
-                <md-button ng-click="open_add_instance_dialog(module)"
-                           aria-label="Ajouter une instance" class="md-xs">
-                    <md-tooltip>Ajouter une instance</md-tooltip>
-                    <i class="fa fa-plus"></i>
-                </md-button>
-                <md-button class="md-xs" aria-label="Editer les properties"
-                           ng-click="edit_properties(platform, module)">
-                    <md-tooltip>Editer les properties</md-tooltip>
-                    <i class="fa fa-list"></i>
-                </md-button>
-                <md-button aria-label="Comparer les properties"
-                           ng-click="diff_properties(module)" class="md-xs">
-                    <md-tooltip>Comparer les properties</md-tooltip>
-                    <i class="fa fa-exchange"></i>
-                </md-button>
-                <md-button ng-click="open_module_page(module.name, module.version, module.is_working_copy)"
-                           aria-label="Afficher le module"
-                           class="md-xs">
-                    <i class="fa fa-pencil"></i>
-                    <md-tooltip>Afficher le module {{module.title}}</md-tooltip>
-                </md-button>
-                <md-button ng-really-message="Supprimer le module {{module.title}} et toutes ses instances ?"
-                           aria-label="Supprimer le module"
-                           ng-really-click="delete_module(module, box)"
-                           class="md-warn md-xs">
-                    <md-tooltip>Supprimer le module</md-tooltip>
-                    <i class="fa fa-trash"></i>
-                </md-button>
+                <property-tool-button></property-tool-button>
             </div>
         </div>
 

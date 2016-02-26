@@ -152,7 +152,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         var modalScope = $scope.$new();
 
         modalScope.$add = function(name) {
-            var newBox = $scope.add_box(name, box);
+            $scope.add_box(name, box);
             $mdDialog.hide();
         };
 
@@ -281,7 +281,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
             templateUrl: 'application/properties_diff_wizard.html',
             scope: modalScope
         }).then(function() {
-            $scope.open_diff_page();;
+            $scope.open_diff_page();
         }, function() {
             // Cancel
         });
@@ -476,6 +476,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
     // The new global property info
     $scope.new_kv_name = '';
     $scope.new_kv_value = '';
+
     $scope.save_global_properties = function (properties) {
         // Check if there is new global property then add before saving
         if ( !(_.isEmpty($scope.new_kv_name) || _.isEmpty($scope.new_kv_value))){
@@ -865,6 +866,56 @@ propertiesModule.directive('toggleDeletedProperties', function () {
 
 });
 
+propertiesModule.directive("addIterableProperty", function () {
+    return {
+        restrict: "E",
+        template: "<button><span>{{ iterable_property.name }}</span><span class='glyphicon' style='padding-left:10px'></span></button>"
+    }
+});
+
+propertiesModule.directive("displayIterableProperty", function () {
+    return {
+        templateUrl: 'properties/iterate.html'
+    };
+});
+
+/**
+ * Ths directive is for saving the global properties when the 'enter' key is pressed
+ * on global properties fields.
+ */
+propertiesModule.directive('focusSaveGlobalProperties', function () {
+    return function (scope, element, attrs) {
+        element.bind("keydown keypress", function (event) {
+            if(event.which === 13) {
+                scope.save_global_properties(scope.platform.global_properties);
+                event.preventDefault();
+            }
+        });
+    };
+});
+
+/**
+ * Diplay warning message when value is same/or not and source of value is different.
+ */
+propertiesModule.directive('warningValue', function () {
+
+    return {
+        restrict: 'E',
+        scope: {
+            propertyToModify: '=',
+            propertyToCompareTo: '='
+        },
+        template: '<span class="glyphicon glyphicon-exclamation-sign" ng-if="propertyToModify.inGlobal != propertyToCompareTo.inGlobal || propertyToModify.inDefault != propertyToCompareTo.inDefault">' +
+            '<md-tooltip ng-if="propertyToModify.inGlobal != propertyToCompareTo.inGlobal">Valorisé depuis un propriété globale</md-tooltip>' +
+            '<md-tooltip ng-if="propertyToModify.inDefault != propertyToCompareTo.inDefault">' +
+            'La valeur sur l\'application' +
+            'est valorisée depuis une valeur par défaut' +
+            '</md-tooltip>' +
+            '</span>'
+    }
+
+});
+
 propertiesModule.factory('Properties', function () {
 
     var Properties = function (data) {
@@ -929,7 +980,6 @@ propertiesModule.factory('Properties', function () {
                         key_value.useGlobal = true;
                     }
                 }
-                ;
             });
 
             return this;
@@ -1041,11 +1091,6 @@ propertiesModule.factory('Properties', function () {
                             });
                         });
                     });
-
-
-
-
-
                 });
             };
 
@@ -1093,7 +1138,6 @@ propertiesModule.factory('Properties', function () {
         this.mergeWithDefaultValue = function () {
             var me = this;
 
-
             _.each(me.key_value_properties, function (key_value) {
                 if (key_value.inModel) {
                     // Default value are not avaible for deleted properties
@@ -1116,21 +1160,14 @@ propertiesModule.factory('Properties', function () {
     };
 
     return Properties;
+
 });
 
 propertiesModule.filter('displayProperties', function () {
     return function (items, display) {
-        var filtered = [];
-
-        angular.forEach(items, function (item) {
-            if (display == undefined || display == true) {
-                filtered.push(item);
-            } else if (item.inModel) {
-                filtered.push(item);
-            }
+        return _.filter(items, function(item) {
+            return (_.isUndefined(display) || display || item.inModel);
         });
-
-        return filtered;
     };
 });
 
@@ -1307,8 +1344,13 @@ propertiesModule.directive('toggleUnspecifiedProperties', function () {
             keyValueProperties: '=',
             display: '='
         },
-        template: '<md-checkbox type="checkbox" ng-model="display" ng-init="display=false"/> Afficher les propri&eacute;t&eacute;s non renseign&eacute;es ({{ getNumberOfUnspecifiedProperties(keyValueProperties) }})',
-        link: function (scope, element, attrs) {
+        template: '<md-switch class="md-primary md-block" ' +
+            'ng-model="display"' +
+            'ng-init="display=false" ' +
+            'aria-label="Afficher les propri&eacute;t&eacute;s non renseign&eacute;es">' +
+            'Afficher les propri&eacute;t&eacute;s non renseign&eacute;es ({{ getNumberOfUnspecifiedProperties(keyValueProperties) }})' +
+            '</md-switch>',
+        link: function (scope) {
             scope.getNumberOfUnspecifiedProperties = function (tab) {
                 var count = 0;
 
@@ -1359,4 +1401,15 @@ propertiesModule.directive('warningValue', function () {
             '</span>'
     }
 
+});
+
+/**
+ * Display only the 'empty' properties
+ */
+propertiesModule.filter('displayUnspecifiedProperties', function () {
+    return function (items, display) {
+        return _.filter(items, function(item) {
+            return _.isUndefined(display) || !display || _.isEmpty(item.value) && _.isEmpty(item.defaultValue);
+        });
+    };
 });

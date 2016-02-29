@@ -384,6 +384,8 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
         ApplicationService.get_properties($routeParams.application, platform.name, module.properties_path).then(function (properties) {
             ModuleService.get_model(module).then(function (model) {
                 $scope.properties = properties.mergeWithModel(model);
+                $scope.model = model;
+
                 //Merge with global properties
                 $scope.properties = properties.mergeWithGlobalProperties($scope.platform.global_properties);
 
@@ -1099,9 +1101,32 @@ propertiesModule.factory('Properties', function () {
                 }
             });
 
-            _.each(me.iterable_properties, function (iterable) {
-                // TODO
-            });
+            // Merge default values for iterable properties
+            // Updated by tidiane_sidibe on 29/02/2016
+            var mergeWithDefaultValueOfIterable = function (iterable_props) {
+                _.each(iterable_props, function (iterable) {
+                    if ( iterable.inModel ){
+                        _.each (iterable.iterable_valorisation_items, function (item){
+                           if (!_.isUndefined(item.iterable_valorisation_items)){
+                               // Recur again on the item
+                               mergeWithDefaultValueOfIterable(item);
+                           }else {
+                               _(item.values).each(function (field){
+                                    if (_.isString(field.value) && _.isEmpty(field.value) && _.isString(field.defaultValue) && !_.isEmpty(field.defaultValue)){
+                                      field.inDefault = true;
+                                      field.value = item.defaultValue;
+                                   }else {
+                                      field.inDefault = false;
+                                   }
+                               });
+                           }
+                        });
+                    }
+                });
+            };
+
+            // Start the merge with default for iterable
+            mergeWithDefaultValueOfIterable(me.iterable_properties);
 
             return this;
         }

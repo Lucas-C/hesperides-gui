@@ -787,7 +787,13 @@ propertiesModule.directive('toggleDeletedProperties', function () {
 
 });
 
-propertiesModule.directive('toggleUnspecifiedProperties', function () {
+/**
+ * This directive is for filtering only the unspecified properties.
+ * This takes care of the hesperides predefined properties which will not be displayed
+ * and then not counted even if they have not values.
+ * Updated by Tidiane SIDIBE on 01/03/2016
+ */
+propertiesModule.directive('toggleUnspecifiedProperties', function ($filter) {
 
     return {
         restrict: 'E',
@@ -795,15 +801,17 @@ propertiesModule.directive('toggleUnspecifiedProperties', function () {
             keyValueProperties: '=',
             display: '='
         },
-        template: '<md-checkbox type="checkbox" ng-model="display" ng-init="display=false"/> Afficher les propri&eacute;t&eacute;s non renseign&eacute;es ({{ getNumberOfUnspecifiedProperties(keyValueProperties) }})',
+        template: '<md-checkbox type="checkbox" ng-model="display" ng-init="display=false"/> Afficher uniquement les propri&eacute;t&eacute;s non renseign&eacute;es ({{ getNumberOfUnspecifiedProperties(keyValueProperties) }})',
         link: function (scope, element, attrs) {
             scope.getNumberOfUnspecifiedProperties = function (tab) {
+                // filter the hesperides predefined properties
+                var _tab = $filter('hideHesperidesPredefinedProperties')(tab, true);
                 var count = 0;
 
-                if (tab) {
-                    for (var index = 0; index < tab.length; index++) {
+                if (_tab) {
+                    for (var index = 0; index < _tab.length; index++) {
                         // if default value is present, so the prop is nat counted as unspecified
-                        if (_.isEmpty(tab[index].value) && _.isEmpty(tab[index].defaultValue)) {
+                        if (_.isEmpty(_tab[index].value) && _.isEmpty(_tab[index].defaultValue)) {
                             count++;
                         }
                     }
@@ -1131,6 +1139,29 @@ propertiesModule.filter('displayUnspecifiedProperties', function () {
 
         return _.filter(items, function(item) {
                  return _.isUndefined(display) || !display || _.isEmpty(item.value) && _.isEmpty(item.defaultValue);
+               });;
+    };
+});
+
+
+/**
+ * This is used to filter the 'hesperides predefined properties'.
+ * Definition of terms:
+ *  'Hesperides predefined properties' are the properties whith are provided by the hesperides system.
+ *  They always start by "hesperides.".
+ *  Example :
+ *      - hesperides.application.name : is the name of the current application.
+ *      - hesperides.instance.name : is the name of the current instance
+ *
+ * By Tidiane SIDIBE on 29/02/2016
+ */
+propertiesModule.filter('hideHesperidesPredefinedProperties', function () {
+
+    return function (items, display) {
+        var filtered = [];
+
+        return _.filter(items, function(item) {
+                 return !item.name.startsWith("hesperides.");
                });;
     };
 });

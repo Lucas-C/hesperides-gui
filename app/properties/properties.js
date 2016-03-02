@@ -664,7 +664,7 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
     }
     /*
     Select the containers that corresponds to the filters (ex: status = 2).
- 	Modified by Sahar CHAILLOU on 24/02/2016.
+ 	Modified by Sahar CHAILLOU on 24/02/2016
     */
     $scope.toggle_selected_to_containers_with_filter = function (filter, selected, propertiesKeyFilter) {
         _($scope.diff_containers).filter(function (container) {

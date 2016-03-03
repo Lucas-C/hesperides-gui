@@ -100,15 +100,11 @@ fileModule.factory('FileService', ['$hesperidesHttp', 'Application', 'Platform',
 
                     entry.name = get_file_name( data.location );
                     return entry;
-                }, function (error) {
-                    if (error.status != 404) {
-                        $.notify(error.data.message, "error");
-                        throw error;
-                    } else {
-                        return [];
-                    }
                 });
-            });
+            }, function (error) {
+               $.notify(error.data.message, "error");
+               throw error;
+           });
         },
         download_files : function (entries, name){
             // The JSZip Object

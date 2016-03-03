@@ -669,6 +669,25 @@ input.default-value-color:placeholder-shown{color: #428BCA;}
 }
 
 /******************************************************************************
+ * File.
+ */
+.file-header {
+    background-color: #DDDDDD;
+    min-width: 100%;
+    white-space: nowrap;
+}
+
+.file-header .md-button {
+    margin-top:0;
+    margin-bottom: 0;
+}
+
+.file-content {
+    width: 100%;
+    padding: 1px 1px 1px 1px;
+}
+
+/******************************************************************************
  * Loading screen.
  */
 #loading {
@@ -680,4 +699,4 @@ input.default-value-color:placeholder-shown{color: #428BCA;}
     width: 32px;
     height: 32px;
     display: none;
-}​
+}

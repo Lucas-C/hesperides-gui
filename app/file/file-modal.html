@@ -2,31 +2,35 @@
     <md-dialog-content>
         <div class="ng-binding">
             <h2>Prévisualisation de {{instance.name}}</h2>
-            <md-content layout-padding class="autoScroll">
-                <form ng-repeat="item in fileEntries track by $index" role="form" novalidate>
+            <md-content layout-padding class="autoScroll" style="max-width: none;">
+                <form novalidate ng-repeat="item in fileEntries track by $index" heading="{{elem.name}}">
+                    <section class="file-header">
+                            <md-button class="md-xs" ng-if ="item.on_error == false" ng-click="download_file(item.url)">
+                                <md-icon class="fa fa-download"></md-icon>
+                            </md-button>
+                            <md-button ng-click="$showFile = !$showFile">{{item.name}} ( {{item.rights}} )</md-button>
 
-                    <md-input-container md-no-float class="md-block">
-                        <a id="donwload" href = "{{item.url}}" download="{{item.name}}" target="_blank">{{item.location}}</a> ( {{item.rights}} )
-                    </md-input-container>
-
-                    <div layout="row">
-                        <div flex>
-                            <label class="template-section-header">Contenu du fichier</label>
-                            <kbd>F11</kbd> Activer /
-                            <kbd>Esc</kbd> Desactiver l'edtion en plein ecran
-                        </div>
-                    </div>
-                    <div id="templateContentParent">
-                        <div ng-switch = "item.on_error">
-                            <div ng-switch-when="true" class="alert alert-danger" style = "background-color:#f2dede;border-color:#eed3d7;color:#b94a48;">
-                                <strong>Erreur !</i></strong> {{item.content}}
+                            <div ng-show="$showFile" class="file-content ng-hide">
+                                <div layout="row">
+                                    <div flex>
+                                        <label class="template-section-header">Contenu du fichier</label>
+                                        <kbd>F11</kbd> Activer /
+                                        <kbd>Esc</kbd> Desactiver l'edtion en plein ecran
+                                    </div>
+                                </div>
+                                <div id="templateContentParent">
+                                    <div ng-switch = "item.on_error">
+                                        <div ng-switch-when="true" class="alert alert-danger" style = "background-color:#f2dede;border-color:#eed3d7;color:#b94a48;">
+                                            <strong>Erreur !</i></strong> {{item.content}}
+                                        </div>
+                                        <ui-codemirror id="templateContent" ui-codemirror-opts="codeMirrorOptions"
+                                                       ng-model="item.content" ng-keydown="$checkIfCodeMirrorInFullScreen($event)"
+                                                       ng-switch-default
+                                                ></ui-codemirror>
+                                    </div>
+                                </div>
                             </div>
-                            <ui-codemirror id="templateContent" ui-codemirror-opts="codeMirrorOptions"
-                                       ng-model="item.content" ng-keydown="$checkIfCodeMirrorInFullScreen($event)"
-                                       ng-switch-default
-                                    ></ui-codemirror>
-                        </div>
-                    </div>
+                    </section>
                 </form>
             </md-content>
         </div>

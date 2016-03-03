@@ -365,7 +365,11 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
     $scope.preview_instance = function (box, application, platform, instance, module) {
         var modalScope = $scope.$new();
 
-        modalScope.codeMirrorOptions = {'readOnly' : true };
+        modalScope.codeMirrorOptions = {
+            'readOnly' : true,
+            'autoRefresh' : true
+        };
+
         modalScope.instance = instance;
 
         FileService.get_files_entries(application.name, platform.name, box.get_path(), module.name, module.version, instance.name, module.is_working_copy).then(function (entries){
@@ -380,6 +384,10 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         // Download all the files
         modalScope.download_all_instance_files = function (){
             FileService.download_files (modalScope.fileEntries, modalScope.instance.name);
+        };
+
+        modalScope.download_file = function (url) {
+            location.replace(url);
         };
 
     };

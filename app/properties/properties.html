@@ -55,13 +55,13 @@
 
 
     <div layout="row" ng-init="box=false;tree=true">
-        <div flex="1">
+        <div flex="none">
             <md-button ng-click="box=true;tree=false" ng-class="{'md-raised':box}" aria-label="Afficher en mode bloc">
                 <i class="fa fa-clone"></i>
             </md-button>
         </div>
 
-        <div flex="1">
+        <div flex>
             <md-button ng-click="box=false;tree=true" ng-class="{'md-raised':tree}" aria-label="Afficher en mode arbre">
                 <i class="fa fa-bars"></i>
             </md-button>

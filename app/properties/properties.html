@@ -1,5 +1,7 @@
 <div layout="row">
     <div flex="100">
+        <!-- Directive to show the events list -->
+        <events-list arg = "val"></events-list>
         <div class="bg-light">
             <h3>Plateformes de <strong>{{application.name}}</strong></h3>
             <list-of-items items="platforms"
@@ -486,6 +488,8 @@
                 )</strong></span>
             </h3>
         </div>
+
+
         <div flex="33">
             <div layout="row" layout-align="end center">
                 <h3 class="togglebutton">

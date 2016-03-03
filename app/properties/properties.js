@@ -3,7 +3,7 @@
  */
 var propertiesModule = angular.module('hesperides.properties', ['hesperides.nexus']);
 
-propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal', '$location', '$route', '$timeout', 'ApplicationService', 'FileService', 'ModuleService', 'ApplicationModule', 'Page', 'NexusService', function ($scope, $routeParams, $modal, $location, $route, $timeout, ApplicationService, FileService, ModuleService, Module, Page, NexusService) {
+propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal', '$location', '$route', '$timeout', 'ApplicationService', 'FileService', 'EventService', 'ModuleService', 'ApplicationModule', 'Page', 'NexusService', function ($scope, $routeParams, $modal, $location, $route, $timeout, ApplicationService, FileService, EventService, ModuleService, Module, Page, NexusService) {
     Page.setTitle("Properties");
 
     $scope.platform = $routeParams.platform;
@@ -307,6 +307,21 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
         $scope.save_platform_from_box($scope.mainBox);
     };
 
+    /**
+     * This is used to open the events history on platform/module
+     * By Tidiane SIDIBE on 02/03/2016
+     */
+    $scope.events = function (application, platform, module){
+        EventService.get("platform-VSA-INT3").then (function (entries){
+            console.log (entries);
+        });
+    };
+
+    $scope.events(undefined, undefined, undefined);
+
+    /**
+     * This is used to preview an instance data.
+     */
     $scope.preview_instance = function (box, application, platform, instance, module) {
         var modalScope = $scope.$new(true);
 

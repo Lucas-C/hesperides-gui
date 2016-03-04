@@ -10,6 +10,7 @@
                             </md-button>
                             <md-button ng-click="$showFile = !$showFile">{{item.name}} ( {{item.rights}} )</md-button>
 
+                            <!-- Add css class 'ng-hide' to disable display at startup and for working autorefresh plugin -->
                             <div ng-show="$showFile" class="file-content ng-hide">
                                 <div layout="row">
                                     <div flex>

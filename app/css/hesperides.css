@@ -675,6 +675,9 @@ input.default-value-color:placeholder-shown{color: #428BCA;}
     background-color: #DDDDDD;
     min-width: 100%;
     white-space: nowrap;
+    -webkit-border-radius: 10px 10px 0px 0px;
+    -moz-border-radius: 10px 10px 0px 0px;
+    border-radius: 10px 10px 0px 0px;
 }
 
 .file-header .md-button {

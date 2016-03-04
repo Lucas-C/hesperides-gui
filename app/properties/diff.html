@@ -121,7 +121,7 @@
         <div flex="5" layout="row" layout-align="center start">
             <div>
                 <md-checkbox aria-label="Selectionner toutes les valeurs" ng-model="toggle_diff"
-                             ng-click="toggle_selected_to_containers_with_filter({'status':1, 'modified': true}, !toggle_ident)">
+                             ng-click="toggle_selected_to_containers_with_filter({'status':1, 'modified': true}, !toggle_ident, propertiesKeyFilter1)">
                 </md-checkbox>
             </div>
         </div>
@@ -205,7 +205,7 @@
         <div flex="5" layout="row" layout-align="center start">
             <div>
                 <md-checkbox aria-label="Selectionner toutes les valeurs" ng-model="toggle_diff"
-                         ng-click="toggle_selected_to_containers_with_filter({'status': 2}, !toggle_diff)">
+                         ng-click="toggle_selected_to_containers_with_filter({'status': 2}, !toggle_diff, propertiesKeyFilter2)">
                 </md-checkbox>
             </div>
         </div>
@@ -282,7 +282,7 @@
         <div flex="5" layout="row" layout-align="center start">
             <div>
                 <md-checkbox aria-label="Selectionner toutes les valeurs" ng-model="toggle_right" class="diff"
-                             ng-click="toggle_selected_to_containers_with_filter({'status': 3}, !toggle_right)">
+                             ng-click="toggle_selected_to_containers_with_filter({'status': 3}, !toggle_right, propertiesKeyFilter3)">
                 </md-checkbox>
             </div>
         </div>
@@ -323,4 +323,3 @@
         2/ <span class="diff-warning-text-button">Sauvegarder</span> les changements (il faut avoir previsualis&eacute; avant)
     </md-button>
 </div>
-

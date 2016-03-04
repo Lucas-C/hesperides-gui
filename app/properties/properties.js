@@ -668,17 +668,34 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
     $scope.dot_to_underscore = function (string) {
         return string.replace(/\./g, '_');
     }
-
-    $scope.toggle_selected_to_containers_with_filter = function (filter, selected) {
+    /*
+    Select the containers that corresponds to the filters (ex: status = 2).
+ 	Modified by Sahar CHAILLOU on 24/02/2016
+    */
+    $scope.toggle_selected_to_containers_with_filter = function (filter, selected, propertiesKeyFilter) {
         _($scope.diff_containers).filter(function (container) {
+            //If user filter the properties'diff by name or regex, we use this filter to make a first selection for the containers
+            if (propertiesKeyFilter) {
+                var name = '.*' + propertiesKeyFilter.toLowerCase().split(' ').join('.*');
+                try {
+                        var regex_name = new RegExp(name, 'i');
+                } catch(e) {
+                }
+                if (!regex_name.test(container.property_name)) {
+                        return false;
+                }
+            }
+            //We apply the other filters to select the containers that we want
             for (var key in filter) {
                 if (!_.isEqual(filter[key], container[key])) return false;
             }
             return true;
         }).each(function (container) {
+            //Finally, we change the selection of the selected containers
             container.selected = selected;
         });
     };
+
 
     $scope.apply_diff = function () {
         /* Filter the diff container that have been selected
@@ -1174,16 +1191,17 @@ propertiesModule.filter('hideHesperidesPredefinedProperties', function () {
 
 /**
  * Function wich filter the properties' display with string or regex.
+ * Modified by Sahar CHAILLOU on 12/01/2016.
  */
 propertiesModule.filter('filterProperties', function() {
     return function(input, filter) {
         if (!filter) {
             return input;
         }
-
+        //Format the filters to construct the regex
         name = '.*' + filter.name.toLowerCase().split(' ').join('.*');
         value = '.*' + filter.filtrable_value.toLowerCase().split(' ').join('.*');
-
+        //Create the regex
         try {
             var regex_name = new RegExp(name, 'i');
             var regex_value = new RegExp(value, 'i');
@@ -1192,7 +1210,7 @@ propertiesModule.filter('filterProperties', function() {
         }
 
         var output = [];
-
+        //Filter the array by the values which respect the regex
         angular.forEach(input, function(item) {
             if (regex_name.test(item.name) && regex_value.test(item.filtrable_value)) {
                 output.push(item);

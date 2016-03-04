@@ -123,12 +123,12 @@ applicationModule.controller('ModuleCtrl', [
         var modalScope = $scope.$new(true);
 
         modalScope.$closeDialog = function() {
-            $mdDialog.hide();
+            $mdDialog.cancel();
         };
 
         modalScope.$save = function(release_version) {
             $scope.create_release(module, release_version);
-            $mdDialog.hide();
+            $mdDialog.cancel();
         };
 
         $mdDialog.show({

@@ -12,7 +12,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
     $scope.fileEntries = [];
 
     $scope.$closeDialog = function() {
-        $mdDialog.hide();
+        $mdDialog.cancel();
     };
 
     var Box = function (data) {
@@ -153,7 +153,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
         modalScope.$add = function(name) {
             $scope.add_box(name, box);
-            $mdDialog.hide();
+            $mdDialog.cancel();
         };
 
         $mdDialog.show({
@@ -167,7 +167,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
         modalScope.$add = function(name) {
             $scope.add_instance(name, module);
-            $mdDialog.hide();
+            $mdDialog.cancel();
         };
 
         $mdDialog.show({
@@ -229,7 +229,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
                             });
                     }
 
-                    $mdDialog.hide();
+                    $mdDialog.cancel();
                 };
             });
     };
@@ -239,7 +239,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
         modalScope.$add = function(module) {
             $scope.add_module(module.name, module.version, module.is_working_copy, box);
-            $mdDialog.hide();
+            $mdDialog.cancel();
         };
 
         $mdDialog.show({
@@ -261,7 +261,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
             $scope.save_platform_from_box($scope.mainBox, modal_data.copy_properties).then(function () {
                 $scope.properties = undefined;
                 $scope.instance = undefined;
-                $mdDialog.hide();
+                $mdDialog.cancel();
             });
         };
 
@@ -277,10 +277,12 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
         var modalScope = $scope.$new();
 
-        $mdDialog.show({
+        var t = $mdDialog.show({
             templateUrl: 'application/properties_diff_wizard.html',
             scope: modalScope
-        }).then(function() {
+        });
+
+        t.then(function() {
             $scope.open_diff_page();
         }, function() {
             // Cancel
@@ -308,7 +310,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         var modalScope = $scope.$new();
 
         modalScope.$diff = function(from) {
-            $mdDialog.hide();
+            $mdDialog.cancel();
             $scope.open_global_diff_page(from);
         };
 

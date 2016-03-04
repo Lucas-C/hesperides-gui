@@ -113,7 +113,7 @@ templateModule.factory('HesperidesTemplateModal', ['TemplateService', '$mdDialog
             modalScope.isReadOnly = options.isReadOnly;
 
             modalScope.$closeDialog = function() {
-                $mdDialog.hide();
+                $mdDialog.cancel();
             };
 
             modalScope.$checkIfCodeMirrorInFullScreen = function($event) {
@@ -141,7 +141,7 @@ templateModule.factory('HesperidesTemplateModal', ['TemplateService', '$mdDialog
                     // Do nothing to prevent closing window if error with annotation
                 });
 
-                $mdDialog.hide();
+                $mdDialog.cancel();
             };
 
             modalScope.$save = function(template){

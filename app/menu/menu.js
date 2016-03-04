@@ -6,7 +6,7 @@ var menuModule = angular.module('hesperides.menu', ['hesperides.techno', 'hesper
 menuModule.controller('MenuTechnoCtrl', ['$scope', '$mdDialog', '$location', '$timeout', 'TechnoService', function ($scope, $mdDialog, $location, $timeout, TechnoService) {
 
     $scope.closeDialog = function() {
-        $mdDialog.hide();
+        $mdDialog.cancel();
     };
 
     $scope.find_technos_by_name = function (name) {
@@ -45,7 +45,7 @@ menuModule.controller('MenuTechnoCtrl', ['$scope', '$mdDialog', '$location', '$t
             $location.path('/techno/' + name + '/' + version).search({});
         }
         $scope.technoSearched = "";
-        $mdDialog.hide();
+        $mdDialog.cancel();
 
         // Very bad trick to close menu :-(
         if (fakeButton) {
@@ -60,7 +60,7 @@ menuModule.controller('MenuTechnoCtrl', ['$scope', '$mdDialog', '$location', '$t
 menuModule.controller('MenuModuleCtrl', ['$scope', '$mdDialog', '$location', '$timeout', 'ModuleService', 'Module',  function ($scope, $mdDialog, $location, $timeout, ModuleService, Module) {
 
     $scope.closeDialog = function() {
-        $mdDialog.hide();
+        $mdDialog.cancel();
     };
 
     $scope.selectedItemChange = function(item) {
@@ -85,7 +85,7 @@ menuModule.controller('MenuModuleCtrl', ['$scope', '$mdDialog', '$location', '$t
     $scope.create_module_from = function (name, version, moduleFrom) {
         ModuleService.create_workingcopy_from(name, version, moduleFrom).then(function(){
             $scope.open_module_page(name, version, true);
-            $mdDialog.hide();
+            $mdDialog.cancel();
         });
     };
 
@@ -96,7 +96,7 @@ menuModule.controller('MenuModuleCtrl', ['$scope', '$mdDialog', '$location', '$t
             $location.path('/module/' + name + '/' + version).search({});
         }
         $scope.moduleSearched = "";
-        $mdDialog.hide();
+        $mdDialog.cancel();
 
         // Very bad trick to close menu :-(
         if (fakeButton) {
@@ -132,7 +132,7 @@ menuModule.controller('MenuModuleCtrl', ['$scope', '$mdDialog', '$location', '$t
 menuModule.controller('MenuPropertiesCtrl', ['$hesperidesHttp', '$scope', '$mdDialog', '$location', '$timeout', 'ApplicationService', 'Platform', function ($http, $scope, $mdDialog, $location, $timeout, ApplicationService, Platform) {
 
     $scope.closeDialog = function() {
-        $mdDialog.hide();
+        $mdDialog.cancel();
     };
 
     var properties;
@@ -153,7 +153,7 @@ menuModule.controller('MenuPropertiesCtrl', ['$hesperidesHttp', '$scope', '$mdDi
         var path = '/properties/' + application_name;
         $location.url(path).search({platform: platform_name});
         $scope.applicationSearched = "";
-        $mdDialog.hide();
+        $mdDialog.cancel();
 
         // Very bad trick to close menu :-(
         if (fakeButton) {
@@ -256,7 +256,7 @@ menuModule.controller('MenuPropertiesCtrl', ['$hesperidesHttp', '$scope', '$mdDi
 menuModule.controller('MenuHelpCtrl', ['$scope', '$mdDialog', '$hesperidesHttp', function($scope, $mdDialog, $http){
 
     $scope.closeDialog = function() {
-        $mdDialog.hide();
+        $mdDialog.cancel();
     };
 
     $scope.display_hesperides_informations = function(){

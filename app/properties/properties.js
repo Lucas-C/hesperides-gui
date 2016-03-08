@@ -385,6 +385,10 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
             ModuleService.get_model(module).then(function (model) {
                 $scope.properties = properties.mergeWithModel(model);
                 $scope.model = model;
+                $scope.model = model;
+
+                console.log (model);
+                console.log ($scope.properties);
 
                 //Merge with global properties
                 $scope.properties = properties.mergeWithGlobalProperties($scope.platform.global_properties);
@@ -744,21 +748,58 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
 
 }]);
 
+/**
+ * This will display only the simple properties list
+ */
+ propertiesModule.directive('simplePropertiesList', function () {
+
+     return {
+         restrict: 'E',
+         scope: {
+             properties: '='
+         },
+         templateUrl: "properties/simple-properties-list.html",
+         link: function (scope, element, attrs) {
+             scope.propertiesKeyFilter = "";
+             scope.propertiesValueFilter = "";
+         }
+     };
+ });
+
+/**
+ * This will display only the iterable properties
+ */
+ propertiesModule.directive('iterablePropertiesList', function () {
+
+     return {
+         restrict: 'E',
+         scope: {
+             modelProperty: '=',
+             valueProperty: '&getValues'
+         },
+         templateUrl: "properties/iterable-properties-list.html"
+     };
+ });
+
 propertiesModule.directive('propertiesList', function () {
 
     return {
         restrict: 'E',
         scope: {
-            properties: '='
+            properties: '=',
+            propertiesModel: '='
         },
         templateUrl: "properties/properties-list.html",
         link: function (scope, element, attrs) {
             scope.propertiesKeyFilter = "";
             scope.propertiesValueFilter = "";
+
+            scope.getValues = function (name){
+                values = _.filter(scope.properties.iterable_properties, {name : name});
+                return values;
+            };
         }
     };
-
-
 });
 
 propertiesModule.directive('toggleDeletedProperties', function () {
@@ -824,11 +865,13 @@ propertiesModule.directive("addIterableProperty", function () {
     }
 });
 
+/**
 propertiesModule.directive("displayIterableProperty", function () {
     return {
         templateUrl: 'properties/iterate.html'
     };
 });
+**/
 
 /**
  * Ths directive is for saving the global properties when the 'enter' key is pressed

@@ -3,10 +3,10 @@
 </div>
 <div class="modal-body">
     <!-- Table -->
-    <div class ="center-events" >
+    <div class ="events" >
         <div ng-repeat = "event in eventEntries track by $index" class = "event">
             <p>
-                <span class ="event-user">{{event.user}}</span><span class = "event-action"> {{event.actionMessage}}</span><span class = "event-date">{{event.timestamp | date: 'd MMM yyyy'}} à {{event.timestamp | date: 'hh:mm'}}</span>
+                <span class ="event-user">{{event.user}}</span><span class = "event-action"> {{event.actionMessage}}</span><span class = "event-date">{{event.timestamp | date: 'd MMM yyyy à hh:mm'}}</span>
             </p>
         </div>
     </div>

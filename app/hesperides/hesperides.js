@@ -68,10 +68,6 @@ hesperidesModule.config(['$routeProvider', '$tooltipProvider', '$mdThemingProvid
             templateUrl: 'techno/techno.html',
             controller: 'TechnoCtrl'
         }).
-        when('/event/:application', {
-            templateUrl: 'event/event.html',
-            controller: 'TechnoCtrl'
-        }).
         when('/help/swagger', {
             templateUrl: 'swagger/swagger.html'
         }).

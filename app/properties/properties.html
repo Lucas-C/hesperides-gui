@@ -1,7 +1,5 @@
 <div layout="row">
     <div flex="100">
-        <!-- Directive to show the events list -->
-        <events-list arg = "val"></events-list>
         <div class="bg-light">
             <h3>Plateformes de <strong>{{application.name}}</strong></h3>
             <list-of-items items="platforms"
@@ -439,6 +437,12 @@
                                    ng-click="change_module(module)">
                             <span class="glyphicon glyphicon-tag"></span>
                         </md-button>
+
+                        <!-- Events button for modules-->
+                        <md-button class = "md-btn-xs md-button md-default-theme" tooltip="Afficher les events de {{application.name}}-{{platform.name}}" ng-click = "show_events(box, module, 'module')">
+                            <span class="glyphicon glyphicon-bullhorn"></span>
+                        </md-button>
+
                         <md-button ng-really-message="Supprimer le module {{module.title}} et toutes ses instances ?"
                                    aria-label="Supprimer le module"
                                    tooltip="Supprimer le module"
@@ -485,10 +489,15 @@
                    title="Modifier la version de la plateforme"
                    class="ng-binding"
                    onaftersave="save_platform_from_box(mainBox)">{{platform.application_version}}</a>
-                )</strong></span>
+                )</strong>
+
+                <!-- Events button for platforms-->
+                <md-button class = "md-btn-xs md-button md-default-theme" tooltip="Afficher les events de {{application.name}}-{{platform.name}}" ng-click = "show_events(application, platform, 'platform')">
+                    <span class="glyphicon glyphicon-bullhorn"></span>
+                </md-button>
+            </span>
             </h3>
         </div>
-
 
         <div flex="33">
             <div layout="row" layout-align="end center">

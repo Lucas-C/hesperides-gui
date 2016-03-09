@@ -308,18 +308,6 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
     };
 
     /**
-     * This is used to open the events history on platform/module
-     * By Tidiane SIDIBE on 02/03/2016
-     */
-    $scope.events = function (application, platform, module){
-        EventService.get("platform-VSA-INT3").then (function (entries){
-            console.log (entries);
-        });
-    };
-
-    $scope.events(undefined, undefined, undefined);
-
-    /**
      * This is used to preview an instance data.
      */
     $scope.preview_instance = function (box, application, platform, instance, module) {
@@ -351,6 +339,42 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
             FileService.download_files (modalScope.fileEntries, modalScope.instance.name);
         };
 
+    };
+
+    /**
+     * This used to show the event lists.
+     * Added by Tidiane SIDIBE on 08/03/2016
+     */
+    $scope.show_events = function (param1, param2, action) {
+        var modalScope = $scope.$new(true);
+
+        // Creating the stream name
+        var stream = undefined;
+        if ( action === 'platform'){
+            stream = action + '-' + param1.name + '-' + param2.name;
+            modalScope.title = param1.name + '-' + param2.name;
+        }else {
+            stream = action + '-' + param2.name + '-' + param2.version + '-';
+            if (param2.is_working_copy){
+                stream = stream + 'wc';
+            }else{
+                stream = stream + 'release';
+            }
+
+            modalScope.title =  param2.name + '-' + param2.version;
+        }
+
+        EventService.get(stream).then (function (entries){
+
+            modalScope.eventEntries = entries;
+
+            var modal = $modal.open({
+                        templateUrl: 'event/event-modal.html',
+                        backdrop: true,
+                        keyboard: true,
+                        scope: modalScope
+                    });
+        });
     };
 
     $scope.delete_instance = function (instance, module) {

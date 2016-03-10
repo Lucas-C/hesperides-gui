@@ -8,7 +8,7 @@ var eventModule = angular.module ('hesperides.event', []);
  * Hesperides event data type
  *
  */
-eventModule.factory('EventEntry', ['$filter', function ($filter){
+eventModule.factory('EventEntry', function (){
     var EventEntry = function (data){
         var me = this;
 
@@ -17,58 +17,14 @@ eventModule.factory('EventEntry', ['$filter', function ($filter){
         this.timestamp = data.timestamp;
         this.user = data.user;
 
-        this.actionMessage = 'not yet processed';
+        // The simple type of the event
+        var tab = data.type.split('.');
+        this._type = tab[tab.length - 1];
 
-        /**
-         * This function will make the events humanly readable
-         */
-        this.humanize = function (){
-            //humanize type
-            var _type = undefined;
-
-            /* About Plateforms*/
-            if (me.type.endsWith('PlatformCreatedEvent')){
-                _type = 'a créé la plateforme ';
-            }else if (me.type.endsWith('PlatformUpdatedEvent')){
-                _type = 'a modifié la plateforme ';
-            }
-
-            /* About Module */
-            else if (me.type.endsWith('ModuleCreatedEvent')){
-                _type = 'a créé le module ';
-            }else if (me.type.endsWith('ModuleDeletedEvent')){
-                _type = 'a supprimé le module ';
-            }
-
-            /* About Module Working Copy */
-            else if (me.type.endsWith('ModuleWorkingCopyUpdatedEvent')){
-                _type = 'a modifié une working copy du module ';
-            }
-
-            /* About Module Template*/
-            else if (me.type.endsWith('ModuleTemplateCreatedEvent')){
-                 _type = 'a créé le template du module ';
-            }else if (me.type.endsWith('ModuleTemplateUpdatedEvent')){
-                _type = 'a modifié le template du module ';
-            }else if (me.type.endsWith('ModuleTemplateDeletedEvent')){
-                _type = 'a supprimé le template du module ';
-            }
-
-            /* About Properties*/
-            else if (me.type.endsWith('PropertiesSavedEvent')){
-                _type = 'a modifié les properties ';
-            }
-
-            else {
-                _type = 'Unknown';
-            }
-
-            me.actionMessage = _type;
-        }
     };
 
     return EventEntry;
-}]);
+});
 
 /**
  * Hesperides event http service
@@ -80,7 +36,7 @@ eventModule.service("EventService", ['$http', 'EventEntry', function ($http, Eve
             return $http.get(url).then (function (response){
                return response.data.map (function(item){
                     var event = new EventEntry(item);
-                    event.humanize();
+                    console.log("Event type :" + event._type);
                     return event;
                });
             }, function (error){
@@ -90,3 +46,207 @@ eventModule.service("EventService", ['$http', 'EventEntry', function ($http, Eve
         }
     }
 }]);
+
+/**
+ * This is the list of directives used to display each type of events
+ * with custom content.
+ */
+
+//
+// Platforms
+//
+
+/* This is for platform creation event */
+eventModule.directive('platformCreated', function (){
+    return {
+        restrict : 'E',
+        scope : {
+            event : '='
+        },
+        templateUrl : 'event/directives/platform/platform-created.html'
+    };
+});
+
+/* This is for platform update event */
+eventModule.directive('platformUpdated', function (){
+    return {
+        restrict : 'E',
+        scope : {
+            event : '='
+        },
+        templateUrl : 'event/directives/platform/platform-updated.html'
+    };
+});
+
+/* This is for platform deletion event */
+eventModule.directive('platformDeleted', function (){
+    return {
+        restrict : 'E',
+        scope : {
+            event : '='
+        },
+        templateUrl : 'event/directives/platform/platform-deleted.html'
+    };
+});
+
+//
+// Modules
+//
+
+/* This is for module creation event */
+eventModule.directive('moduleCreated', function (){
+    return {
+        restrict : 'E',
+        scope : {
+            event : '='
+        },
+        templateUrl : 'event/directives/module/module-created.html'
+    };
+});
+
+/* This is for module update event */
+eventModule.directive('moduleUpdated', function (){
+    return {
+        restrict : 'E',
+        scope : {
+            event : '='
+        },
+        templateUrl : 'event/directives/module/module-updated.html'
+    };
+});
+
+//
+// Module Working Copy
+//
+
+/* This is for module working copy update event */
+eventModule.directive('moduleWorkingCopyUpdated', function (){
+    return {
+        restrict : 'E',
+        scope : {
+            event : '='
+        },
+        templateUrl : 'event/directives/module-working-copy/module-working-copy-updated.html'
+    };
+});
+
+//
+// Module Templates
+//
+
+/* This is for module template creation event */
+eventModule.directive('moduleTemplateCreated', function (){
+    return {
+        restrict : 'E',
+        scope : {
+            event : '='
+        },
+        templateUrl : 'event/directives/module-template/module-template-created.html'
+    };
+});
+
+/* This is for module template  update event */
+eventModule.directive('moduleTemplateUpdated', function (){
+    return {
+        restrict : 'E',
+        scope : {
+            event : '='
+        },
+        templateUrl : 'event/directives/module-template/module-template-updated.html'
+    };
+});
+
+/* This is for module template  deletion event */
+eventModule.directive('moduleTemplateDeleted', function (){
+    return {
+        restrict : 'E',
+        scope : {
+            event : '='
+        },
+        templateUrl : 'event/directives/module-template/module-template-deleted.html'
+    };
+});
+
+//
+// Properties
+//
+
+/* This is for properties saved event */
+eventModule.directive('propertiesSaved', function (){
+    return {
+        restrict : 'E',
+        scope : {
+            event : '='
+        },
+        templateUrl : 'event/directives/properties/properties-saved.html'
+    };
+});
+
+//
+// Templates (Techno)
+//
+
+/* This is for techno creation event */
+eventModule.directive('templateCreated', function (){
+    return {
+        restrict : 'E',
+        scope : {
+            event : '='
+        },
+        templateUrl : 'event/directives/template/template-created.html'
+    };
+});
+
+/* This is for techno  update event */
+eventModule.directive('templateUpdated', function (){
+    return {
+        restrict : 'E',
+        scope : {
+            event : '='
+        },
+        templateUrl : 'event/directives/template/template-updated.html'
+    };
+});
+
+/* This is for techno  deletion event */
+eventModule.directive('templateDeleted', function (){
+    return {
+        restrict : 'E',
+        scope : {
+            event : '='
+        },
+        templateUrl : 'event/directives/template/template-deleted.html'
+    };
+});
+
+//
+// Template Package (Techno)
+//
+
+/* This is for techno package deletion event */
+eventModule.directive('templatePackageDeleted', function (){
+    return {
+        restrict : 'E',
+        scope : {
+            event : '='
+        },
+        templateUrl : 'event/directives/template-package/template-package-deleted.html'
+    };
+});
+
+
+/**
+ * This for event timestamp formating and displaying
+ */
+/* This is for techno package deletion event */
+eventModule.directive('eventTime', function (){
+    return {
+        restrict : 'E',
+        scope : {
+            timestamp : '='
+        },
+        templateUrl : 'event/directives/event-time.html'
+    };
+});
+
+

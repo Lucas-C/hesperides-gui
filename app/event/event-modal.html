@@ -4,10 +4,38 @@
 <div class="modal-body">
     <!-- Table -->
     <div class ="events" >
-        <div ng-repeat = "event in eventEntries track by $index" class = "event">
-            <p>
-                <span class ="event-user">{{event.user}}</span><span class = "event-action"> {{event.actionMessage}}</span><span class = "event-date">{{event.timestamp | date: 'd MMM yyyy à hh:mm'}}</span>
-            </p>
+        <div ng-repeat = "event in eventEntries track by $index" >
+            <div ng-switch = "event._type" class="event">
+                
+                <!-- Platforms -->
+                <platform-created ng-switch-when="PlatformCreatedEvent" event="event"></platform-created>
+                <platform-updated ng-switch-when="PlatformUpdatedEvent" event="event"></platform-updated>
+                <platform-deleted ng-switch-when="PlatformDeletedEvent" event="event"></platform-deleted>
+
+                <!-- Modules -->
+                <module-created ng-switch-when="ModuleCreatedEvent" event="event"></module-created>
+                <module-updated ng-switch-when="ModuleUpdatedEvent" event="event"></module-updated>
+
+                <!-- Module Working Copies -->
+                <module-working-copy-updated ng-switch-when="ModuleWorkingCopyUpdatedEvent" event="event"></module-working-copy-updated>
+
+                <!-- Module Templates -->
+                <module-template-created ng-switch-when="ModuleTemplateCreatedEvent" event="event"></module-template-created>
+                <module-template-updated ng-switch-when="ModuleTemplateUpdatedEvent" event="event"></module-template-updated>
+                <module-template-deleted ng-switch-when="ModuleTemplateDeletedEvent" event="event"></module-template-deleted>
+
+                <!-- Properties (Platform) -->
+                <properties-saved ng-switch-when="PropertiesSavedEvent" event="event"></properties-saved>
+
+                <!-- Templates inside Template Packages (Techno) -->
+                <template-created ng-switch-when="TemplateCreatedEvent" event="event"></template-created>
+                <template-updated ng-switch-when="TemplateUpdatedEvent" event="event"></template-updated>
+                <template-deleted ng-switch-when="TemplateDeletedEvent" event="event"></template-deleted>
+
+                <!-- Template Package (Techno) -->
+                <template-package-deleted ng-switch-when="TemplatePackageDeletedEvent" event="event"></template-package-deleted>
+
+            </div>
         </div>
     </div>
 </div>

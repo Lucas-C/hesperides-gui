@@ -749,7 +749,8 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
 }]);
 
 /**
- * This will display only the simple properties list
+ * This directive will display only the simple properties list.
+ * Added by Tidiane SIDIBE on 11/03/2016
  */
  propertiesModule.directive('simplePropertiesList', function () {
 
@@ -767,7 +768,8 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
  });
 
 /**
- * This will display only the iterable properties
+ * This directive will display only the iterable properties
+ * Added by Tidiane SIDIBE on 11/03/2016
  */
  propertiesModule.directive('iterablePropertiesList', function () {
 
@@ -775,12 +777,72 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
          restrict: 'E',
          scope: {
              modelProperty: '=',
-             valueProperty: '&getValues'
+             valueProperty: '='
          },
-         templateUrl: "properties/iterable-properties-list.html"
+         templateUrl: 'properties/iterable-properties-list.html',
+         controller : 'iterablePropertiesListController'
      };
  });
 
+/**
+ * This is the controller for iterable properties list directive
+ */
+ propertiesModule.controller('iterablePropertiesListController', function($scope) {
+
+    /**
+     * Adds the new void iterable block
+     */
+    $scope.addValue = function() {
+
+        // This from the click
+        var iterableValue = {};
+        iterableValue.title     = "not used";
+        iterableValue.values    = [];
+
+        modelFields = $scope.modelProperty.fields;
+        if (_.isUndefined(modelFields.fields)){
+            _($scope.modelProperty.fields).each (function (field){
+                iterableValue.values.push({
+                    name: field.name,
+                    value: "",
+                    comment: (field.comment) ? field.comment : "",
+                    password: (field.password) ? field.password : false,
+                    defaultValue: (field.defaultValue) ? field.defaultValue : "",
+                    required: (field.required) ? field.required : false,
+                    pattern: (field.pattern) ? field.pattern : ""
+                });
+            });
+        }else{
+            console.log ("this is iterable : " + modelFields.name);
+        }
+
+        $scope.valueProperty.iterable_valorisation_items.push(iterableValue);
+    };
+
+    /**
+     * Delete the selected block.
+     * @param {Integeger} index : the block id in the values.
+     */
+    $scope.removeValue = function (index){
+        $scope.valueProperty.iterable_valorisation_items.splice(index, 1);
+    };
+
+/*
+    // If there is not values for that iterable properties, then add one
+    if($scope.valueProperty.iterable_valorisation_items.length === 0){
+        $scope.addValue($scope.valueProperty.iterable_valorisation_items, $scope.modelProperty.fields);
+    }else {
+        // should probably merge things but don't know for now !
+    }
+*/
+ });
+
+/**
+ * This directive will display the properties list with contains :
+ *  1. Simple properties
+ *  2. Iterable probperties
+ * Added by Tidiane SIDIBE on 11/03/2016
+ */
 propertiesModule.directive('propertiesList', function () {
 
     return {
@@ -795,7 +857,15 @@ propertiesModule.directive('propertiesList', function () {
             scope.propertiesValueFilter = "";
 
             scope.getValues = function (name){
-                values = _.filter(scope.properties.iterable_properties, {name : name});
+                values = _.find(scope.properties.iterable_properties, {name : name});
+                if(!values) {
+                    values = {
+                        inModel: true,
+                        iterable_valorisation_items: [],
+                        name: name
+                    };
+                    scope.properties.iterable_properties.push(values);
+                }
                 return values;
             };
         }

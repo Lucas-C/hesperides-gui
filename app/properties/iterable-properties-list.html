@@ -2,14 +2,14 @@
     <!-- Displaying new fields from the model -->
     <div class="form-group iterable-main-block" id="it-prop-{{modelProperty.name}}">
         <div>
-            <md-button class = "md-btn md-button md-default-theme" tooltip="Ajouter un block" ng-click = "addValue()">
+            <md-button aria-label="Ajouter un block" class="md-btn md-button md-default-theme" tooltip="Ajouter un block" ng-click = "addValue()">
                 <span class="glyphicon glyphicon-plus"></span> {{modelProperty.name}}
             </md-button>
         </div>
         <!-- Pour chaque valorisation d'un bloc iterable -->
         <div class = "iterable-block" ng-repeat="(index, blockValue) in valueProperty.iterable_valorisation_items">
             <!-- Pour chaque champ d'une valorisation d'un bloc iterable -->
-            <div ng-repeat="fieldValue in blockValue.values">
+            <div ng-repeat="fieldValue in blockValue.values | filterIterableProperties:{'name':'*', 'filtrable_value': (filterValues)? filterValues : ''} | displayProperties: filterDeleted | displayUnspecifiedProperties: filterUnspecified">
 
                 <div ng-if="fieldValue.iterable_valorisation_items">
                     <!--<h2>Un block itérable interne ici ;)</h2>-->
@@ -17,23 +17,29 @@
                 </div>
 
                 <div ng-if="!fieldValue.iterable_valorisation_items">
-                    <label style="text-align: right; overflow: hidden; text-overflow: ellipsis" title="{{ fieldValue.name }}"
-                           for="input-{{ fieldValue.name }}" class="col-md-4 control-label">{{fieldValue.name}}</label>
 
-                    <!-- The value of the property -->
-                    <div class="col-md-8">
-                        <input id="input-{{ fieldValue.name }}"
-                               type="text" class="form-control default-value-color"
-                               placeholder="{{field.defaultValue ? '[default=' + field.defaultValue + '] ' : ''}}"
-                               ng-model="fieldValue.value" tooltip="{{field.comment}}"
-                               tooltip-trigger="focus"
-                               tooltip-placement="top"/>
+                    <div class="form-group" ng-class="{'property-not-used': !fieldValue.inModel}">
+                        <label style="text-align: right; overflow: hidden; text-overflow: ellipsis" title="{{ fieldValue.name }}"
+                               for="input-{{ fieldValue.name }}" class="col-md-4 control-label">{{fieldValue.name}}</label>
+
+                        <!-- The value of the property -->
+                        <div class="col-md-8">
+                            <input id="input-{{ fieldValue.name }}"
+                                   type="text" class="form-control default-value-color"
+                                   placeholder="{{fieldValue.defaultValue ? '[default=' + fieldValue.defaultValue + '] ' : ''}}"
+                                   ng-model="fieldValue.value" tooltip="{{fieldValue.comment}}"
+                                   tooltip-trigger="focus"
+                                   ng-required="fieldValue.required"
+                                   ng-pattern ="fieldValue.pattern"
+                                   tooltip-placement="top"/>
+                        </div>
                     </div>
+
 
                 </div>
 
             </div>
-            <md-button class = "md-btn md-button md-default-theme" tooltip="Supprimer un block" ng-click = "removeValue(index)">
+            <md-button aria-label="Supprimer un block" class = "md-btn md-button md-default-theme" tooltip="Supprimer un block" ng-click = "removeValue(index)">
                 <span class="glyphicon glyphicon-minus"></span>
             </md-button>
         </div>

@@ -387,9 +387,6 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
                 $scope.model = model;
                 $scope.model = model;
 
-                console.log (model);
-                console.log ($scope.properties);
-
                 //Merge with global properties
                 $scope.properties = properties.mergeWithGlobalProperties($scope.platform.global_properties);
 
@@ -777,10 +774,16 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
          restrict: 'E',
          scope: {
              modelProperty: '=',
-             valueProperty: '='
+             valueProperty: '=',
+             filterDeleted: '=',
+             filterUnspecified: '=',
+             filterValues: '='
          },
          templateUrl: 'properties/iterable-properties-list.html',
-         controller : 'iterablePropertiesListController'
+         controller : 'iterablePropertiesListController',
+         link: function (scope, element, attrs){
+
+         }
      };
  });
 
@@ -790,21 +793,92 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
  propertiesModule.controller('iterablePropertiesListController', function($scope) {
 
     /**
+     * This is a private function of checking if a value
+     * is in the model
+     * @param {Object} model : the model from the scope.
+     * @param {String} name : the value name field.
+     * @return true if it's in, false otherwise.
+     */
+    isInModel = function (model, name){
+        var _model = _.find(model.fields, {name : name});
+        return !_.isUndefined(_model);
+    };
+
+
+    /**
+     * Private function for merging values
+     */
+    mergeValue = function (model, values){
+
+        // for each valorisation block
+        _(values.iterable_valorisation_items).each (function (value){
+
+            // for each model fields
+            _(model.fields).each (function (field){
+                //is the block containing value for this filed
+                var exists = !_.isUndefined(_.find(value.values, {name : field.name}));
+
+                if ( exists ){
+                    //The value exits, juste merge.
+                    _(value.values).each (function (val){
+                        //is it in the mode ?
+                        val.inModel = isInModel(model, val.name);
+                    });
+                }
+                else{
+                    // not existing existing value found, then add one
+                    value.values.push({
+                        name: field.name,
+                        value: "",
+                        comment: (field.comment) ? field.comment : "",
+                        password: (field.password) ? field.password : false,
+                        defaultValue: (field.defaultValue) ? field.defaultValue : "",
+                        required: (field.required) ? field.required : false,
+                        inModel:true,
+                        pattern: (field.pattern) ? field.pattern : ""
+                    });
+                }
+            });
+
+            //
+        })
+
+    };
+
+    // call the merge
+    mergeValue($scope.modelProperty, $scope.valueProperty);
+
+    /**
+     * Checks if a property is iterable.
+     * TODO : Not yet used.
+     */
+    $scope.isIterableField = function(fieldName) {
+        debugger;
+        var field = _.find($scope.modelProperty.fields, function(field){
+            return field.name === fieldName;
+        });
+
+        return  field.fields !== undefined;
+    }
+
+    /**
      * Adds the new void iterable block
      */
-    $scope.addValue = function() {
+    $scope.addValue = function(model, values) {
 
-        // This from the click
-        var iterableValue = {};
-        iterableValue.title     = "not used";
-        iterableValue.values    = [];
+        var addSimple = function (model, values){
+            var modelFields = model.fields;
 
-        modelFields = $scope.modelProperty.fields;
-        if (_.isUndefined(modelFields.fields)){
-            _($scope.modelProperty.fields).each (function (field){
+            // This from the click
+            var iterableValue = {};
+            iterableValue.title     = "not used";
+            iterableValue.values    = [];
+
+            _(model.fields).each (function (field){
                 iterableValue.values.push({
                     name: field.name,
                     value: "",
+                    inModel: true,
                     comment: (field.comment) ? field.comment : "",
                     password: (field.password) ? field.password : false,
                     defaultValue: (field.defaultValue) ? field.defaultValue : "",
@@ -812,11 +886,17 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
                     pattern: (field.pattern) ? field.pattern : ""
                 });
             });
-        }else{
-            console.log ("this is iterable : " + modelFields.name);
-        }
 
-        $scope.valueProperty.iterable_valorisation_items.push(iterableValue);
+            values.iterable_valorisation_items.push(iterableValue);
+        };
+
+        //
+        // The initial call is make with data from
+        // the scope
+        //
+        if (_.isUndefined(model) && _.isUndefined(values)){
+            addSimple($scope.modelProperty, $scope.valueProperty);
+        }
     };
 
     /**
@@ -836,6 +916,86 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
     }
 */
  });
+
+/**
+ * This is the directive of the filter button for deleted iterable properties.
+ * Added by Tidiane SIDIBE 14/03/2015
+ */
+propertiesModule.directive('toggleDeletedIterableProperties', function () {
+
+    return {
+        restrict: 'E',
+        scope: {
+            iterableProperties: '=',
+            toggle: '='
+        },
+        template: '<md-checkbox type="checkbox" ng-model="toggle" ng-init="toggle=false" style="float : left;"/> Afficher les propri&eacute;t&eacute;s supprim&eacute;es ({{ getNumberOfDeletedProperties(iterableProperties) }})',
+        controller : ['$scope', function ($scope){
+            $scope.getNumberOfDeletedProperties = function (tab) {
+                var count = 0;
+
+                if (tab) {
+                    _(tab).each(function (item){
+                        //is the group in model
+                        if (item.inModel){
+                            _(item.iterable_valorisation_items).each(function (valorisation){
+                                _(valorisation.values).each (function (value){
+                                    if (!value.inModel){
+                                        count ++;
+                                    }
+                                });
+                            });
+                        }
+                    })
+                }
+                return count;
+            };
+        }],
+        link: function (scope, element, attrs) {
+
+        }
+    }
+});
+
+/**
+ * This is the directive of the filter button for deleted iterable properties.
+ * Added by Tidiane SIDIBE 14/03/2015
+ */
+propertiesModule.directive('toggleUnspecifiedIterableProperties', function () {
+
+    return {
+        restrict: 'E',
+        scope: {
+            iterableProperties: '=',
+            toggle: '='
+        },
+        template: '<md-checkbox type="checkbox" ng-model="toggle" ng-init="toggle=false"/> Afficher les propri&eacute;t&eacute;s non renseign&eacute;es ({{ getNumberOfUnspecifiedProperties(iterableProperties) }})',
+        controller : ['$scope', function ($scope){
+            $scope.getNumberOfUnspecifiedProperties = function (tab) {
+                var count = 0;
+
+                if (tab) {
+                    _(tab).each(function (item){
+                        //is the group in model
+                        if (item.inModel){
+                            _(item.iterable_valorisation_items).each(function (valorisation){
+                                _(valorisation.values).each (function (value){
+                                    if (value.inModel && _.isEmpty(value.value) && _.isEmpty(value.defaultValue)) {
+                                        count++;
+                                    }
+                                });
+                            });
+                        }
+                    })
+                }
+                return count;
+            };
+        }],
+        link: function (scope, element, attrs) {
+
+        }
+    }
+});
 
 /**
  * This directive will display the properties list with contains :
@@ -1249,6 +1409,10 @@ propertiesModule.factory('Properties', function () {
 
 });
 
+/**
+ * This is for filtering the deleted properties.
+ * Used for simple and iterable properties.
+ */
 propertiesModule.filter('displayProperties', function () {
     return function (items, display) {
         var filtered = [];
@@ -1266,10 +1430,42 @@ propertiesModule.filter('displayUnspecifiedProperties', function () {
 
     return function (items, display) {
         var filtered = [];
-
         return _.filter(items, function(item) {
                  return _.isUndefined(display) || !display || _.isEmpty(item.value) && _.isEmpty(item.defaultValue);
                });;
+    };
+});
+
+/**
+ * Function wich filter the iterable properties display with string or regex.
+ * TODO : To be finished
+ */
+propertiesModule.filter('filterIterableProperties', function() {
+    return function(input, filter) {
+        if (!filter) {
+            return input;
+        }
+
+        name = '.*' + filter.name.toLowerCase().split(' ').join('.*');
+        value = '.*' + filter.filtrable_value.toLowerCase().split(' ').join('.*');
+        console.log ("Filter : " + filter.filtrable_value);
+
+        try {
+            var regex_name = new RegExp(name, 'i');
+            var regex_value = new RegExp(value, 'i');
+        } catch(e) {
+            return input;
+        }
+
+        var output = [];
+
+        angular.forEach(input, function(item) {
+            if (regex_name.test(item.name) && regex_value.test(item.filtrable_value)) {
+                output.push(item);
+            }
+        });
+
+        return output;
     };
 });
 

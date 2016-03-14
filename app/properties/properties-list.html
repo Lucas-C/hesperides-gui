@@ -9,6 +9,24 @@
         This group is disabled when not iterable property exists
     -->
     <accordion-group heading="Properties itérables" is-open="false" is-disabled = "properties.iterable_properties.length == 0">
-        <iterable-properties-list ng-repeat = "modelProp in propertiesModel.iterable_properties" model-property = "modelProp" value-property = "getValues(modelProp.name)" ></iterable-properties-list>
+        <!-- Filter toggles -->
+        <div class ="row">
+            <div class="col-md-12">
+                <toggle-deleted-iterable-properties iterable-properties="properties.iterable_properties" toggle="displayIterableDeletedProperties"></toggle-deleted-iterable-properties>
+                <toggle-unspecified-iterable-properties iterable-properties="properties.iterable_properties"  toggle="displayIterableUnspecifiedProperties"></toggle-unspecified-iterable-properties>
+            </div>
+        </div>
+
+        <!-- Value filter -->
+        <div class = "row">
+            <div class ="col-md-7 " style ="padding-bottom: 20px;padding-left: 30px !important;">
+                <input class="form-control "
+                       placeholder="filtrer les properties itérables par valeur (les valeurs modifiées doivent voir été sauvegardées)"
+                       ng-model="iterablePropertiesValueFilter"/>
+            </div>
+        </div>
+
+        <iterable-properties-list ng-repeat = "modelProp in propertiesModel.iterable_properties" model-property = "modelProp" value-property = "getValues(modelProp.name)" filter-deleted="displayIterableDeletedProperties" filter-unspecified="displayIterableUnspecifiedProperties" filter-values="iterablePropertiesValueFilter"></iterable-properties-list>
+
     </accordion-group>
 </accordion>

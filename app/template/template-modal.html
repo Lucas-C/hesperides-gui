@@ -1,11 +1,12 @@
 <div class="modal-header">
-    <h3 class="modal-title">Ajout/Edition de template</h3>
+    <h3 class="modal-title" ng-if="template.name">Edition de template</h3>
+    <h3 class="modal-title" ng-if="!template.name">Ajout de template</h3>
 </div>
 <div class="modal-body">
     <form name="templateForm" role="form">
         <div class="form-group">
             <input type="text" class="form-control" required ng-trim="true" ng-model="template.name"
-                   id="templateName" placeholder="Titre" ng-disabled="true"
+                   id="templateName" placeholder="Titre" ng-disabled="template.name"
                     data-hint="le titre du template est unique"/>
         </div>
         <div class="form-group">

@@ -9,10 +9,10 @@
         <!-- Pour chaque valorisation d'un bloc iterable -->
         <div class = "iterable-block" ng-repeat="(index, blockValue) in valueProperty.iterable_valorisation_items">
             <!-- Pour chaque champ d'une valorisation d'un bloc iterable -->
-            <div ng-repeat="fieldValue in blockValue.values | filterIterableProperties:{'name':'*', 'filtrable_value': (filterValues)? filterValues : ''} | displayProperties: filterDeleted | displayUnspecifiedProperties: filterUnspecified">
+            <div ng-repeat="fieldValue in blockValue.values | filterIterableProperties: filterValues | displayProperties: filterDeleted | displayUnspecifiedProperties: filterUnspecified">
 
                 <div ng-if="fieldValue.iterable_valorisation_items">
-                    <!--<h2>Un block itérable interne ici ;)</h2>-->
+                    <!--<h2>TODO : Iterable property that have other itrables inside</h2>-->
                     <!--<iterable-properties-list ng-repeat = "innerModelProp in modelProp.iterable_properties" model-property = "innerModelProp" value-property = "getValues(innerModelProp.name)" ></iterable-properties-list>-->
                 </div>
 

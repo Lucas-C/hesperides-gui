@@ -33,7 +33,8 @@ technoModule.controller('TechnoCtrl', ['$scope', '$location', '$routeParams', 'T
         HesperidesTemplateModal.edit_template({
             template: new Template(),
             isReadOnly: false,
-            onSave: $scope.save_template
+            onSave: $scope.save_template,
+            add: true
         });
     };
 
@@ -43,7 +44,8 @@ technoModule.controller('TechnoCtrl', ['$scope', '$location', '$routeParams', 'T
                 HesperidesTemplateModal.edit_template({
                     template: template,
                     isReadOnly: false,
-                    onSave: $scope.save_template
+                    onSave: $scope.save_template,
+                    add: false
                 });
                 $scope.refreshModel();
             });
@@ -52,7 +54,8 @@ technoModule.controller('TechnoCtrl', ['$scope', '$location', '$routeParams', 'T
                 HesperidesTemplateModal.edit_template({
                     template: template,
                     isReadOnly: true,
-                    onSave: $scope.save_template
+                    onSave: $scope.save_template,
+                    add: false
                 });
                 $scope.refreshModel();
             });

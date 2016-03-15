@@ -106,6 +106,8 @@ templateModule.factory('HesperidesTemplateModal', ['TemplateService', '$modal', 
 
             modalScope.template = options.template;
 
+            modalScope.add = options.add;
+
             modalScope.save = options.onSave;
 
             modalScope.isReadOnly = options.isReadOnly;

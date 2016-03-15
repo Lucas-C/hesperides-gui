@@ -36,7 +36,8 @@ applicationModule.controller('ModuleCtrl', [
         HesperidesTemplateModal.edit_template({
             template: new Template(),
             isReadOnly: false,
-            onSave: $scope.save_template
+            onSave: $scope.save_template,
+            add: true
         });
     };
 
@@ -45,7 +46,8 @@ applicationModule.controller('ModuleCtrl', [
             HesperidesTemplateModal.edit_template({
                 template: template,
                 isReadOnly: !$scope.module.is_working_copy,
-                onSave: $scope.save_template
+                onSave: $scope.save_template,
+                add: false
             });
             $scope.refreshModel();
         });

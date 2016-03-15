@@ -1,7 +1,7 @@
 <div>
     <div vs-repeat style="max-height: 510px; overflow: auto">
         <dl class="dl-horizontal text-overflow" style="margin-bottom:0" ng-animate="'animate'"
-            ng-repeat="keyValueProperty in model.key_value_properties | orderBy:'name' track by $index">
+            ng-repeat="keyValueProperty in model.key_value_properties | hideHesperidesPredefinedProperties | orderBy:'name' track by $index">
             <dt style="width: 100%; text-align: left" ng-if="keyValueProperty.comment"><a href=""
                                                                                           title="{{ keyValueProperty.name }}"
                                                                                           popover-trigger="focus"

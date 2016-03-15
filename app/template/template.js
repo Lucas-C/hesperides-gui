@@ -112,6 +112,8 @@ templateModule.factory('HesperidesTemplateModal', ['TemplateService', '$modal', 
 
             modalScope.isReadOnly = options.isReadOnly;
 
+            modalScope.fileRightsOption = [{text: "O", value: true}, {text: "N", value: false}, {text: "", value: null}];
+
             defaultScope.codeMirrorOptions.readOnly = options.isReadOnly ? true : false;
 
             angular.extend(modalScope, defaultScope);

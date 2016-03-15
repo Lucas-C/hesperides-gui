@@ -37,38 +37,26 @@
         <div class="template-right">
             <fieldset class="standard">
                 <legend>User</legend>
-                R <select ng-model="template.rights.user.read">
-                    <option value="true" ng-selected="template.rights.user.read === true">O</option>
-                    <option value="false" ng-selected="template.rights.user.read === false">N</option>
-                </select>
+                R <select ng-model="template.rights.user.read" ng-options="item.value as item.text for item in fileRightsOption track by item.value">
+            </select>
 
-                W <select ng-model="template.rights.user.write">
-                    <option value="true" ng-selected="template.rights.user.write === true">O</option>
-                    <option value="false" ng-selected="template.rights.user.write === false">N</option>
-                </select>
+                W <select ng-model="template.rights.user.write" ng-options="item.value as item.text for item in fileRightsOption track by item.value">
+            </select>
 
-                X <select ng-model="template.rights.user.execute">
-                    <option value="true" ng-selected="template.rights.user.execute === true">O</option>
-                    <option value="false" ng-selected="template.rights.user.execute === false">N</option>
-                </select>
+                X <select ng-model="template.rights.user.execute" ng-options="item.value as item.text for item in fileRightsOption track by item.value">
+            </select>
             </fieldset>
 
             <fieldset class="standard">
                 <legend>Group</legend>
-                R <select ng-model="template.rights.group.read">
-                    <option value="true" ng-selected="template.rights.group.read === true">O</option>
-                    <option value="false" ng-selected="template.rights.group.read === false">N</option>
-                </select>
+                R <select ng-model="template.rights.group.read" ng-options="item.value as item.text for item in fileRightsOption track by item.value">
+            </select>
 
-                    W <select ng-model="template.rights.group.write">
-                    <option value="true" ng-selected="template.rights.group.write === true">O</option>
-                    <option value="false" ng-selected="template.rights.group.write === false">N</option>
-                </select>
+                W <select ng-model="template.rights.group.write" ng-options="item.value as item.text for item in fileRightsOption track by item.value">
+            </select>
 
-                    X <select ng-model="template.rights.group.execute">
-                    <option value="true" ng-selected="template.rights.group.execute === true">O</option>
-                    <option value="false" ng-selected="template.rights.group.execute === false">N</option>
-                </select>
+                X <select ng-model="template.rights.group.execute" ng-options="item.value as item.text for item in fileRightsOption track by item.value">
+            </select>
             </fieldset>
         </div>
     </form>

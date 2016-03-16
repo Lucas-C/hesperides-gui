@@ -452,14 +452,13 @@
                             ng-mouseover="instance.hover = true" ng-mouseleave="instance.hover = false">
                             <md-button ng-click="edit_instance(instance, module.properties_path)"
                                        tooltip="Editer les properties de l'instance"
-                                       aria-label="Editer les properties de l'instance"
-                                       class="">
+                                       aria-label="Editer les properties de l'instance">
                                 <span class="glyphicon glyphicon-list" style="margin-right:10px"></span>{{instance.name}}
                             </md-button>
                             <md-button ng-click="preview_instance(box, application, platform, instance, module)"
                                        aria-label= "Prévisualiser l'instance"
                                        tooltip="Prévisualiser l'instance"
-                                       class="" ng-show="instance.hover">
+                                       ng-show="instance.hover">
                                 <span class="glyphicon glyphicon-eye-open"></span>
                             </md-button>
                             <md-button ng-really-message="Supprimer l'instance {{instance.name}} ?"

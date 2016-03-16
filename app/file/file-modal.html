@@ -5,7 +5,12 @@
 
     <accordion close-others="true">
 
-        <accordion-group ng-repeat="elem in fileEntries track by $index" heading="{{elem.name}}" is-open="isOpen">
+        <accordion-group ng-repeat="elem in fileEntries track by $index" is-open="isOpen">
+
+            <accordion-heading ng-click="isOpen=!isOpen">
+                <div class ="accordion-head">{{elem.name}}</div>
+            </accordion-heading>
+
             <input type="text" class="form-control" required ng-trim="true" value= "{{elem.location}} ( {{elem.rights}} )"
                    id="fileLocation" placeholder="Enplacement et droits sur le fichier" ng-disabled="true"
                    data-hint="L'emplacement du template et les droits sur le fichier"/>

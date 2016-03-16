@@ -795,14 +795,39 @@ propertiesModule.directive('toggleUnspecifiedProperties', function () {
             keyValueProperties: '=',
             display: '='
         },
-        template: '<md-checkbox type="checkbox" ng-model="display" ng-init="display=false"/> Afficher les propri&eacute;t&eacute;s non renseign&eacute;es ({{ getNumberOfUnspecifiedProperties(keyValueProperties) }})',
-        link: function (scope, element, attrs) {
-            scope.getNumberOfUnspecifiedProperties = function (tab) {
+        template: '<md-checkbox type="checkbox" ng-model="display_view" ng-click= "doFilter()" ng-init="display=true"/> Afficher les propri&eacute;t&eacute;s non renseign&eacute;es ({{ getNumberOfUnspecifiedProperties(keyValueProperties) }})',
+        controller: ['$scope', '$filter', function ($scope, $filter){
+
+            //this is for handling toggle model
+            $scope.display_view = false;
+
+            /**
+             * This is for manually filtering the properties list.
+             */
+            $scope.doFilter = function(){
+
+                if (!$scope.original){
+                    $scope.original = angular.copy($scope.keyValueProperties);
+                }
+
+                if ($scope.display){
+                    $scope.keyValueProperties = $filter('displayUnspecifiedProperties')($scope.original, true);
+                }else{
+                    $scope.keyValueProperties = $filter('displayUnspecifiedProperties')($scope.original, false);
+                }
+
+                $scope.display_view = $scope.display = !$scope.display;
+            };
+
+            /**
+             * This calculate the number of unspecified properties.
+             */
+            $scope.getNumberOfUnspecifiedProperties = function (tab) {
                 var count = 0;
 
                 if (tab) {
                     for (var index = 0; index < tab.length; index++) {
-                        // if default value is present, so the prop is nat counted as unspecified
+                        // if default value is present, so the prop is not counted as unspecified
                         if (_.isEmpty(tab[index].value) && _.isEmpty(tab[index].defaultValue)) {
                             count++;
                         }
@@ -810,6 +835,9 @@ propertiesModule.directive('toggleUnspecifiedProperties', function () {
                 }
                 return count;
             };
+        }],
+        link: function (scope, element, attrs) {
+
         }
     }
 

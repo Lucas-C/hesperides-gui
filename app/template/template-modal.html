@@ -37,26 +37,12 @@
         <div class="template-right">
             <fieldset class="standard">
                 <legend>User</legend>
-                R <select ng-model="template.rights.user.read" ng-options="item.value as item.text for item in fileRightsOption track by item.value">
-            </select>
-
-                W <select ng-model="template.rights.user.write" ng-options="item.value as item.text for item in fileRightsOption track by item.value">
-            </select>
-
-                X <select ng-model="template.rights.user.execute" ng-options="item.value as item.text for item in fileRightsOption track by item.value">
-            </select>
+                <file-rights-select model="template.rights.user" />
             </fieldset>
 
             <fieldset class="standard">
                 <legend>Group</legend>
-                R <select ng-model="template.rights.group.read" ng-options="item.value as item.text for item in fileRightsOption track by item.value">
-            </select>
-
-                W <select ng-model="template.rights.group.write" ng-options="item.value as item.text for item in fileRightsOption track by item.value">
-            </select>
-
-                X <select ng-model="template.rights.group.execute" ng-options="item.value as item.text for item in fileRightsOption track by item.value">
-            </select>
+                <file-rights-select model="template.rights.group" />
             </fieldset>
         </div>
     </form>

@@ -112,8 +112,6 @@ templateModule.factory('HesperidesTemplateModal', ['TemplateService', '$modal', 
 
             modalScope.isReadOnly = options.isReadOnly;
 
-            modalScope.fileRightsOption = [{text: "O", value: true}, {text: "N", value: false}, {text: "", value: null}];
-
             defaultScope.codeMirrorOptions.readOnly = options.isReadOnly ? true : false;
 
             angular.extend(modalScope, defaultScope);
@@ -155,7 +153,7 @@ templateModule.directive('hesperidesTemplateList', function () {
             isReadOnly: '='
         },
         templateUrl: "template/template-list.html",
-        link: function (scope, element, attr) {
+        link: function (scope) {
 
             scope.add_template = function () {
                 scope.add()();
@@ -278,3 +276,28 @@ templateModule.factory('TemplateService', ['$http', 'Template', 'TemplateEntry',
     }
 
 }]);
+
+templateModule.directive('fileRightsSelect', function () {
+    var controller = ['$scope', function ($scope) {
+            $scope.fileRightsOption = [{text: "O", value: true}, {text: "N", value: false}, {text: "-", value: null}];
+        }];
+
+    return {
+        restrict: 'E',
+        scope: {
+            model: '='
+        },
+        template: 'R <select ng-model="model.read">' +
+                  '  <option ng-repeat="item in fileRightsOption" value="{{item.value}}" ng-selected="item.value == model.read">{{item.text}}</option>' +
+                  '</select>' +
+                  'W <select ng-model="model.write">' +
+                  '  <option ng-repeat="item in fileRightsOption" value="{{item.value}}" ng-selected="item.value == model.write">{{item.text}}</option>' +
+                  '</select>' +
+                  'X <select ng-model="model.execute">' +
+                  '  <option ng-repeat="item in fileRightsOption" value="{{item.value}}" ng-selected="item.value == model.execute">{{item.text}}</option>' +
+                  '</select>',
+        controller: controller
+    };
+
+
+});

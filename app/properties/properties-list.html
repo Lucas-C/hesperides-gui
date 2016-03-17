@@ -3,7 +3,7 @@
         <div class="col-md-12">
 
             <toggle-deleted-properties key-value-properties="properties.key_value_properties" toggle="displayDeletedProperties"></toggle-deleted-properties>
-            <toggle-unspecified-properties key-value-properties="properties.key_value_properties" display = "displayUnspecified"></toggle-unspecified-properties>
+            <toggle-unspecified-properties key-value-properties="properties.key_value_properties" display="displayUnspecified"></toggle-unspecified-properties>
         </div>
 
         <!-- TODO ajout des boutons permettant l'ajout de properties iterables -->
@@ -36,8 +36,10 @@
     </div>
 
     <div vs-repeat style="max-height: 450px; overflow: auto" id="list-of-properties">
-        <div class="form-group" style="width: 100%" ng-class="{'property-not-used': !key_value_property.inModel}" ng-repeat="key_value_property in properties.key_value_properties | filterProperties:{'name':propertiesKeyFilter, 'filtrable_value':propertiesValueFilter} | displayProperties:displayDeletedProperties |  displayUnspecifiedProperties:displayUnspecified | hideHesperidesPredefinedProperties | orderBy:'name':properties.isReverseOrder() track by $index">
+
+        <div class="form-group" style="width: 100%" ng-class="{'property-not-used': !key_value_property.inModel}" ng-repeat="key_value_property in properties.key_value_properties | hideHesperidesPredefinedProperties | filterProperties:{'name':propertiesKeyFilter, 'filtrable_value':propertiesValueFilter} | displayProperties:displayDeletedProperties | orderBy:'name':properties.isReverseOrder() track by $index">
             <label style="text-align: right; overflow: hidden; text-overflow: ellipsis" title="{{ key_value_property.name }}" for="input-{{ key_value_property.name }}" class="col-md-4 control-label">{{ key_value_property.name }} <span ng-show="key_value_property.required" style="color:red"> *</span></label>
+
             <!-- Edit layout, and this key is not filled by global properties -->
             <div class="col-md-8" ng_if="!key_value_property.inGlobal">
                 <input id="input-{{ key_value_property.name }}"

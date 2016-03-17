@@ -791,7 +791,7 @@ propertiesModule.directive('toggleDeletedProperties', function () {
             toggle: '='
         },
         template: '<md-checkbox type="checkbox" ng-model="toggle" ng-init="toggle=false" style="float : left;"/> Afficher les propri&eacute;t&eacute;s supprim&eacute;es ({{ getNumberOfDeletedProperties(keyValueProperties) }})',
-        link: function (scope, element, attrs) {
+        link: function (scope) {
             scope.getNumberOfDeletedProperties = function (tab) {
                 var count = 0;
 
@@ -824,24 +824,44 @@ propertiesModule.directive('toggleUnspecifiedProperties', function ($filter) {
             keyValueProperties: '=',
             display: '='
         },
-        template: '<md-checkbox type="checkbox" ng-model="display" ng-init="display=false"/> Afficher uniquement les propri&eacute;t&eacute;s non renseign&eacute;es ({{ getNumberOfUnspecifiedProperties(keyValueProperties) }})',
-        link: function (scope, element, attrs) {
-            scope.getNumberOfUnspecifiedProperties = function (tab) {
-                // filter the hesperides predefined properties
-                var _tab = $filter('hideHesperidesPredefinedProperties')(tab, true);
+        template: '<md-checkbox type="checkbox" ng-model="display_view" ng-click= "doFilter()" ng-init="display=true"/> Afficher les propri&eacute;t&eacute;s non renseign&eacute;es ({{ getNumberOfUnspecifiedProperties(keyValueProperties) }})',
+        controller: ['$scope', '$filter', function ($scope, $filter){
+
+            //this is for handling toggle model
+            $scope.display_view = false;
+
+            /**
+             * This is for manually filtering the properties list.
+             */
+            $scope.doFilter = function() {
+                if (!$scope.original){
+                    $scope.original = angular.copy($scope.keyValueProperties);
+                }
+
+                $scope.keyValueProperties = $filter('displayUnspecifiedProperties')($scope.original, $scope.display);
+
+                $scope.display_view = $scope.display = !$scope.display;
+            };
+
+            /**
+             * This calculate the number of unspecified properties.
+             */
+            $scope.getNumberOfUnspecifiedProperties = function (tab) {
                 var count = 0;
 
-                if (_tab) {
-                    for (var index = 0; index < _tab.length; index++) {
-                        // if default value is present, so the prop is nat counted as unspecified
-                        if (_.isEmpty(_tab[index].value) && _.isEmpty(_tab[index].defaultValue)) {
+                tab = $filter('hideHesperidesPredefinedProperties')(tab, true);
+
+                if (tab) {
+                    for (var index = 0; index < tab.length; index++) {
+                        // if default value is present, so the prop is not counted as unspecified
+                        if (_.isEmpty(tab[index].value) && _.isEmpty(tab[index].defaultValue)) {
                             count++;
                         }
                     }
                 }
                 return count;
             };
-        }
+        }]
     }
 
 });
@@ -864,7 +884,7 @@ propertiesModule.directive("displayIterableProperty", function () {
  * on global properties fields.
  */
 propertiesModule.directive('focusSaveGlobalProperties', function () {
-    return function (scope, element, attrs) {
+    return function (scope, element) {
         element.bind("keydown keypress", function (event) {
             if(event.which === 13) {
                 scope.save_global_properties(scope.platform.global_properties);
@@ -1144,11 +1164,9 @@ propertiesModule.factory('Properties', function () {
 
 propertiesModule.filter('displayProperties', function () {
     return function (items, display) {
-        var filtered = [];
-
         return _.filter(items, function(item) {
                    return (_.isUndefined(display) || display || item.inModel);
-               });;
+               });
     };
 });
 
@@ -1158,11 +1176,9 @@ propertiesModule.filter('displayProperties', function () {
 propertiesModule.filter('displayUnspecifiedProperties', function () {
 
     return function (items, display) {
-        var filtered = [];
-
         return _.filter(items, function(item) {
                  return _.isUndefined(display) || !display || _.isEmpty(item.value) && _.isEmpty(item.defaultValue);
-               });;
+               });
     };
 });
 
@@ -1179,13 +1195,10 @@ propertiesModule.filter('displayUnspecifiedProperties', function () {
  * By Tidiane SIDIBE on 29/02/2016
  */
 propertiesModule.filter('hideHesperidesPredefinedProperties', function () {
-
-    return function (items, display) {
-        var filtered = [];
-
+    return function (items) {
         return _.filter(items, function(item) {
                  return !item.name.startsWith("hesperides.");
-               });;
+               });
     };
 });
 
@@ -1198,9 +1211,11 @@ propertiesModule.filter('filterProperties', function() {
         if (!filter) {
             return input;
         }
+
         //Format the filters to construct the regex
-        name = '.*' + filter.name.toLowerCase().split(' ').join('.*');
-        value = '.*' + filter.filtrable_value.toLowerCase().split(' ').join('.*');
+        var name = '.*' + filter.name.toLowerCase().split(' ').join('.*');
+        var value = '.*' + filter.filtrable_value.toLowerCase().split(' ').join('.*');
+
         //Create the regex
         try {
             var regex_name = new RegExp(name, 'i');
@@ -1210,9 +1225,19 @@ propertiesModule.filter('filterProperties', function() {
         }
 
         var output = [];
+
         //Filter the array by the values which respect the regex
         angular.forEach(input, function(item) {
-            if (regex_name.test(item.name) && regex_value.test(item.filtrable_value)) {
+            /*
+             * If filter on name, check name with regex -> display properties if match
+             * If filter on value, check if filtrable_value is set, check of regex match
+             * If not filter on name and no filter on value -> display properties
+             *
+             * filtrable_value is only defined on properties with value !
+             * */
+            if ((!_.isEmpty(filter.name) && regex_name.test(item.name))
+                || (!_.isEmpty(filter.filtrable_value) && !_.isUndefined(item.filtrable_value) && regex_value.test(item.filtrable_value))
+                || (_.isEmpty(filter.name) && _.isEmpty(filter.filtrable_value))) {
                 output.push(item);
             }
         });

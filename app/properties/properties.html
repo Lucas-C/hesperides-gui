@@ -439,7 +439,7 @@
                         </md-button>
 
                         <!-- Events button for modules-->
-                        <md-button class = "md-btn-xs md-button md-default-theme" tooltip="Afficher les events du module" ng-click = "show_events(box, module, 'module')">
+                        <md-button class = "md-btn-xs md-button md-default-theme" aria-label="Afficher les events du module" tooltip="Afficher les events du module" ng-click = "show_events(box, module, 'module')">
                             <span class="glyphicon glyphicon-bullhorn"></span>
                         </md-button>
 
@@ -492,7 +492,7 @@
                 )</strong>
 
                 <!-- Events button for platforms-->
-                <md-button class = "md-btn-xs md-button md-default-theme" tooltip="Afficher les events de {{application.name}}-{{platform.name}}" ng-click = "show_events(application, platform, 'platform')">
+                <md-button class = "md-btn-xs md-button md-default-theme" aria-label="Afficher les events de {{application.name}}-{{platform.name}}" tooltip="Afficher les events de {{application.name}}-{{platform.name}}" ng-click = "show_events(application, platform, 'platform')">
                     <span class="glyphicon glyphicon-bullhorn"></span>
                 </md-button>
             </span>

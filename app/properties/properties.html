@@ -642,7 +642,7 @@
 
             <div class="col-md-12">
                 <toggle-deleted-properties key-value-properties="instance.key_values" toggle="displayDeletedProperties"></toggle-deleted-properties>
-                <toggle-unspecified-properties key-value-properties="instance.key_values" display = "displayUnspecified"></toggle-unspecified-properties>
+                <toggle-unspecified-properties key-value-properties="instance.key_values" toggle="displayUnspecified"></toggle-unspecified-properties>
             </div>
 
             <form class="form-horizontal narrow" role="form" editable-form>
@@ -657,7 +657,7 @@
                 </div>
 
                 <div class="form-group" ng-class="{'property-not-used': !key_value_property.inModel}"
-                     ng-repeat="key_value_property in instance.key_values | displayProperties:displayDeletedProperties | displayUnspecifiedProperties:displayUnspecified | hideHesperidesPredefinedProperties | orderBy:'name':instance.isReverseOrder() track by $index">
+                     ng-repeat="key_value_property in instance.key_values | displayProperties:displayDeletedProperties | displayUnspecifiedProperties:displayUnspecified | hideHesperidesPredefinedProperties | displayUnspecifiedProperties:displayUnspecified | orderBy:'name':instance.isReverseOrder() track by $index">
                     <label for="input-{{ key_value_property.name }}" class="col-md-3 control-label">{{
                         key_value_property.name }} <span ng-show="key_value_property.required" style="color:red"> *</span></label>
 

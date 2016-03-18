@@ -20,7 +20,7 @@
 
                     <div class="form-group" ng-class="{'property-not-used': !fieldValue.inModel}">
                         <label style="text-align: right; overflow: hidden; text-overflow: ellipsis" title="{{ fieldValue.name }}"
-                               for="input-{{ fieldValue.name }}" class="col-md-4 control-label">{{fieldValue.name}}</label>
+                               for="input-{{ fieldValue.name }}" class="col-md-4 control-label">{{fieldValue.name}} <span ng-show="fieldValue.required" style="color:red"> *</span></label>
 
                         <!-- The value of the property -->
                         <div class="col-md-8">

@@ -32,11 +32,10 @@ eventModule.factory('EventEntry', function (){
 eventModule.service("EventService", ['$http', 'EventEntry', function ($http, EventEntry){
     return {
         get : function (stream) {
-            var url =  "rest/events/" + stream;
+            var url =  "rest/events/" + encodeURIComponent(stream);
             return $http.get(url).then (function (response){
                return response.data.map (function(item){
                     var event = new EventEntry(item);
-                    console.log("Event type :" + event._type);
                     return event;
                });
             }, function (error){
@@ -236,7 +235,7 @@ eventModule.directive('templatePackageDeleted', function (){
 
 
 /**
- * This for event timestamp formating and displaying
+ * This for event timestamp formatting and displaying
  */
 /* This is for techno package deletion event */
 eventModule.directive('eventTime', function (){

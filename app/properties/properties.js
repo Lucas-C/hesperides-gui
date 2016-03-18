@@ -149,7 +149,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
                             .then(function (updatedModules) {
                                 // sauvegarde de la plateforme
                                 $scope.save_platform_from_box($scope.mainBox, modal_data.copy_properties)
-                                    .then(function (response) {
+                                    .then(function () {
                                         $scope.properties = undefined;
                                         $scope.instance = undefined;
 
@@ -207,7 +207,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
             module.name = new_module.name;
             module.version = new_module.version;
             module.is_working_copy = new_module.is_working_copy;
-            $scope.save_platform_from_box($scope.mainBox, modal_data.copy_properties).then(function (response) {
+            $scope.save_platform_from_box($scope.mainBox, modal_data.copy_properties).then(function() {
                 $scope.properties = undefined;
                 $scope.instance = undefined;
             });
@@ -248,7 +248,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
         $location.path('/diff').search(urlParams);
     };
 
-    $scope.diff_global_properties = function (platform) {
+    $scope.diff_global_properties = function() {
         $scope.from = {}
         var modal = $modal.open({
             templateUrl: 'application/global_properties_diff_wizard.html',
@@ -263,7 +263,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
         });
     };
 
-    $scope.open_global_diff_page = function (from) {
+    $scope.open_global_diff_page = function(from) {
         //Everything is set in the scope by the modal when calling this
         //Not very safe but easier to manage with all scopes genrated
         var urlParams = {
@@ -274,9 +274,11 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
             compare_platform: from.platform,
             compare_path: '#'
         };
+
         if (!_.isUndefined(from.date)) {
             urlParams.timestamp = from.date.getTime();
         }
+
         $location.path('/diff').search(urlParams);
     };
 
@@ -295,6 +297,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
                     path: box.get_path()
                 }
             ));
+
             $scope.save_platform_from_box($scope.mainBox).then(function (response) {
                 $scope.properties = undefined;
                 $scope.instance = undefined;
@@ -368,7 +371,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
             $scope.platforms[existing_index] = platform;
             //Update the view
             $scope.update_main_box(platform);
-        }, function (error) {
+        }, function () {
             //If an error occurs, reload the platform, thus avoiding having a non synchronized $scope model object
             $location.url('/properties/' + $scope.platform.application_name).search({platform: $scope.platform.name});
             $route.reload(); //Force reload if needed
@@ -430,6 +433,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
             if (!_.isUndefined($scope.properties)) {
                 $scope.properties = $scope.properties.mergeWithGlobalProperties(properties);
             }
+
             //Increase platform number
             $scope.platform.version_id = $scope.platform.version_id + 1;
         });
@@ -447,7 +451,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
 
             //Increase platform number
             $scope.platform.version_id = $scope.platform.version_id + 1;
-        }, function (error) {
+        }, function () {
             //If an error occurs, reload the platform, thus avoiding having a non synchronized $scope model object
             $location.url('/properties/' + $scope.platform.application_name).search({platform: $scope.platform.name});
             $route.reload(); //Force reload if needed
@@ -618,7 +622,6 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
         }
 
         _.each($scope.properties_to_modify.key_value_properties, function (prop_to_modify) {
-
             // Search if property found on other platform
             var countItem = _.findIndex($scope.properties_to_compare_to.key_value_properties, prop_to_modify.name);
 
@@ -668,6 +671,7 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
     $scope.dot_to_underscore = function (string) {
         return string.replace(/\./g, '_');
     }
+
     /*
     Select the containers that corresponds to the filters (ex: status = 2).
  	Modified by Sahar CHAILLOU on 24/02/2016
@@ -685,10 +689,12 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
                         return false;
                 }
             }
+
             //We apply the other filters to select the containers that we want
             for (var key in filter) {
                 if (!_.isEqual(filter[key], container[key])) return false;
             }
+
             return true;
         }).each(function (container) {
             //Finally, we change the selection of the selected containers
@@ -773,7 +779,7 @@ propertiesModule.directive('propertiesList', function () {
             properties: '='
         },
         templateUrl: "properties/properties-list.html",
-        link: function (scope, element, attrs) {
+        link: function (scope) {
             scope.propertiesKeyFilter = "";
             scope.propertiesValueFilter = "";
         }
@@ -783,7 +789,6 @@ propertiesModule.directive('propertiesList', function () {
 });
 
 propertiesModule.directive('toggleDeletedProperties', function () {
-
     return {
         restrict: 'E',
         scope: {
@@ -817,32 +822,14 @@ propertiesModule.directive('toggleDeletedProperties', function () {
  * Updated by Tidiane SIDIBE on 01/03/2016
  */
 propertiesModule.directive('toggleUnspecifiedProperties', function ($filter) {
-
     return {
         restrict: 'E',
         scope: {
             keyValueProperties: '=',
-            display: '='
+            toggle: '='
         },
-        template: '<md-checkbox type="checkbox" ng-model="display_view" ng-click= "doFilter()" ng-init="display=true"/> Afficher les propri&eacute;t&eacute;s non renseign&eacute;es ({{ getNumberOfUnspecifiedProperties(keyValueProperties) }})',
+        template: '<md-checkbox type="checkbox" ng-model="toggle" ng-init="toggle=false"/> Afficher les propri&eacute;t&eacute;s non renseign&eacute;es ({{ getNumberOfUnspecifiedProperties(keyValueProperties) }})',
         controller: ['$scope', '$filter', function ($scope, $filter){
-
-            //this is for handling toggle model
-            $scope.display_view = false;
-
-            /**
-             * This is for manually filtering the properties list.
-             */
-            $scope.doFilter = function() {
-                if (!$scope.original){
-                    $scope.original = angular.copy($scope.keyValueProperties);
-                }
-
-                $scope.keyValueProperties = $filter('displayUnspecifiedProperties')($scope.original, $scope.display);
-
-                $scope.display_view = $scope.display = !$scope.display;
-            };
-
             /**
              * This calculate the number of unspecified properties.
              */
@@ -859,6 +846,7 @@ propertiesModule.directive('toggleUnspecifiedProperties', function ($filter) {
                         }
                     }
                 }
+
                 return count;
             };
         }]

@@ -149,7 +149,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
                             .then(function (updatedModules) {
                                 // sauvegarde de la plateforme
                                 $scope.save_platform_from_box($scope.mainBox, modal_data.copy_properties)
-                                    .then(function (response) {
+                                    .then(function () {
                                         $scope.properties = undefined;
                                         $scope.instance = undefined;
 
@@ -207,7 +207,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
             module.name = new_module.name;
             module.version = new_module.version;
             module.is_working_copy = new_module.is_working_copy;
-            $scope.save_platform_from_box($scope.mainBox, modal_data.copy_properties).then(function (response) {
+            $scope.save_platform_from_box($scope.mainBox, modal_data.copy_properties).then(function() {
                 $scope.properties = undefined;
                 $scope.instance = undefined;
             });
@@ -248,7 +248,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
         $location.path('/diff').search(urlParams);
     };
 
-    $scope.diff_global_properties = function (platform) {
+    $scope.diff_global_properties = function() {
         $scope.from = {}
         var modal = $modal.open({
             templateUrl: 'application/global_properties_diff_wizard.html',
@@ -263,7 +263,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
         });
     };
 
-    $scope.open_global_diff_page = function (from) {
+    $scope.open_global_diff_page = function(from) {
         //Everything is set in the scope by the modal when calling this
         //Not very safe but easier to manage with all scopes genrated
         var urlParams = {
@@ -274,9 +274,11 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
             compare_platform: from.platform,
             compare_path: '#'
         };
+
         if (!_.isUndefined(from.date)) {
             urlParams.timestamp = from.date.getTime();
         }
+
         $location.path('/diff').search(urlParams);
     };
 
@@ -295,6 +297,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
                     path: box.get_path()
                 }
             ));
+
             $scope.save_platform_from_box($scope.mainBox).then(function (response) {
                 $scope.properties = undefined;
                 $scope.instance = undefined;
@@ -407,7 +410,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
             $scope.platforms[existing_index] = platform;
             //Update the view
             $scope.update_main_box(platform);
-        }, function (error) {
+        }, function () {
             //If an error occurs, reload the platform, thus avoiding having a non synchronized $scope model object
             $location.url('/properties/' + $scope.platform.application_name).search({platform: $scope.platform.name});
             $route.reload(); //Force reload if needed
@@ -469,6 +472,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
             if (!_.isUndefined($scope.properties)) {
                 $scope.properties = $scope.properties.mergeWithGlobalProperties(properties);
             }
+
             //Increase platform number
             $scope.platform.version_id = $scope.platform.version_id + 1;
         });
@@ -486,7 +490,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$modal
 
             //Increase platform number
             $scope.platform.version_id = $scope.platform.version_id + 1;
-        }, function (error) {
+        }, function () {
             //If an error occurs, reload the platform, thus avoiding having a non synchronized $scope model object
             $location.url('/properties/' + $scope.platform.application_name).search({platform: $scope.platform.name});
             $route.reload(); //Force reload if needed
@@ -657,7 +661,6 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
         }
 
         _.each($scope.properties_to_modify.key_value_properties, function (prop_to_modify) {
-
             // Search if property found on other platform
             var countItem = _.findIndex($scope.properties_to_compare_to.key_value_properties, prop_to_modify.name);
 
@@ -708,16 +711,36 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
         return string.replace(/\./g, '_');
     }
 
-    $scope.toggle_selected_to_containers_with_filter = function (filter, selected) {
+    /*
+    Select the containers that corresponds to the filters (ex: status = 2).
+ 	Modified by Sahar CHAILLOU on 24/02/2016
+    */
+    $scope.toggle_selected_to_containers_with_filter = function (filter, selected, propertiesKeyFilter) {
         _($scope.diff_containers).filter(function (container) {
+            //If user filter the properties'diff by name or regex, we use this filter to make a first selection for the containers
+            if (propertiesKeyFilter) {
+                var name = '.*' + propertiesKeyFilter.toLowerCase().split(' ').join('.*');
+                try {
+                        var regex_name = new RegExp(name, 'i');
+                } catch(e) {
+                }
+                if (!regex_name.test(container.property_name)) {
+                        return false;
+                }
+            }
+
+            //We apply the other filters to select the containers that we want
             for (var key in filter) {
                 if (!_.isEqual(filter[key], container[key])) return false;
             }
+
             return true;
         }).each(function (container) {
+            //Finally, we change the selection of the selected containers
             container.selected = selected;
         });
     };
+
 
     $scope.apply_diff = function () {
         /* Filter the diff container that have been selected
@@ -795,7 +818,7 @@ propertiesModule.directive('propertiesList', function () {
             properties: '='
         },
         templateUrl: "properties/properties-list.html",
-        link: function (scope, element, attrs) {
+        link: function (scope) {
             scope.propertiesKeyFilter = "";
             scope.propertiesValueFilter = "";
         }
@@ -805,7 +828,6 @@ propertiesModule.directive('propertiesList', function () {
 });
 
 propertiesModule.directive('toggleDeletedProperties', function () {
-
     return {
         restrict: 'E',
         scope: {
@@ -813,7 +835,7 @@ propertiesModule.directive('toggleDeletedProperties', function () {
             toggle: '='
         },
         template: '<md-checkbox type="checkbox" ng-model="toggle" ng-init="toggle=false" style="float : left;"/> Afficher les propri&eacute;t&eacute;s supprim&eacute;es ({{ getNumberOfDeletedProperties(keyValueProperties) }})',
-        link: function (scope, element, attrs) {
+        link: function (scope) {
             scope.getNumberOfDeletedProperties = function (tab) {
                 var count = 0;
 
@@ -839,31 +861,34 @@ propertiesModule.directive('toggleDeletedProperties', function () {
  * Updated by Tidiane SIDIBE on 01/03/2016
  */
 propertiesModule.directive('toggleUnspecifiedProperties', function ($filter) {
-
     return {
         restrict: 'E',
         scope: {
             keyValueProperties: '=',
-            display: '='
+            toggle: '='
         },
-        template: '<md-checkbox type="checkbox" ng-model="display" ng-init="display=false"/> Afficher uniquement les propri&eacute;t&eacute;s non renseign&eacute;es ({{ getNumberOfUnspecifiedProperties(keyValueProperties) }})',
-        link: function (scope, element, attrs) {
-            scope.getNumberOfUnspecifiedProperties = function (tab) {
-                // filter the hesperides predefined properties
-                var _tab = $filter('hideHesperidesPredefinedProperties')(tab, true);
+        template: '<md-checkbox type="checkbox" ng-model="toggle" ng-init="toggle=false"/> Afficher les propri&eacute;t&eacute;s non renseign&eacute;es ({{ getNumberOfUnspecifiedProperties(keyValueProperties) }})',
+        controller: ['$scope', '$filter', function ($scope, $filter){
+            /**
+             * This calculate the number of unspecified properties.
+             */
+            $scope.getNumberOfUnspecifiedProperties = function (tab) {
                 var count = 0;
 
-                if (_tab) {
-                    for (var index = 0; index < _tab.length; index++) {
-                        // if default value is present, so the prop is nat counted as unspecified
-                        if (_.isEmpty(_tab[index].value) && _.isEmpty(_tab[index].defaultValue)) {
+                tab = $filter('hideHesperidesPredefinedProperties')(tab, true);
+
+                if (tab) {
+                    for (var index = 0; index < tab.length; index++) {
+                        // if default value is present, so the prop is not counted as unspecified
+                        if (_.isEmpty(tab[index].value) && _.isEmpty(tab[index].defaultValue)) {
                             count++;
                         }
                     }
                 }
+
                 return count;
             };
-        }
+        }]
     }
 
 });
@@ -886,7 +911,7 @@ propertiesModule.directive("displayIterableProperty", function () {
  * on global properties fields.
  */
 propertiesModule.directive('focusSaveGlobalProperties', function () {
-    return function (scope, element, attrs) {
+    return function (scope, element) {
         element.bind("keydown keypress", function (event) {
             if(event.which === 13) {
                 scope.save_global_properties(scope.platform.global_properties);
@@ -1166,11 +1191,9 @@ propertiesModule.factory('Properties', function () {
 
 propertiesModule.filter('displayProperties', function () {
     return function (items, display) {
-        var filtered = [];
-
         return _.filter(items, function(item) {
                    return (_.isUndefined(display) || display || item.inModel);
-               });;
+               });
     };
 });
 
@@ -1180,11 +1203,9 @@ propertiesModule.filter('displayProperties', function () {
 propertiesModule.filter('displayUnspecifiedProperties', function () {
 
     return function (items, display) {
-        var filtered = [];
-
         return _.filter(items, function(item) {
                  return _.isUndefined(display) || !display || _.isEmpty(item.value) && _.isEmpty(item.defaultValue);
-               });;
+               });
     };
 });
 
@@ -1201,18 +1222,16 @@ propertiesModule.filter('displayUnspecifiedProperties', function () {
  * By Tidiane SIDIBE on 29/02/2016
  */
 propertiesModule.filter('hideHesperidesPredefinedProperties', function () {
-
-    return function (items, display) {
-        var filtered = [];
-
+    return function (items) {
         return _.filter(items, function(item) {
                  return !item.name.startsWith("hesperides.");
-               });;
+               });
     };
 });
 
 /**
  * Function wich filter the properties' display with string or regex.
+ * Modified by Sahar CHAILLOU on 12/01/2016.
  */
 propertiesModule.filter('filterProperties', function() {
     return function(input, filter) {
@@ -1220,9 +1239,11 @@ propertiesModule.filter('filterProperties', function() {
             return input;
         }
 
-        name = '.*' + filter.name.toLowerCase().split(' ').join('.*');
-        value = '.*' + filter.filtrable_value.toLowerCase().split(' ').join('.*');
+        //Format the filters to construct the regex
+        var name = '.*' + filter.name.toLowerCase().split(' ').join('.*');
+        var value = '.*' + filter.filtrable_value.toLowerCase().split(' ').join('.*');
 
+        //Create the regex
         try {
             var regex_name = new RegExp(name, 'i');
             var regex_value = new RegExp(value, 'i');
@@ -1232,8 +1253,18 @@ propertiesModule.filter('filterProperties', function() {
 
         var output = [];
 
+        //Filter the array by the values which respect the regex
         angular.forEach(input, function(item) {
-            if (regex_name.test(item.name) && regex_value.test(item.filtrable_value)) {
+            /*
+             * If filter on name, check name with regex -> display properties if match
+             * If filter on value, check if filtrable_value is set, check of regex match
+             * If not filter on name and no filter on value -> display properties
+             *
+             * filtrable_value is only defined on properties with value !
+             * */
+            if ((!_.isEmpty(filter.name) && regex_name.test(item.name))
+                || (!_.isEmpty(filter.filtrable_value) && !_.isUndefined(item.filtrable_value) && regex_value.test(item.filtrable_value))
+                || (_.isEmpty(filter.name) && _.isEmpty(filter.filtrable_value))) {
                 output.push(item);
             }
         });

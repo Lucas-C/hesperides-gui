@@ -96,6 +96,17 @@ menuModule.controller('MenuPropertiesCtrl', ['$http','$scope', '$modal', '$locat
     var modal;
     var properties;
 
+    /**
+     * This set the current page by the created platform page.
+     * Used for reloading page after platform creation.
+     * This could be improved.
+     */
+    reload = function (application, platform){
+        var path = '/properties/' + application;
+        $location.url(path).search({platform: platform});
+        location.reload();
+    };
+
     $scope.find_applications_by_name = function (name) {
         return ApplicationService.with_name_like(name);
     };
@@ -116,12 +127,14 @@ menuModule.controller('MenuPropertiesCtrl', ['$http','$scope', '$modal', '$locat
         ApplicationService.save_platform(platform).then(function(platform){
             $scope.open_properties_page(platform.application_name, platform.platform_name);
         });
+
+        reload(application_name, platform_name);
     };
 
     /**
      * Create a new platform from existing platform by copying all the characteristics.
      * This function presents two options to the user: copying the instances or not.
-     * Modified by Sahar CHAILLOU on 25/01/2015.
+     * Modified by Sahar CHAILLOU on 25/01/2016.
     */
     $scope.create_platform_from = function(application_name, platform_name, production, application_version, from_application, from_platform, copyInstances){
         var platform;
@@ -132,6 +145,9 @@ menuModule.controller('MenuPropertiesCtrl', ['$http','$scope', '$modal', '$locat
             ApplicationService.create_platform_from(platform, from_application, from_platform).then(function(platform){
                 $scope.open_properties_page(platform.application_name,  platform.name);
             });
+
+            reload(application_name, platform_name);
+
         } else {
             //Get the existing platform
             $http.get('rest/applications/' + encodeURIComponent(from_application) + '/platforms/'+ encodeURIComponent(from_platform)).then(function (response) {
@@ -172,9 +188,11 @@ menuModule.controller('MenuPropertiesCtrl', ['$http','$scope', '$modal', '$locat
                         // Save the properties for the new platform
                         $http.post('rest/applications/' + encodeURIComponent(platform.application_name) + '/platforms/' + encodeURIComponent(platform.name) + '/properties?path=' + encodeURIComponent(path) + '&platform_vid=' + encodeURIComponent(platform.version_id), properties);
                     });
+
                 });
 
                 $scope.open_properties_page(platform.application_name, platform.name);
+                reload(application_name, platform_name);
             }, function (error) {
                 $.notify(error.data.message, "error");
                 throw error;

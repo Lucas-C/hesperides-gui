@@ -934,7 +934,7 @@ propertiesModule.directive('warningValue', function () {
             propertyToModify: '=',
             propertyToCompareTo: '='
         },
-        template: '<span class="glyphicon glyphicon-exclamation-sign" ng-if="propertyToModify.inGlobal != propertyToCompareTo.inGlobal || propertyToModify.inDefault != propertyToCompareTo.inDefault">' +
+        template: '<span class="fa fa-exclamation-circle" ng-if="propertyToModify.inGlobal != propertyToCompareTo.inGlobal || propertyToModify.inDefault != propertyToCompareTo.inDefault">' +
             '<md-tooltip ng-if="propertyToModify.inGlobal != propertyToCompareTo.inGlobal">Valorisé depuis un propriété globale</md-tooltip>' +
             '<md-tooltip ng-if="propertyToModify.inDefault != propertyToCompareTo.inDefault">' +
             'La valeur sur l\'application' +

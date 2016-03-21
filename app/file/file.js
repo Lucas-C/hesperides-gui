@@ -32,6 +32,17 @@ fileModule.factory('FileService', ['$hesperidesHttp', 'Application', 'Platform',
     // Convert file right to string
     var files_rights_to_string = function(filesRights) {
         var clearRight = function(right) {
+            var setupRight = function(right, letter) {
+                var r = "";
+
+                if (right) {
+                    r += letter;
+                } /*else if (!_.isNull(right) && !right) {
+                }*/
+
+                return r;
+            };
+
             var r = "";
 
             if (_.isString(right)) {
@@ -42,17 +53,10 @@ fileModule.factory('FileService', ['$hesperidesHttp', 'Application', 'Platform',
                 for (var i = 0; i < a.length; i++) {
                     r += a[i];
                 }
-            } else {
-                if (right.read) {
-                    r += 'r';
-                }
-                if (right.write) {
-                    r += 'w';
-                }
-                if (right.execute) {
-                    r += 'x';
-                }
-
+            } else if (_.isObject(right)) {
+                r += setupRight(right.read, 'r');
+                r += setupRight(right.write, 'w');
+                r += setupRight(right.execute, 'x');
             }
 
             return r;

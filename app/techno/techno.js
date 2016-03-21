@@ -3,7 +3,9 @@
  */
 var technoModule = angular.module('hesperides.techno', ['hesperides.template', 'hesperides.properties', 'hesperides.model']);
 
-technoModule.controller('TechnoCtrl', ['$scope', '$location', '$routeParams', 'Techno', 'Page', 'TechnoService', 'HesperidesTemplateModal', 'Template', 'TemplateEntry', function ($scope, $location, $routeParams, Techno, Page, TechnoService, HesperidesTemplateModal, Template, TemplateEntry) {
+technoModule.controller('TechnoCtrl',
+    ['$scope', '$location', '$routeParams', 'Techno', 'Page', 'TechnoService', 'HesperidesTemplateModal', 'Template', 'TemplateEntry', 'FileService',
+        function ($scope, $location, $routeParams, Techno, Page, TechnoService, HesperidesTemplateModal, Template, TemplateEntry, FileService) {
     Page.setTitle("Technos");
 
     $scope.isWorkingCopy = $routeParams.type === "workingcopy";
@@ -40,7 +42,8 @@ technoModule.controller('TechnoCtrl', ['$scope', '$location', '$routeParams', 'T
         HesperidesTemplateModal.edit_template({
             template: new Template(),
             isReadOnly: false,
-            onSave: $scope.save_template
+            onSave: $scope.save_template,
+            add: true
         });
     };
 
@@ -50,7 +53,8 @@ technoModule.controller('TechnoCtrl', ['$scope', '$location', '$routeParams', 'T
                 HesperidesTemplateModal.edit_template({
                     template: template,
                     isReadOnly: false,
-                    onSave: $scope.save_template
+                    onSave: $scope.save_template,
+                    add: false
                 });
                 $scope.refreshModel();
             });
@@ -59,7 +63,8 @@ technoModule.controller('TechnoCtrl', ['$scope', '$location', '$routeParams', 'T
                 HesperidesTemplateModal.edit_template({
                     template: template,
                     isReadOnly: true,
-                    onSave: $scope.save_template
+                    onSave: $scope.save_template,
+                    add: false
                 });
                 $scope.refreshModel();
             });
@@ -76,6 +81,9 @@ technoModule.controller('TechnoCtrl', ['$scope', '$location', '$routeParams', 'T
                 entry.name = savedTemplate.name;
                 entry.location = savedTemplate.location;
                 entry.filename = savedTemplate.filename;
+
+                entry.rights = FileService.files_rights_to_string(savedTemplate.rights);
+                savedTemplate.rights = FileService.files_rights_to_string(savedTemplate.rights);
             } else {
                 var new_entry = new TemplateEntry({
                     name: savedTemplate.name,

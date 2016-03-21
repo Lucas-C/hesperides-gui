@@ -331,9 +331,11 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
             compare_platform: from.platform,
             compare_path: '#'
         };
+
         if (!_.isUndefined(from.date)) {
             urlParams.timestamp = from.date.getTime();
         }
+
         $location.path('/diff').search(urlParams);
     };
 
@@ -352,6 +354,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
                     path: box.get_path()
                 }
             ));
+
             $scope.save_platform_from_box($scope.mainBox).then(function (response) {
                 $scope.properties = undefined;
                 $scope.instance = undefined;
@@ -434,6 +437,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
     $scope.on_edit_platform = function (platform) {
         //http://hesperides:51100
         $location.url('/properties/' + platform.application_name + '?platform=' + platform.name);
+
         $scope.platform = platform;
         $scope.selected_module = undefined;
         $scope.instance = undefined;
@@ -499,6 +503,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
             if (!_.isUndefined($scope.properties)) {
                 $scope.properties = $scope.properties.mergeWithGlobalProperties(properties);
             }
+
             //Increase platform number
             $scope.platform.version_id = $scope.platform.version_id + 1;
         });
@@ -748,8 +753,7 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
     }
 
     /*
-     Select the containers that corresponds to the filters (ex: status = 2).
-     Modified by Sahar CHAILLOU on 24/02/2016
+     * Select the containers that corresponds to the filters (ex: status = 2).
      */
     $scope.toggle_selected_to_containers_with_filter = function (filter, selected, propertiesKeyFilter) {
         _($scope.diff_containers).filter(function (container) {
@@ -764,10 +768,12 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
                     return false;
                 }
             }
+
             //We apply the other filters to select the containers that we want
             for (var key in filter) {
                 if (!_.isEqual(filter[key], container[key])) return false;
             }
+
             return true;
         }).each(function (container) {
             //Finally, we change the selection of the selected containers
@@ -844,7 +850,6 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
 }]);
 
 propertiesModule.directive('propertiesList', function () {
-
     return {
         restrict: 'E',
         scope: {
@@ -856,8 +861,6 @@ propertiesModule.directive('propertiesList', function () {
             scope.propertiesValueFilter = "";
         }
     };
-
-
 });
 
 propertiesModule.directive('toggleDeletedProperties', function () {
@@ -868,7 +871,6 @@ propertiesModule.directive('toggleDeletedProperties', function () {
             keyValueProperties: '=',
             toggle: '='
         },
-
         template: '<md-switch class="md-primary md-block" ' +
             'ng-model="toggle"' +
             'ng-init="toggle=false" ' +
@@ -911,7 +913,7 @@ propertiesModule.directive("displayIterableProperty", function () {
  * on global properties fields.
  */
 propertiesModule.directive('focusSaveGlobalProperties', function () {
-    return function (scope, element, attrs) {
+    return function (scope, element) {
         element.bind("keydown keypress", function (event) {
             if(event.which === 13) {
                 scope.save_global_properties(scope.platform.global_properties);
@@ -944,7 +946,6 @@ propertiesModule.directive('warningValue', function () {
 });
 
 propertiesModule.factory('Properties', function () {
-
     var Properties = function (data) {
 
         angular.extend(this, {
@@ -1187,7 +1188,6 @@ propertiesModule.factory('Properties', function () {
     };
 
     return Properties;
-
 });
 
 propertiesModule.filter('displayProperties', function () {
@@ -1200,7 +1200,6 @@ propertiesModule.filter('displayProperties', function () {
 
 propertiesModule.filter('filterBox', ['$filter', function ($filter) {
     return function (boxes_object, searchString) {
-
         //A box is filtered by its name or its modules names or its children boxes
         var filter_one_box = function(box){
             //See if the parent box was previously fitered thanks to its name
@@ -1254,7 +1253,6 @@ propertiesModule.filter('filterBox', ['$filter', function ($filter) {
 }]);
 
 propertiesModule.directive('initInstanceFunctions', function () {
-
     return {
         restrict: 'E',
         replace: true,
@@ -1285,7 +1283,6 @@ propertiesModule.directive('initInstanceFunctions', function () {
 });
 
 propertiesModule.directive('initInstances', function () {
-
     return {
         restrict: 'E',
         replace: true,
@@ -1342,8 +1339,8 @@ propertiesModule.filter('filterProperties', function() {
         }
 
         // Format the filters to construct the regex
-        name = '.*' + filter.name.toLowerCase().split(' ').join('.*');
-        value = '.*' + filter.filtrable_value.toLowerCase().split(' ').join('.*');
+        var name = '.*' + filter.name.toLowerCase().split(' ').join('.*');
+        var value = '.*' + filter.filtrable_value.toLowerCase().split(' ').join('.*');
 
         // Create the regex
         try {
@@ -1357,7 +1354,16 @@ propertiesModule.filter('filterProperties', function() {
 
         // Filter the array by the values which respect the regex
         angular.forEach(input, function(item) {
-            if (regex_name.test(item.name) && regex_value.test(item.filtrable_value)) {
+            /*
+             * If filter on name, check name with regex -> display properties if match
+             * If filter on value, check if filtrable_value is set, check of regex match
+             * If not filter on name and no filter on value -> display properties
+             *
+             * filtrable_value is only defined on properties with value !
+             * */
+            if ((!_.isEmpty(filter.name) && regex_name.test(item.name))
+                || (!_.isEmpty(filter.filtrable_value) && !_.isUndefined(item.filtrable_value) && regex_value.test(item.filtrable_value))
+                || (_.isEmpty(filter.name) && _.isEmpty(filter.filtrable_value))) {
                 output.push(item);
             }
         });
@@ -1366,36 +1372,46 @@ propertiesModule.filter('filterProperties', function() {
     };
 });
 
-propertiesModule.directive('toggleUnspecifiedProperties', function () {
-
+/**
+ * This directive is for filtering only the unspecified properties.
+ * This takes care of the hesperides predefined properties which will not be displayed
+ * and then not counted even if they have not values.
+ */
+propertiesModule.directive('toggleUnspecifiedProperties', function ($filter) {
     return {
         restrict: 'E',
         scope: {
             keyValueProperties: '=',
-            display: '='
+            toggle: '='
         },
         template: '<md-switch class="md-primary md-block" ' +
-            'ng-model="display"' +
-            'ng-init="display=false" ' +
-            'aria-label="Afficher les propri&eacute;t&eacute;s non renseign&eacute;es">' +
-            'Afficher les propri&eacute;t&eacute;s non renseign&eacute;es ({{ getNumberOfUnspecifiedProperties(keyValueProperties) }})' +
-            '</md-switch>',
-        link: function (scope) {
-            scope.getNumberOfUnspecifiedProperties = function (tab) {
+                  'ng-model="toggle"' +
+                  'ng-init="toggle=false" ' +
+                  'aria-label="Afficher les propri&eacute;t&eacute;s supprim&eacute;es">' +
+                  'Afficher les propri&eacute;t&eacute;s non renseign&eacute;es ({{ getNumberOfUnspecifiedProperties(keyValueProperties) }})' +
+                  '</md-switch>',
+        controller: ['$scope', '$filter', function ($scope, $filter){
+            /**
+             * This calculate the number of unspecified properties.
+             */
+            $scope.getNumberOfUnspecifiedProperties = function (tab) {
                 var count = 0;
+
+                tab = $filter('hideHesperidesPredefinedProperties')(tab, true);
 
                 if (tab) {
                     for (var index = 0; index < tab.length; index++) {
-                        if (_.isEmpty(tab[index].value)) {
+                        // if default value is present, so the prop is not counted as unspecified
+                        if (_.isEmpty(tab[index].value) && _.isEmpty(tab[index].defaultValue)) {
                             count++;
                         }
                     }
                 }
+
                 return count;
             };
-        }
+        }]
     }
-
 });
 
 propertiesModule.directive("addIterableProperty", function () {
@@ -1415,7 +1431,6 @@ propertiesModule.directive("displayIterableProperty", function () {
  * Diplay warning message when value is same/or not and source of value is different.
  */
 propertiesModule.directive('warningValue', function () {
-
     return {
         restrict: 'E',
         scope: {
@@ -1440,6 +1455,34 @@ propertiesModule.filter('displayUnspecifiedProperties', function () {
     return function (items, display) {
         return _.filter(items, function(item) {
             return _.isUndefined(display) || !display || _.isEmpty(item.value) && _.isEmpty(item.defaultValue);
+        });
+    };
+});
+
+/**
+ * Display only the 'empty' properties
+ */
+propertiesModule.filter('displayUnspecifiedProperties', function () {
+    return function (items, display) {
+        return _.filter(items, function (item) {
+            return _.isUndefined(display) || !display || _.isEmpty(item.value) && _.isEmpty(item.defaultValue);
+        });
+    }
+});
+
+/**
+ * This is used to filter the 'hesperides predefined properties'.
+ * Definition of terms:
+ *  'Hesperides predefined properties' are the properties whith are provided by the hesperides system.
+ *  They always start by "hesperides.".
+ *  Example :
+ *      - hesperides.application.name : is the name of the current application.
+ *      - hesperides.instance.name : is the name of the current instance
+ */
+propertiesModule.filter('hideHesperidesPredefinedProperties', function () {
+    return function (items) {
+        return _.filter(items, function(item) {
+            return !item.name.startsWith("hesperides.");
         });
     };
 });

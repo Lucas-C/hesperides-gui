@@ -1,6 +1,7 @@
     <div layout="column">
-        <div>
-            <toggle-deleted-properties key-value-properties="properties.key_value_properties" toggle="displayDeletedProperties"></toggle-deleted-properties>
+        <div layout="row">
+            <div flex="none"><toggle-deleted-properties key-value-properties="properties.key_value_properties" toggle="displayDeletedProperties"></toggle-deleted-properties></div>
+            <div flex><toggle-unspecified-properties key-value-properties="properties.key_value_properties" toggle="displayUnspecified"></toggle-unspecified-properties></div>
         </div>
         <div>
           <md-button id="sortModulePropertiesButton" ng-click="properties.switchOrder()"

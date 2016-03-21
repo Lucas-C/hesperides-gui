@@ -137,6 +137,17 @@ menuModule.controller('MenuPropertiesCtrl', ['$hesperidesHttp', '$scope', '$mdDi
 
     var properties;
 
+    /**
+     * This set the current page by the created platform page.
+     * Used for reloading page after platform creation.
+     * This could be improved.
+     */
+    reload = function (application, platform){
+        var path = '/properties/' + application;
+        $location.url(path).search({platform: platform});
+        location.reload();
+    };
+
     $scope.find_applications_by_name = function (name) {
         if (name) {
             return ApplicationService.with_name_like(name);
@@ -168,6 +179,8 @@ menuModule.controller('MenuPropertiesCtrl', ['$hesperidesHttp', '$scope', '$mdDi
         ApplicationService.save_platform(platform).then(function(platform){
             $scope.open_properties_page(platform.application_name, platform.platform_name);
         });
+
+        reload(application_name, platform_name);
     };
 
     /**
@@ -184,6 +197,9 @@ menuModule.controller('MenuPropertiesCtrl', ['$hesperidesHttp', '$scope', '$mdDi
             ApplicationService.create_platform_from(platform, from_application, from_platform).then(function(platform){
                 $scope.open_properties_page(platform.application_name,  platform.name);
             });
+
+            reload(application_name, platform_name);
+
         } else {
             //Get the existing platform
             $http.get('rest/applications/' + encodeURIComponent(from_application) + '/platforms/'+ encodeURIComponent(from_platform)).then(function (response) {
@@ -224,9 +240,11 @@ menuModule.controller('MenuPropertiesCtrl', ['$hesperidesHttp', '$scope', '$mdDi
                         // Save the properties for the new platform
                         $http.post('rest/applications/' + encodeURIComponent(platform.application_name) + '/platforms/' + encodeURIComponent(platform.name) + '/properties?path=' + encodeURIComponent(path) + '&platform_vid=' + encodeURIComponent(platform.version_id), properties);
                     });
+
                 });
 
                 $scope.open_properties_page(platform.application_name, platform.name);
+                reload(application_name, platform_name);
             }, function (error) {
                 $.notify(error.data.message, "error");
                 throw error;

@@ -5,9 +5,9 @@ var applicationModule = angular.module('hesperides.module', []);
 
 
 applicationModule.controller('ModuleCtrl', [
-    '$scope', '$routeParams', '$location', '$modal', 'TechnoService', 'ModuleService', 'HesperidesTemplateModal', 'Template', 'Page',
+    '$scope', '$routeParams', '$location', '$mdDialog', 'TechnoService', 'ModuleService', 'HesperidesTemplateModal', 'Template', 'Page',
     'FileService',
-    function ($scope, $routeParams, $location, $modal, TechnoService, ModuleService, HesperidesTemplateModal, Template, Page,
+    function ($scope, $routeParams, $location, $mdDialog, TechnoService, ModuleService, HesperidesTemplateModal, Template, Page,
               FileService) {
 
     Page.setTitle('Module');

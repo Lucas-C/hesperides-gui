@@ -32,6 +32,17 @@ fileModule.factory('FileService', ['$http', 'Application', 'Platform', 'Properti
     // Convert file right to string
     var files_rights_to_string = function(filesRights) {
         var clearRight = function(right) {
+            var setupRight = function(right, letter) {
+                var r = "";
+
+                if (right) {
+                    r += letter;
+                } /*else if (!_.isNull(right) && !right) {
+                }*/
+
+                return r;
+            };
+
             var r = "";
 
             if (_.isString(right)) {
@@ -42,17 +53,10 @@ fileModule.factory('FileService', ['$http', 'Application', 'Platform', 'Properti
                 for (var i = 0; i < a.length; i++) {
                     r += a[i];
                 }
-            } else {
-                if (right.read) {
-                    r += 'r';
-                }
-                if (right.write) {
-                    r += 'w';
-                }
-                if (right.execute) {
-                    r += 'x';
-                }
-
+            } else if (_.isObject(right)) {
+                r += setupRight(right.read, 'r');
+                r += setupRight(right.write, 'w');
+                r += setupRight(right.execute, 'x');
             }
 
             return r;
@@ -100,15 +104,11 @@ fileModule.factory('FileService', ['$http', 'Application', 'Platform', 'Properti
 
                     entry.name = get_file_name( data.location );
                     return entry;
-                }, function (error) {
-                    if (error.status != 404) {
-                        $.notify(error.data.message, "error");
-                        throw error;
-                    } else {
-                        return [];
-                    }
                 });
-            });
+            }, function (error) {
+               $.notify(error.data.message, "error");
+               throw error;
+           });
         },
         download_files : function (entries, name){
             // The JSZip Object

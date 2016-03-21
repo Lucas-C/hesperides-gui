@@ -1,11 +1,12 @@
 <div class="modal-header">
-    <h3 class="modal-title">Ajout/Edition de template</h3>
+    <h3 class="modal-title" ng-if="!add">Edition de template</h3>
+    <h3 class="modal-title" ng-if="add">Ajout de template</h3>
 </div>
 <div class="modal-body">
     <form name="templateForm" role="form">
         <div class="form-group">
             <input type="text" class="form-control" required ng-trim="true" ng-model="template.name"
-                   id="templateName" placeholder="Titre" ng-disabled="isReadOnly"
+                   id="templateName" placeholder="Titre" ng-disabled="!add"
                     data-hint="le titre du template est unique"/>
         </div>
         <div class="form-group">
@@ -36,38 +37,12 @@
         <div class="template-right">
             <fieldset class="standard">
                 <legend>User</legend>
-                R <select ng-model="template.rights.user.read">
-                    <option value="true" ng-selected="template.rights.user.read === true">O</option>
-                    <option value="false" ng-selected="template.rights.user.read === false">N</option>
-                </select>
-
-                W <select ng-model="template.rights.user.write">
-                    <option value="true" ng-selected="template.rights.user.write === true">O</option>
-                    <option value="false" ng-selected="template.rights.user.write === false">N</option>
-                </select>
-
-                X <select ng-model="template.rights.user.execute">
-                    <option value="true" ng-selected="template.rights.user.execute === true">O</option>
-                    <option value="false" ng-selected="template.rights.user.execute === false">N</option>
-                </select>
+                <file-rights-select model="template.rights.user" />
             </fieldset>
 
             <fieldset class="standard">
                 <legend>Group</legend>
-                R <select ng-model="template.rights.group.read">
-                    <option value="true" ng-selected="template.rights.group.read === true">O</option>
-                    <option value="false" ng-selected="template.rights.group.read === false">N</option>
-                </select>
-
-                    W <select ng-model="template.rights.group.write">
-                    <option value="true" ng-selected="template.rights.group.write === true">O</option>
-                    <option value="false" ng-selected="template.rights.group.write === false">N</option>
-                </select>
-
-                    X <select ng-model="template.rights.group.execute">
-                    <option value="true" ng-selected="template.rights.group.execute === true">O</option>
-                    <option value="false" ng-selected="template.rights.group.execute === false">N</option>
-                </select>
+                <file-rights-select model="template.rights.group" />
             </fieldset>
         </div>
     </form>

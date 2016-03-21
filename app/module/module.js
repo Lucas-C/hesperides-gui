@@ -6,7 +6,9 @@ var applicationModule = angular.module('hesperides.module', []);
 
 applicationModule.controller('ModuleCtrl', [
     '$scope', '$routeParams', '$location', '$modal', 'TechnoService', 'ModuleService', 'HesperidesTemplateModal', 'Template', 'Page',
-    function ($scope, $routeParams, $location, $modal, TechnoService, ModuleService, HesperidesTemplateModal, Template, Page) {
+    'FileService',
+    function ($scope, $routeParams, $location, $modal, TechnoService, ModuleService, HesperidesTemplateModal, Template, Page,
+              FileService) {
 
     Page.setTitle('Module');
 
@@ -36,7 +38,8 @@ applicationModule.controller('ModuleCtrl', [
         HesperidesTemplateModal.edit_template({
             template: new Template(),
             isReadOnly: false,
-            onSave: $scope.save_template
+            onSave: $scope.save_template,
+            add: true
         });
     };
 
@@ -45,9 +48,9 @@ applicationModule.controller('ModuleCtrl', [
             HesperidesTemplateModal.edit_template({
                 template: template,
                 isReadOnly: !$scope.module.is_working_copy,
-                onSave: $scope.save_template
+                onSave: $scope.save_template,
+                add: false
             });
-            $scope.refreshModel();
         });
     };
 
@@ -57,10 +60,14 @@ applicationModule.controller('ModuleCtrl', [
             var entry = _.find($scope.templateEntries, function (templateEntry) {
                 return (templateEntry.name === savedTemplate.name);
             });
+
             if (entry) { //It was an update
                 entry.name = savedTemplate.name;
                 entry.location = savedTemplate.location;
                 entry.filename = savedTemplate.filename;
+
+                entry.rights = FileService.files_rights_to_string(savedTemplate.rights);
+                savedTemplate.rights = FileService.files_rights_to_string(savedTemplate.rights);
             } else {
                 var new_entry = {
                     name: savedTemplate.name,

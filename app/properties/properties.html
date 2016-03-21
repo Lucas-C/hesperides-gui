@@ -456,14 +456,13 @@
                             ng-mouseover="instance.hover = true" ng-mouseleave="instance.hover = false">
                             <md-button ng-click="edit_instance(instance, module.properties_path)"
                                        tooltip="Editer les properties de l'instance"
-                                       aria-label="Editer les properties de l'instance"
-                                       class="">
+                                       aria-label="Editer les properties de l'instance">
                                 <span class="glyphicon glyphicon-list" style="margin-right:10px"></span>{{instance.name}}
                             </md-button>
                             <md-button ng-click="preview_instance(box, application, platform, instance, module)"
+                                       aria-label= "Prévisualiser l'instance"
                                        tooltip="Prévisualiser l'instance"
-                                       aria-label="Prévisualiser l'instance"
-                                       class="md-warn" ng-show="instance.hover">
+                                       ng-show="instance.hover">
                                 <span class="glyphicon glyphicon-eye-open"></span>
                             </md-button>
                             <md-button ng-really-message="Supprimer l'instance {{instance.name}} ?"
@@ -645,7 +644,11 @@
                 </button>
             </h3>
 
-            <toggle-deleted-properties key-value-properties="instance.key_values" toggle="displayDeletedProperties"></toggle-deleted-properties>
+            <div class="col-md-12">
+                <toggle-deleted-properties key-value-properties="instance.key_values" toggle="displayDeletedProperties"></toggle-deleted-properties>
+                <toggle-unspecified-properties key-value-properties="instance.key_values" toggle="displayUnspecified"></toggle-unspecified-properties>
+            </div>
+
             <form class="form-horizontal narrow" role="form" editable-form>
                 <div class="form-group">
                   <div class="col-md-1">
@@ -658,9 +661,10 @@
                 </div>
 
                 <div class="form-group" ng-class="{'property-not-used': !key_value_property.inModel}"
-                     ng-repeat="key_value_property in instance.key_values | displayProperties:displayDeletedProperties |  orderBy:'name':instance.isReverseOrder() track by $index">
+                     ng-repeat="key_value_property in instance.key_values | displayProperties:displayDeletedProperties | displayUnspecifiedProperties:displayUnspecified | hideHesperidesPredefinedProperties | displayUnspecifiedProperties:displayUnspecified | orderBy:'name':instance.isReverseOrder() track by $index"
+                     ng-model-options="{ updateOn: 'mouseleave' }">
                     <label for="input-{{ key_value_property.name }}" class="col-md-3 control-label">{{
-                        key_value_property.name }}</label> <span ng-show="key_value_property.required" style="color:red">*</span>
+                        key_value_property.name }} <span ng-show="key_value_property.required" style="color:red"> *</span></label>
 
                     <div class="col-md-9">
                         <input id="input-{{ key_value_property.name }}" type="text" class="form-control"

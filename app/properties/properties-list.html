@@ -1,6 +1,11 @@
 <accordion close-others = "true">
     <!-- Simple properties group -->
-    <accordion-group heading="Properties simples" is-open="false">
+    <accordion-group is-open="false">
+
+        <accordion-heading>
+            <div class="accordion-head">Properties simples</div>
+        </accordion-heading>
+
         <simple-properties-list properties = "properties.key_value_properties"></simple-properties-list>
     </accordion-group>
 
@@ -8,7 +13,12 @@
         Iterable properties group
         This group is disabled when not iterable property exists
     -->
-    <accordion-group heading="Properties itérables" is-open="false" is-disabled = "properties.iterable_properties.length == 0">
+    <accordion-group is-open="false" is-disabled = "properties.iterable_properties.length == 0">
+
+        <accordion-heading>
+            <div class="accordion-head">Properties itérables</div>
+        </accordion-heading>
+
         <!-- Filter toggles -->
         <div class ="row">
             <div class="col-md-12">

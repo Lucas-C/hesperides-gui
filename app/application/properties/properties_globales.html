@@ -1,0 +1,52 @@
+<div layout="row">
+    <div flex="8">
+        <md-button ng-click="platform.global_properties.addKeyValue({
+                        'name': new_kv_name,
+                        'value': new_kv_value,
+                        'comment': ''
+                    });new_kv_name = ''; new_kv_value= ''" aria-label="Ajouter">
+            <md-tooltip>Ajouter</md-tooltip>
+            <span class="fa fa-plus"></span>
+        </md-button>
+    </div>
+    <div flex="33">
+        <md-input-container class="md-block">
+            <label>Nouvelle property globale</label>
+            <input type="text" required ng-trim="true" ng-model="new_kv_name" aria-label="Nouvelle property globale" focus-save-global-properties/>
+        </md-input-container>
+    </div>
+    <div flex="59" ng-if="isBox">
+    <div flex ng-if="!isBox">
+        <md-input-container class="md-block">
+            <label>Valorisation</label>
+            <input type="text" required ng-trim="true" ng-model="new_kv_value" aria-label="Valorisation" focus-save-global-properties/>
+        </md-input-container>
+    </div>
+</div>
+<div layout="row" ng-repeat="kv_property in platform.global_properties.key_value_properties | orderBy:'name':platform.global_properties.isReverseOrder() track by $index">
+    <div flex="8">
+        <md-button ng-really-message="Supprimer la property globale {{kv_property.name}} ?"
+                   aria-label="Supprimer"
+                   ng-really-click="platform.global_properties.deleteKeyValue(kv_property)"
+                   class="md-warn">
+            <md-tooltip>Supprimer</md-tooltip>
+            <i class="fa fa-trash"></i>
+        </md-button>
+    </div>
+    <div flex="33" >
+        <md-input-container class="property-label" ng-class="{'text-stroke':!key_value_property.inModel}">
+            <input type="text" ng-trim="true" ng-model="kv_property.name" aria-label="{{kv_property.name}}" ng-readonly="true" class="property-label" />
+            <md-tooltip md-direction="top">
+                {{kv_property.name}}
+            </md-tooltip>
+        </md-input-container>
+    </div>
+    <div flex="59" ng-if="isBox">
+    <div flex ng-if="!isBox">
+        <md-input-container class="md-block">
+            <input type="text" ng-trim="true" id="input-{{ kv_property.name }}" ng-model="kv_property.value" aria-label="{{ kv_property.name }}" focus-save-global-properties/>
+        </md-input-container>
+    </div>
+</div>
+</form>
+</div>

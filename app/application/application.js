@@ -390,3 +390,23 @@ applicationModule.factory('ApplicationService', ['$hesperidesHttp', 'Application
     };
 
 }]);
+
+applicationModule.directive('propertiesGlobalesBox', function () {
+    return {
+        restrict: 'E',
+        templateUrl: "application/box/properties_globales.html",
+        link: function (scope) {
+            scope.isBox = true;
+        }
+    };
+});
+
+applicationModule.directive('propertiesGlobalesTree', function () {
+    return {
+        restrict: 'E',
+        templateUrl: "application/box/properties_globales.html",
+        link: function (scope) {
+            scope.isBox = false;
+        }
+    };
+});

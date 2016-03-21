@@ -856,7 +856,7 @@ propertiesModule.directive('propertiesList', function () {
             properties: '='
         },
         templateUrl: "properties/properties-list.html",
-        link: function (scope, element, attrs) {
+        link: function (scope) {
             scope.propertiesKeyFilter = "";
             scope.propertiesValueFilter = "";
         }
@@ -877,7 +877,7 @@ propertiesModule.directive('toggleDeletedProperties', function () {
             'aria-label="Afficher les propri&eacute;t&eacute;s supprim&eacute;es">' +
             'Afficher les propri&eacute;t&eacute;s supprim&eacute;es ({{ getNumberOfDeletedProperties(keyValueProperties) }})' +
             '</md-switch>',
-        link: function (scope, element, attrs) {
+        link: function (scope) {
             scope.getNumberOfDeletedProperties = function (tab) {
                 var count = 0;
 

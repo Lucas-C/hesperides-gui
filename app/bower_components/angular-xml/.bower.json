@@ -28,6 +28,6 @@
     "commit": "6f469485e090d49db4c076fc652e7f2548891013"
   },
   "_source": "git://github.com/johngeorgewright/angular-xml.git",
-  "_target": "~2.2.1",
+  "_target": "2.2.1",
   "_originalSource": "angular-xml"
 }

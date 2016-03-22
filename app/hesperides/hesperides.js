@@ -296,37 +296,37 @@ hesperidesModule.factory('$hesperidesHttp', ['$http', function($http){
         get: function(url, config) {
             $('#loading').show();
 
-            return $http.get(url, config).then(returnResponseAndHideLoading);
+            return $http.get(url, config).then(returnResponseAndHideLoading, returnResponseAndHideLoading);
         },
         head: function(url, config) {
             $('#loading').show();
 
-            return $http.head(url, config).then(returnResponseAndHideLoading);
+            return $http.head(url, config).then(returnResponseAndHideLoading, returnResponseAndHideLoading);
         },
         post: function(url, data, config) {
             $('#loading').show();
 
-            return $http.post(url, data, config).then(returnResponseAndHideLoading);
+            return $http.post(url, data, config).then(returnResponseAndHideLoading, returnResponseAndHideLoading);
         },
         put: function(url, data, config) {
             $('#loading').show();
 
-            return $http.put(url, data, config).then(returnResponseAndHideLoading);
+            return $http.put(url, data, config).then(returnResponseAndHideLoading, returnResponseAndHideLoading);
         },
         delete: function(url, config) {
             $('#loading').show();
 
-            return $http.delete(url, config).then(returnResponseAndHideLoading);
+            return $http.delete(url, config).then(returnResponseAndHideLoading, returnResponseAndHideLoading);
         },
         jsonp: function(url, config) {
             $('#loading').show();
 
-            return $http.jsonp(url, config).then(returnResponseAndHideLoading);
+            return $http.jsonp(url, config).then(returnResponseAndHideLoading, returnResponseAndHideLoading);
         },
         patch: function(url, data, config) {
             $('#loading').show();
 
-            return $http.patch(url, data, config).then(returnResponseAndHideLoading);
+            return $http.patch(url, data, config).then(returnResponseAndHideLoading, returnResponseAndHideLoading);
         }
-        };
+    };
 }]);

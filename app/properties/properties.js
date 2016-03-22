@@ -3,7 +3,7 @@
  */
 var propertiesModule = angular.module('hesperides.properties', ['hesperides.nexus']);
 
-propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDialog', '$location', '$route', '$timeout', 'ApplicationService', 'FileService', 'ModuleService', 'ApplicationModule', 'Page', 'NexusService', function ($scope, $routeParams, $mdDialog, $location, $route, $timeout, ApplicationService, FileService, ModuleService, Module, Page, NexusService) {
+propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDialog', '$location', '$route', '$timeout', 'ApplicationService', 'FileService', 'EventService', 'ModuleService', 'ApplicationModule', 'Page', 'NexusService', function ($scope, $routeParams, $mdDialog, $location, $route, $timeout, ApplicationService, FileService, EventService, ModuleService, Module, Page, NexusService) {
     Page.setTitle("Properties");
 
     $scope.platform = $routeParams.platform;
@@ -371,6 +371,9 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         $scope.save_platform_from_box($scope.mainBox);
     };
 
+    /**
+     * This is used to preview an instance data.
+     */
     $scope.preview_instance = function (box, application, platform, instance, module) {
         var modalScope = $scope.$new();
 
@@ -380,6 +383,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         };
 
         modalScope.instance = instance;
+        modalScope.isOpen = false;
 
         FileService.get_files_entries(application.name, platform.name, box.get_path(), module.name, module.version, instance.name, module.is_working_copy).then(function (entries){
             modalScope.fileEntries = entries;
@@ -399,6 +403,40 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
             location.replace(url);
         };
 
+    };
+
+    /**
+     * This used to show the event lists.
+     * Added by Tidiane SIDIBE on 08/03/2016
+     */
+    $scope.show_events = function (param1, param2, action) {
+        var modalScope = $scope.$new(true);
+
+        // Creating the stream name
+        var stream = undefined;
+        if ( action === 'platform'){
+            stream = action + '-' + param1.name + '-' + param2.name;
+            modalScope.title = param1.name + '-' + param2.name;
+        }else {
+            stream = action + '-' + param2.name + '-' + param2.version + '-';
+            if (param2.is_working_copy){
+                stream = stream + 'wc';
+            }else{
+                stream = stream + 'release';
+            }
+
+            modalScope.title =  param2.name + '-' + param2.version;
+        }
+
+        EventService.get(stream).then (function (entries){
+
+            modalScope.eventEntries = entries;
+
+            var modal = $mdDialog.show({
+                        templateUrl: 'event/event-modal.html',
+                        scope: modalScope
+                    });
+        });
     };
 
     $scope.delete_instance = function (instance, module) {
@@ -1318,6 +1356,7 @@ propertiesModule.filter('orderObjectBy', function() {
 
 /**
  * Function wich filter the properties' display with string or regex.
+ * Modified by Sahar CHAILLOU on 12/01/2016.
  */
 propertiesModule.filter('filterProperties', function() {
     return function(input, filter) {

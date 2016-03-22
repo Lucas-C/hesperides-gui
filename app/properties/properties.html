@@ -41,7 +41,15 @@
                    class="ng-binding"
                    onaftersave="save_platform_from_box(mainBox)">{{platform.application_version}}</a>
                 <md-tooltip>Modifier le label 'version de l'application'</md-tooltip>
-                )</strong></span>
+                )</strong>
+
+                <!-- Show events for platform -->
+                <md-button aria-label="Afficher les events" ng-click="show_events(application, platform, 'platform')" class="md-xs">
+                    <span class="fa fa-bullhorn fa-2x"></span>
+                    <md-tooltip>Afficher les events</md-tooltip>
+                </md-button>
+
+            </span>
             </h3>
         </div>
         <div flex="33" layout-align="center top">

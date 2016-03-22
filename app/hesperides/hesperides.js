@@ -213,42 +213,7 @@ hesperidesModule.directive('propertyToolButton', function ($mdUtil, $propertyToo
     return {
         restrict: 'E',
         scope: true,
-        template:   '        <md-button ng-click="open_add_instance_dialog(module)"' +
-                    '        aria-label="Ajouter une instance"' +
-                    '        class="md-xs">' +
-                    '            <span class="fa fa-plus"></span>' +
-                    '            <md-tooltip>Ajouter une instance</md-tooltip>' +
-                    '        </md-button>' +
-                    '    <md-button class="md-xs" aria-label="Editer les properties"' +
-                    '    ng-click="edit_properties(platform, module);movePropertiesDivHolderToCursorPosition($event);"><span' +
-                    '    class="fa fa-list"></span>' +
-                    '        <md-tooltip>Editer les properties</md-tooltip>' +
-                    '    </md-button>' +
-                    '        <md-button class="md-xs"' +
-                    '        aria-label="Comparer les properties"' +
-                    '        ng-click="diff_properties(module)"><span' +
-                    '        class="fa fa-exchange"></span>' +
-                    '            <md-tooltip>Comparer les properties</md-tooltip>' +
-                    '        </md-button>' +
-                    '        <md-button ng-click="open_module_page(module.name, module.version, module.is_working_copy)"' +
-                    '            aria-label="Afficher le module"'+
-                    '            class="md-xs">' +
-                    '          <i class="fa fa-pencil"></i>' +
-                    '          <md-tooltip>Afficher le module {{module.title}}</md-tooltip>' +
-                    '        </md-button>' +
-                    '        <md-button aria-label="Modifier la version du module"' +
-                    '          class="md-xs"' +
-                    '          ng-click="change_module(module)">' +
-                    '            <md-tooltip>Modifier la version du module</md-tooltip>' +
-                    '          <span class="fa fa-tag"></span>' +
-                    '        </md-button>' +
-                    '        <md-button ng-really-message="Supprimer le module {{module.title}} et toutes ses instances ?"' +
-                    '        aria-label="Supprimer le module"' +
-                    '        ng-really-click="delete_module(module, box)"' +
-                    '        class="md-xs md-warn">' +
-                    '            <span class="fa fa-trash"></span>' +
-                    '            <md-tooltip>Supprimer le module</md-tooltip>' +
-                    '        </md-button>'
+        templateUrl: 'properties/property-tool-button.html'
     };
 });
 

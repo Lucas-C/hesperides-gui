@@ -262,11 +262,15 @@ menuModule.controller('MenuPropertiesCtrl', ['$hesperidesHttp', '$scope', '$mdDi
     };
 
     $scope.open_create_platform_from_dialog = function () {
+        var modalScope = $scope.$new(true);
+
+        modalScope.applicationSearched = "";
+
         $mdDialog.show({
             templateUrl: 'properties/platform-menu-modal-from.html',
             controller: 'MenuPropertiesCtrl',
             preserveScope: true, // requiered for not freez menu
-            scope:$scope
+            scope:modalScope
         });
     };
 }]);

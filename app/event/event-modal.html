@@ -1,44 +1,47 @@
-<div class="modal-header">
-    <h3 class="modal-title">Events de {{title}}</h3>
-</div>
-<div class="modal-body">
-    <!-- Table -->
-    <div class ="events" >
-        <div ng-repeat = "event in eventEntries track by $index" >
-            <div ng-switch = "event._type" class="event">
-                
-                <!-- Platforms -->
-                <platform-created ng-switch-when="PlatformCreatedEvent" event="event"></platform-created>
-                <platform-updated ng-switch-when="PlatformUpdatedEvent" event="event"></platform-updated>
-                <platform-deleted ng-switch-when="PlatformDeletedEvent" event="event"></platform-deleted>
+<md-dialog flex="50">
+    <md-dialog-content>
+        <div class="ng-binding">
+            <h2>Events de {{title}}</h2>
+            <md-content layout-padding class="autoScroll">
+                <div class ="events" >
+                    <div ng-repeat = "event in eventEntries track by $index" >
+                        <div ng-switch = "event._type" class="event">
 
-                <!-- Modules -->
-                <module-created ng-switch-when="ModuleCreatedEvent" event="event"></module-created>
-                <module-updated ng-switch-when="ModuleUpdatedEvent" event="event"></module-updated>
+                            <!-- Platforms -->
+                            <platform-created ng-switch-when="PlatformCreatedEvent" event="event"></platform-created>
+                            <platform-updated ng-switch-when="PlatformUpdatedEvent" event="event"></platform-updated>
+                            <platform-deleted ng-switch-when="PlatformDeletedEvent" event="event"></platform-deleted>
 
-                <!-- Module Working Copies -->
-                <module-working-copy-updated ng-switch-when="ModuleWorkingCopyUpdatedEvent" event="event"></module-working-copy-updated>
+                            <!-- Modules -->
+                            <module-created ng-switch-when="ModuleCreatedEvent" event="event"></module-created>
+                            <module-updated ng-switch-when="ModuleUpdatedEvent" event="event"></module-updated>
 
-                <!-- Module Templates -->
-                <module-template-created ng-switch-when="ModuleTemplateCreatedEvent" event="event"></module-template-created>
-                <module-template-updated ng-switch-when="ModuleTemplateUpdatedEvent" event="event"></module-template-updated>
-                <module-template-deleted ng-switch-when="ModuleTemplateDeletedEvent" event="event"></module-template-deleted>
+                            <!-- Module Working Copies -->
+                            <module-working-copy-updated ng-switch-when="ModuleWorkingCopyUpdatedEvent" event="event"></module-working-copy-updated>
 
-                <!-- Properties (Platform) -->
-                <properties-saved ng-switch-when="PropertiesSavedEvent" event="event"></properties-saved>
+                            <!-- Module Templates -->
+                            <module-template-created ng-switch-when="ModuleTemplateCreatedEvent" event="event"></module-template-created>
+                            <module-template-updated ng-switch-when="ModuleTemplateUpdatedEvent" event="event"></module-template-updated>
+                            <module-template-deleted ng-switch-when="ModuleTemplateDeletedEvent" event="event"></module-template-deleted>
 
-                <!-- Templates inside Template Packages (Techno) -->
-                <template-created ng-switch-when="TemplateCreatedEvent" event="event"></template-created>
-                <template-updated ng-switch-when="TemplateUpdatedEvent" event="event"></template-updated>
-                <template-deleted ng-switch-when="TemplateDeletedEvent" event="event"></template-deleted>
+                            <!-- Properties (Platform) -->
+                            <properties-saved ng-switch-when="PropertiesSavedEvent" event="event"></properties-saved>
 
-                <!-- Template Package (Techno) -->
-                <template-package-deleted ng-switch-when="TemplatePackageDeletedEvent" event="event"></template-package-deleted>
+                            <!-- Templates inside Template Packages (Techno) -->
+                            <template-created ng-switch-when="TemplateCreatedEvent" event="event"></template-created>
+                            <template-updated ng-switch-when="TemplateUpdatedEvent" event="event"></template-updated>
+                            <template-deleted ng-switch-when="TemplateDeletedEvent" event="event"></template-deleted>
 
-            </div>
+                            <!-- Template Package (Techno) -->
+                            <template-package-deleted ng-switch-when="TemplatePackageDeletedEvent" event="event"></template-package-deleted>
+
+                        </div>
+                    </div>
+                </div>
+            </md-content>
         </div>
-    </div>
-</div>
-<div class="modal-footer">
-    <button class="btn btn-warning" ng-click="$dismiss('cancel')">Fermer</button>
-</div>
+        <md-dialog-actions>
+            <md-button ng-click="$closeDialog()" class="md-raised md-warn">Fermer</md-button>
+        </md-dialog-actions>
+    </md-dialog-content>
+</md-dialog>

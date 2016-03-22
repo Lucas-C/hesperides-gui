@@ -428,10 +428,8 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
             modalScope.eventEntries = entries;
 
-            var modal = $modal.open({
+            var modal = $mdDialog.show({
                         templateUrl: 'event/event-modal.html',
-                        backdrop: true,
-                        keyboard: true,
                         scope: modalScope
                     });
         });

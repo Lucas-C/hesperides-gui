@@ -277,6 +277,10 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
         var modalScope = $scope.$new();
 
+        modalScope.$diff = function() {
+            $mdDialog.hide();
+        }
+
         var t = $mdDialog.show({
             templateUrl: 'application/properties_diff_wizard.html',
             scope: modalScope
@@ -469,17 +473,22 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
             specificOffset += 11;
         }
 
-        var parentY = $('#propertiesDivHolder').parent().offset().top;
-        var clickedElementPosition = event.target.getBoundingClientRect().top + window.pageYOffset;
-        var padding = clickedElementPosition - parentY - specificOffset;
-        $('#propertiesDivHolder').css('padding-top', padding);
+        var offset = $('#propertiesDivHolder').parent().offset();
 
-        //Scroll to properties
-        $timeout(function () {
-            $('html, body').animate({
-                scrollTop: clickedElementPosition - 15
-            }, 1000, 'swing');
-        }, 0);
+        // This function is call in box view also, but not working
+        if (!_.isUndefined(offset)) {
+            var parentY = offset.top;
+            var clickedElementPosition = event.target.getBoundingClientRect().top + window.pageYOffset;
+            var padding = clickedElementPosition - parentY - specificOffset;
+            $('#propertiesDivHolder').css('padding-top', padding);
+
+            //Scroll to properties
+            $timeout(function () {
+                $('html, body').animate({
+                    scrollTop: clickedElementPosition - 15
+                }, 1000, 'swing');
+            }, 0);
+        }
     };
 
     $scope.clean_properties = function (properties) {
@@ -921,28 +930,6 @@ propertiesModule.directive('focusSaveGlobalProperties', function () {
             }
         });
     };
-});
-
-/**
- * Diplay warning message when value is same/or not and source of value is different.
- */
-propertiesModule.directive('warningValue', function () {
-
-    return {
-        restrict: 'E',
-        scope: {
-            propertyToModify: '=',
-            propertyToCompareTo: '='
-        },
-        template: '<span class="fa fa-exclamation-circle" ng-if="propertyToModify.inGlobal != propertyToCompareTo.inGlobal || propertyToModify.inDefault != propertyToCompareTo.inDefault">' +
-            '<md-tooltip ng-if="propertyToModify.inGlobal != propertyToCompareTo.inGlobal">Valorisé depuis un propriété globale</md-tooltip>' +
-            '<md-tooltip ng-if="propertyToModify.inDefault != propertyToCompareTo.inDefault">' +
-            'La valeur sur l\'application' +
-            'est valorisée depuis une valeur par défaut' +
-            '</md-tooltip>' +
-            '</span>'
-    }
-
 });
 
 propertiesModule.factory('Properties', function () {
@@ -1431,13 +1418,14 @@ propertiesModule.directive("displayIterableProperty", function () {
  * Diplay warning message when value is same/or not and source of value is different.
  */
 propertiesModule.directive('warningValue', function () {
+
     return {
         restrict: 'E',
         scope: {
             propertyToModify: '=',
             propertyToCompareTo: '='
         },
-        template: '<span class="glyphicon glyphicon-exclamation-sign" ng-if="propertyToModify.inGlobal != propertyToCompareTo.inGlobal || propertyToModify.inDefault != propertyToCompareTo.inDefault">' +
+        template: '<span class="fa fa-exclamation-circle" ng-if="propertyToModify.inGlobal != propertyToCompareTo.inGlobal || propertyToModify.inDefault != propertyToCompareTo.inDefault">' +
             '<md-tooltip ng-if="propertyToModify.inGlobal != propertyToCompareTo.inGlobal">Valorisé depuis un propriété globale</md-tooltip>' +
             '<md-tooltip ng-if="propertyToModify.inDefault != propertyToCompareTo.inDefault">' +
             'La valeur sur l\'application' +

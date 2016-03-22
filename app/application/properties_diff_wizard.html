@@ -7,12 +7,12 @@
                     <md-content layout-padding class="autoScroll">
                         <form name="comparedPlatformForm">
                             <md-input-container md-no-float class="md-block">
-                                <label>Nom</label>
+                                <label>Application à laquelle comparer</label>
                                 <input type="text" required ng-trim="true" ng-model="from.application" md-autofocus="true"
                                        placeholder="Application à laquelle comparer : WDI, PAO, STF,..."/>
                             </md-input-container>
                             <md-input-container md-no-float class="md-block">
-                                <label>Nom</label>
+                                <label>Plateforme à laquelle comparer</label>
                                 <input type="text" required ng-trim="true" ng-model="from.platform"
                                        placeholder="Plateforme à laquelle comparer : WDI, PAO, STF, ..."/>
                             </md-input-container>
@@ -63,8 +63,8 @@
                                 </ul>
                             </div>
                             <div flex style="text-align: end">
-                                <md-button ng-click="$closeDialog()" class="md-raised md-primary" wz-next aria-label="Lancer le diff"
-                                           ng-disabled="!compare_platform.chosen_module" ng-click="answer()">Lancer le diff</md-button>
+                                <md-button ng-click="$diff()" class="md-raised md-primary" wz-next aria-label="Lancer le diff"
+                                           ng-disabled="!compare_platform.chosen_module">Lancer le diff</md-button>
                             </div>
                         </div>
                         <div layout="row" layout-margin>

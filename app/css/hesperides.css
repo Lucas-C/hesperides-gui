@@ -24,8 +24,7 @@ body {
 .property-using-global {
     color: #009587;
 }
-
-.text-stroke{
+.text-stroke {
 	text-decoration: line-through !important;
 }
 

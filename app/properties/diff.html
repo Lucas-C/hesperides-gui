@@ -295,7 +295,7 @@
     <md-divider ng-show="toggle3"></md-divider>
     <div layout="row" ng-show="toggle3" ng-repeat="diff_container in diff_containers3 = (diff_containers | filter:{'status':3, 'property_name': propertiesKeyFilter3}  | orderBy:'property_name')">
         <div flex="20" layout-align="end start" layout="row">
-            <div class="diff-property-name">{{diff_container.property_name}}</div>
+            <div class="diff-property-name text-stroke">{{diff_container.property_name}}</div>
         </div>
         <div flex="35" layout-align="end start" layout="row">
             <div class="diff-text-modifiable diff-value">

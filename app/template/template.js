@@ -3,7 +3,7 @@
  */
 var templateModule = angular.module('hesperides.template', []);
 
-templateModule.factory('HesperidesTemplateModal', ['TemplateService', '$modal', '$rootScope', function (TemplateService, $modal, $rootScope) {
+templateModule.factory('HesperidesTemplateModal', ['TemplateService', '$mdDialog', '$timeout', '$mdConstant', '$rootScope', function (TemplateService, $mdDialog, $timeout, $mdConstant, $rootScope) {
 
     var hesperidesOverlay = {
         startState: function() {
@@ -59,6 +59,7 @@ templateModule.factory('HesperidesTemplateModal', ['TemplateService', '$modal', 
     });
 
     var defaultScope = {
+        codemirrorFullscreenStatus: false,
         codemirrorModes: [
             { name: "Simple Hesperides", mimetype: ""},
             { name: "Properties File", mimetype:"text/x-properties"}
@@ -72,6 +73,7 @@ templateModule.factory('HesperidesTemplateModal', ['TemplateService', '$modal', 
                     $('#templateContent').children().css("z-index", 100000);
                     cm.setOption('fullScreen', true);
                     cm.focus();
+                    defaultScope.codemirrorFullscreenStatus = true;
                 },
                 'Esc': function (cm) {
                     $('#templateContentParent').append($('#templateContent'));
@@ -82,9 +84,9 @@ templateModule.factory('HesperidesTemplateModal', ['TemplateService', '$modal', 
             onLoad: function(_editor){
                 defaultScope.editor = _editor;
                 //This is some trick to avoid a bug. If not refresh, then we have to click on code mirror to see its content
-                setTimeout(function(){
+                $timeout(function(){
                     defaultScope.editor.refresh();
-                }, 100);
+                }, 500);
             }
         },
         changeCodeMirrorMode: function(new_mode){
@@ -112,31 +114,43 @@ templateModule.factory('HesperidesTemplateModal', ['TemplateService', '$modal', 
 
             modalScope.isReadOnly = options.isReadOnly;
 
+            modalScope.$closeDialog = function() {
+                $mdDialog.cancel();
+            };
+
+            modalScope.$checkIfCodeMirrorInFullScreen = function($event) {
+                if ($event.keyCode === $mdConstant.KEY_CODE.ESCAPE && defaultScope.codemirrorFullscreenStatus) {
+                    $event.stopPropagation();
+                    defaultScope.codemirrorFullscreenStatus = false;
+                }
+            };
+
             defaultScope.codeMirrorOptions.readOnly = options.isReadOnly ? true : false;
 
             angular.extend(modalScope, defaultScope);
 
-            var modal = $modal.open({
+            $mdDialog.show({
                 templateUrl: 'template/template-modal.html',
-                backdrop: 'static',
-                size: 'lg',
-                keyboard: false,
-                scope: modalScope
+                controller: 'TechnoCtrl',
+                preserveScope: true, // requiered for not freez menu see https://github.com/angular/material/issues/5041
+                scope:modalScope
             });
 
-            modalScope.$save = function(template){
+            modalScope.$close = function(template) {
                 modalScope.save(template).then(function(savedTemplate){
                     modalScope.template = savedTemplate;
                 }).catch(function() {
                     // Do nothing to prevent closing window if error with annotation
                 });
+
+                $mdDialog.cancel();
             };
 
-            //If everything went well (using $close to close the modal), then save the template
-            //If we use $dismiss to close the modal, this will not be called
-            modal.result.then(function (template) {
-                modalScope.$save(template);
-            });
+            modalScope.$save = function(template){
+                modalScope.save(template).then(function(savedTemplate){
+                    modalScope.template = savedTemplate;
+                });
+            };
         }
     };
 
@@ -200,7 +214,7 @@ templateModule.factory('Template', function () {
 
 });
 
-templateModule.factory('TemplateEntry', ['$http', 'Template',function ($http, Template) {
+templateModule.factory('TemplateEntry', ['$hesperidesHttp', 'Template',function ($http, Template) {
 
     var TemplateEntry = function (data) {
         angular.extend(this, {
@@ -220,7 +234,7 @@ templateModule.factory('TemplateEntry', ['$http', 'Template',function ($http, Te
     return TemplateEntry;
 }]);
 
-templateModule.factory('TemplateService', ['$http', 'Template', 'TemplateEntry', function ($http, Template, TemplateEntry) {
+templateModule.factory('TemplateService', ['$hesperidesHttp', 'Template', 'TemplateEntry', function ($http, Template, TemplateEntry) {
 
     return {
         get: function (namespace, name) {

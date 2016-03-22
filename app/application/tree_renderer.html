@@ -1,0 +1,97 @@
+<!-- Debut bloc logic -->
+<init-instance-functions ng-model="box"></init-instance-functions>
+
+<div class="property-tree-logic-bloc" layout="row"  ng-mouseleave="componentButtonsVisible=false">
+    <div flex="none" layout="row" layout-align="none center">
+        <span ng-click="displayInstanceDetails()" class="property-tree-sign">{{sign}}</span>
+    </div>
+    <div flex="none"
+         ng-mouseenter="componentButtonsVisible=true"
+         layout="row" layout-align="none center">
+        <a href="" buttons="no" editable-text="box.name"
+           onbeforesave="update_box_name(box, box.name, $data)">
+           {{box.name}}
+           <md-tooltip>Modifier le nom du groupe logique</md-tooltip>
+        </a>
+    </div>
+    <div flex ng-show="componentButtonsVisible" layout="row" layout-align="none center">
+        <md-button ng-click="search_module(box)"aria-label="Ajouter un module"
+                   class="md-xs">
+            <span class="fa fa-plus"></span>
+            <md-tooltip>Ajouter un module</md-tooltip>
+        </md-button>
+        <md-button ng-click="open_add_box_dialog(box)"
+                   aria-label="Ajouter un groupe logique"
+                   class="md-xs">
+            <span class="fa fa-inbox"></span>
+            <md-tooltip>Ajouter un groupe logique</md-tooltip>
+        </md-button>
+        <md-button ng-really-message="Supprimer le groupe logique {{box.name}} ?"
+                   aria-label="Supprimer le groupe logique"
+                   ng-really-click="remove_box(box.name, box)" ng-if="box.isEmpty()"
+                   class="md-xs md-warn">
+            <span class="fa fa-trash"></span>
+            <md-tooltip>Supprimer le groupe logique</md-tooltip>
+        </md-button>
+    </div>
+</div>
+
+<!-- fin bloc logic -->
+<div ng-if="treedisplay" flex="100">
+    <div class="property-tree-logic-bloc-subbloc" flex="100"
+         ng-repeat="box in (box.children | orderObjectBy:'name') | filterBox:searchInTree"
+         ng-include="'application/tree_renderer.html'"></div>
+
+    <!-- Debut des box affichant les modules -->
+    <div
+         ng-init="moduleButtonsVisible=false"
+         ng-if="box.modules.length > 0"
+         ng-repeat="module in box.modules | orderObjectBy:'name'">
+        <property-tool-button-over></property-tool-button-over>
+        <init-instances ng-model="module"></init-instances>
+        <div layout="row" class="property-tree-module">
+            <div flex="1" layout="row" layout-align="none center">
+                <span ng-click="displayInstances()"
+                      class="property-tree-sign">
+                    {{sign}}
+                </span>
+            </div>
+
+            <div flex="noshrink" ng-mouseenter="moduleButtonsVisible=true" layout="row" layout-align="none center">
+                <strong>{{module.title}}</strong>
+            </div>
+        </div>
+
+        <!-- Debut des box affichant les instances -->
+        <div ng-if="instancedisplay">
+            <ul>
+                <li ng-repeat="instance in module.instances | orderObjectBy:'name'"
+                    class="list-inline"
+                    ng-mouseover="instance.hover = true" ng-mouseleave="instance.hover = false">
+                    <md-button ng-click="edit_instance(instance, module.properties_path);movePropertiesDivHolderToCursorPosition($event);"
+                               aria-label="Editer les properties de l'instance"
+                               class="md-instance">
+                        <span class="fa fa-list" style="margin-right:10px"></span>{{instance.name}}
+                        <md-tooltip>Editer les properties de l'instance</md-tooltip>
+                    </md-button>
+                    <md-button ng-click="preview_instance(box, application, platform, instance, module)"
+                               class="md-xs" ng-show="instance.hover">
+                        <md-tooltip>Prévisualiser l'instance</md-tooltip>
+                        <i class="fa fa-eye"></i>
+                    </md-button>
+                    <md-button ng-really-message="Supprimer l'instance {{instance.name}} ?"
+                               aria-label="Supprimer l'instance"
+                               ng-really-click="delete_instance(instance, module)"
+                               class="md-warn md-xs md-instance" ng-show="instance.hover">
+                        <span class="fa fa-trash"></span>
+                        <md-tooltip>Supprimer l'instance</md-tooltip>
+                    </md-button>
+                </li>
+            </ul>
+        </div>
+        <!-- Fin des box affichant les instances -->
+
+    </div>
+    <!-- Fin des box affichant les modules -->
+
+</div>

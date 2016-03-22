@@ -1,0 +1,138 @@
+<div layout="row" layout-wrap>
+    <div flex="30">
+        <!-- Filtre sur l'arbre -->
+        <div>
+            <md-input-container class="md-block">
+                <label>Filtrer sur l'arbre</label>
+                <input type="text" ng-trim="true" ng-model="searchInTree" />
+            </md-input-container>
+        </div>
+
+        <!-- Element root de l'arbre -->
+        <div id="header" layout="row">
+            <div flex="none" layout="row" layout-align="none center">Plateforme</div>
+            <div flex="grow" layout="row" layout-align="none center">
+                <md-button ng-click="open_add_box_dialog(mainBox)" class="md-xs"
+                           aria-label="Ajouter un groupe logique" tooltip="Ajouter un groupe logique">
+                    <i class="fa fa-inbox"></i>
+                </md-button>
+                <md-button class="md-xs" tooltip="Editer les properties globales"
+                           aria-label="Editer les properties" ng-click="showGlobalPropertiesDisplay();movePropertiesDivHolderToCursorPosition($event);">
+                    <i class="fa fa-list"></i>
+                </md-button>
+                <md-button class="md-xs" tooltip="Comparer les properties globales"
+                           aria-label="Comparer les properties globales"
+                           ng-click="diff_global_properties(platform)">
+                    <i class="fa fa-exchange"></i>
+                </md-button>
+            </div>
+        </div>
+
+        <!-- Elements enfants -->
+        <div>
+            <div
+                 ng-repeat="box in (mainBox.children | orderObjectBy:'name') | filterBox:searchInTree"
+                 ng-include="'application/tree_renderer.html'"/>
+        </div>
+    </div>
+</div>
+
+<div flex="70">
+    <div id="propertiesDivHolder">
+        <!-- Bouton sauvegarder -->
+        <div layout="row" layout-align="end start" ng-show="showGlobalProperties">
+            <md-button class="md-raised md-primary"
+                       ng-click="save_global_properties(platform.global_properties)">
+                <i class="fa fa-check"></i>
+                Sauver les properties globales
+            </md-button>
+        </div>
+        <div layout="row" ng-show="showGlobalProperties" flex="100">
+            <form>
+                <properties-globales-tree />
+
+        <div style="margin-top: 5px;" layout="row" ng-show="properties">
+            <div flex="50">
+                <h3><span>Les properties associees a <strong>{{selected_module.path.split('#').join('
+                    | ')}} | {{selected_module.title}}</strong></span>
+                </h3>
+            </div>
+            <div flex="50">
+                <md-button id="cleanPropertiesButton" ng-click="clean_properties(properties)">
+                    <i class="fa fa-trash"></i>
+                    <span>Nettoyer les valorisations inutiles</span>
+                </md-button>
+                <md-button id="savedPropertiesButton" ng-click="save_properties(properties, selected_module)" class="md-primary">
+                    <i class="fa fa-check"></i>
+                    <span>Sauver les properties</span>
+                </md-button>
+            </div>
+        </div>
+        <div layout="row" ng-show="properties">
+            <div flex="100">
+                <properties-list properties="properties">
+                </properties-list>
+            </div>
+        </div>
+        <div layout="row" ng-show="instance">
+            <div>
+                <h3 style="margin-top: 0;">
+                <span style="margin-right: 30px">Les properties d'instance associees a <strong>
+                    <a href="" editable-text="instance.name"
+                       onbeforesave="update_instance_name(instance, $data)">{{instance.name}}</a></strong></span>
+                    <md-button ng-click="save_platform_from_box(mainBox)" class="md-primary">
+                        <i class="fa fa-check"></i>
+                        <span>Sauver les properties</span>
+                    </md-button>
+                </h3>
+
+                <div layout="row">
+                    <div flex="none"><toggle-deleted-properties key-value-properties="instance.key_values" toggle="displayDeletedProperties"></toggle-deleted-properties></div>
+                    <div flex><toggle-unspecified-properties key-value-properties="instance.key_values" toggle="displayUnspecified"></toggle-unspecified-properties></div>
+                </div>
+
+                <form class="form-horizontal narrow" role="form">
+
+                    <div class="form-group" ng-class="{'property-not-used': !key_value_property.inModel}"
+                         layout="row"
+                         ng-repeat="key_value_property in instance.key_values | displayProperties:displayDeletedProperties | hideHesperidesPredefinedProperties | displayUnspecifiedProperties:displayUnspecified | orderBy:'name':instance.isReverseOrder() track by $index">
+
+                        <div flex="33">
+                            <md-input-container class="property-label" ng-class="{'text-stroke':!key_value_property.inModel}">
+                                <input type="text" ng-trim="true" ng-model="key_value_property.name" aria-label="{{key_value_property.name}}" ng-readonly="true" class="property-label" />
+                                <md-tooltip md-direction="top">
+                                    {{key_value_property.name}}
+                                </md-tooltip>
+                            </md-input-container>
+                        </div>
+
+                        <div flex>
+                            <md-input-container
+                                    class="md-block"
+                                    ng_if="!key_value_property.inGlobal"
+                                    ng-class="{'property-using-global': key_value_property.useGlobal}"
+                                    >
+                                <label ng-if="!(key_value_property.value)">{{key_value_property.defaultValue ? '[default=' + key_value_property.defaultValue + '] ' : ''}} {{key_value_property.comment}}</label>
+                                <input type="text" ng-trim="true" ng-model="key_value_property.value" ng-readonly="!key_value_property.inModel" aria-label="Valeur de la property {{key_value_property.name}}" ng-class="{'text-stroke':!key_value_property.inModel}"/>
+                                <md-tooltip ng-if="key_value_property.value">{{key_value_property.defaultValue ? '[default=' + key_value_property.defaultValue + '] ' : ''}} {{key_value_property.comment}}</md-tooltip>
+                            </md-input-container>
+
+                            <!-- Edit layout, but this key is filled by global properties -->
+                            <md-input-container
+                                    class="md-block"
+                                    ng_if="key_value_property.inGlobal"
+                                    >
+                                <input type="text" ng-model="key_value_property.value" ng-readonly="true" aria-label="Ancienne property" class="property-global" />
+
+                                <md-tooltip md-direction="right">
+                                    Valeur automatiquement valorisée <br/>par la variable globale du même nom.<br/>Pour la modifier, changez son nom dans le template <br/>ou éditez la variable globale.
+                                </md-tooltip>
+
+                            </md-input-container>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>

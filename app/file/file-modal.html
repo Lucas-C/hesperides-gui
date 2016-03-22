@@ -1,44 +1,43 @@
-<div class="modal-header">
-    <h3 class="modal-title">Prévisualisation de {{instance.name}}</h3>
-</div>
-<div class="modal-body">
+<md-dialog flex="auto">
+    <md-dialog-content>
+        <div class="ng-binding">
+            <h2>Prévisualisation de {{instance.name}}</h2>
+            <md-content layout-padding class="autoScroll" style="max-width: none;">
+                <form novalidate ng-repeat="item in fileEntries track by $index" heading="{{elem.name}}">
+                    <section class="file-header">
+                            <md-button class="md-xs" ng-if ="item.on_error == false" ng-click="download_file(item.url)">
+                                <md-icon class="fa fa-download"></md-icon>
+                            </md-button>
+                            <md-button ng-click="$showFile = !$showFile">{{item.name}} ( {{item.rights}} )</md-button>
 
-    <accordion close-others="true">
-
-        <accordion-group ng-repeat="elem in fileEntries track by $index" is-open="isOpen">
-
-            <accordion-heading ng-click="isOpen=!isOpen">
-                <div class ="accordion-head">{{elem.name}}</div>
-            </accordion-heading>
-
-            <input type="text" class="form-control" required ng-trim="true" value= "{{elem.location}} ( {{elem.rights}} )"
-                   id="fileLocation" placeholder="Enplacement et droits sur le fichier" ng-disabled="true"
-                   data-hint="L'emplacement du template et les droits sur le fichier"/>
-
-            <div class="form-group" id="templateContentParent" style="padding-top: 10px">
-                <label style="width: 100%">Contenu du fichier</label>
-
-                <div ng-switch = "elem.on_error">
-                    <div ng-switch-when="true" class="alert alert-danger" style = "background-color:#f2dede;border-color:#eed3d7;color:#b94a48;">
-                        <strong>Erreur !</i></strong> {{elem.content}}
-                    </div>
-
-                    <ui-codemirror ng-switch-when="false" ui-codemirror-opts="codeMirrorOptions" ng-model="elem.content"></ui-codemirror>
-                </div>
-
-                <div ng-if ="elem.on_error == false">
-                    <a class = "btn btn-success" id="donwload" href = "{{elem.url}}" download="{{elem.name}}" target="_blank">
-                        Télécharger
-                    </a>
-                </div>
-
-            </div>
-        </accordion-group>
-
-    </accordion>
-
-</div>
-<div class="modal-footer">
-    <button class="btn btn-success" ng-click="download_all_instance_files()">Télécharger tous</button>
-    <button class="btn btn-warning" ng-click="$dismiss('cancel')">Annuler</button>
-</div>
+                            <!-- Add css class 'ng-hide' to disable display at startup and for working autorefresh plugin -->
+                            <div ng-show="$showFile" class="file-content ng-hide">
+                                <div layout="row">
+                                    <div flex>
+                                        <label class="template-section-header">Contenu du fichier</label>
+                                        <kbd>F11</kbd> Activer /
+                                        <kbd>Esc</kbd> Desactiver l'edtion en plein ecran
+                                    </div>
+                                </div>
+                                <div id="templateContentParent">
+                                    <div ng-switch = "item.on_error">
+                                        <div ng-switch-when="true" class="alert alert-danger" style = "background-color:#f2dede;border-color:#eed3d7;color:#b94a48;">
+                                            <strong>Erreur !</i></strong> {{item.content}}
+                                        </div>
+                                        <ui-codemirror id="templateContent" ui-codemirror-opts="codeMirrorOptions"
+                                                       ng-model="item.content" ng-keydown="$checkIfCodeMirrorInFullScreen($event)"
+                                                       ng-switch-default
+                                                ></ui-codemirror>
+                                    </div>
+                                </div>
+                            </div>
+                    </section>
+                </form>
+            </md-content>
+        </div>
+        <md-dialog-actions>
+            <md-button ng-click="download_all_instance_files()" class="md-raised md-primary" ng-disabled="moduleForm.$invalid">Tous télécharger</md-button>
+            <md-button ng-click="$closeDialog()" class="md-raised md-warn">Annuler</md-button>
+        </md-dialog-actions>
+    </md-dialog-content>
+</md-dialog>

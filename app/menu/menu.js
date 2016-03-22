@@ -3,25 +3,32 @@
  */
 var menuModule = angular.module('hesperides.menu', ['hesperides.techno', 'hesperides.application', 'hesperides.file', 'hesperides.event', 'hesperides.properties']);
 
-menuModule.controller('MenuTechnoCtrl', ['$scope', '$modal', '$location', 'TechnoService', function ($scope, $modal, $location, TechnoService) {
+menuModule.controller('MenuTechnoCtrl', ['$scope', '$mdDialog', '$location', '$timeout', 'TechnoService', function ($scope, $mdDialog, $location, $timeout, TechnoService) {
 
-    var modal;
+    $scope.closeDialog = function() {
+        $mdDialog.cancel();
+    };
 
     $scope.find_technos_by_name = function (name) {
         return TechnoService.with_name_like(name);
     };
 
     $scope.open_create_techno_dialog = function () {
-        modal = $modal.open({
-            templateUrl: 'techno-menu-modal.html',
-            scope: $scope
+        $mdDialog.show({
+            templateUrl: 'techno/techno-menu-modal.html',
+            controller: 'MenuTechnoCtrl',
+            preserveScope: true, // requiered for not freez menu see https://github.com/angular/material/issues/5041
+            scope:$scope
         });
     };
 
     $scope.open_create_techno_from_dialog = function () {
-        modal = $modal.open({
-            templateUrl: 'techno-menu-modal-from.html',
-            scope: $scope
+        $mdDialog.show({
+            templateUrl: 'techno/techno-menu-modal-from.html',
+            controller: 'MenuTechnoCtrl',
+            preserveScope: true // requiered for not freez menu
+            // Remove scope cause else with autocomplete, window is closed
+            //scope:$scope
         });
     };
 
@@ -31,24 +38,41 @@ menuModule.controller('MenuTechnoCtrl', ['$scope', '$modal', '$location', 'Techn
         });
     };
 
-    $scope.open_techno_page = function (name, version, is_working_copy) {
+    $scope.open_techno_page = function (name, version, is_working_copy, fakeButton) {
         if(is_working_copy) {
             $location.path('/techno/' + name + '/' + version).search({type : "workingcopy"});
         } else {
             $location.path('/techno/' + name + '/' + version).search({});
         }
         $scope.technoSearched = "";
-        if (modal) modal.close();
+        $mdDialog.cancel();
+
+        // Very bad trick to close menu :-(
+        if (fakeButton) {
+            $timeout(function() {
+                $(fakeButton).click();
+            }, 0);
+        }
     }
 
 }]);
 
-menuModule.controller('MenuModuleCtrl', ['$scope', '$modal', '$location', 'ModuleService', 'Module',  function ($scope, $modal, $location, ModuleService, Module) {
+menuModule.controller('MenuModuleCtrl', ['$scope', '$mdDialog', '$location', '$timeout', 'ModuleService', 'Module',  function ($scope, $mdDialog, $location, $timeout, ModuleService, Module) {
 
-    var modal;
+    $scope.closeDialog = function() {
+        $mdDialog.cancel();
+    };
+
+    $scope.selectedItemChange = function(item) {
+        $log.info('Item changed to ' + JSON.stringify(item));
+    }
 
     $scope.find_modules_by_name = function (name) {
-        return ModuleService.with_name_like(name);
+        if (name) {
+            return ModuleService.with_name_like(name);
+        } else {
+            return null;
+        }
     };
 
     $scope.create_module = function(name, version){
@@ -61,39 +85,56 @@ menuModule.controller('MenuModuleCtrl', ['$scope', '$modal', '$location', 'Modul
     $scope.create_module_from = function (name, version, moduleFrom) {
         ModuleService.create_workingcopy_from(name, version, moduleFrom).then(function(){
             $scope.open_module_page(name, version, true);
+            $mdDialog.cancel();
         });
     };
 
-    $scope.open_module_page = function (name, version, is_working_copy) {
+    $scope.open_module_page = function (name, version, is_working_copy, fakeButton) {
         if(is_working_copy){
             $location.path('/module/' + name + '/' + version).search({type : "workingcopy"});
         } else {
             $location.path('/module/' + name + '/' + version).search({});
         }
         $scope.moduleSearched = "";
-        if (modal) modal.close();
+        $mdDialog.cancel();
+
+        // Very bad trick to close menu :-(
+        if (fakeButton) {
+            $timeout(function() {
+                $(fakeButton).click();
+            }, 0);
+        }
     };
 
     $scope.open_create_module_dialog = function () {
-        modal = $modal.open({
-            templateUrl: 'module-menu-modal.html',
-            scope: $scope
+        $mdDialog.show({
+            templateUrl: 'module/module-menu-modal.html',
+            controller: 'MenuModuleCtrl',
+            preserveScope: true, // requiered for not freez menu
+            scope:$scope
         });
     };
 
     $scope.open_create_module_from_dialog = function () {
-        modal = $modal.open({
-            templateUrl: 'module-menu-modal-from.html',
-            scope: $scope
+        $mdDialog.show({
+            templateUrl: 'module/module-menu-modal-from.html',
+            controller: 'MenuModuleCtrl',
+            preserveScope: true // requiered for not freez menu
+            // Remove scope cause else with autocomplete, window is closed
+            //scope:$scope
         });
     };
 
 
 }]);
 
-menuModule.controller('MenuPropertiesCtrl', ['$http','$scope', '$modal', '$location', 'ApplicationService', 'Platform','Properties', function ($http, $scope, $modal, $location, ApplicationService, Platform, properties) {
 
-    var modal;
+menuModule.controller('MenuPropertiesCtrl', ['$hesperidesHttp', '$scope', '$mdDialog', '$location', '$timeout', 'ApplicationService', 'Platform', function ($http, $scope, $mdDialog, $location, $timeout, ApplicationService, Platform) {
+
+    $scope.closeDialog = function() {
+        $mdDialog.cancel();
+    };
+
     var properties;
 
     /**
@@ -108,18 +149,29 @@ menuModule.controller('MenuPropertiesCtrl', ['$http','$scope', '$modal', '$locat
     };
 
     $scope.find_applications_by_name = function (name) {
-        return ApplicationService.with_name_like(name);
+        if (name) {
+            return ApplicationService.with_name_like(name);
+        } else {
+            return null;
+        }
     };
 
     $scope.find_platforms_of_application = function (application_name) {
         return ApplicationService.get_platform_name_of_application(application_name);
     };
 
-    $scope.open_properties_page = function (application_name, platform_name) {
+    $scope.open_properties_page = function (application_name, platform_name, fakeButton) {
         var path = '/properties/' + application_name;
         $location.url(path).search({platform: platform_name});
         $scope.applicationSearched = "";
-        if (modal) modal.close();
+        $mdDialog.cancel();
+
+        // Very bad trick to close menu :-(
+        if (fakeButton) {
+            $timeout(function() {
+                $(fakeButton).click();
+            }, 0);
+        }
     };
 
     $scope.create_platform = function(application_name, platform_name, production, application_version){
@@ -139,7 +191,7 @@ menuModule.controller('MenuPropertiesCtrl', ['$http','$scope', '$modal', '$locat
     $scope.create_platform_from = function(application_name, platform_name, production, application_version, from_application, from_platform, copyInstances){
         var platform;
 
-        if (copyInstances){
+        if (copyInstances) {
             // Clone the platform
             platform = new Platform({name: platform_name, application_name: application_name, application_version: application_version, production: production});
             ApplicationService.create_platform_from(platform, from_application, from_platform).then(function(platform){
@@ -201,23 +253,29 @@ menuModule.controller('MenuPropertiesCtrl', ['$http','$scope', '$modal', '$locat
     };
 
     $scope.open_create_platform_dialog = function () {
-        modal = $modal.open({
-            templateUrl: 'platform-menu-modal.html',
-            scope: $scope
+        $mdDialog.show({
+            templateUrl: 'properties/platform-menu-modal.html',
+            controller: 'MenuPropertiesCtrl',
+            preserveScope: true, // requiered for not freez menu
+            scope:$scope
         });
     };
 
     $scope.open_create_platform_from_dialog = function () {
-        modal = $modal.open({
-            templateUrl: 'platform-menu-modal-from.html',
-            scope: $scope
+        $mdDialog.show({
+            templateUrl: 'properties/platform-menu-modal-from.html',
+            controller: 'MenuPropertiesCtrl',
+            preserveScope: true, // requiered for not freez menu
+            scope:$scope
         });
     };
-
-
 }]);
 
-menuModule.controller('MenuHelpCtrl', ['$scope', '$modal', '$http', function($scope, $modal, $http){
+menuModule.controller('MenuHelpCtrl', ['$scope', '$mdDialog', '$hesperidesHttp', function($scope, $mdDialog, $http){
+
+    $scope.closeDialog = function() {
+        $mdDialog.cancel();
+    };
 
     $scope.display_hesperides_informations = function(){
 
@@ -231,12 +289,18 @@ menuModule.controller('MenuHelpCtrl', ['$scope', '$modal', '$http', function($sc
             throw error;
         });
 
-        var modal = $modal.open({
-            templateUrl: 'help-menu-modal.html',
-            scope: $scope
+        $mdDialog.show({
+            templateUrl: 'hesperides/help-menu-modal.html',
+            controller: 'MenuHelpCtrl',
+            preserveScope: true, // requiered for not freez menu
+            scope:$scope
         });
 
     };
+
+    $scope.display_swagger = function() {
+        window.open('/swagger.html');
+    }
 
 }]);
 

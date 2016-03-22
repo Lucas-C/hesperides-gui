@@ -1,0 +1,69 @@
+<div layout="row">
+    <div class="text-left" flex="50">
+        <a href="" editable-text="box.name"
+           onbeforesave="update_box_name(box, box.name, $data)">
+           {{box.name}}
+           <md-tooltip>Modifier le nom du groupe logique</md-tooltip>
+        </a>
+    </div>
+    <div flex="50" layout="row" layout-align="end start">
+        <md-button ng-click="search_module(box)" aria-label="Ajouter un module" class="md-xs">
+            <md-tooltip>Ajouter un module</md-tooltip>
+            <i class="fa fa-plus"></i>
+        </md-button>
+        <md-button ng-click="open_add_box_dialog(box)"
+                   aria-label="Ajouter un groupe logique" class="md-xs">
+            <md-tooltip>Ajouter un groupe logique</md-tooltip>
+            <i class="fa fa-inbox"></i>
+        </md-button>
+        <md-button ng-really-message="Supprimer le groupe logique {{box.name}} ?"
+                   aria-label="Supprimer le groupe logique"
+                   ng-really-click="remove_box(box.name, box)" ng-if="box.isEmpty()"
+                   class="md-warn md-xs">
+            <md-tooltip>Supprimer le groupe logique</md-tooltip>
+            <i class="fa fa-trash"></i>
+        </md-button>
+    </div>
+</div>
+<ul class="list-inline box">
+    <li class="jumbotron" ng-repeat="box in (box.children | orderObjectBy:'name')"
+        ng-include="'application/box_renderer.html'"></li>
+
+    <li ng-if="box.modules.length > 0" class="jumbotron instance" ng-repeat="module in box.modules | orderObjectBy:'name'">
+        <div layout="row">
+            <div class="property-box-module-name" layout="row" layout-align="start center" flex="none">
+                <strong>{{module.title}}</strong>
+            </div>
+            <div flex>
+                <property-tool-button></property-tool-button>
+            </div>
+        </div>
+
+        <div layout="row" layout-wrap>
+            <div ng-repeat="instance in module.instances | orderObjectBy:'name'"
+                ng-mouseover="instance.hover = true"
+                ng-mouseleave="instance.hover = false"
+                class="property-instance" flex="nogrow">
+                <md-button ng-click="edit_instance(instance, module.properties_path)"
+                           aria-label="Editer les properties de l'instance">
+                    <md-tooltip>Editer les properties de l'instance</md-tooltip>
+                    <i class="fa fa-list"></i>{{instance.name}}
+                </md-button>
+                <md-button ng-click="preview_instance(box, application, platform, instance, module)"
+                           class="md-xs" ng-show="instance.hover">
+                    <md-tooltip>Prévisualiser l'instance</md-tooltip>
+                    <i class="fa fa-eye"></i>
+                </md-button>
+                <md-button ng-really-message="Supprimer l'instance {{instance.name}} ?"
+                           aria-label="Supprimer l'instance"
+                           ng-really-click="delete_instance(instance, module)"
+                           class="md-warn md-xs"
+                           ng-class="{'instance-delete-button-hide': !instance.hover}">
+                    <md-tooltip>Supprimer l'instance</md-tooltip>
+                    <i class="fa fa-trash"></i>
+                </md-button>
+            </div>
+        </div>
+    </li>
+
+</ul>

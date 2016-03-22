@@ -23,6 +23,22 @@ components.directive('listOfItems', ['$parse', function ($parse) {
             }
             scope.size = attrs.size;
             scope.input = {};
+            scope.tooltip = attrs.tooltip;
+            scope.cssClass = function(item) {
+                var listClass = "";
+
+                if (item === scope.selectedItem) {
+                    listClass += " " + attrs.css;
+                } else {
+                    listClass += " md-clear";
+                }
+
+                if (scope.selectable == true) {
+                    listClass += " md-raised";
+                }
+
+                return listClass;
+            }
 
             scope.selfLabel = function (item) {
                 return $parse(attrs.label)(scope.$parent, {$item: item});

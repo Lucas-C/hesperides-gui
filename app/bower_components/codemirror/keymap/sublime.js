@@ -105,7 +105,7 @@
     cm.setSelections(extended);
   };
 
-  map["Shift-Ctrl-K"] = "deleteLine";
+  map["Shift-" + ctrl + "K"] = "deleteLine";
 
   function insertLine(cm, above) {
     if (cm.isReadOnly()) return CodeMirror.Pass

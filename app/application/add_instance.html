@@ -1,0 +1,22 @@
+<md-dialog flex="auto">
+    <md-dialog-content>
+        <div class="ng-binding">
+            <h2>Ajouter une instance</h2>
+            <md-content layout-padding class="autoScroll">
+                <form name="addInstanceForm" novalidate
+                      ng-submit="addInstanceForm.$valid && $add(new_instance_name)">
+                    <md-input-container md-no-float class="md-block">
+                        <label>Nom</label>
+                        <input type="text" required ng-trim="true" ng-model="new_instance_name" md-autofocus="true" />
+                    </md-input-container>
+                    <input type="submit" id="submit" value="Submit" ng-hide="true"/>
+                </form>
+            </md-content>
+        </div>
+        <md-dialog-actions>
+            <md-button ng-disabled="addInstanceForm.$invalid"
+                       ng-click="$add(new_instance_name, box)" ng-hide="isReadOnly" class="md-raised md-primary">Creer</md-button>
+            <md-button ng-click="$closeDialog()" class="md-raised md-warn">Annuler</md-button>
+        </md-dialog-actions>
+    </md-dialog-content>
+</md-dialog>

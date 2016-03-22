@@ -29,6 +29,5 @@
   },
   "_source": "git://github.com/johngeorgewright/angular-xml.git",
   "_target": "~2.2.1",
-  "_originalSource": "angular-xml",
-  "_direct": true
+  "_originalSource": "angular-xml"
 }

@@ -4,7 +4,7 @@
 
 var fileModule = angular.module('hesperides.file', []);
 
-fileModule.factory('FileEntry', ['$http', function ($http) {
+fileModule.factory('FileEntry', ['$hesperidesHttp', function ($http) {
     var FileEntry = function (data) {
             var me = this;
 
@@ -28,7 +28,7 @@ fileModule.factory('FileEntry', ['$http', function ($http) {
     return FileEntry;
 }]);
 
-fileModule.factory('FileService', ['$http', 'Application', 'Platform', 'Properties', 'InstanceModel', 'FileEntry', function ($http, Application, Platform, Properties, InstanceModel, FileEntry) {
+fileModule.factory('FileService', ['$hesperidesHttp', 'Application', 'Platform', 'Properties', 'InstanceModel', 'FileEntry', function ($http, Application, Platform, Properties, InstanceModel, FileEntry) {
     // Convert file right to string
     var files_rights_to_string = function(filesRights) {
         var clearRight = function(right) {

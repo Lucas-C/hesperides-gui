@@ -5,9 +5,9 @@ var applicationModule = angular.module('hesperides.module', []);
 
 
 applicationModule.controller('ModuleCtrl', [
-    '$scope', '$routeParams', '$location', '$modal', 'TechnoService', 'ModuleService', 'HesperidesTemplateModal', 'Template', 'Page',
+    '$scope', '$routeParams', '$location', '$mdDialog', 'TechnoService', 'ModuleService', 'HesperidesTemplateModal', 'Template', 'Page',
     'FileService',
-    function ($scope, $routeParams, $location, $modal, TechnoService, ModuleService, HesperidesTemplateModal, Template, Page,
+    function ($scope, $routeParams, $location, $mdDialog, TechnoService, ModuleService, HesperidesTemplateModal, Template, Page,
               FileService) {
 
     Page.setTitle('Module');
@@ -127,16 +127,21 @@ applicationModule.controller('ModuleCtrl', [
     };
 
     $scope.open_create_release_dialog = function(module){
-        var modal = $modal.open({
-            templateUrl: 'module/create_release.html',
-            backdrop: 'static',
-            size: 'sm',
-            keyboard: false,
-            scope: $scope
-        });
+        var modalScope = $scope.$new(true);
 
-        modal.result.then(function(release_version){
+        modalScope.$closeDialog = function() {
+            $mdDialog.cancel();
+        };
+
+        modalScope.$save = function(release_version) {
             $scope.create_release(module, release_version);
+            $mdDialog.cancel();
+        };
+
+        $mdDialog.show({
+            templateUrl: 'module/create_release.html',
+            controller: 'ModuleCtrl',
+            scope:modalScope
         });
     };
 
@@ -204,7 +209,7 @@ applicationModule.factory('Module', ['Techno', function (Techno) {
 }]);
 
 applicationModule.factory('ModuleService', [
-    '$http', '$q', 'Module', 'Template', 'TemplateEntry', 'Properties', 'FileService',
+    '$hesperidesHttp', '$q', 'Module', 'Template', 'TemplateEntry', 'Properties', 'FileService',
     function ($http, $q, Module, Template, TemplateEntry, Properties, FileService) {
 
     return {

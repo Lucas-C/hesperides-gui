@@ -1,6 +1,6 @@
 var nexusModule = angular.module('hesperides.nexus', ['xml']);
 
-nexusModule.factory('NexusService', ['$http', 'x2js', function ($http, x2js) {
+nexusModule.factory('NexusService', ['$hesperidesHttp', 'x2js', function ($http, x2js) {
     return {
 
         /**

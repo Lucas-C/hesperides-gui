@@ -74,14 +74,12 @@ applicationModule.factory('Platform', ['ApplicationModule', 'Properties', functi
 applicationModule.factory('ApplicationModule', ['Instance', function (Instance) {
 
     var ApplicationModule = function (data) {
-
-        var me = this;
-
         angular.extend(this, {
             id: 0,
             name: "",
             version: "",
             is_working_copy: true,
+            opened: false,
             instances: []
         }, data);
 
@@ -218,7 +216,7 @@ applicationModule.factory('Instance', function () {
 
 });
 
-applicationModule.factory('ApplicationService', ['$http', 'Application', 'Platform', 'Properties', 'InstanceModel', function ($http, Application, Platform, Properties, InstanceModel) {
+applicationModule.factory('ApplicationService', ['$hesperidesHttp', 'Application', 'Platform', 'Properties', 'InstanceModel', function ($http, Application, Platform, Properties, InstanceModel) {
 
     return {
         get: function (name) {
@@ -392,3 +390,23 @@ applicationModule.factory('ApplicationService', ['$http', 'Application', 'Platfo
     };
 
 }]);
+
+applicationModule.directive('propertiesGlobalesBox', function () {
+    return {
+        restrict: 'E',
+        templateUrl: "application/properties/properties_globales.html",
+        link: function (scope) {
+            scope.isBox = true;
+        }
+    };
+});
+
+applicationModule.directive('propertiesGlobalesTree', function () {
+    return {
+        restrict: 'E',
+        templateUrl: "application/properties/properties_globales.html",
+        link: function (scope) {
+            scope.isBox = false;
+        }
+    };
+});

@@ -1,6 +1,6 @@
 /**
  * Easy to use Wizard library for AngularJS
- * @version v0.4.2 - 2015-01-01 * @link https://github.com/mgonto/angular-wizard
+ * @version v0.5.5 - 2015-09-21 * @link https://github.com/mgonto/angular-wizard
  * @author Martin Gontovnikas <martin@gon.to>
  * @license MIT License, http://www.opensource.org/licenses/MIT
  */
@@ -16,8 +16,8 @@ angular.module("wizard.html", []).run(["$templateCache", function($templateCache
   $templateCache.put("wizard.html",
     "<div>\n" +
     "    <div class=\"steps\" ng-transclude></div>\n" +
-    "    <ul class=\"steps-indicator steps-{{steps.length}}\" ng-if=\"!hideIndicators\">\n" +
-    "      <li ng-class=\"{default: !step.completed && !step.selected, current: step.selected && !step.completed, done: step.completed && !step.selected, editing: step.selected && step.completed}\" ng-repeat=\"step in steps\">\n" +
+    "    <ul class=\"steps-indicator steps-{{getEnabledSteps().length}}\" ng-if=\"!hideIndicators\">\n" +
+    "      <li ng-class=\"{default: !step.completed && !step.selected, current: step.selected && !step.completed, done: step.completed && !step.selected, editing: step.selected && step.completed}\" ng-repeat=\"step in getEnabledSteps()\">\n" +
     "        <a ng-click=\"goTo(step)\">{{step.title || step.wzTitle}}</a>\n" +
     "      </li>\n" +
     "    </ul>\n" +
@@ -36,7 +36,8 @@ angular.module('mgo-angular-wizard').directive('wzStep', function() {
             wzTitle: '@',
             title: '@',
             canenter : '=',
-            canexit : '='
+            canexit : '=',
+            disabled: '@?wzDisabled'
         },
         require: '^wizard',
         templateUrl: function(element, attributes) {
@@ -67,7 +68,7 @@ angular.module('mgo-angular-wizard').directive('wizard', function() {
         },
 
         //controller for wizard directive, treat this just like an angular controller
-        controller: ['$scope', '$element', '$log', 'WizardHandler', function($scope, $element, $log, WizardHandler) {
+        controller: ['$scope', '$element', '$log', 'WizardHandler', '$q', function($scope, $element, $log, WizardHandler, $q) {
             //this variable allows directive to load without having to pass any step validation
             var firstRun = true;
             //creating instance of wizard, passing this as second argument allows access to functions attached to this via Service
@@ -91,7 +92,7 @@ angular.module('mgo-angular-wizard').directive('wizard', function() {
                 var stepTitle = $scope.selectedStep.title || $scope.selectedStep.wzTitle;
                 if ($scope.selectedStep && stepTitle !== $scope.currentStep) {
                     //invoking goTo() with step title as argument
-                    $scope.goTo(_.findWhere($scope.steps, {title: $scope.currentStep}));
+                    $scope.goTo(_.findWhere($scope.getEnabledSteps(), {title: $scope.currentStep}));
                 }
 
             });
@@ -103,7 +104,7 @@ angular.module('mgo-angular-wizard').directive('wizard', function() {
                 if (_.isUndefined(editMode) || _.isNull(editMode)) return;
 
                 if (editMode) {
-                    _.each($scope.steps, function(step) {
+                    _.each($scope.getEnabledSteps(), function(step) {
                         step.completed = true;
                     });
                 }
@@ -114,16 +115,16 @@ angular.module('mgo-angular-wizard').directive('wizard', function() {
                 //pushing the scope of directive onto step array
                 $scope.steps.push(step);
                 //if this is first step being pushed then goTo that first step
-                if ($scope.steps.length === 1) {
+                if ($scope.getEnabledSteps().length === 1) {
                     //goTo first step
-                    $scope.goTo($scope.steps[0]);
+                    $scope.goTo($scope.getEnabledSteps()[0]);
                 }
             };
 
             this.context = $scope.context;
 
             $scope.getStepNumber = function(step) {
-                return _.indexOf($scope.steps, step) + 1;
+                return _.indexOf($scope.getEnabledSteps(), step) + 1;
             };
 
             $scope.goTo = function(step) {
@@ -139,61 +140,101 @@ angular.module('mgo-angular-wizard').directive('wizard', function() {
                     //setting selected step to argument passed into goTo()
                     step.selected = true;
                     //emit event upwards with data on goTo() invoktion
-                    $scope.$emit('wizard:stepChanged', {step: step, index: _.indexOf($scope.steps , step)});
+                    $scope.$emit('wizard:stepChanged', {step: step, index: _.indexOf($scope.getEnabledSteps() , step)});
                     //setting variable to false so all other step changes must pass validation
                     firstRun = false;
                 } else {
                     //createing variables to capture current state that goTo() was invoked from and allow booleans
                     var thisStep;
-                    var exitallowed = false;
-                    var enterallowed = false;
                     //getting data for step you are transitioning out of
                     if($scope.currentStepNumber() > 0){
                         thisStep = $scope.currentStepNumber() - 1;
                     } else if ($scope.currentStepNumber() === 0){
                         thisStep = 0;
                     }
-                    //$log.log('steps[thisStep] Data: ', $scope.steps[thisStep].canexit);
-                    if(typeof($scope.steps[thisStep].canexit) === 'undefined' || $scope.steps[thisStep].canexit($scope.context) === true){
-                        exitallowed = true;
-                    }
-                    if($scope.getStepNumber(step) < $scope.currentStepNumber()){
-                        exitallowed = true;
-                    }
-                    if(exitallowed && step.canenter === undefined || exitallowed && step.canenter($scope.context) === true){
-                        enterallowed = true;
-                    }
+                    //$log.log('steps[thisStep] Data: ', $scope.getEnabledSteps()[thisStep].canexit);
+                    $q.all([canExitStep($scope.getEnabledSteps()[thisStep], step), canEnterStep(step)]).then(function(data) {
+                        if(data[0] && data[1]){
+                            //deselect all steps so you can set fresh below
+                            unselectAll();
 
-                    if(exitallowed && enterallowed){
-                        //deselect all steps so you can set fresh below
-                        unselectAll();
-
-                        //$log.log('value for canExit argument: ', $scope.currentStep.canexit);
-                        $scope.selectedStep = step;
-                        //making sure current step is not undefined
-                        if (!_.isUndefined($scope.currentStep)) {
-                            $scope.currentStep = step.title || step.wzTitle;
+                            //$log.log('value for canExit argument: ', $scope.currentStep.canexit);
+                            $scope.selectedStep = step;
+                            //making sure current step is not undefined
+                            if(!_.isUndefined($scope.currentStep)){
+                                $scope.currentStep = step.title || step.wzTitle;
+                            }
+                            //setting selected step to argument passed into goTo()
+                            step.selected = true;
+                            //emit event upwards with data on goTo() invoktion
+                            $scope.$emit('wizard:stepChanged', {step: step, index: _.indexOf($scope.getEnabledSteps(), step)});
+                            //$log.log('current step number: ', $scope.currentStepNumber());
                         }
-                        //setting selected step to argument passed into goTo()
-                        step.selected = true;
-                        //emit event upwards with data on goTo() invoktion
-                        $scope.$emit('wizard:stepChanged', {step: step, index: _.indexOf($scope.steps , step)});
-                        //$log.log('current step number: ', $scope.currentStepNumber());
-                    } else {
-                        return;
-                    }
+                    });
                 }
             };
 
+            function canEnterStep(step) {
+                var defer,
+                    canEnter;
+                //If no validation function is provided, allow the user to enter the step
+                if(step.canenter === undefined){
+                    return true;
+                }
+                //If canenter is a boolean value instead of a function, return the value
+                if(typeof step.canenter === 'boolean'){
+                    return step.canenter;
+                }
+                //Check to see if the canenter function is a promise which needs to be returned
+                canEnter = step.canenter($scope.context);
+                if(angular.isFunction(canEnter.then)){
+                    defer = $q.defer();
+                    canEnter.then(function(response){
+                        defer.resolve(response);
+                    });
+                    return defer.promise;
+                }
+                return step.canenter($scope.context) === true;
+            }
+
+            function canExitStep(step, stepTo) {
+                var defer,
+                    canExit;
+                //Exiting the step should be allowed if no validation function was provided or if the user is moving backwards
+                if(typeof(step.canexit) === 'undefined' || $scope.getStepNumber(stepTo) < $scope.currentStepNumber()){
+                    return true;
+                }
+                //If canexit is a boolean value instead of a function, return the value
+                if(typeof step.canexit === 'boolean'){
+                    return step.canexit;
+                }
+                //Check to see if the canexit function is a promise which needs to be returned
+                canExit = step.canexit($scope.context);
+                if(angular.isFunction(canExit.then)){
+                    defer = $q.defer();
+                    canExit.then(function(response){
+                        defer.resolve(response);
+                    });
+                    return defer.promise;
+                }
+                return step.canexit($scope.context) === true;
+            }
+
             $scope.currentStepNumber = function() {
                 //retreive current step number
-                return _.indexOf($scope.steps , $scope.selectedStep) + 1;
+                return _.indexOf($scope.getEnabledSteps() , $scope.selectedStep) + 1;
+            };
+
+            $scope.getEnabledSteps = function() {
+                return _.filter($scope.steps, function(step){
+                    return step.disabled !== 'true';
+                });
             };
 
             //unSelect All Steps
             function unselectAll() {
                 //traverse steps array and set each "selected" property to false
-                _.each($scope.steps, function (step) {
+                _.each($scope.getEnabledSteps(), function (step) {
                     step.selected = false;
                 });
                 //set selectedStep variable to null
@@ -202,22 +243,27 @@ angular.module('mgo-angular-wizard').directive('wizard', function() {
 
             //ALL METHODS ATTACHED TO this ARE ACCESSIBLE VIA WizardHandler.wizard().methodName()
 
+            this.currentStepTitle = function(){
+                return $scope.selectedStep.title;
+            };
+
             //Access to current step number from outside
             this.currentStepNumber = function(){
                 return $scope.currentStepNumber();
             };
             //method used for next button within step
             this.next = function(callback) {
+                var enabledSteps = $scope.getEnabledSteps();
                 //setting variable equal to step  you were on when next() was invoked
-                var index = _.indexOf($scope.steps , $scope.selectedStep);
+                var index = _.indexOf(enabledSteps, $scope.selectedStep);
                 //checking to see if callback is a function
                 if(angular.isFunction(callback)){
                    if(callback()){
-                        if (index === $scope.steps.length - 1) {
+                        if (index === enabledSteps.length - 1) {
                             this.finish();
                         } else {
                             //invoking goTo() with step number next in line
-                            $scope.goTo($scope.steps[index + 1]);
+                            $scope.goTo(enabledSteps[index + 1]);
                         }
                    } else {
                         return;
@@ -228,24 +274,25 @@ angular.module('mgo-angular-wizard').directive('wizard', function() {
                     $scope.selectedStep.completed = true;
                 }
                 //checking to see if this is the last step.  If it is next behaves the same as finish()
-                if (index === $scope.steps.length - 1) {
+                if (index === enabledSteps.length - 1) {
                     this.finish();
                 } else {
                     //invoking goTo() with step number next in line
-                    $scope.goTo($scope.steps[index + 1]);
+                    $scope.goTo(enabledSteps[index + 1]);
                 }
-                
+
             };
 
             //used to traverse to any step, step number placed as argument
             this.goTo = function(step) {
+                var enabledSteps = $scope.getEnabledSteps();
                 var stepTo;
                 //checking that step is a Number
                 if (_.isNumber(step)) {
-                    stepTo = $scope.steps[step];
+                    stepTo = enabledSteps[step];
                 } else {
                     //finding the step associated with the title entered as goTo argument
-                    stepTo = _.findWhere($scope.steps, {title: step});
+                    stepTo = _.findWhere(enabledSteps, {title: step});
                 }
                 //going to step
                 $scope.goTo(stepTo);
@@ -258,16 +305,29 @@ angular.module('mgo-angular-wizard').directive('wizard', function() {
                 }
             };
 
-            //cancel is alias for previous.
-            this.cancel = this.previous = function() {
+            
+            this.previous = function() {
                 //getting index of current step
-                var index = _.indexOf($scope.steps , $scope.selectedStep);
+                var index = _.indexOf($scope.getEnabledSteps() , $scope.selectedStep);
                 //ensuring you aren't trying to go back from the first step
                 if (index === 0) {
                     throw new Error("Can't go back. It's already in step 0");
                 } else {
                     //go back one step from current step
-                    $scope.goTo($scope.steps[index - 1]);
+                    $scope.goTo($scope.getEnabledSteps()[index - 1]);
+                }
+            };
+
+            //cancel is alias for previous.
+            this.cancel = function() {
+                //getting index of current step
+                var index = _.indexOf($scope.getEnabledSteps() , $scope.selectedStep);
+                //ensuring you aren't trying to go back from the first step
+                if (index === 0) {
+                    throw new Error("Can't go back. It's already in step 0");
+                } else {
+                    //go back one step from current step
+                    $scope.goTo($scope.getEnabledSteps()[0]);
                 }
             };
         }]

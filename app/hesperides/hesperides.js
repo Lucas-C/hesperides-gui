@@ -7,7 +7,6 @@ if ( typeof String.prototype.startsWith != 'function' ) {
 
 var hesperidesModule = angular.module('hesperides', [
     'ngRoute',
-    'ui.bootstrap',
     'hesperides.module',
     'hesperides.menu',
     'hesperides.properties',
@@ -19,18 +18,66 @@ var hesperidesModule = angular.module('hesperides', [
     'xeditable',
     'ui.codemirror',
     'mgo-angular-wizard',
-    'ui.bootstrap.datetimepicker',
-    'vs-repeat'
-]);
+    'vs-repeat',
+    'scDateTime'
+]).value('scDateTimeConfig', {
+    defaultTheme: 'sc-date-time/hesperides.tpl',
+    autosave: false,
+    defaultMode: 'date',
+    defaultDate: undefined, //should be date object!!
+    displayMode: undefined,
+    defaultOrientation: false,
+    displayTwentyfour: true,
+    compact: true,
+    autosave:true
+}).value('scDateTimeI18n', {
+    weekdays: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
+    calendar: 'Calendrier'
+});
 
-hesperidesModule.run(function (editableOptions) {
-    editableOptions.theme = 'bs3';
+hesperidesModule.run(function (editableOptions, editableThemes, $rootScope) {
+    editableOptions.theme = 'default';
+
+    // overwrite submit button template
+    editableThemes['default'].submitTpl = '<md-button class="md-raised md-primary" ng-click="$form.$submit()"><i class="fa fa-check"></i></md-button>';
+    editableThemes['default'].cancelTpl = '<md-button class="md-raised md-warn" ng-click="$form.$cancel()"><i class="fa fa-times"></i></md-button>';
+
     //Init bootstrap ripples
-    $(document).ready(function () {
+    /*$(document).ready(function () {
         $.material.init();
-    });
+    });*/
     //Prevent anoying behavior of bootstrap with dropdowns
     $(document).unbind('keydown.bs.dropdown.data-api');
+
+    /**
+     * Hack to calculate correctly margin of calendar.
+     *
+     * @param calendar calendar var in scope of calendar
+     * @param cssClass css class of fisrt day
+     * @returns {string}
+     */
+    $rootScope.offsetMargin = function(calendar, cssClass) {
+        var obj = $('.' + cssClass);
+        var selectedObj;
+
+        for (var index = 0; index < obj.length; index++) {
+            selectedObj = obj[index];
+
+            if (selectedObj.getAttribute("aria-label") === "1") {
+                break;
+            }
+        }
+
+        var calendarOffsetMagin;
+
+        if (selectedObj && selectedObj.clientWidth) {
+            calendarOffsetMagin = (new Date(calendar._year, calendar._month).getDay() * selectedObj.clientWidth);
+        } else {
+            calendarOffsetMagin = 0;
+        }
+
+        return calendarOffsetMagin + 'px';
+    };
 });
 
 hesperidesModule.factory('Page', function () {
@@ -40,7 +87,7 @@ hesperidesModule.factory('Page', function () {
             return title;
         },
         setTitle: function (newTitle) {
-            title = "Hesperides - Release PHOBOS - " + newTitle
+            title = "Hesperides > " + newTitle
         }
     }
 });
@@ -49,7 +96,9 @@ hesperidesModule.controller("TitleCtrl", ['$scope', 'Page', function ($scope, Pa
     $scope.Page = Page;
 }]);
 
-hesperidesModule.config(['$routeProvider', '$tooltipProvider', '$mdThemingProvider', '$ariaProvider', function ($routeProvider, $tooltipProvider, $mdThemingProvider, $ariaProvider) {
+hesperidesModule.config(['$routeProvider', '$mdThemingProvider', '$ariaProvider', '$mdIconProvider', function ($routeProvider, $mdThemingProvider, $ariaProvider, $mdIconProvider) {
+    $mdIconProvider.fontSet('fa', 'fontawesome');
+
     $routeProvider.
         when('/module/:name/:version', {
             templateUrl: 'module/module.html',
@@ -74,10 +123,6 @@ hesperidesModule.config(['$routeProvider', '$tooltipProvider', '$mdThemingProvid
         otherwise({
             templateUrl: 'welcome_screen.html'
         });
-    //Setup tooltip delay
-    $tooltipProvider.options({
-        popupDelay: 800
-    });
 
     //Material design theming
     $mdThemingProvider.theme('default')
@@ -97,18 +142,38 @@ hesperidesModule.config(['$routeProvider', '$tooltipProvider', '$mdThemingProvid
         tabindex: false,
         bindKeypress: false
     });
-
 }]);
 
-hesperidesModule.directive('ngReallyClick', [function () {
+hesperidesModule.directive('ngReallyClick', ['$mdDialog', '$timeout', function ($mdDialog, $timeout) {
     return {
         restrict: 'A',
         link: function (scope, element, attrs) {
             element.bind('click', function () {
-                var message = attrs.ngReallyMessage;
-                if (message && confirm(message)) {
+                if (attrs.ngReallyMessage && confirm(attrs.ngReallyMessage)) {
                     scope.$apply(attrs.ngReallyClick);
                 }
+
+                /* Why some time working, sometime not working ?
+                if (attrs.ngReallyMessage) {
+                    var confirm = $mdDialog.confirm()
+                        .title('Question ?')
+                        .textContent(attrs.ngReallyMessage)
+                        .ariaLabel(attrs.ngReallyMessage)
+                        //.targetEvent(ev)
+                        .theme('confirm-hesperides-dialog')
+                        .ok('Oui')
+                        .cancel('Non');
+
+                    $mdDialog.show(confirm).then(function() {
+                        // To prevent '$digest already in progress' message
+                        // see https://stackoverflow.com/questions/12729122/angularjs-prevent-error-digest-already-in-progress-when-calling-scope-apply
+                        $timeout(function() {
+                            scope.$apply(attrs.ngReallyClick);
+                        });
+                    }, function() {
+                        //$scope.status = 'You decided to keep your debt.';
+                    });
+                }*/
             });
         }
     }
@@ -132,6 +197,100 @@ hesperidesModule.directive('newChildScope', function () {
     return {
         restrict: 'A',
         scope: true
+    };
+});
+
+/**
+ * Popover button.
+ *
+ * Partial code from Material Design.
+ */
+hesperidesModule.factory('$propertyToolButtonService', [function(){
+    return { currentPopup: null };
+}]);
+
+hesperidesModule.directive('propertyToolButton', function ($mdUtil, $propertyToolButtonService) {
+    return {
+        restrict: 'E',
+        scope: true,
+        template:   '        <md-button ng-click="open_add_instance_dialog(module)"' +
+                    '        aria-label="Ajouter une instance"' +
+                    '        class="md-xs">' +
+                    '            <span class="fa fa-plus"></span>' +
+                    '            <md-tooltip>Ajouter une instance</md-tooltip>' +
+                    '        </md-button>' +
+                    '    <md-button class="md-xs" aria-label="Editer les properties"' +
+                    '    ng-click="edit_properties(platform, module);movePropertiesDivHolderToCursorPosition($event);"><span' +
+                    '    class="fa fa-list"></span>' +
+                    '        <md-tooltip>Editer les properties</md-tooltip>' +
+                    '    </md-button>' +
+                    '        <md-button class="md-xs"' +
+                    '        aria-label="Comparer les properties"' +
+                    '        ng-click="diff_properties(module)"><span' +
+                    '        class="fa fa-exchange"></span>' +
+                    '            <md-tooltip>Comparer les properties</md-tooltip>' +
+                    '        </md-button>' +
+                    '        <md-button ng-click="open_module_page(module.name, module.version, module.is_working_copy)"' +
+                    '            aria-label="Afficher le module"'+
+                    '            class="md-xs">' +
+                    '          <i class="fa fa-pencil"></i>' +
+                    '          <md-tooltip>Afficher le module {{module.title}}</md-tooltip>' +
+                    '        </md-button>' +
+                    '        <md-button aria-label="Modifier la version du module"' +
+                    '          class="md-xs"' +
+                    '          ng-click="change_module(module)">' +
+                    '            <md-tooltip>Modifier la version du module</md-tooltip>' +
+                    '          <span class="fa fa-tag"></span>' +
+                    '        </md-button>' +
+                    '        <md-button ng-really-message="Supprimer le module {{module.title}} et toutes ses instances ?"' +
+                    '        aria-label="Supprimer le module"' +
+                    '        ng-really-click="delete_module(module, box)"' +
+                    '        class="md-xs md-warn">' +
+                    '            <span class="fa fa-trash"></span>' +
+                    '            <md-tooltip>Supprimer le module</md-tooltip>' +
+                    '        </md-button>'
+    };
+});
+
+hesperidesModule.directive('propertyToolButtonOver', function ($mdUtil, $propertyToolButtonService) {
+    return {
+        restrict: 'E',
+        scope: true,
+        template: '<div class="popover"><property-tool-button /></div>',
+        link: function (scope, element) {
+            var parent = element.parent();
+            var popover = element.children();
+
+            // Display popup
+            parent.on('mouseenter', function() {
+                var tooltipParent = angular.element(document.body);
+                var tipRect = $mdUtil.offsetRect(popover, tooltipParent);
+                var parentRect = $mdUtil.offsetRect(parent, tooltipParent);
+
+                var newPosition = {
+                    left: parentRect.left + parentRect.width / 2 - tipRect.width / 2,
+                    top: parentRect.top - tipRect.height
+                };
+
+                popover.css({
+                    left: newPosition.left + 'px',
+                    top: newPosition.top + 'px'
+                });
+
+                if ($propertyToolButtonService.currentPopup)  {
+                    $propertyToolButtonService.currentPopup.removeClass('popover-hover');
+                }
+
+                element.children().addClass('popover-hover');
+                $propertyToolButtonService.currentPopup = element.children();
+            });
+
+            // Hide popup
+            popover.on('mouseleave', function() {
+                element.children().removeClass('popover-hover');
+                $propertyToolButtonService.currentPopup = null;
+            });
+        }
     };
 });
 
@@ -162,3 +321,47 @@ hesperidesModule.directive('konami', function() {
     }
 });
 
+hesperidesModule.factory('$hesperidesHttp', ['$http', function($http){
+    var returnResponseAndHideLoading = function(response) {
+        $('#loading').hide();
+        return response;
+    };
+
+    return {
+        get: function(url, config) {
+            $('#loading').show();
+
+            return $http.get(url, config).then(returnResponseAndHideLoading);
+        },
+        head: function(url, config) {
+            $('#loading').show();
+
+            return $http.head(url, config).then(returnResponseAndHideLoading);
+        },
+        post: function(url, data, config) {
+            $('#loading').show();
+
+            return $http.post(url, data, config).then(returnResponseAndHideLoading);
+        },
+        put: function(url, data, config) {
+            $('#loading').show();
+
+            return $http.put(url, data, config).then(returnResponseAndHideLoading);
+        },
+        delete: function(url, config) {
+            $('#loading').show();
+
+            return $http.delete(url, config).then(returnResponseAndHideLoading);
+        },
+        jsonp: function(url, config) {
+            $('#loading').show();
+
+            return $http.jsonp(url, config).then(returnResponseAndHideLoading);
+        },
+        patch: function(url, data, config) {
+            $('#loading').show();
+
+            return $http.patch(url, data, config).then(returnResponseAndHideLoading);
+        }
+        };
+}]);

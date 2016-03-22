@@ -1,129 +1,78 @@
-<form class="form-horizontal narrow" role="form" editable-form>
-    <div class="form-group">
-        <div class="col-md-12">
-
-            <toggle-deleted-properties key-value-properties="properties.key_value_properties" toggle="displayDeletedProperties"></toggle-deleted-properties>
-            <toggle-unspecified-properties key-value-properties="properties.key_value_properties" toggle="displayUnspecified"></toggle-unspecified-properties>
+    <div layout="column">
+        <div layout="row">
+            <div flex="none"><toggle-deleted-properties key-value-properties="properties.key_value_properties" toggle="displayDeletedProperties"></toggle-deleted-properties></div>
+            <div flex><toggle-unspecified-properties key-value-properties="properties.key_value_properties" toggle="displayUnspecified"></toggle-unspecified-properties></div>
+        </div>
+        <div>
+          <md-button id="sortModulePropertiesButton" ng-click="properties.switchOrder()"
+                  class="md-raised">
+              <span>Tri par nom de property</span>
+              <span class="fa" data-ng-class="{'fa-sort-alpha-desc': !properties.isReverseOrder(), 'fa-sort-alpha-asc': properties.isReverseOrder()}"></span>
+          </md-button>
+        </div>
+        <div layout="row">
+            <div flex="33">
+                <md-input-container class="md-block">
+                    <label>Filtrer les properties par clef</label>
+                    <input type="text" ng-trim="true" ng-model="propertiesKeyFilter" aria-label="Filtrer les properties par clef" />
+                </md-input-container>
+            </div>
+            <div flex="100">
+                <md-input-container class="md-block">
+                    <label>Filtrer les properties par valeur (les valeurs modifiées ne seront filtrables que suite &agrave; une sauvegarde)</label>
+                    <input type="text" ng-trim="true" ng-model="propertiesValueFilter" aria-label="Filtrer les properties par valeur (les valeurs modifiées ne seront filtrables que suite &agrave; une sauvegarde)" />
+                </md-input-container>
+            </div>
         </div>
 
-        <!-- TODO ajout des boutons permettant l'ajout de properties iterables -->
-        <!--<div class="col-md-12">
-            <add-iterable-property
-                    ng-repeat="iterable_property in properties.iterable_properties | orderBy:'name' track by $index"
-                    class="btn btn-warn btn-raised">
-                <span>{{ iterable_property.name }}</span>
-                <span class="glyphicon" data-ng-class="{'glyphicon-sort-by-alphabet-alt': !properties.isReverseOrder(), 'glyphicon-sort-by-alphabet': properties.isReverseOrder()}" style="padding-left:10px"></span>
-            </add-iterable-property>
-        </div>-->
+        <!-- Warning ! We need vs-repeat to have reactive UI -->
+        <div vs-repeat style="max-height: 450px; overflow: auto" layout="row">
+            <div layout="row" ng-repeat="key_value_property in properties.key_value_properties | hideHesperidesPredefinedProperties | displayUnspecifiedProperties:displayUnspecified | filterProperties:{'name':propertiesKeyFilter, 'filtrable_value':propertiesValueFilter} | displayProperties:displayDeletedProperties | orderBy:'name':properties.isReverseOrder() track by $index"
+                style="width: 100%" ng-model-options="{ updateOn: 'mouseleave' }>
+                <!-- flex is 25 not 33 cause vs-repeat have strange behaviour -->
+                <div flex="25">
+                    <md-input-container class="property-label" ng-class="{'text-stroke':!key_value_property.inModel}">
+                        <input type="text" ng-trim="true" ng-model="key_value_property.name" aria-label="{{ key_value_property.name }}" ng-readonly="true" class="property-label" /> <span ng-show="key_value_property.required" class="property-required">*</span>
+                        <md-tooltip md-direction="top">
+                            {{key_value_property.name}}
+                        </md-tooltip>
+                    </md-input-container>
+                </div>
 
-        <div class="col-md-12">
-            <button id="sortModulePropertiesButton" ng-click="properties.switchOrder()"
-                    class="btn btn-warn btn-raised">
-                <span>Tri par nom de property</span>
-                <span class="glyphicon"
-                      data-ng-class="{'glyphicon-sort-by-alphabet-alt': !properties.isReverseOrder(), 'glyphicon-sort-by-alphabet': properties.isReverseOrder()}"
-                      style="padding-left:10px"></span>
-            </button>
-        </div>
-        <div class="col-md-4">
-            <input class="form-control" placeholder="filtrer les properties par clé" ng-model="propertiesKeyFilter"/>
-        </div>
-        <div class="col-md-8">
-            <input class="form-control"
-                   placeholder="filtrer les properties par valeur (les valeurs modifiées ne seront filtrables que suite &agrave; une sauvegarde)"
-                   ng-model="propertiesValueFilter"/>
+                <div flex>
+                    <md-input-container
+                            class="md-block "
+                            ng_if="!key_value_property.inGlobal"
+                            ng-class="{'property-using-global': key_value_property.useGlobal}"
+                            ng-required="key_value_property.required"
+                            >
+                        <label ng-if="!(key_value_property.value)">{{key_value_property.defaultValue ? '[default=' + key_value_property.defaultValue + '] ' : ''}} {{key_value_property.comment}}</label>
+                        <input type="text" ng-trim="true" ng-model="key_value_property.value" ng-readonly="!key_value_property.inModel"
+                               aria-label="Valeur de la property {{key_value_property.name}}"
+                               ng-class="{'text-stroke':!key_value_property.inModel, 'default-value-color': key_value_property.defaultValue && !key_value_property.value}"
+                               />
+                        <md-tooltip ng-if="key_value_property.comment || key_value_property.defaultValue">{{key_value_property.defaultValue ? '[default=' + key_value_property.defaultValue + '] ' : ''}} {{key_value_property.comment}}</md-tooltip>
+                    </md-input-container>
+
+                    <!-- Edit layout, but this key is filled by global properties -->
+                    <md-input-container
+                            class="md-block"
+                            ng_if="key_value_property.inGlobal"
+                            >
+                        <input type="text" ng-model="key_value_property.value" ng-readonly="true" aria-label="Ancienne property" class="property-global" />
+
+                        <md-tooltip md-direction="right">
+                            Valeur automatiquement valorisée <br/>par la variable globale du même nom.<br/>Pour la modifier, changez son nom dans le template <br/>ou éditez la variable globale.
+                        </md-tooltip>
+
+                    </md-input-container>
+                </div>
+            </div>
         </div>
     </div>
 
-    <div vs-repeat style="max-height: 450px; overflow: auto" id="list-of-properties" ng-model-options="{ updateOn: 'mouseleave' }">
-        <div class="form-group" style="width: 100%" ng-class="{'property-not-used': !key_value_property.inModel}" ng-repeat="key_value_property in properties.key_value_properties | hideHesperidesPredefinedProperties | displayUnspecifiedProperties:displayUnspecified | filterProperties:{'name':propertiesKeyFilter, 'filtrable_value':propertiesValueFilter} | displayProperties:displayDeletedProperties | orderBy:'name':properties.isReverseOrder() track by $index">
-            <label style="text-align: right; overflow: hidden; text-overflow: ellipsis" title="{{ key_value_property.name }}" for="input-{{ key_value_property.name }}" class="col-md-4 control-label">{{ key_value_property.name }} <span ng-show="key_value_property.required" style="color:red"> *</span></label>
-
-            <!-- Edit layout, and this key is not filled by global properties -->
-            <div class="col-md-8" ng_if="!key_value_property.inGlobal">
-                <input id="input-{{ key_value_property.name }}"
-                   type="text" class="form-control default-value-color"
-                   ng-class="{'property-using-global': key_value_property.useGlobal}"
-                   placeholder="{{key_value_property.defaultValue ? '[default=' + key_value_property.defaultValue + '] ' : ''}}{{key_value_property.comment}}"
-                   ng-model="key_value_property.value" tooltip="{{key_value_property.comment}}"
-                   tooltip-trigger="focus"
-                   ng-required="key_value_property.required"
-                   tooltip-placement="top"
-                   />
-            </div>
-            <!-- Edit layout, but this key is filled by global properties -->
-            <div class="col-md-8" ng_if="key_value_property.inGlobal">
-                <label id="view-{{ key_value_property.name }}" class="control-label">{{key_value_property.value}}
-                    <md-tooltip md-direction="right">
-                        Valeur automatiquement valorisée <br/>par la variable globale du même nom.<br/>Pour la modifier,
-                        changez son nom dans le template <br/>ou éditez la variable globale.
-                    </md-tooltip>
-                </label>
-            </div>
-        </div>
-
-        <div class="form-group" style="width: 100%" ng-class="{'property-not-used': !iterable_property.inModel}"
-             ng-repeat="iterable_property in properties.iterable_properties | filter:{'name':propertiesKeyFilter, 'filtrable_value':propertiesValueFilter} | displayProperties:displayDeletedProperties | displayUnspecifiedProperties:displayUnspecified | orderBy:'name':properties.isReverseOrder() track by $index">
-            <label style="text-align: right; overflow: hidden; text-overflow: ellipsis"
-                   title="{{ iterable_property.name }}" for="input-{{ iterable_property.name }}"
-                   class="col-md-4 control-label">{{ iterable_property.name }} <span
-                    ng-show="key_value_property.required" style="color:red"> *</span></label>
-            <!-- Edit layout, and this key is not filled by global properties -->
-            <div class="col-md-8" ng_if="!key_value_property.inGlobal">
-                <input id="input-{{ iterable_property.name }}"
-                       type="text" class="form-control"
-                       ng-class="{'property-using-global': key_value_property.useGlobal}"
-                       placeholder="{{key_value_property.defaultValue ? '[default=' + key_value_property.defaultValue + '] ' : ''}}{{key_value_property.comment}}"
-                       ng-model="key_value_property.value" tooltip="{{key_value_property.comment}}"
-                       tooltip-trigger="focus"
-                       ng-required="key_value_property.required"
-                       tooltip-placement="top"
-                       />
-            </div>
-        </div>
-
-        <script type="text/ng-template" id="properties/iterate.html">
-            <li>{{ iterable_property.name }}<br/>
-                <!-- Display each valorisation -->
-                <div ng-repeat="items in iterable_property.iterable_valorisation_items | orderBy:'name' track by $index">
-                    <div ng-repeat="field in items.values | orderBy:'name' track by $index">
-                        {{field.iterable_properties}}
-                        <ul class="dl-horizontal text-overflow" style="margin-bottom:0"
-                            ng-if="field.iterable_valorisation_items"
-                            ng-repeat="iterable_property in field.iterable_valorisation_items | orderBy:'name' track by $index"
-                            ng-include="'properties/iterate2.html'">
-                        </ul>
-
-                        <div ng-if="!field.iterable_valorisation_items">
-                            {{ field.name }}
-                            <small style="padding-left: 10px;"><em>{{ field.comment }}</em></small>
-                            {{ field.value }} / {{ field.inModel }}
-                        </div>
-                    </div>
-                </div>
-            </li>
-        </script>
-
-        <script type="text/ng-template" id="properties/iterate2.html">
-            <li>{{ iterable_property.title }}<br/>
-                <!-- Display each valorisation -->
-                <div ng-repeat="field in iterable_property.values | orderBy:'name' track by $index">
-
-                    {{field.iterable_properties}}
-                    <ul class="dl-horizontal text-overflow" style="margin-bottom:0"
-                        ng-if="field.iterable_valorisation_items"
-                        ng-repeat="iterable_property in field.iterable_valorisation_items | orderBy:'name' track by $index"
-                        ng-include="'properties/iterate2.html'">
-                    </ul>
-
-                    <div ng-if="!field.iterable_valorisation_items">
-                        {{ field.name }}
-                        <small style="padding-left: 10px;"><em>{{ field.comment }}</em></small>
-                        {{ field.value }} / {{ field.inModel }}
-                    </div>
-
-                </div>
-            </li>
-        </script>
-
-</form>
+<h3 ng-show="properties.iterable_properties.length > 0">Proprietes multiples :</h3>
+<dl class="dl-horizontal text-overflow" style="margin-bottom:0" ng-repeat="iterable_property in properties.iterable_properties | orderBy:'name' track by $index">
+    <dt>{{ iterable_property.name }}</dt>
+    <dd ng-repeat="field in iterable_property.fields | orderBy:'name' track by $index">{{ field.name }}<small style="padding-left: 10px;"><em>{{ field.comment }}</em></small></dd>
+</dl>

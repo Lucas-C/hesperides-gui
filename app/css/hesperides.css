@@ -1,7 +1,9 @@
+body {
+    font-size: 12px;
+}
 /*
  * Header
  */
- 
 #header  input:focus{
 	outline-width: 0;
 }
@@ -9,8 +11,7 @@
 
 /*
  * CodeMirror
- */ 
-
+ */
 .CodeMirror {
   border: 1px solid #ddd;
   height: auto;
@@ -20,107 +21,12 @@
   z-index: 200000;
 }
 
-
-/* Buttons */
-
-.btn-red:hover {
-	color: #E00000;
-	margin-left: -5px;
-	margin-right: -4px;
-	margin-top: -4px;
-	margin-bottom: -4px;
-	
-}
-
-.btn-red {
-	color: #780000;
-}
-
-.btn-red:hover span {
-	font-size: 1.6em;
-}
-
-.btn-no-padding {
-	padding: 0 !important;
-}
-
-.btn-resize {
-	background-color: #F0F0F0;
-}
-
-.btn-resize:hover {
-	background-color: #B8B8B8;
-}
-
-/* Forms */
-.form-horizontal.narrow  input[type=text] {
-	padding-top: 2px;
-	padding-bottom: 2px;
-	height: 30px;
-}
-
-.form-horizontal.narrow label {
-	padding-top: 3px;
-}
-
-.form-horizontal.narrow  div {
-	margin-bottom: 2px;
-}
-
-.property-not-used {
-	color: #888888;
-}
-
-.property-not-used label{
-	text-decoration: line-through;
-}
-
-.property-not-used input[type=text]{
-	background-color: #F0F0F0;
-}
-
 .property-using-global {
     color: #009587;
 }
 
-/* Layout */
-.voffset  { margin-top: 2px; }
-.voffset1 { margin-top: 5px; }
-.voffset2 { margin-top: 10px; }
-.voffset3 { margin-top: 15px; }
-.voffset4 { margin-top: 30px; }
-.voffset5 { margin-top: 40px; }
-.voffset6 { margin-top: 60px; }
-.voffset7 { margin-top: 80px; }
-.voffset8 { margin-top: 100px; }
-.voffset9 { margin-top: 150px; }
-
 .text-stroke{
 	text-decoration: line-through !important;
-}
-
-h4.app-unit {
-	height: 31px;
-}
-
-h4.app-unit form {
-	margin-top: -10px;
-	padding-left: 10px;
-}
-
-h4.app-unit a {
-	margin-left: 10px;
-}
-
-h4.app-unit input {
-	height: 31px;
-}
-
-h4.app-unit button {
-  padding: 5px 10px;
-  font-size: 13px;
-  line-height: 1.5;
-  border-radius: 0;
 }
 
 .bg-light {
@@ -154,15 +60,16 @@ h4.app-unit button {
     to   {-webkit-transform: rotate(359deg);}
 }
 
-.input-sm {
-    height: 31px;
-}
-
 .box li {
     vertical-align: top;
 }
 
+.list-inline {
+    list-style-type: none;
+}
+
 .box .jumbotron {
+    display: inline-block;
     margin-top: 5px;
     margin-bottom: 0px;
     margin-left: 0px;
@@ -193,12 +100,6 @@ h4.app-unit button {
 .cm-hesperides {color: #cc051e;}
 .cm-hesperides-token {color: #a100cc;}
 
-/* Divers Bootstrap */
-.md-btn-xs {
-    width: 40px !important;
-    height: 40px !important;
-}
-
 .vertical-align {
     display: flex;
     flex-direction: row;
@@ -212,9 +113,6 @@ h4.app-unit button {
                               horizontally inside the column */
 }
 
-.popover {
-    word-wrap: break-word;
-}
 
 /******************************************************************************
  * Diff page
@@ -236,6 +134,13 @@ h4.app-unit button {
     margin-bottom: 0;
     margin-top: 0;
     width: 100%;
+}
+
+/* Property name */
+.diff-property-name {
+    font-weight: bold;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 /* Property name, value, checkbox... */
@@ -294,6 +199,127 @@ h4.app-unit button {
     text-align: right;
 }
 
+.diff-title {
+    padding-left: 10px;
+}
+
+md-checkbox.diff {
+    margin: 0 0 4px 0 !important;
+}
+
+.diff-line {
+    min-height: 20px;
+    padding-bottom: 4px;
+}
+
+.breadcrumb {
+    padding: 8px 15px;
+    margin-bottom: 20px;
+    list-style: none;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+}
+.breadcrumb > li {
+    display: inline-block;
+}
+.breadcrumb > li + li:before {
+    padding: 0 5px;
+    color: #ccc;
+    content: "/\00a0";
+}
+.breadcrumb > .active {
+    color: #999;
+}
+
+/******************************************************************************
+ * Modal form
+ */
+.ng-binding > h2 {
+    margin-left: 10px;
+}
+
+/******************************************************************************
+ * Menu
+ */
+.menu {
+    background-color: #009587;
+    color: white;
+}
+
+.menu-item {
+    color: black;
+}
+
+.menu-header {
+    font-size: 14px;
+    color: #003123;
+    padding: 0;
+    margin: 0;
+    border: 0;
+    background-color: transparent;
+    height: 40px;
+}
+
+.menu-title {
+    color: #004032;
+    font-size: 14px;
+    margin: 0;
+    text-align: center;
+}
+
+
+.menu-search-input {
+    border: none;
+    background:transparent;
+    font-size: 14px;
+}
+
+.menu-properties-search-input {
+    width: 420px !important;
+}
+
+.menu-help {
+    float: right;
+}
+
+#fakeButtonSearchTechno {
+    display:none;
+}
+
+#fakeButtonSearchModule {
+    display:none;
+}
+
+#fakeButtonSearchProperties {
+    display:none;
+}
+
+/******************************************************************************
+ * Template
+ */
+.template-list {
+    padding-left: 0px;
+    padding-right: 0px;
+    margin-left: 0px;
+    margin-right: 0px;
+}
+
+.tempalte-list-item {
+    margin-bottom: 0px;
+    margin-top:0;
+    white-space: nowrap;
+}
+
+.template-list-item-name {
+    font-size: 12px;
+    margin-left: 5px;
+}
+
+.template-section-header {
+    font-weight: bold;
+}
+
+
 .template-file-right {
     display: inline;
     margin-left: 10px;
@@ -324,29 +350,358 @@ h4.app-unit button {
     border: 1px solid #DDDDDD;
 }
 
+kbd {
+    padding: 2px 4px;
+    font-size: 90%;
+    color: #fff;
+    background-color: #333;
+    border-radius: 3px;
+    box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .25);
+}
+
+/******************************************************************************
+ * Model
+ */
+.model-property-simple {
+    width: 100%;
+    text-align: left;
+    margin-bottom:0;
+    margin-top:0;
+}
+
+.model-property-iterable {
+    margin-bottom:0;
+    margin-top:0;
+}
+
+/******************************************************************************
+ * Shared
+ */
+.shared-list-inline {
+    padding-left: 20px;
+}
+.shared-list-inline li {
+    list-style-type: none;
+    display: inline;
+}
+
+/******************************************************************************
+ * Material Design Button color
+ */
+.md-info {
+    background-color: #5bc0de !important;
+}
+
+.md-success {
+    background-color: #5cb85c !important;
+}
+
+.md-clear {
+    background-color: transparent !important;
+}
+
+.md-xs {
+    min-width: 20px !important;
+    min-height: 20px !important;
+}
+
+.md-instance {
+    margin: 0px !important;
+}
+
+button.md-warn  {
+    color: red !important;
+}
+
+a.md-button.md-default-theme.md-warn.md-raised:not([disabled]):hover, a.md-button.md-warn.md-raised:not([disabled]):hover, a.md-button.md-default-theme.md-warn.md-fab:not([disabled]):hover, a.md-button.md-warn.md-fab:not([disabled]):hover, .md-button.md-default-theme.md-warn.md-raised:not([disabled]):hover, .md-button.md-warn.md-raised:not([disabled]):hover, .md-button.md-default-theme.md-warn.md-fab:not([disabled]):hover, .md-button.md-warn.md-fab:not([disabled]):hover {
+    color: white !important;
+}
+
+a.md-button.md-default-theme.md-warn.md-raised:not([disabled]), a.md-button.md-warn.md-raised:not([disabled]), a.md-button.md-default-theme.md-warn.md-fab:not([disabled]), a.md-button.md-warn.md-fab:not([disabled]), .md-button.md-default-theme.md-warn.md-raised:not([disabled]), .md-button.md-warn.md-raised:not([disabled]), .md-button.md-default-theme.md-warn.md-fab:not([disabled]), .md-button.md-warn.md-fab:not([disabled]) {
+    color: white !important;
+}
+
+/******************************************************************************
+ * Material Design input label
+ */
+.md-input-has-placeholder label {
+    -webkit-transform: translate3d(0, 6px, 0) scale(1) !important;
+    transform: translate3d(0, 6px, 0) scale(1) !important;
+}
+
+md-input-container.md-default-theme label, md-input-container label, md-input-container.md-default-theme .md-placeholder, md-input-container .md-placeholder {
+    color: rgba(0,0,0,0.6) !important;
+    font-size: 14px !important;
+}
+
+/******************************************************************************
+ * Material Design menu
+ */
+md-menu-bar.md-default-theme md-menu.md-open > button, md-menu-bar md-menu.md-open > button, md-menu-bar.md-default-theme md-menu > button:focus, md-menu-bar md-menu > button:focus {
+    outline: none;
+    background: #007C6E;
+}
+
+/******************************************************************************
+ * Confirm button
+ */
+button.md-primary.md-button.ng-scope.md-confirm-hesperides-dialog-theme.md-ink-ripple {
+    color: rgb(255,255,255) !important;
+    background-color: rgb(255,87,34) !important;
+}
+
+button.md-primary.md-button.md-confirm-hesperides-dialog-theme.md-ink-ripple {
+    color: rgb(255,255,255) !important;
+    background-color: rgb(0,150,136) !important;
+}
+
+/******************************************************************************
+ * Module
+ */
+.module-file {
+    text-overflow:ellipsis;
+    overflow: hidden;
+}
+
+.module-file blockquote {
+    font-size: 14px;
+}
+
+/******************************************************************************
+ * Module
+ */
+.techno-file {
+    text-overflow:ellipsis;
+    overflow: hidden;
+}
+
+.techno-file blockquote {
+    font-size: 14px;
+}
+
+/******************************************************************************
+ * Platform/Properties
+ */
+.properties-poduction {
+    margin-top: 0px;
+}
+
+.properties-add-logical-group {
+    color: black !important;
+    background-color: white !important;
+}
+
+.property-required {
+    color: red;
+}
+
+.property-global {
+    font-style: italic;
+    border: none !important;
+    padding-bottom: 2px!important;
+}
+
+.property-required {
+    color:red
+}
+
+.property-label {
+    text-align: right;
+    font-weight: bold;
+    border: 0px !important;
+    width: 100%;
+    padding-bottom: 2px !important;
+}
+
+.property-instance {
+    display: inline;
+    display:inline-block;
+}
+
+.instance-delete-button-hide {
+    visibility: hidden;
+}
+
+.property-tree-logic-bloc {
+    height: 40px;
+    min-height: 40px;
+}
+
+.property-tree-logic-bloc-subbloc {
+    padding-left: 20px;
+}
+
+.property-tree-module {
+    height: 40px;
+    min-height: 40px;
+    padding-left: 20px;
+}
+
+.property-tree-sign {
+    margin-right:15px;
+    cursor:pointer;
+    font-size: 25px;
+}
+
+.property-tree-techno {
+    padding-left: 20px;
+    display: inline-block;
+    height: 40px;
+    min-height: 40px;
+}
+
+.property-box-module-name {
+    white-space: nowrap;
+}
+
 /* Change default values fore color*/
 input.default-value-color::-moz-placeholder{color: #428BCA;}
 input.default-value-color::-webkit-input-placeholder{color: #428BCA;}
 input.default-value-color:-ms-input-placeholder{color: #428BCA;}
 input.default-value-color:placeholder-shown{color: #428BCA;}
 
-/*
- * Preview accordion custom style
- * This is for making all the title clickable.
-*/
-.accordion-head {
-    height: 100%;
-    padding-top: 1.2%;
-    padding-left: 3%;
+/******************************************************************************
+ * Popover
+ * From : http://codepen.io/derekpcollins/pen/JCLhG
+ */
+.popover {
+    background-color: rgba(0, 0, 0, 0.85);
+    border-radius: 5px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+    color: #fff;
+    visibility: hidden;
+    font-size: 12px;
+    font-family: 'Helvetica',sans-serif;
+    padding: 7px 10px;
+    position: absolute;
+    z-index: 4;
 }
 
-.panel-heading {
-    padding: 0px !important;
-    height: 40px !important;
+.popover:before {
+    border-top: 7px solid rgba(0, 0, 0, 0.85);
+    border-right: 7px solid transparent;
+    border-left: 7px solid transparent;
+    bottom: -7px;
+    content: '';
+    display: block;
+    left: 50%;
+    margin-left: -7px;
+    position: absolute;
 }
 
-.panel-title {
-    height: 100% !important;
+.popover-hover {
+    visibility: visible;
+}
+
+@-webkit-keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+@-moz-keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+@-ms-keyframes fade-in {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+@-webkit-keyframes move-up {
+    from {
+        bottom: 30px;
+    }
+    to {
+        bottom: 42px;
+    }
+}
+@-moz-keyframes move-up {
+    from {
+        bottom: 30px;
+    }
+    to {
+        bottom: 42px;
+    }
+}
+@-ms-keyframes move-up {
+    from {
+        bottom: 30px;
+    }
+    to {
+        bottom: 42px;
+    }
+}
+
+
+@-webkit-keyframes fade-in {
+    from   { opacity: 0; }
+    to { opacity: 1; }
+}
+@-moz-keyframes fade-in {
+    from   { opacity: 0; }
+    to { opacity: 1; }
+}
+@-ms-keyframes fade-in {
+    from   { opacity: 0; }
+    to { opacity: 1; }
+}
+@-webkit-keyframes move-up {
+    from   { bottom: 30px; }
+    to { bottom: 42px; }
+}
+@-moz-keyframes move-up {
+    from   { bottom: 30px; }
+    to { bottom: 42px; }
+}
+@-ms-keyframes move-up {
+    from   { bottom: 30px; }
+    to { bottom: 42px; }
+}
+
+/******************************************************************************
+ * File.
+ */
+.file-header {
+    background-color: #DDDDDD;
+    min-width: 100%;
+    white-space: nowrap;
+    -webkit-border-radius: 10px 10px 0px 0px;
+    -moz-border-radius: 10px 10px 0px 0px;
+    border-radius: 10px 10px 0px 0px;
+}
+
+.file-header .md-button {
+    margin-top:0;
+    margin-bottom: 0;
+}
+
+.file-content {
+    width: 100%;
+    padding: 1px 1px 1px 1px;
+}
+
+/******************************************************************************
+ * Loading screen.
+ */
+#loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    margin-top: -50px;
+    margin-left: -50px;
+    width: 32px;
+    height: 32px;
+    display: none;
 }
 
 /**

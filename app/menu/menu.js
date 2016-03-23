@@ -142,7 +142,7 @@ menuModule.controller('MenuPropertiesCtrl', ['$hesperidesHttp', '$scope', '$mdDi
      * Used for reloading page after platform creation.
      * This could be improved.
      */
-    reload = function (application, platform){
+    var reload = function (application, platform){
         var path = '/properties/' + application;
         $location.url(path).search({platform: platform});
         location.reload();

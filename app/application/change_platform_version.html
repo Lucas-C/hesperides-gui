@@ -8,6 +8,7 @@
                     <md-input-container class="md-block">
                         <label>Nouvelle version {{newVersion}}</label>
                         <md-autocomplete
+                                ng-if="ndlVersions"
                                 required
                                 ng-model="newVersion"
                                 md-no-cache="true"
@@ -22,25 +23,26 @@
                                 placeholder="Rechercher une version depuis une note Katana">
                             <span md-highlight-text="ctrl.searchText">{{version}}</span>
                         </md-autocomplete>
+                        <input ng-if="!ndlVersions" required ng-model="newVersion" />
                     </md-input-container>
 
-
+                    <md-switch class="md-primary md-block" aria-label="Copier les properties valorisées de la version" ng-model="copyProperties">
+                        <span ng-style="{'text-decoration': (copyProperties ? '' : 'line-through'), 'font-weight' : (copyProperties ? 'bold' : 'normal')}">
+                            Copier les properties valorisées de la version {{platform.application_version}} vers la version {{newVersion}}
+                        </span>
+                    </md-switch>
                     <md-switch class="md-primary md-block" aria-label="Utiliser la note de livraison json de la version" ng-model="useNdl" ng-show="newVersion">
                         <span ng-style="{'text-decoration': (useNdl ? '' : 'line-through'), 'font-weight' : (useNdl ? 'bold' : 'normal')}">
                             Utiliser la note de livraison json de la version {{newVersion}}
                         </span>
                     </md-switch>
-                    <md-switch class="md-primary md-block" aria-label="Copier les properties valorisées de la version" ng-model="copyProperties" ng-show="useNdl">
-                        <span ng-style="{'text-decoration': (copyProperties ? '' : 'line-through'), 'font-weight' : (copyProperties ? 'bold' : 'normal')}">
-                            Copier les properties valorisées de la version {{platform.application_version}} vers la version {{newVersion}}
-                        </span>
-                    </md-switch>
+
                     <input type="submit" id="submit" value="Submit" ng-hide="true"/>
                 </form>
             </md-content>
         </div>
         <md-dialog-actions>
-            <md-button ng-click="$change({new_version: newVersion, use_ndl: useNdl, copy_properties: copyProperties})" class="md-raised md-primary" ng-disabled="platformVersionForm.$invalid">Creer</md-button>
+            <md-button ng-click="$change({new_version: newVersion, use_ndl: useNdl, copy_properties: copyProperties})" class="md-raised md-primary" ng-disabled="platformVersionForm.$invalid">Valider</md-button>
             <md-button ng-click="$closeDialog()" class="md-raised md-warn">Annuler</md-button>
         </md-dialog-actions>
     </md-dialog-content>

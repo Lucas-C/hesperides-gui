@@ -24,6 +24,7 @@
     "angular-bootstrap-datetimepicker": "latest",
     "angular-xml": "~2.2.1",
     "x2js": "~1.1.7",
-    "jszip": "Stuk/jszip#^2.5.0"
+    "jszip": "Stuk/jszip#^2.5.0",
+    "angular-vs-repeat": "1.1.7"
   }
 }

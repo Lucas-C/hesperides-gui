@@ -76,7 +76,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="form-group vertical-align" ng-show="useNdl">
+                <div class="form-group vertical-align">
                     <label class="col-lg-8 control-label" style="padding-top: 0"
                            ng-style="{'text-decoration': (copyProperties ? '' : 'line-through'), 'font-weight' : (copyProperties ? 'bold' : 'normal')}">Copier les properties valorisées de la version {{platform.application_version}} vers la version {{newVersion}}</label>
 
@@ -658,7 +658,7 @@
 
                 <div class="form-group" ng-class="{'property-not-used': !key_value_property.inModel}"
                      ng-repeat="key_value_property in instance.key_values | displayProperties:displayDeletedProperties | displayUnspecifiedProperties:displayUnspecified | hideHesperidesPredefinedProperties | displayUnspecifiedProperties:displayUnspecified | orderBy:'name':instance.isReverseOrder() track by $index"
-                     ng-model-options="{ updateOn: 'mouseleave' }">
+                     ng-model-options="{ updateOn: 'mouseleave scroll' }">
                     <label for="input-{{ key_value_property.name }}" class="col-md-3 control-label">{{
                         key_value_property.name }} <span ng-show="key_value_property.required" style="color:red"> *</span></label>
 

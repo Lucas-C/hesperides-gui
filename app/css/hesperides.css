@@ -684,6 +684,11 @@ input.default-value-color:placeholder-shown{color: #428BCA;}
     margin-bottom: 0;
 }
 
+.file-title {
+    width: 93.7%;
+    text-align: left;
+}
+
 .file-content {
     width: 100%;
     padding: 1px 1px 1px 1px;

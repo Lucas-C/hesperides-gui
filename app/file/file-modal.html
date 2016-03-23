@@ -3,15 +3,15 @@
         <div class="ng-binding">
             <h2>Prévisualisation de {{instance.name}}</h2>
             <md-content layout-padding class="autoScroll" style="max-width: none;">
-                <form novalidate ng-repeat="item in fileEntries track by $index" heading="{{elem.name}}">
+                <form novalidate ng-repeat="(index, item) in fileEntries track by $index" heading="{{elem.name}}">
                     <section class="file-header">
                             <md-button class="md-xs" ng-if ="item.on_error == false" ng-click="download_file(item.url)">
                                 <md-icon class="fa fa-download"></md-icon>
                             </md-button>
-                            <md-button ng-click="$showFile = !$showFile">{{item.name}} ( {{item.rights}} )</md-button>
+                            <md-button ng-click="open(index)" class="file-title">{{item.name}} ( {{item.rights}} )</md-button>
 
                             <!-- Add css class 'ng-hide' to disable display at startup and for working autorefresh plugin -->
-                            <div ng-show="$showFile" class="file-content ng-hide">
+                            <div ng-show="index === isOpen" class="file-content ng-hide">
                                 <div layout="row">
                                     <div flex>
                                         <label class="template-section-header">Contenu du fichier</label>

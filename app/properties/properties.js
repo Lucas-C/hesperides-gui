@@ -383,7 +383,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         };
 
         modalScope.instance = instance;
-        modalScope.isOpen = false;
+        modalScope.isOpen = undefined;
 
         FileService.get_files_entries(application.name, platform.name, box.get_path(), module.name, module.version, instance.name, module.is_working_copy).then(function (entries){
             modalScope.fileEntries = entries;
@@ -403,6 +403,14 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
             location.replace(url);
         };
 
+        // Manager accordion open/close
+        modalScope.open = function (index){
+            if ( index === modalScope.isOpen){
+                modalScope.isOpen = undefined;
+            }else{
+                modalScope.isOpen = index;
+            }
+        };
     };
 
     /**

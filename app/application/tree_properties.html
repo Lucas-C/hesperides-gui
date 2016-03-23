@@ -10,19 +10,18 @@
 
         <!-- Element root de l'arbre -->
         <div id="header" layout="row">
-            <div flex="none" layout="row" layout-align="none center">Plateforme</div>
+            <div flex="none" layout="row" layout-align="none center"><h3>Plateforme</h3></div>
             <div flex="grow" layout="row" layout-align="none center">
-                <md-button ng-click="open_add_box_dialog(mainBox)" class="md-xs"
-                           aria-label="Ajouter un groupe logique" tooltip="Ajouter un groupe logique">
+                <md-button ng-click="open_add_box_dialog(mainBox)" class="md-xs" aria-label="Ajouter un groupe logique" tooltip="">
+                    <md-tooltip>Ajouter un groupe logique</md-tooltip>
                     <i class="fa fa-inbox"></i>
                 </md-button>
-                <md-button class="md-xs" tooltip="Editer les properties globales"
-                           aria-label="Editer les properties" ng-click="showGlobalPropertiesDisplay();movePropertiesDivHolderToCursorPosition($event);">
+                <md-button class="md-xs" aria-label="Editer les properties" ng-click="showGlobalPropertiesDisplay();movePropertiesDivHolderToCursorPosition($event);">
+                    <md-tooltip>Editer les properties globales</md-tooltip>
                     <i class="fa fa-list"></i>
                 </md-button>
-                <md-button class="md-xs" tooltip="Comparer les properties globales"
-                           aria-label="Comparer les properties globales"
-                           ng-click="diff_global_properties(platform)">
+                <md-button class="md-xs" aria-label="Comparer les properties globales" ng-click="diff_global_properties(platform)">
+                    <md-tooltip>Comparer les properties globales</md-tooltip>
                     <i class="fa fa-exchange"></i>
                 </md-button>
             </div>

@@ -1,31 +1,45 @@
-<md-dialog flex="auto">
+<md-dialog flex="70">
     <md-dialog-content>
         <div class="ng-binding">
             <h2 ng-if="add">Ajout de template</h2>
             <h2 ng-if="!add">Edition de template</h2>
 
             <md-content layout-padding class="autoScroll">
+
                 <form name="templateForm" novalidate>
-                    <md-input-container md-no-float class="md-block">
-                        <label>Titre</label>
-                        <input type="text" required ng-trim="true" ng-model="template.name"
-                               ng-disabled="!add"
-                               ng-focus="true"
-                               md-autofocus="true"
-                               id="templateName" placeholder="Le titre du template est unique" />
-                    </md-input-container>
-                    <md-input-container md-no-float class="md-block">
-                        <label>Nom du fichier final</label>
-                        <input type="text" required ng-trim="true" ng-model="template.filename"
-                               ng-disabled="isReadOnly"
-                               id="templateFilename" placeholder="Indiquer le nom qu'aura le fichier sur le serveur. On peut utiliser des proprietes dans ce champ"/>
-                    </md-input-container>
-                    <md-input-container md-no-float class="md-block">
-                        <label>Dossier de destination</label>
-                        <input type="text" required ng-trim="true" ng-model="template.location"
-                               ng-disabled="isReadOnly"
-                               id="templateLocation" placeholder="Indiquer le dossier dans lequel sera copie le fichier sur le serveur. On peut utiliser des proprietes dans ce champ"/>
-                    </md-input-container>
+
+                    <div layout="row" style="margin-bottom: -4%">
+                        <div flex="50">
+                            <md-input-container md-no-float class="md-block">
+                                <label><strong>Titre</strong></label>
+                                <input type="text" required ng-trim="true" ng-model="template.name"
+                                       ng-disabled="!add"
+                                       ng-focus="true"
+                                       md-autofocus="true"
+                                       id="templateName" placeholder="Le titre du template est unique" />
+                            </md-input-container>
+                        </div>
+                        <div flex="50">
+                            <md-input-container md-no-float class="md-block">
+                                <label><strong>Nom du fichier final</strong></label>
+                                <input type="text" required ng-trim="true" ng-model="template.filename"
+                                       ng-disabled="isReadOnly"
+                                       id="templateFilename" placeholder="Indiquer le nom qu'aura le fichier sur le serveur. On peut utiliser des proprietes dans ce champ"/>
+                            </md-input-container>
+                        </div>
+                    </div>
+
+                    <div layout="row">
+                        <div flex="100">
+                            <md-input-container md-no-float class="md-block">
+                                <label><strong>Dossier de destination</strong></label>
+                                <input type="text" required ng-trim="true" ng-model="template.location"
+                                       ng-disabled="isReadOnly"
+                                       id="templateLocation" placeholder="Indiquer le dossier dans lequel sera copie le fichier sur le serveur. On peut utiliser des proprietes dans ce champ"/>
+                            </md-input-container>
+                        </div>
+                    </div>
+
                     <div layout="row">
                         <div flex>
                             <label class="template-section-header">Contenu du fichier</label>
@@ -47,7 +61,7 @@
                             <legend>User</legend>
 
                             <md-input-container>
-                              <label>R</label>
+                              <label><strong>R</strong></label>
                               <md-select ng-model="template.rights.user.read">
                                 <md-option ng-repeat="currentLabel in rights" value="{{currentLabel.value}}">
                                     {{currentLabel.label}}
@@ -79,7 +93,7 @@
                             <legend>Group</legend>
 
                             <md-input-container>
-                                <label>R</label>
+                                <label><strong>R</strong></label>
                                 <md-select ng-model="template.rights.group.read">
                                     <md-option ng-repeat="currentLabel in rights" value="{{currentLabel.value}}">
                                         {{currentLabel.label}}

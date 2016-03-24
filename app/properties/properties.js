@@ -1165,7 +1165,7 @@ propertiesModule.filter('displayUnspecifiedProperties', function () {
 
     return function (items, display) {
         return _.filter(items, function(item) {
-                 return _.isUndefined(display) || !display || _.isEmpty(item.value) && _.isEmpty(item.defaultValue);
+                 return _.isUndefined(display) || !display || _.isEmpty(item.filtrable_value);
                });
     };
 });

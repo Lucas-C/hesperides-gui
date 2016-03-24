@@ -224,7 +224,8 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         var dialogNdl = function (ndlVersions) {
             var modalScope = $scope.$new(true);
             modalScope.platform = platform;
-            modalScope.ndlVersions = _.isArray(ndlVersions) ? ndlVersions : null;
+            modalScope.sourceFromNdl = _.isArray(ndlVersions);
+            modalScope.ndlVersions = modalScope.sourceFromNdl ? ndlVersions : [];
 
             $mdDialog.show({
                 templateUrl: 'application/change_platform_version.html',

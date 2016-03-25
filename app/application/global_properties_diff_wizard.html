@@ -7,22 +7,22 @@
             <md-content layout-padding class="autoScroll">
                 <form name="comparedPlatformForm" ng-submit="comparedPlatformForm.$valid">
                     <md-input-container md-no-float class="md-block">
-                        <label>Application à laquelle comparer</label>
+                        <label><strong>Application à laquelle comparer</strong></label>
                         <input type="text" required ng-trim="true" ng-model="from.application" md-autofocus="true"
                                placeholder="WDI, PAO, STF, ..." />
                     </md-input-container>
                     <md-input-container md-no-float class="md-block">
-                        <label>Plateforme à laquelle comparer</label>
+                        <label><strong>Plateforme à laquelle comparer</strong></label>
                         <input type="text" required ng-trim="true" ng-model="from.platform"
                                placeholder="CUR1, USN1, ..."/>
                     </md-input-container>
 
-                    <md-switch class="md-primary md-block" aria-label="Comparer à une date" ng-model="from.lookPast" ng-show="from.application != null && from.platform != null">
+                    <md-switch class="md-primary md-block" aria-label="Comparer à une date" ng-model="from.lookPast" ng-show="from.application != null && from.platform != null" ng-click="console.log('11')">
                         Comparer à {{from.application}} - {{from.platform}} à une date spécifique ?
                     </md-switch>
 
                     <div ng-show="from.lookPast">
-                        <time-date-picker ng-model="dateValue" display-twentyfour compact="true"></time-date-picker>
+                        <hesperides-compare-date-time ng-model="dateValue"></hesperides-compare-date-time>
                     </div>
                 </form>
             </md-content>

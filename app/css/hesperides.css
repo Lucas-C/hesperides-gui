@@ -739,3 +739,8 @@ input.default-value-color:placeholder-shown{color: #428BCA;}
     font-style : italic;
     font-weight : bold;
 }
+
+/*Hesperides Time Style*/
+.angularjs-datetime-picker {
+    z-index: 999;
+}

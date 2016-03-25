@@ -1,4 +1,4 @@
-<md-dialog flex="auto">
+<md-dialog flex="50">
     <md-dialog-content>
         <wizard>
             <wz-step title="Choisir la plateforme à comparer">
@@ -7,12 +7,12 @@
                     <md-content layout-padding class="autoScroll">
                         <form name="comparedPlatformForm">
                             <md-input-container md-no-float class="md-block">
-                                <label>Application à laquelle comparer</label>
+                                <label><strong>Application à laquelle comparer</strong></label>
                                 <input type="text" required ng-trim="true" ng-model="from.application" md-autofocus="true"
                                        placeholder="Application à laquelle comparer : WDI, PAO, STF,..."/>
                             </md-input-container>
                             <md-input-container md-no-float class="md-block">
-                                <label>Plateforme à laquelle comparer</label>
+                                <label><strong>Plateforme à laquelle comparer</strong></label>
                                 <input type="text" required ng-trim="true" ng-model="from.platform"
                                        placeholder="Plateforme à laquelle comparer : WDI, PAO, STF, ..."/>
                             </md-input-container>
@@ -22,7 +22,7 @@
                             </md-switch>
 
                             <div ng-show="from.lookPast">
-                                <time-date-picker ng-model="from.date"></time-date-picker>
+                                <hesperides-compare-date-time ng-model="from.date"></hesperides-compare-date-time>
                             </div>
                         </form>
                     </md-content>

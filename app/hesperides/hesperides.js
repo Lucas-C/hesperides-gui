@@ -19,7 +19,8 @@ var hesperidesModule = angular.module('hesperides', [
     'ui.codemirror',
     'mgo-angular-wizard',
     'vs-repeat',
-    'scDateTime'
+    'scDateTime',
+    'angularjs-datetime-picker'
 ]).value('scDateTimeConfig', {
     defaultTheme: 'sc-date-time/hesperides.tpl',
     autosave: false,
@@ -330,3 +331,33 @@ hesperidesModule.factory('$hesperidesHttp', ['$http', function($http){
         }
     };
 }]);
+
+hesperidesModule.directive('hesperidesCompareDateTime', function (){
+    return {
+        scope: {
+            ngModel: '='
+        },
+        templateUrl: 'hesperides/hesperides-compare-date-time.html',
+        link:function (scope, element, attrs){
+            //-- date for start
+            var date = new Date();
+            var year = date.getFullYear();
+            var month = date.getMonth()+1;
+            var day = date.getDate();
+
+            if(day < 10){
+                day = '0' + day;
+            }
+
+            if(month < 10){
+                month = '0' + month;
+            }
+
+            //all in scope !
+            scope.year = year;
+            scope.month = month;
+            scope.day = day;
+            scope.holder = date.getDate() + ' ' + date.getTime();
+        }
+    }
+});

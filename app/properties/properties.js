@@ -602,6 +602,8 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         if (lookPast) {
             if (_.isUndefined(date)) {
                 date = new Date();
+            }else{
+                date = new Date(date);
             }
             var platform_promise = ApplicationService.get_platform(application, platform, date.getTime());
         } else {

@@ -3,6 +3,45 @@
  */
 var propertiesModule = angular.module('hesperides.properties', ['hesperides.nexus']);
 
+propertiesModule.controller('PlatformVersionModule', ['$scope', '$mdDialog', 'NexusService', 'ApplicationService', 'TechnoService', function ($scope, $mdDialog, NexusService, ApplicationService, TechnoService) {
+    $scope.$change = function (modal_data) {
+        if (modal_data.use_ndl === true) {
+            // on met à jour les modules de l'application à partir des infos de la ndl
+            NexusService.getNdl($scope.platform.application_name, modal_data.new_version)
+                .then(function (ndl) {
+                    return ApplicationService.updatePlatformConfig($scope.platform, modal_data.new_version, ndl.NDL_pour_rundeck.packages);
+                })
+                .then(function (updatedModules) {
+                    // sauvegarde de la plateforme
+                    $scope.save_platform_from_box($scope.mainBox, modal_data.copy_properties)
+                        .then(function () {
+                            $scope.properties = undefined;
+                            $scope.instance = undefined;
+
+                            // notification des modules mis à jour
+                            _.each(updatedModules, function (updatedModule) {
+                                $.notify("Module mis à jour : " + updatedModule.name, "success");
+                            })
+                        });
+                });
+
+        } else {
+            // sinon, on ne met à jour que la version de l'application
+            $scope.platform.application_version = modal_data.new_version;
+
+            // sauvegarde de la plateforme
+            $scope.save_platform_from_box($scope.mainBox)
+                .then(function () {
+                    $scope.properties = undefined;
+                    $scope.instance = undefined;
+                });
+        }
+
+        $mdDialog.cancel();
+    };
+}]);
+
+
 propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDialog', '$location', '$route', '$timeout', 'ApplicationService', 'FileService', 'EventService', 'ModuleService', 'ApplicationModule', 'Page', 'NexusService', function ($scope, $routeParams, $mdDialog, $location, $route, $timeout, ApplicationService, FileService, EventService, ModuleService, Module, Page, NexusService) {
     Page.setTitle("Properties");
 
@@ -182,56 +221,22 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
      * @param platform plateforme courante
      */
     $scope.change_platform_version = function (platform) {
+        var dialogNdl = function (ndlVersions) {
+            var modalScope = $scope.$new(true);
+            modalScope.platform = platform;
+            modalScope.sourceFromNdl = _.isArray(ndlVersions);
+            modalScope.ndlVersions = modalScope.sourceFromNdl ? ndlVersions : [];
+
+            $mdDialog.show({
+                templateUrl: 'application/change_platform_version.html',
+                controller: 'PlatformVersionModule',
+                scope:$scope
+            });
+        };
 
         // récupération des versions des ndl de l'application
         NexusService.getNdlVersions(platform.application_name)
-            .then(function (ndlVersions) {
-                var modalScope = $scope.$new();
-                modalScope.platform = platform;
-                modalScope.ndlVersions = ndlVersions;
-
-                $mdDialog.show({
-                    templateUrl: 'application/change_platform_version.html',
-                    scope: modalScope
-                });
-
-                modalScope.$change = function (modal_data) {
-
-                    if (modal_data.use_ndl === true) {
-                        // on met à jour les modules de l'application à partir des infos de la ndl
-                        NexusService.getNdl(platform.application_name, modal_data.new_version)
-                            .then(function (ndl) {
-                                return ApplicationService.updatePlatformConfig(platform, modal_data.new_version, ndl.NDL_pour_rundeck.packages);
-                            })
-                            .then(function (updatedModules) {
-                                // sauvegarde de la plateforme
-                                $scope.save_platform_from_box($scope.mainBox, modal_data.copy_properties)
-                                    .then(function () {
-                                        $scope.properties = undefined;
-                                        $scope.instance = undefined;
-
-                                        // notification des modules mis à jour
-                                        _.each(updatedModules, function (updatedModule) {
-                                            $.notify("Module mis à jour : " + updatedModule.name, "success");
-                                        })
-                                    });
-                            });
-
-                    } else {
-                        // sinon, on ne met à jour que la version de l'application
-                        platform.application_version = modal_data.new_version;
-
-                        // sauvegarde de la plateforme
-                        $scope.save_platform_from_box($scope.mainBox)
-                            .then(function () {
-                                $scope.properties = undefined;
-                                $scope.instance = undefined;
-                            });
-                    }
-
-                    $mdDialog.cancel();
-                };
-            });
+            .then(dialogNdl, dialogNdl);
     };
 
     $scope.search_module = function (box) {
@@ -1491,20 +1496,9 @@ propertiesModule.directive('warningValue', function () {
 propertiesModule.filter('displayUnspecifiedProperties', function () {
     return function (items, display) {
         return _.filter(items, function(item) {
-            return _.isUndefined(display) || !display || _.isEmpty(item.value) && _.isEmpty(item.defaultValue);
+            return _.isUndefined(display) || !display || _.isEmpty(item.filtrable_value);
         });
     };
-});
-
-/**
- * Display only the 'empty' properties
- */
-propertiesModule.filter('displayUnspecifiedProperties', function () {
-    return function (items, display) {
-        return _.filter(items, function (item) {
-            return _.isUndefined(display) || !display || _.isEmpty(item.value) && _.isEmpty(item.defaultValue);
-        });
-    }
 });
 
 /**

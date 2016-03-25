@@ -4,12 +4,14 @@
             <h2>Créer une release</h2>
             <md-content layout-padding class="autoScroll">
                 <form name="createReleaseForm" novalidate ng-submit="createReleaseForm.$valid && $close(release_version)">
-                    <md-input-container md-no-float>
-                        <label>Version de la release</label>
-                        <input type="text" required ng-trim="true" ng-model="release_version" md-autofocus="true"
-                               id="release_version" placeholder="Le numéro..."/>
-                    </md-input-container>
-                    <input type="submit" id="submit" value="Submit" ng-hide="true"/>
+                    <div layout="row">
+                        <md-input-container md-no-float flex>
+                            <label><strong>Version de la release</strong></label>
+                            <input type="text" required ng-trim="true" ng-model="release_version" md-autofocus="true"
+                                   id="release_version" placeholder="Le numéro..."/>
+                        </md-input-container>
+                        <input type="submit" id="submit" value="Submit" ng-hide="true"/>
+                    </div>
                 </form>
             </md-content>
         </div>

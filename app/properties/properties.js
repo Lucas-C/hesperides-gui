@@ -445,6 +445,10 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
             modalScope.eventEntries = entries;
 
+            modalScope.$closeDialog = function() {
+                $mdDialog.cancel();
+            };
+
             var modal = $mdDialog.show({
                         templateUrl: 'event/event-modal.html',
                         scope: modalScope

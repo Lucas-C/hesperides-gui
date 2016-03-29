@@ -7,7 +7,7 @@
                 <form name="platformForm" novalidate
                       ng-submit="platformForm.$valid && create_platform(new_platform.application_name, new_platform.platform_name, new_platform.production, new_platform.application_version)">
                     <md-input-container md-no-float class="md-block">
-                        <label>Trigramme applicatif</label>
+                        <label><strong>Trigramme applicatif</strong></label>
                         <input type="text" required ng-trim="true"
                                ng-model="new_platform.application_name"
                                placeholder="Par ex. VSL, EPM, ACW …)"
@@ -16,14 +16,14 @@
                                 />
                     </md-input-container>
                     <md-input-container md-no-float class="md-block">
-                        <label>Nom de la plateforme</label>
+                        <label><strong>Nom de la plateforme</strong></label>
                         <input type="text" required ng-trim="true"
                                ng-model="new_platform.platform_name"
                                id="platformName"
                                placeholder="Par ex. USN1, REC2, PRD3 …"/>
                     </md-input-container>
                     <md-input-container md-no-float class="md-block">
-                        <label>Version de l'application sur cette plateforme</label>
+                        <label><strong>Version de l'application sur cette plateforme</strong></label>
                         <input type="text" required ng-trim="true"
                                ng-model="new_platform.application_version"
                                id="platformApplicationVersion"

@@ -9,7 +9,7 @@
         </dl>
     </div>
     <br />
-    <h3 ng-show="model.iterable_properties.length > 0">Proprietes multiples :</h3>
+    <h3 ng-show="model.iterable_properties.length > 0">Propriétés multiples :</h3>
     <dl class="dl-horizontal model-property-iterable" ng-animate="'animate'"
         ng-repeat="iterableProperty in model.iterable_properties | orderBy:'name' track by $index">
         <dt>{{ iterableProperty.name }}</dt>

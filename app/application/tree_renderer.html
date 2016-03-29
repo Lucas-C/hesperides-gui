@@ -69,10 +69,10 @@
                     class="list-inline"
                     ng-mouseover="instance.hover = true" ng-mouseleave="instance.hover = false">
                     <md-button ng-click="edit_instance(instance, module.properties_path);movePropertiesDivHolderToCursorPosition($event);"
-                               aria-label="Editer les properties de l'instance"
+                               aria-label="Editer les propriétés de l'instance"
                                class="md-instance">
                         <span class="fa fa-list" style="margin-right:10px"></span>{{instance.name}}
-                        <md-tooltip>Editer les properties de l'instance</md-tooltip>
+                        <md-tooltip>Editer les propriétés de l'instance</md-tooltip>
                     </md-button>
                     <md-button ng-click="preview_instance(box, application, platform, instance, module)"
                                class="md-xs" ng-show="instance.hover">

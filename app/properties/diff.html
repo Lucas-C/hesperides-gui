@@ -4,10 +4,10 @@
 
 <div layout="row" layout-margin>
     <md-button class="md-raised md-primary" ng-click="apply_diff()">
-        1/ Pr&eacute;visualiser les changements <span class="diff-warning-text-button">ne sauvegarde pas</span>
+        1/ Prévisualiser les changements <span class="diff-warning-text-button">ne sauvegarde pas</span>
     </md-button>
-    <md-button class="md-raised md-primary"  ng-really-click="save_diff()" ng-really-message="Les modifications vont &ecirc;tre appliqu&eacute;es sur {{application_name}} - {{platform_name}}. Continuer ?">
-        2/ <span class="diff-warning-text-button">Sauvegarder</span> les changements (il faut avoir previsualis&eacute; avant)
+    <md-button class="md-raised md-primary"  ng-really-click="save_diff()" ng-really-message="Les modifications vont être appliquées sur {{application_name}} - {{platform_name}}. Continuer ?">
+        2/ <span class="diff-warning-text-button">Sauvegarder</span> les changements (il faut avoir prévisualisé avant)
     </md-button>
 </div>
 
@@ -30,7 +30,7 @@
     <div layout="row" layout-wrap ng-show="toggle0">
         <div flex="20">
             <md-input-container class="md-block">
-                <label>Filtrer les properties par clé</label>
+                <label>Filtrer les propriétés par clé</label>
                 <input type="text"required ng-trim="true"
                        ng-model="propertiesKeyFilter0">
             </md-input-container>
@@ -90,7 +90,7 @@
         <div flex="20">
             <md-switch class="md-primary" ng-model="show_only_modified" aria-label="Ne montrer que les valeurs qui viennent d'&ecirc;tre modifi&eacute;es" class="md-block">
                 Ne montrer que les valeurs qui viennent<br />
-                d'&ecirc;tre modifi&eacute;es
+                d'être modifiées
             </md-switch>
         </div>
         <div flex="35" layout-align="end start" layout="row">
@@ -106,21 +106,21 @@
     <div layout="row" layout-wrap ng-show="toggle1">
         <div flex="20">
             <md-input-container class="md-block">
-                <label>Filtrer les properties par clé</label>
+                <label>Filtrer les propriétés par clé</label>
                 <input type="text"required ng-trim="true"
                        ng-model="propertiesKeyFilter1">
             </md-input-container>
         </div>
         <div flex="35" layout-align="end start" layout="row">
             <div>
-                <span>Selectionner les valeurs à reporter <span
+                <span>Sélectionner les valeurs à reporter <span
                         class="fa fa-stop diff-text-unmodifiable"></span> =====&gt; <span
                         class="fa fa-stop diff-text-modifiable"></span></span>
             </div>
         </div>
         <div flex="5" layout="row" layout-align="center start">
             <div>
-                <md-checkbox aria-label="Selectionner toutes les valeurs" ng-model="toggle_diff"
+                <md-checkbox aria-label="Sélectionner toutes les valeurs" ng-model="toggle_diff"
                              ng-click="toggle_selected_to_containers_with_filter({'status':1, 'modified': true}, !toggle_ident, propertiesKeyFilter1)">
                 </md-checkbox>
             </div>
@@ -191,21 +191,21 @@
     <div layout="row" layout-wrap ng-show="toggle2">
         <div flex="20">
             <md-input-container class="md-block">
-                <label>Filtrer les properties par clé</label>
+                <label>Filtrer les propriétés par clé</label>
                 <input type="text"required ng-trim="true"
                        ng-model="propertiesKeyFilter2">
             </md-input-container>
         </div>
         <div flex="35" layout-align="end start" layout="row">
             <div>
-                <span>Selectionner les valeurs à reporter <span
+                <span>Sélectionner les valeurs à reporter <span
                         class="fa fa-stop diff-text-unmodifiable"></span> =====&gt; <span
                         class="fa fa-stop diff-text-modifiable"></span></span>
             </div>
         </div>
         <div flex="5" layout="row" layout-align="center start">
             <div>
-                <md-checkbox aria-label="Selectionner toutes les valeurs" ng-model="toggle_diff"
+                <md-checkbox aria-label="Sélectionner toutes les valeurs" ng-model="toggle_diff"
                          ng-click="toggle_selected_to_containers_with_filter({'status': 2}, !toggle_diff, propertiesKeyFilter2)">
                 </md-checkbox>
             </div>
@@ -270,20 +270,20 @@
     <div layout="row" layout-wrap ng-show="toggle3">
         <div flex="20">
             <md-input-container class="md-block">
-                <label>Filtrer les properties par clé</label>
+                <label>Filtrer les propriétés par clé</label>
                 <input type="text"required ng-trim="true"
                        ng-model="propertiesKeyFilter3">
             </md-input-container>
         </div>
         <div flex="35" layout-align="end start" layout="row">
             <div>
-                <span>Selectionner les valeurs à reporter <span
+                <span>Sélectionner les valeurs à reporter <span
                         class="fa fa-stop diff-text-unmodifiable"></span> =====&gt; <span
                         class="fa fa-stop diff-text-modifiable"></span></span>            </div>
         </div>
         <div flex="5" layout="row" layout-align="center start">
             <div>
-                <md-checkbox aria-label="Selectionner toutes les valeurs" ng-model="toggle_right" class="diff"
+                <md-checkbox aria-label="Sélectionner toutes les valeurs" ng-model="toggle_right" class="diff"
                              ng-click="toggle_selected_to_containers_with_filter({'status': 3}, !toggle_right, propertiesKeyFilter3)">
                 </md-checkbox>
             </div>
@@ -319,9 +319,9 @@
 
 <div layout="row" layout-margin>
     <md-button class="md-raised md-primary" ng-click="apply_diff()">
-        1/ Pr&eacute;visualiser les changements <span class="diff-warning-text-button">ne sauvegarde pas</span>
+        1/ Prévisualiser les changements <span class="diff-warning-text-button">ne sauvegarde pas</span>
     </md-button>
-    <md-button class="md-raised md-primary"  ng-really-click="save_diff()" ng-really-message="Les modifications vont &ecirc;tre appliqu&eacute;es sur {{application_name}} - {{platform_name}}. Continuer ?">
-        2/ <span class="diff-warning-text-button">Sauvegarder</span> les changements (il faut avoir previsualis&eacute; avant)
+    <md-button class="md-raised md-primary"  ng-really-click="save_diff()" ng-really-message="Les modifications vont être appliquées sur {{application_name}} - {{platform_name}}. Continuer ?">
+        2/ <span class="diff-warning-text-button">Sauvegarder</span> les changements (il faut avoir prévisualisé avant)
     </md-button>
 </div>

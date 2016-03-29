@@ -16,12 +16,12 @@
                     <md-tooltip>Ajouter un groupe logique</md-tooltip>
                     <i class="fa fa-inbox"></i>
                 </md-button>
-                <md-button class="md-xs" aria-label="Editer les properties" ng-click="showGlobalPropertiesDisplay();movePropertiesDivHolderToCursorPosition($event);">
-                    <md-tooltip>Editer les properties globales</md-tooltip>
+                <md-button class="md-xs" aria-label="Editer les propriétés" ng-click="showGlobalPropertiesDisplay();movePropertiesDivHolderToCursorPosition($event);">
+                    <md-tooltip>Editer les propriétés globales</md-tooltip>
                     <i class="fa fa-list"></i>
                 </md-button>
-                <md-button class="md-xs" aria-label="Comparer les properties globales" ng-click="diff_global_properties(platform)">
-                    <md-tooltip>Comparer les properties globales</md-tooltip>
+                <md-button class="md-xs" aria-label="Comparer les propriétés globales" ng-click="diff_global_properties(platform)">
+                    <md-tooltip>Comparer les propriétés globales</md-tooltip>
                     <i class="fa fa-exchange"></i>
                 </md-button>
             </div>
@@ -43,7 +43,7 @@
             <md-button class="md-raised md-primary"
                        ng-click="save_global_properties(platform.global_properties)">
                 <i class="fa fa-check"></i>
-                Sauver les properties globales
+                Sauver les propriétés globales
             </md-button>
         </div>
         <div layout="row" ng-show="showGlobalProperties" flex="100">
@@ -53,7 +53,7 @@
         </div>
         <div style="margin-top: 5px;" layout="row" ng-show="properties">
             <div flex="50">
-                <h3><span>Les properties associees a <strong>{{selected_module.path.split('#').join('
+                <h3><span>Les propriétés associées à <strong>{{selected_module.path.split('#').join('
                     | ')}} | {{selected_module.title}}</strong></span>
                 </h3>
             </div>
@@ -64,7 +64,7 @@
                 </md-button>
                 <md-button id="savedPropertiesButton" ng-click="save_properties(properties, selected_module)" class="md-primary">
                     <i class="fa fa-check"></i>
-                    <span>Sauver les properties</span>
+                    <span>Sauver les propriétés</span>
                 </md-button>
             </div>
         </div>
@@ -77,12 +77,12 @@
         <div layout="row" ng-show="instance">
             <div>
                 <h3 style="margin-top: 0;">
-                <span style="margin-right: 30px">Les properties d'instance associees a <strong>
+                <span style="margin-right: 30px">Les propriétés d'instance associées à <strong>
                     <a href="" editable-text="instance.name"
                        onbeforesave="update_instance_name(instance, $data)">{{instance.name}}</a></strong></span>
                     <md-button ng-click="save_platform_from_box(mainBox)" class="md-primary">
                         <i class="fa fa-check"></i>
-                        <span>Sauver les properties</span>
+                        <span>Sauver les propriétés</span>
                     </md-button>
                 </h3>
 

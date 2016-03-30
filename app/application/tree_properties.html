@@ -58,11 +58,11 @@
                 </h3>
             </div>
             <div flex="50">
-                <md-button id="cleanPropertiesButton" ng-click="clean_properties(properties)">
+                <md-button id="cleanPropertiesButton" ng-click="clean_properties(properties)" class="md-raised">
                     <i class="fa fa-trash"></i>
                     <span>Nettoyer les valorisations inutiles</span>
                 </md-button>
-                <md-button id="savedPropertiesButton" ng-click="save_properties(properties, selected_module)" class="md-primary">
+                <md-button id="savedPropertiesButton" ng-click="save_properties(properties, selected_module)" class="md-raised md-primary">
                     <i class="fa fa-check"></i>
                     <span>Sauver les propriétés</span>
                 </md-button>
@@ -82,7 +82,7 @@
                 <span style="margin-right: 30px">Les propriétés d'instance associées à <strong>
                     <a href="" editable-text="instance.name"
                        onbeforesave="update_instance_name(instance, $data)">{{instance.name}}</a></strong></span>
-                    <md-button ng-click="save_platform_from_box(mainBox)" class="md-primary">
+                    <md-button ng-click="save_platform_from_box(mainBox)" class="md-raised md-primary">
                         <i class="fa fa-check"></i>
                         <span>Sauver les propriétés</span>
                     </md-button>

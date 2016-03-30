@@ -18,14 +18,20 @@ nexusModule.factory('NexusService', ['$hesperidesHttp', 'x2js', function ($http,
                     }
                 })
                 .then(function (response) {
-                    var artifacts = x2js.xml_str2json(response.data).searchNGResponse.data.artifact;
 
-                    if (artifacts.constructor !== Array) {
-                        artifacts = [artifacts];
+                    if (!_.isUndefined(x2js.xml_str2json(response.data).searchNGResponse)){
+                        var artifacts = x2js.xml_str2json(response.data).searchNGResponse.data.artifact;
+
+                        if (artifacts.constructor !== Array) {
+                            artifacts = [artifacts];
+                        }
+
+                        return _.pluck(artifacts, 'version');
+                    }else{
+                        return [];
                     }
 
-                    return _.pluck(artifacts, 'version');
-                }, function () {
+                }, function (error) {
                     // l'erreur n'est pas bloquante
                     return [];
                 });

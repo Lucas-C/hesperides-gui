@@ -445,10 +445,6 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
             modalScope.eventEntries = entries;
 
-            modalScope.$closeDialog = function() {
-                $mdDialog.cancel();
-            };
-
             var modal = $mdDialog.show({
                         templateUrl: 'event/event-modal.html',
                         scope: modalScope
@@ -1432,7 +1428,7 @@ propertiesModule.directive('toggleUnspecifiedProperties', function ($filter) {
         template: '<md-switch class="md-primary md-block" ' +
                   'ng-model="toggle"' +
                   'ng-init="toggle=false" ' +
-                  'aria-label="Afficher les propri&eacute;t&eacute;s supprim&eacute;es">' +
+                  'aria-label="Afficher les propri&eacute;t&eacute;s non renseign&eacute;es">' +
                   'Afficher les propri&eacute;t&eacute;s non renseign&eacute;es ({{ getNumberOfUnspecifiedProperties(keyValueProperties) }})' +
                   '</md-switch>',
         controller: ['$scope', '$filter', function ($scope, $filter){

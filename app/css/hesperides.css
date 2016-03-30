@@ -509,9 +509,23 @@ button.md-primary.md-button.md-confirm-hesperides-dialog-theme.md-ink-ripple {
     font-weight: bold;
     border: 0px !important;
     width: 100%;
-    padding-bottom: 2px !important;
 }
 
+.property-value {
+    margin-left: 3%;
+    border-left-style: none;
+    border-top-style: none;
+    border-right-style: none;
+    border-bottom-width: thin;
+    border-bottom-color: rgb(0,150,136);
+    background-color: #F8F8F8;
+}
+
+.property-value:focus {
+    background-color: rgb(0,150,136);;
+    color: white;
+    font-weight: bold;
+}
 .property-instance {
     display: inline;
     display:inline-block;
@@ -558,6 +572,12 @@ input.default-value-color::-moz-placeholder{color: #428BCA;}
 input.default-value-color::-webkit-input-placeholder{color: #428BCA;}
 input.default-value-color:-ms-input-placeholder{color: #428BCA;}
 input.default-value-color:placeholder-shown{color: #428BCA;}
+
+/* Change default values focused fore color*/
+input.default-value-color-focus::-moz-placeholder{color: #FFFFFF;}
+input.default-value-color-focus::-webkit-input-placeholder{color: #FFFFFF;}
+input.default-value-color-focus:-ms-input-placeholder{color: #FFFFFF;}
+input.default-value-color-focus:placeholder-shown{color: #FFFFFF;}
 
 /******************************************************************************
  * Popover
@@ -743,4 +763,9 @@ input.default-value-color:placeholder-shown{color: #428BCA;}
 /*Hesperides Time Style*/
 .angularjs-datetime-picker {
     z-index: 999;
+}
+
+/*Properties list*/
+.md-virtual-repeat-container {
+    background-color: #F8F8F8;
 }

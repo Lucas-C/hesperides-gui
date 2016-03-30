@@ -7,12 +7,12 @@
                 <form name="technoForm" novalidate
                       ng-submit="technoForm.$valid && open_techno_page(new_techno.name, new_techno.version, true)">
                     <md-input-container md-no-float class="md-block">
-                        <label>Nom</label>
+                        <label><strong>Nom</strong></label>
                         <input type="text" required ng-trim="true" ng-model="new_techno.name" md-autofocus="true"
                                id="technoName" placeholder="Entrer un nom (tomcat, hadoop, flume, ...)" />
                     </md-input-container>
                     <md-input-container md-no-float class="md-block">
-                        <label>Numéro de version</label>
+                        <label><strong>Numéro de version</strong></label>
                         <input type="text" required ng-trim="true" ng-model="new_techno.version"
                                id="technoVersion" placeholder="Entrer un numero de version"/>
                     </md-input-container>

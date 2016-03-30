@@ -1,13 +1,13 @@
 <div layout="row" class="vertical-align">
-    <h3><span style="padding-right: 10px">Properties niveau plateforme</span>
+    <h3><span style="padding-right: 10px">Propriétés niveau plateforme</span>
         <md-button class="md-raised"
                    ng-click="showGlobalProperties = !showGlobalProperties">Voir/Masquer</md-button>
 
         <md-button class="md-raised md-primary"
-                   ng-click="save_global_properties(platform.global_properties)"><i class="fa fa-check"></i> Sauver les properties globales</md-button>
+                   ng-click="save_global_properties(platform.global_properties)"><i class="fa fa-check"></i> Sauver les propriétés globales</md-button>
 
         <md-button class="md-raised"
-                   ng-click="diff_global_properties(platform)"><i class="fa fa-exchange"></i> Comparer les properties globales</md-button>
+                   ng-click="diff_global_properties(platform)"><i class="fa fa-exchange"></i> Comparer les propriétés globales</md-button>
     </h3>
 </div>
 
@@ -19,7 +19,7 @@
                            id="sortGlobalPropertiesButton"
                            ng-click="platform.global_properties.switchOrder()">
                     <i class="fa" data-ng-class="{'fa-sort-alpha-asc': !platform.global_properties.isReverseOrder(), 'fa-sort-alpha-desc': platform.global_properties.isReverseOrder()}"></i>
-                    Tri par nom de property</md-button>
+                    Tri par nom de propriété</md-button>
             </div>
             <properties-globales-box />
         </form>
@@ -59,7 +59,7 @@
 
 <div layout="row" ng-show="properties">
     <div flex="50">
-        <h3><span style="margin-right: 30px">Les properties associees a <strong>{{selected_module.path.split('#').join('
+        <h3><span style="margin-right: 30px">Les propriétés associées à <strong>{{selected_module.path.split('#').join('
             | ')}} | {{selected_module.title}}</strong></span>
         </h3>
     </div>
@@ -74,7 +74,7 @@
                        ng-disabled="technoForm.$invalid"
                        class="md-raised md-primary">
                 <span class="fa fa-check"></span>
-                <span>Sauver les properties</span>
+                <span>Sauver les propriétés</span>
             </md-button>
         </div>
     </div>
@@ -88,13 +88,13 @@
 <div layout="row" ng-show="instance">
     <div flex="100">
         <h3>
-                <span style="margin-right: 30px">Les properties d'instance associees a <strong>
+                <span style="margin-right: 30px">Les propriétés d'instance associées à <strong>
                     <a href="" editable-text="instance.name"
                        onbeforesave="update_instance_name(instance, $data)">{{instance.name}}</a></strong></span>
             <md-button ng-click="save_platform_from_box(mainBox)"
                        ng-disabled="technoForm.$invalid">
                 <i class="fa fa-check"></i>
-                Sauver les properties
+                Sauver les propriétés
             </md-button>
         </h3>
 
@@ -102,6 +102,7 @@
 
             <div layout="row">
                 <div flex="none"><toggle-deleted-properties key-value-properties="instance.key_values" toggle="displayDeletedProperties"></toggle-deleted-properties></div>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <div flex><toggle-unspecified-properties key-value-properties="instance.key_values" toggle="displayUnspecified"></toggle-unspecified-properties></div>
             </div>
 
@@ -109,7 +110,7 @@
                 <div flex="8">
                     <md-button id="sortInstancePropertiesButton" ng-click="instance.switchOrder()"
                                class="md-clear md-raised">
-                        Tri par nom de property
+                        Tri par nom de propriété
                         <span class="fa" data-ng-class="{'fa-sort-alpha-desc': !instance.isReverseOrder(), 'fa-sort-alpha-asc': instance.isReverseOrder()}"></span>
                     </md-button>
                 </div>

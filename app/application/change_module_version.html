@@ -6,7 +6,7 @@
                 <form name="searchModuleForm" novalidate
                       ng-submit="searchModuleForm.$valid && $update({new_module: moduleSearched, copy_properties: copyProperties})">
                     <md-input-container class="md-block">
-                        <label>Nouvelle version {{newVersion}}</label>
+                        <label><strong>Nouvelle version {{newVersion}}</strong></label>
                         <md-autocomplete
                                 required
                                 ng-model="moduleSearched"
@@ -29,7 +29,7 @@
                                ng-model="copyProperties"
                                ng-show="moduleSearched">
                         <span ng-style="{'text-decoration': (copyProperties ? '' : 'line-through'), 'font-weight' : (copyProperties ? 'bold' : 'normal')}">
-                            Copier les properties valorisées de la version {{module.version}} vers la version {{moduleSearched.version}}
+                            Copier les propriétés valorisées de la version {{module.version}} vers la version {{moduleSearched.version}}
                         </span>
                     </md-switch>
                     <input type="submit" id="submit" value="Submit" ng-hide="true"/>

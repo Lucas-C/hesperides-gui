@@ -4,7 +4,7 @@
         <div class="bg-light">
             <h3>Plateformes de <strong>{{application.name}}</strong></h3>
             <list-of-items items="platforms"
-                           label="$item.name + ' ' + $item.application_version"
+                           label="$item.name + ' [' + $item.application_version + ']'"
                            sorton="$item.name"
                            selected-item="platform"
                            createfunction="add_platform($name)"
@@ -35,7 +35,7 @@
 <div layout="column" ng-show="platform" class="bg-light">
     <div layout="row">
         <div flex="66">
-            <h3><span>Representation logique de <strong>{{platform.name}} (version
+            <h3><span>Représentation logique de <strong>{{platform.name}} (version
                 <a href="" ng-click="change_platform_version(platform)"
                    title="Modifier la version de la plateforme"
                    class="ng-binding"

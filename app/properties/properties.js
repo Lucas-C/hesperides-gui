@@ -937,7 +937,7 @@ propertiesModule.directive('toggleDeletedProperties', function () {
             'ng-model="toggle"' +
             'ng-init="toggle=false" ' +
             'aria-label="Afficher les propri&eacute;t&eacute;s supprim&eacute;es">' +
-            'Afficher les propri&eacute;t&eacute;s supprim&eacute;es ({{ getNumberOfDeletedProperties(keyValueProperties) }})' +
+            'Afficher les propri&eacute;t&eacute;s supprim&eacute;es ({{ getNumberOfDeletedProperties(keyValueProperties) }})          ' +
             '</md-switch>',
         link: function (scope) {
             scope.getNumberOfDeletedProperties = function (tab) {

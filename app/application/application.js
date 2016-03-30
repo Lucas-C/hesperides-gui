@@ -278,7 +278,7 @@ applicationModule.factory('ApplicationService', ['$hesperidesHttp', 'Application
             platform = platform.to_rest_entity();
             if (platform.version_id < 0) {
                 return $http.post('rest/applications/' + encodeURIComponent(platform.application_name) + '/platforms', platform).then(function (response) {
-                    $.notify("La plateforme a bien ete creee", "success");
+                    $.notify("La plateforme a bien été créée", "success");
                     //Try to get the global properties
                     var platform = new Platform(response.data);
                     me.get_properties(platform.application_name, platform.platform_name, "#").then(function (properties) {
@@ -291,7 +291,7 @@ applicationModule.factory('ApplicationService', ['$hesperidesHttp', 'Application
                 });
             } else {
                 return $http.put('rest/applications/' + encodeURIComponent(platform.application_name) + '/platforms?copyPropertiesForUpgradedModules=' + copyPropertiesOfUpdatedModules, platform).then(function (response) {
-                    $.notify("La plateforme a bien ete mise a jour", "success");
+                    $.notify("La plateforme a bien été mise à jour", "success");
                     //Try to get the global properties
                     var platform = new Platform(response.data);
                     me.get_properties(platform.application_name, platform.platform_name, "#").then(function (properties) {
@@ -308,7 +308,7 @@ applicationModule.factory('ApplicationService', ['$hesperidesHttp', 'Application
             var me = this;
             platform = platform.to_rest_entity();
             return $http.post('rest/applications/' + encodeURIComponent(platform.application_name) + '/platforms?from_application=' + encodeURIComponent(from_application) + '&from_platform=' + encodeURIComponent(from_platform), platform).then(function (response) {
-                $.notify("La plateforme a bien ete creee", "success");
+                $.notify("La plateforme a bien été créée", "success");
                 //Try to get the global properties
                 var platform = new Platform(response.data);
                 me.get_properties(platform.application_name, platform.platform_name, "#").then(function (properties) {
@@ -336,7 +336,7 @@ applicationModule.factory('ApplicationService', ['$hesperidesHttp', 'Application
         save_properties: function (application_name, platform, properties, path) {
             properties = properties.to_rest_entity();
             return $http.post('rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform.name) + '/properties?path=' + encodeURIComponent(path) + '&platform_vid=' + encodeURIComponent(platform.version_id), properties).then(function (response) {
-                $.notify("Les properties ont bien ete sauvegardees", "success");
+                $.notify("Les propriétés ont bien été sauvegardées", "success");
                 return new Properties(response.data);
             }, function (error) {
                 $.notify(error.data.message, "error");

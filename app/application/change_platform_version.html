@@ -86,7 +86,7 @@
                     </md-input-container>
                     <md-switch class="md-primary md-block" aria-label="Copier les properties valorisées de la version" ng-model="copyProperties">
                         <span ng-style="{'text-decoration': (copyProperties ? '' : 'line-through'), 'font-weight' : (copyProperties ? 'bold' : 'normal')}">
-                            Copier les properties valorisées de la version {{platform.application_version}} vers la version {{newVersion}}
+                            Copier les propriétés valorisées de la version {{platform.application_version}} vers la version {{newVersion}}
                         </span>
                     </md-switch>
                     <md-switch class="md-primary md-block" aria-label="Utiliser la note de livraison json de la version" ng-model="useNdl" ng-show="newVersion">
@@ -99,7 +99,6 @@
             </md-content>
         </div>
         <md-dialog-actions>
-            {{newVersion}}
             <md-button ng-click="$change({new_version: newVersion, use_ndl: useNdl, copy_properties: copyProperties})" class="md-raised md-primary" ng-disabled="platformVersionForm.$invalid">Valider</md-button>
             <md-button ng-click="$closeDialog()" class="md-raised md-warn">Annuler</md-button>
         </md-dialog-actions>

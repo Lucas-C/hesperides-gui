@@ -31,8 +31,11 @@
 
     <li ng-if="box.modules.length > 0" class="jumbotron instance" ng-repeat="module in box.modules | orderObjectBy:'name'">
         <div layout="row">
-            <div class="property-box-module-name" layout="row" layout-align="start center" flex="none">
-                <strong>{{module.title}}</strong>
+            <div class="property-box-module-name layout-align-start-center layout-row flex-none" layout="row" layout-align="start center" flex="none">
+                <a href="" class="module-link" ng-click="edit_properties(platform, module);movePropertiesDivHolderToCursorPosition($event);">
+                    {{module.title}}
+                    <md-tooltip>Editer les propriétés</md-tooltip>
+                </a>
             </div>
             <div flex>
                 <property-tool-button></property-tool-button>
@@ -44,10 +47,10 @@
                 ng-mouseover="instance.hover = true"
                 ng-mouseleave="instance.hover = false"
                 class="property-instance" flex="nogrow">
-                <md-button ng-click="edit_instance(instance, module.properties_path)"
+                <md-button class="md-raised" ng-click="edit_instance(instance, module.properties_path)"
                            aria-label="Editer les propriétés de l'instance">
                     <md-tooltip>Editer les propriétés de l'instance</md-tooltip>
-                    <i class="fa fa-list"></i>{{instance.name}}
+                    {{instance.name}}
                 </md-button>
                 <md-button ng-click="preview_instance(box, application, platform, instance, module)"
                            class="md-xs" ng-show="instance.hover">

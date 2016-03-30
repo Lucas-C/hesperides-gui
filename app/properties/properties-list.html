@@ -1,6 +1,7 @@
 <div>
     <div layout="row">
         <div flex="none"><toggle-deleted-properties key-value-properties="properties.key_value_properties" toggle="displayDeletedProperties"></toggle-deleted-properties></div>
+        &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
         <div flex><toggle-unspecified-properties key-value-properties="properties.key_value_properties" toggle="displayUnspecified"></toggle-unspecified-properties></div>
     </div>
     <div>
@@ -13,13 +14,13 @@
     <div layout="row">
         <div flex="35">
             <md-input-container class="md-block">
-                <label>Filtrer les properties par clef</label>
+                <label>Filtrer les propriétés par clef</label>
                 <input type="text" ng-trim="true" ng-model="propertiesKeyFilter" aria-label="Filtrer les properties par clef" />
             </md-input-container>
         </div>
         <div flex>
             <md-input-container class="md-block">
-                <label>Filtrer les properties par valeur (les valeurs modifiées ne seront filtrables que suite &agrave; une sauvegarde)</label>
+                <label>Filtrer les propriétés par valeur (les valeurs modifiées ne seront filtrables que suite à une sauvegarde)</label>
                 <input type="text" ng-trim="true" ng-model="propertiesValueFilter" aria-label="Filtrer les properties par valeur (les valeurs modifiées ne seront filtrables que suite &agrave; une sauvegarde)" />
             </md-input-container>
         </div>

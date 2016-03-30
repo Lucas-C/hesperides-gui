@@ -420,6 +420,11 @@ a.md-button.md-default-theme.md-warn.md-raised:not([disabled]), a.md-button.md-w
     color: white !important;
 }
 
+a.module-link, a.module-link:hover {
+    color: #428bca !important;
+    text-decoration: none !important;
+}
+
 /******************************************************************************
  * Material Design input label
  */

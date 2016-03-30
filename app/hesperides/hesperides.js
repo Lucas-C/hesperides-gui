@@ -252,7 +252,7 @@ hesperidesModule.directive('propertyToolButtonOver', function ($mdUtil, $propert
             });
 
             // Hide popup
-            popover.on('mouseleave', function() {
+            parent.on('mouseleave', function() {
                 element.children().removeClass('popover-hover');
                 $propertyToolButtonService.currentPopup = null;
             });

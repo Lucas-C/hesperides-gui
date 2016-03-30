@@ -712,6 +712,7 @@ input.default-value-color-focus:placeholder-shown{color: #FFFFFF;}
 .file-title {
     width: 93.7%;
     text-align: left;
+    text-transform: none;
 }
 
 .file-content {

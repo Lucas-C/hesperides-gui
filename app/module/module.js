@@ -145,6 +145,28 @@ applicationModule.controller('ModuleCtrl', [
         });
     };
 
+    /**
+     * Affiche la liste des propriétés associées à un module.
+     */
+    $scope.open_associated_properties_dialog = function(module){
+        var modalScope = $scope.$new(true);
+
+        modalScope.$closeDialog = function() {
+            $mdDialog.cancel();
+        };
+
+        modalScope.$save = function(release_version) {
+            $scope.create_release(module, release_version);
+            $mdDialog.cancel();
+        };
+
+        $mdDialog.show({
+            templateUrl: 'model/model-modal.html',
+            controller: 'ModuleCtrl',
+            scope:modalScope
+        });
+    };
+
 }]);
 
 applicationModule.factory('Module', ['Techno', function (Techno) {

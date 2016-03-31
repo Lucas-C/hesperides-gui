@@ -1,13 +1,16 @@
 <div>&nbsp;</div>
-<div flex="100">
-    <div flex="100">
+<div layout="row">
+    <div flex>
         <div class="bg-light">
-            <h3><span> Module <strong>{{module.name}}</strong>, Version <strong>{{module.version}}</strong></span>
+            <h3><span> Module <strong><u>{{module.name}}</u></strong>, Version <strong><u>{{module.version}}</u></strong></span>
                 <span ng-show="isWorkingCopy"> (Working Copy)</span></span>
                 <md-button class="md-raised md-primary"
                            ng-show="is_workingcopy"
-                           ng-click="open_create_release_dialog(module)"
-                        >Créer la release <i class="fa fa-share"></i></md-button>
+                           ng-click="open_create_release_dialog(module)">
+                    Créer la release <i class="fa fa-code-fork"></i></md-button>
+                <md-button class="md-raised md-warn"
+                           ng-click="open_associated_properties_dialog(module)">
+                    Les propriétés associées <i class="fa fa-list"></i></md-button>
             </h3>
         </div>
     </div>
@@ -25,9 +28,14 @@
                            selected-item="techno"
                            selectable="true"
                            editable="is_workingcopy"
+                           placeholder="Rechercher une techno"
                            typeaheadexpression="techno in $parent.$parent.$parent.search_technos(ctrl.searchText)"
                     ></list-of-items>
         </div>
+    </div>
+</div>
+<div layout="row">
+    <div flex>
         <div class="bg-light module-file" flex>
             <h4>Les fichiers spécifiques du module</h4>
             <hesperides-template-list template-entries="templateEntries"
@@ -37,10 +45,11 @@
                                       is-read-only="is_release"></hesperides-template-list>
         </div>
     </div>
+</div>
+<!-- remplacé par la modal model-modal.html
+<div layout="row">
     <div class="bg-light" flex>
         <h3>Les propriétés associées</h3>
         <hesperides-model model="model" loading="loading_model"></hesperides-model>
     </div>
-</div>
-
-
+</div>-->

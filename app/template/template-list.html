@@ -11,9 +11,8 @@
                    ng-show="!isReadOnly"
                 ><i class="fa fa-trash"></i></md-button>
         <span ng-class="{'text-stroke': hover}">
-            <em class="template-list-item-name">{{template_entry.name}}</em>
-            <a href="" title="{{template_entry.location}}/{{template_entry.filename}}" ng-click="edit_template(template_entry.name)">{{template_entry.location}}/{{template_entry.filename}}</a>
-            <br/><small>Droits : {{template_entry.rights}}</small>
+            {{template_entry.name}}
+            <a class="module-link" href="" title="{{template_entry.location}}/{{template_entry.filename}}" ng-click="edit_template(template_entry.name)">{{template_entry.location}}/{{template_entry.filename}}</a><small>  (Droits : {{template_entry.rights}})</small>
         </span>
     </p>
 </blockquote>

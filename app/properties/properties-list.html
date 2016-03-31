@@ -1,15 +1,18 @@
 <div>
     <div layout="row">
+        <div flex="none" style="margin-right:2%">
+            <md-switch class="md-primary md-block ng-pristine ng-untouched ng-valid"  ng-click="properties.switchOrder()"
+                       ng-model="toggle" ng-init="toggle=false"
+                       aria-label="Afficher les propriétés supprimées"
+                       role="checkbox">
+                <span class="fa" data-ng-class="{'fa-sort-alpha-desc': properties.isReverseOrder(), 'fa-sort-alpha-asc': !properties.isReverseOrder()}"></span>
+                <span class="ng-binding ng-scope">Tri des propriétés</span>
+            </md-switch>
+        </div>
         <div flex="none" style="margin-right:2%"><toggle-deleted-properties key-value-properties="properties.key_value_properties" toggle="displayDeletedProperties"></toggle-deleted-properties></div>
         <div flex="none"><toggle-unspecified-properties key-value-properties="properties.key_value_properties" toggle="displayUnspecified"></toggle-unspecified-properties></div>
     </div>
-    <div>
-        <md-button id="sortModulePropertiesButton" ng-click="properties.switchOrder()"
-                   class="md-raised">
-            <span>Tri par nom de property</span>
-            <span class="fa" data-ng-class="{'fa-sort-alpha-desc': !properties.isReverseOrder(), 'fa-sort-alpha-asc': properties.isReverseOrder()}"></span>
-        </md-button>
-    </div>
+
     <div layout="row">
         <div flex="50">
             <md-input-container class="md-block">

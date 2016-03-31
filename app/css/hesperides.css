@@ -1,6 +1,27 @@
+@font-face {
+	    font-family: 'AvenirBook';
+	    src: url('../fonts/avenirltstd-roman-webfont.eot');
+	    src: url('../fonts/avenirltstd-roman-webfont.eot?#iefix') format('embedded-opentype'),
+	         url('../fonts/avenirltstd-roman-webfont.woff') format('woff'),
+	         url('../fonts/avenirltstd-roman-webfont.ttf') format('truetype'),
+	         url('../fonts/avenirltstd-roman-webfont.svg') format('svg');
+	    font-weight: normal;
+	    font-style: normal;
+	}
+
 body {
-    font-size: 12px;
-}
+     font-size: 12px;
+     font-family: AvenirBook,Arial,sans-serif;
+ }
+
+ button {
+     font-family: AvenirBook,Arial,sans-serif;
+ }
+
+ .md-button {
+     font-family: AvenirBook,Arial,sans-serif;
+ }
+
 /*
  * Header
  */
@@ -251,6 +272,7 @@ md-checkbox.diff {
 
 .menu-header {
     font-size: 14px;
+    font-family: AvenirBook,Arial,sans-serif;
     color: #003123;
     padding: 0;
     margin: 0;
@@ -596,7 +618,7 @@ input.default-value-color-focus:placeholder-shown{color: #FFFFFF;}
     color: #fff;
     visibility: hidden;
     font-size: 12px;
-    font-family: 'Helvetica',sans-serif;
+    font-family: AvenirBook,Arial,sans-serif;
     padding: 7px 10px;
     position: absolute;
     z-index: 4;

@@ -52,12 +52,14 @@
             </form>
         </div>
         <div style="margin-top: 5px;" layout="row" ng-show="properties">
-            <div flex="50">
+            <div >
                 <h3><span>Les propriétés associées à <strong>{{selected_module.path.split('#').join('
                     | ')}} | {{selected_module.title}}</strong></span>
                 </h3>
             </div>
-            <div flex="50">
+        </div>
+        <div style="margin-top: 5px;" layout="row" ng-show="properties">
+            <div >
                 <md-button id="cleanPropertiesButton" ng-click="clean_properties(properties)" class="md-raised">
                     <i class="fa fa-trash"></i>
                     <span>Nettoyer les valorisations inutiles</span>
@@ -89,9 +91,17 @@
                 </h3>
 
                 <div layout="row">
-                    <div flex="none"><toggle-deleted-properties key-value-properties="instance.key_values" toggle="displayDeletedProperties"></toggle-deleted-properties></div>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                    <div flex><toggle-unspecified-properties key-value-properties="instance.key_values" toggle="displayUnspecified"></toggle-unspecified-properties></div>
+                    <div flex="none" style="margin-right:2%">
+                        <md-switch class="md-primary md-block ng-pristine ng-untouched ng-valid"  ng-click="instance.switchOrder()"
+                                   ng-model="toggle" ng-init="toggle=false"
+                                   aria-label="Afficher les propriétés supprimées"
+                                   role="checkbox">
+                            <span class="fa" data-ng-class="{'fa-sort-alpha-desc': instance.isReverseOrder(), 'fa-sort-alpha-asc': !instance.isReverseOrder()}"></span>
+                            <span class="ng-binding ng-scope">Tri des propriétés</span>
+                        </md-switch>
+                    </div>
+                    <div flex="none" style="margin-right:2%"><toggle-deleted-properties key-value-properties="instance.key_values" toggle="displayDeletedProperties"></toggle-deleted-properties></div>
+                    <div flex="none"><toggle-unspecified-properties key-value-properties="instance.key_values" toggle="displayUnspecified"></toggle-unspecified-properties></div>
                 </div>
 
                 <form class="form-horizontal narrow" role="form">

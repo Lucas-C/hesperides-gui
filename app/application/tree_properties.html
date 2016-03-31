@@ -52,12 +52,14 @@
             </form>
         </div>
         <div style="margin-top: 5px;" layout="row" ng-show="properties">
-            <div flex="50">
+            <div >
                 <h3><span>Les propriétés associées à <strong>{{selected_module.path.split('#').join('
                     | ')}} | {{selected_module.title}}</strong></span>
                 </h3>
             </div>
-            <div flex="50">
+        </div>
+        <div style="margin-top: 5px;" layout="row" ng-show="properties">
+            <div >
                 <md-button id="cleanPropertiesButton" ng-click="clean_properties(properties)" class="md-raised">
                     <i class="fa fa-trash"></i>
                     <span>Nettoyer les valorisations inutiles</span>

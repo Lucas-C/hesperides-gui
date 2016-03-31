@@ -12,15 +12,16 @@
 body {
      font-size: 12px;
      font-family: AvenirBook,Arial,sans-serif;
- }
+}
 
- button {
-     font-family: AvenirBook,Arial,sans-serif;
- }
-
- .md-button {
-     font-family: AvenirBook,Arial,sans-serif;
- }
+input,
+button,
+select,
+textarea,
+.md-button{
+     font-family: inherit;
+     font-size: inherit;
+}
 
 /*
  * Header

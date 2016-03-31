@@ -132,6 +132,7 @@ templateModule.factory('HesperidesTemplateModal', ['TemplateService', '$mdDialog
             $mdDialog.show({
                 templateUrl: 'template/template-modal.html',
                 controller: 'TechnoCtrl',
+                clickOutsideToClose:true,
                 preserveScope: true, // requiered for not freez menu see https://github.com/angular/material/issues/5041
                 scope:modalScope
             });

@@ -800,6 +800,10 @@ input.default-value-color-focus:placeholder-shown{color: #FFFFFF;}
     background-color: #F8F8F8;
 }
 
+.modal-md-virtual-repeat-container {
+    height: 250px !important;
+    background-color:#FFFFFF !important;
+}
 /*Global properties list*/
 .global-properties-container,global-properties-line {
     width:100%;

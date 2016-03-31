@@ -197,6 +197,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
         $mdDialog.show({
             templateUrl: 'application/add_box.html',
+            clickOutsideToClose:true,
             scope: modalScope
         });
     };
@@ -211,6 +212,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
         $mdDialog.show({
             templateUrl: 'application/add_instance.html',
+            clickOutsideToClose:true,
             scope: modalScope
         });
     };
@@ -230,6 +232,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
             $mdDialog.show({
                 templateUrl: 'application/change_platform_version.html',
                 controller: 'PlatformVersionModule',
+                clickOutsideToClose:true,
                 scope:$scope
             });
         };
@@ -249,6 +252,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
         $mdDialog.show({
             templateUrl: 'application/search_module.html',
+            clickOutsideToClose:true,
             scope: modalScope
         });
     };
@@ -272,6 +276,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
         $mdDialog.show({
             templateUrl: 'application/change_module_version.html',
+            clickOutsideToClose:true,
             scope: modalScope
         });
     };
@@ -288,6 +293,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
         var t = $mdDialog.show({
             templateUrl: 'application/properties_diff_wizard.html',
+            clickOutsideToClose:true,
             scope: modalScope
         });
 
@@ -325,6 +331,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
         $mdDialog.show({
             templateUrl: 'application/global_properties_diff_wizard.html',
+            clickOutsideToClose:true,
             scope: modalScope
         });
     };
@@ -395,6 +402,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
             var modal = $mdDialog.show({
                 templateUrl: 'file/file-modal.html',
+                clickOutsideToClose:true,
                 scope: modalScope
             });
         });
@@ -451,6 +459,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
             var modal = $mdDialog.show({
                         templateUrl: 'event/event-modal.html',
+                        clickOutsideToClose:true,
                         scope: modalScope
                     });
         });

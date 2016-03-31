@@ -141,6 +141,7 @@ applicationModule.controller('ModuleCtrl', [
         $mdDialog.show({
             templateUrl: 'module/create_release.html',
             controller: 'ModuleCtrl',
+            clickOutsideToClose:true,
             scope:modalScope
         });
     };
@@ -163,6 +164,7 @@ applicationModule.controller('ModuleCtrl', [
         $mdDialog.show({
             templateUrl: 'model/model-modal.html',
             controller: 'ModuleCtrl',
+            clickOutsideToClose:true,
             scope:modalScope
         });
     };

@@ -17,6 +17,7 @@ menuModule.controller('MenuTechnoCtrl', ['$scope', '$mdDialog', '$location', '$t
         $mdDialog.show({
             templateUrl: 'techno/techno-menu-modal.html',
             controller: 'MenuTechnoCtrl',
+            clickOutsideToClose:true,
             preserveScope: true, // requiered for not freez menu see https://github.com/angular/material/issues/5041
             scope:$scope
         });
@@ -26,6 +27,7 @@ menuModule.controller('MenuTechnoCtrl', ['$scope', '$mdDialog', '$location', '$t
         $mdDialog.show({
             templateUrl: 'techno/techno-menu-modal-from.html',
             controller: 'MenuTechnoCtrl',
+            clickOutsideToClose:true,
             preserveScope: true // requiered for not freez menu
             // Remove scope cause else with autocomplete, window is closed
             //scope:$scope
@@ -110,6 +112,7 @@ menuModule.controller('MenuModuleCtrl', ['$scope', '$mdDialog', '$location', '$t
         $mdDialog.show({
             templateUrl: 'module/module-menu-modal.html',
             controller: 'MenuModuleCtrl',
+            clickOutsideToClose:true,
             preserveScope: true, // requiered for not freez menu
             scope:$scope
         });
@@ -119,6 +122,7 @@ menuModule.controller('MenuModuleCtrl', ['$scope', '$mdDialog', '$location', '$t
         $mdDialog.show({
             templateUrl: 'module/module-menu-modal-from.html',
             controller: 'MenuModuleCtrl',
+            clickOutsideToClose:true,
             preserveScope: true // requiered for not freez menu
             // Remove scope cause else with autocomplete, window is closed
             //scope:$scope
@@ -256,6 +260,7 @@ menuModule.controller('MenuPropertiesCtrl', ['$hesperidesHttp', '$scope', '$mdDi
         $mdDialog.show({
             templateUrl: 'properties/platform-menu-modal.html',
             controller: 'MenuPropertiesCtrl',
+            clickOutsideToClose:true,
             preserveScope: true, // requiered for not freez menu
             scope:$scope
         });
@@ -269,6 +274,7 @@ menuModule.controller('MenuPropertiesCtrl', ['$hesperidesHttp', '$scope', '$mdDi
         $mdDialog.show({
             templateUrl: 'properties/platform-menu-modal-from.html',
             controller: 'MenuPropertiesCtrl',
+            clickOutsideToClose:true,
             preserveScope: true, // requiered for not freez menu
             scope:modalScope
         });
@@ -296,6 +302,7 @@ menuModule.controller('MenuHelpCtrl', ['$scope', '$mdDialog', '$hesperidesHttp',
         $mdDialog.show({
             templateUrl: 'hesperides/help-menu-modal.html',
             controller: 'MenuHelpCtrl',
+            clickOutsideToClose:true,
             preserveScope: true, // requiered for not freez menu
             scope:$scope
         });

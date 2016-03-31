@@ -3,23 +3,24 @@
         <div class="ng-binding">
             <h2>Propriétés associées au module {{module.name}}</h2>
             <md-content layout-padding class="autoScroll">
-                <div vs-repeat>
-                    <h3>Propriétés simples :</h3>
-                    <dl class="dl-horizontal model-property-simple" ng-animate="'animate'"
-                        ng-repeat="keyValueProperty in model.key_value_properties | orderBy:'name' track by $index">
+                <!-- Simple properties -->
+                <h3>Propriétés simples :</h3>
+                <md-virtual-repeat-container class="modal-md-virtual-repeat-container">
+                    <dl class="dl-horizontal model-property-simple" ng-animate="'animate'" md-virtual-repeat="keyValueProperty in model.key_value_properties | orderBy:'name'">
                         <b>{{keyValueProperty.name }}</b><span ng-if="keyValueProperty.comment"> <i class="fa fa-commenting-o"></i> <em>{{ keyValueProperty.comment }}</em></span>
                     </dl>
-                </div>
-                <div vs-repeat>
-                    <h3 ng-show="model.iterable_properties.length > 0">Propriétés multiples :</h3>
-                    <dl class="dl-horizontal model-property-iterable" ng-animate="'animate'"
-                        ng-repeat="iterableProperty in model.iterable_properties | orderBy:'name' track by $index">
+                </md-virtual-repeat-container>
+
+                <!-- Iterable properties -->
+                <h3 ng-show="model.iterable_properties.length > 0">Propriétés multiples :</h3>
+                <md-virtual-repeat-container class="modal-md-virtual-repeat-container" ng-show="model.iterable_properties.length > 0">
+                    <dl class="dl-horizontal model-property-simple" ng-animate="'animate'" md-virtual-repeat="iterableProperty in model.iterable_properties | orderBy:'name'">
                         <dt>{{ iterableProperty.name }}</dt>
                         <dd ng-repeat="field in iterableProperty.fields | orderBy:'name' track by $index">
                             <b>{{field.name }}</b><span ng-if="field.comment"> <i class="fa fa-commenting-o"></i> <em>{{ field.comment }}</em></span>
                         </dd>
                     </dl>
-                </div>
+                </md-virtual-repeat-container>
             </md-content>
         </div>
         <md-dialog-actions>

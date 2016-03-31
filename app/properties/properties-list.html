@@ -11,7 +11,7 @@
         </md-button>
     </div>
     <div layout="row">
-        <div flex="35">
+        <div flex="50">
             <md-input-container class="md-block">
                 <label>Filtrer les propriétés par clef</label>
                 <input type="text" ng-trim="true" ng-model="propertiesKeyFilter" aria-label="Filtrer les properties par clef" />
@@ -33,12 +33,12 @@
                 <div layout="row"
                      ng_if="!key_value_property.inGlobal"
                      style="margin:1%;">
-                    <div layout="column" flex="33">
+                    <div layout="column" flex="46">
                         <label class="property-label"
                                ng-class="{'text-stroke':!key_value_property.inModel, 'default-value-color': key_value_property.defaultValue && !key_value_property.value}"
                         >{{key_value_property.name}} <span ng-show="key_value_property.required" class="property-required">*</span></label>
                     </div>
-                    <div layout="column"  flex="65">
+                    <div layout="column"  flex>
                         <input ng-model="key_value_property.value"
                                ng-trim="true"
                                ng-readonly="!key_value_property.inModel"
@@ -46,6 +46,7 @@
                                ng-blur="focusthis = false"
                                ng-class="{'text-stroke':!key_value_property.inModel, 'default-value-color': key_value_property.defaultValue && !key_value_property.value, 'default-value-color-focus': focusthis}"
                                placeholder="{{key_value_property.defaultValue ? '[default=' + key_value_property.defaultValue + '] ' : ''}} {{key_value_property.comment}}"
+                               ng-pattern="key_value_property.pattern"
                                class="property-value" >
                         <md-tooltip md-direction="top" ng-show="key_value_property.defaultValue || key_value_property.comment">{{key_value_property.defaultValue ? '[default=' + key_value_property.defaultValue + '] ' : ''}} {{key_value_property.comment}}</md-tooltip>
                     </div>
@@ -55,20 +56,20 @@
                 <div layout="row"
                      ng_if="key_value_property.inGlobal"
                      style="margin:1%;">
-                    <div layout="column" flex="23">
+                    <div layout="column" flex="46">
 
                         <label class="property-label"
                                ng-class="{'text-stroke':!key_value_property.inModel, 'default-value-color': key_value_property.defaultValue && !key_value_property.value} "
                         >{{key_value_property.name}}</label>
-
+                        <md-tooltip md-direction="top">{{key_value_property.name}}</md-tooltip>
                     </div>
-                    <div layout="column"  flex="75">
+                    <div layout="column"  flex>
                         <input ng-model="key_value_property.value"
                                ng-trim="true"
                                ng-readonly="true"
-                               class="property-value"
-                               tooltip="Bonjour"
-                        >
+                               class="property-value">
+                        <md-tooltip md-direction="top" >A valoriser dans les propriétées globales.</md-tooltip>
+
                     </div>
                 </div>
             </div>

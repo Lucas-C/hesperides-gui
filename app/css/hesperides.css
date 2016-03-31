@@ -524,6 +524,7 @@ button.md-primary.md-button.md-confirm-hesperides-dialog-theme.md-ink-ripple {
     border-bottom-width: thin;
     border-bottom-color: rgb(0,150,136);
     background-color: #F8F8F8;
+    width: 90%;
 }
 
 .property-value:focus {
@@ -775,3 +776,22 @@ input.default-value-color-focus:placeholder-shown{color: #FFFFFF;}
 .md-virtual-repeat-container {
     background-color: #F8F8F8;
 }
+
+/*Global properties list*/
+.global-properties-container,global-properties-line {
+    width:100%;
+}
+
+.global-properties-action {
+    width:10%;
+}
+
+.global-properties-label {
+    width:30%;
+    text-align: right;
+}
+
+.global-properties-value {
+    width:60%;
+}
+

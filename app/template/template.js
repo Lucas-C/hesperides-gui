@@ -67,6 +67,7 @@ templateModule.factory('HesperidesTemplateModal', ['TemplateService', '$mdDialog
         codeMirrorOptions: {
             mode: 'hesperides',
             lineNumbers: true,
+            lineWrapping : true,
             extraKeys: {
                 'F11': function (cm) {
                     $('body').append($('#templateContent')); //Change the parent of codemirror because if not, fullscreen is restricted to the modal

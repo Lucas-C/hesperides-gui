@@ -69,8 +69,10 @@ fileModule.factory('FileService', ['$hesperidesHttp', 'Application', 'Platform',
             var group = clearRight(filesRights.group);
 
             newRights = 'user: ' + user + ' group:' + group;
-        } else {
-            newRights = 'Aucun droit positionné';
+
+            if (!(_.isUndefined(user) || _.isUndefined(group))) {
+                newRights = 'Aucun droit positionné';
+            }
         }
 
         return newRights;

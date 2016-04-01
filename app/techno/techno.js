@@ -4,8 +4,8 @@
 var technoModule = angular.module('hesperides.techno', ['hesperides.template', 'hesperides.properties', 'hesperides.model']);
 
 technoModule.controller('TechnoCtrl',
-    ['$scope', '$location', '$routeParams', 'Techno', 'Page', 'TechnoService', 'HesperidesTemplateModal', 'Template', 'TemplateEntry', 'FileService',
-        function ($scope, $location, $routeParams, Techno, Page, TechnoService, HesperidesTemplateModal, Template, TemplateEntry, FileService) {
+    ['$scope', '$location', '$mdDialog', '$routeParams', 'Techno', 'Page', 'TechnoService', 'HesperidesTemplateModal', 'Template', 'TemplateEntry', 'FileService',
+        function ($scope, $location, $mdDialog, $routeParams, Techno, Page, TechnoService, HesperidesTemplateModal, Template, TemplateEntry, FileService) {
     Page.setTitle("Technos");
 
     $scope.isWorkingCopy = $routeParams.type === "workingcopy";
@@ -112,6 +112,29 @@ technoModule.controller('TechnoCtrl',
         });
     }
 
+    /**
+     * Affiche la liste des propriétés associées à un module.
+     */
+    $scope.open_associated_properties_dialog = function(techno){
+        var modalScope = $scope.$new(true);
+
+        modalScope.$closeDialog = function() {
+            $mdDialog.cancel();
+        };
+
+        modalScope.$save = function(release_version) {
+            $scope.create_release(module, release_version);
+            $mdDialog.cancel();
+        };
+
+        $mdDialog.show({
+            templateUrl: 'techno/techno-modal.html',
+            controller: 'TechnoCtrl',
+            clickOutsideToClose:true,
+            scope:modalScope
+        });
+    };
+
 }]);
 
 technoModule.controller('TechnoSearchCtrl', ['$scope', '$routeParams', 'TechnoService', 'Page', function ($scope, $routeParams, TechnoService, Page) {
@@ -203,7 +226,7 @@ technoModule.factory('TechnoService',
                     var entry = new TemplateEntry(data);
                     var url ='rest/templates/packages/' + encodeURIComponent(r_name) + '/' + encodeURIComponent(r_version) + '/release/templates/' + encodeURIComponent(entry.name);
                     entry.getRights(url).then (function (template){
-                        entry.rights = template.rights != null ? template.rights : 'Rien à afficher';
+                        entry.rights = FileService.files_rights_to_string(template.rights);
                     });
                     return entry;
                 }, function (error) {

@@ -1,20 +1,23 @@
 <div>&nbsp;</div>
-<div flex="100">
-    <div flex="100">
+<div layout="row">
+    <div flex>
         <div class="bg-light">
-            <h3><span> Techno <strong>{{techno.name}}</strong>, Version <strong>{{techno.version}}</strong></span>
+            <h3><span> Techno <strong><u>{{techno.name}}</u></strong>, Version <strong><u>{{techno.version}}</u></strong></span>
                 <span ng-show="isWorkingCopy"> (Working Copy)</span></span>
-            <md-button class="md-raised md-primary"
-                       ng-really-message="Etes-vous sur de vouloir créer la release {{techno.version}} ?"
-                       ng-really-click="create_release(techno.name, techno.version)"
-                    >Créer la release <i class="fa fa-share"></i></md-button>
+                <md-button class="md-raised md-primary"
+                           ng-really-message="Etes-vous sur de vouloir créer la release {{techno.version}} ?"
+                           ng-really-click="create_release(techno.name, techno.version)">
+                    <i class="fa fa-code-fork"> Créer la release</i></md-button>
+                <md-button class="md-raised md-warn"
+                           ng-click="open_associated_properties_dialog(techno)">
+                    <i class="fa fa-list"></i> Les propriétés associées</md-button>
             </h3>
         </div>
     </div>
 </div>
 <div layout="row">
     <div flex>
-        <div class="bg-light techno-file">
+        <div class="bg-light techno-file" flex>
             <h3>Les fichiers associés à la techno</h3>
             <hesperides-template-list template-entries="templateEntries"
                                       add="add_template"
@@ -24,8 +27,9 @@
         </div>
     </div>
 
+    <!-- fonctionnalité gérée dans techno-modal.html
     <div flex class="bg-light">
             <h3>Les propriétés associées à la techno</h3>
             <hesperides-model model="model"></hesperides-model>
-    </div>
+    </div>-->
 </div>

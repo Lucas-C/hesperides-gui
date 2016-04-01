@@ -1,3 +1,4 @@
+<!-- List of global properties -->
 <div layout="column">
     <table class="global-properties-container">
         <tbody>
@@ -35,22 +36,14 @@
                     <label type="text" ng-trim="true" aria-label="{{kv_property.name}}" ng-readonly="true" class="property-label">
                         {{kv_property.name}}
                     </label>
-                    <md-tooltip md-direction="top">
-                        {{kv_property.name}}
+                    <md-tooltip md-direction="top" ng-show="kv_property.comment">
+                        {{kv_property.comment}}
                     </md-tooltip>
                 </td>
                 <td class="global-properties-value">
                     <input class="property-value" type="text" ng-trim="true" id="input-{{ kv_property.name }}" ng-model="kv_property.value" aria-label="{{ kv_property.name }}" focus-save-global-properties/>
                 </td>
             </tr>
-        </tbody>
-    </table>
-
-<!-- List of global properties -->
-
-    <table>
-        <tbody>
-
         </tbody>
     </table>
 </div>

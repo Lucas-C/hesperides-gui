@@ -203,6 +203,7 @@ applicationModule.factory('Instance', function () {
         }
 
         this.switchOrder = function () {
+            console.log ("Bien");
           this.is_sorted_desc = !this.is_sorted_desc;
         }
 
@@ -407,6 +408,16 @@ applicationModule.directive('propertiesGlobalesTree', function () {
         templateUrl: "application/properties/properties_globales.html",
         link: function (scope) {
             scope.isBox = false;
+        }
+    };
+});
+
+applicationModule.directive('instanceProperties', function () {
+    return {
+        restrict: 'E',
+        templateUrl: "application/properties/instance_properties.html",
+        link: function (scope) {
+            scope.isBox = true;
         }
     };
 });

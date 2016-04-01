@@ -1,50 +1,49 @@
-<div>
+<!-- Displaying instance properties -->
+<form name="technoForm" ng-submit="technoForm.$valid" editable-form>
+
+    <!-- Filtring contents -->
     <div layout="row">
         <div flex="none" style="margin-right:2%">
-            <md-switch class="md-primary md-block ng-pristine ng-untouched ng-valid"  ng-click="properties.switchOrder()"
+            <md-switch class="md-primary md-block ng-pristine ng-untouched ng-valid" ng-click="instance.switchOrder()"
                        ng-model="toggle" ng-init="toggle=false"
                        aria-label="Afficher les propriétés supprimées"
                        role="checkbox">
-                <span class="fa" data-ng-class="{'fa-sort-alpha-desc': properties.isReverseOrder(), 'fa-sort-alpha-asc': !properties.isReverseOrder()}"></span>
+                <span class="fa"
+                      data-ng-class="{'fa-sort-alpha-desc': instance.isReverseOrder(), 'fa-sort-alpha-asc': !instance.isReverseOrder()}"></span>
                 <span class="ng-binding ng-scope">Tri des propriétés</span>
             </md-switch>
         </div>
-        <div flex="none" style="margin-right:2%"><toggle-deleted-properties key-value-properties="properties.key_value_properties" toggle="displayDeletedProperties"></toggle-deleted-properties></div>
-        <div flex="none"><toggle-unspecified-properties key-value-properties="properties.key_value_properties" toggle="displayUnspecified"></toggle-unspecified-properties></div>
-    </div>
-
-    <div layout="row">
-        <div flex="50">
-            <md-input-container class="md-block">
-                <label>Filtrer les propriétés par clef</label>
-                <input type="text" ng-trim="true" ng-model="propertiesKeyFilter" aria-label="Filtrer les properties par clef" />
-            </md-input-container>
+        <div flex="none" style="margin-right:2%">
+            <toggle-deleted-properties key-value-properties="instance.key_values"
+                                       toggle="displayDeletedProperties"></toggle-deleted-properties>
         </div>
-        <div flex>
-            <md-input-container class="md-block">
-                <label>Filtrer les propriétés par valeur (les valeurs modifiées ne seront filtrables que suite à une sauvegarde)</label>
-                <input type="text" ng-trim="true" ng-model="propertiesValueFilter" aria-label="Filtrer les properties par valeur (les valeurs modifiées ne seront filtrables que suite &agrave; une sauvegarde)" />
-            </md-input-container>
+        <div flex="none">
+            <toggle-unspecified-properties key-value-properties="instance.key_values"
+                                           toggle="displayUnspecified"></toggle-unspecified-properties>
         </div>
     </div>
+    <!--End filtring contents-->
 
+    <!-- List of properties -->
     <md-content layout="column" style="height: 500px;">
         <!-- Warning ! We need md-virtual-repeat to have reactive UI -->
         <md-virtual-repeat-container id="vertical-container" style="height: 1500px;">
-            <div md-virtual-repeat="key_value_property in properties.key_value_properties | hideHesperidesPredefinedProperties | displayUnspecifiedProperties:displayUnspecified | filterProperties:{'name':propertiesKeyFilter, 'filtrable_value':propertiesValueFilter} | displayProperties:displayDeletedProperties | orderBy:'name':properties.isReverseOrder()" class="repeated-item" flex style="height: 20px;">
+            <div md-virtual-repeat="key_value_property in instance.key_values | hideHesperidesPredefinedProperties | displayUnspecifiedProperties:displayUnspecified | displayProperties:displayDeletedProperties | orderBy:'name':instance.isReverseOrder()"
+                 class="repeated-item" flex style="height: 20px;">
                 <!-- Non Global Properties -->
                 <div layout="row"
                      ng_if="!key_value_property.inGlobal"
                      style="margin:1%;">
-                    <div layout="column" flex="46">
+                    <div layout="column" flex="50">
                         <label class="property-label"
                                ng-class="{'text-stroke':!key_value_property.inModel, 'default-value-color': key_value_property.defaultValue && !key_value_property.value}"
-                        >{{key_value_property.name}} <span ng-show="key_value_property.required" class="property-required">*</span></label>
+                        >{{key_value_property.name}} <span ng-show="key_value_property.required"
+                                                           class="property-required">*</span></label>
                         <md-tooltip md-direction="top" ng-show="key_value_property.comment">
                             {{key_value_property.comment}}
                         </md-tooltip>
                     </div>
-                    <div layout="column"  flex>
+                    <div layout="column" flex>
                         <input ng-model="key_value_property.value"
                                ng-trim="true"
                                ng-readonly="!key_value_property.inModel"
@@ -53,7 +52,7 @@
                                ng-class="{'text-stroke':!key_value_property.inModel, 'default-value-color': key_value_property.defaultValue && !key_value_property.value, 'default-value-color-focus': focusthis}"
                                placeholder="{{key_value_property.defaultValue ? '[default=' + key_value_property.defaultValue + '] ' : ''}} {{key_value_property.comment}}"
                                ng-pattern="key_value_property.pattern"
-                               class="property-value" >
+                               class="property-value">
                     </div>
                 </div>
 
@@ -61,16 +60,14 @@
                 <div layout="row"
                      ng_if="key_value_property.inGlobal"
                      style="margin:1%;">
-                    <div layout="column" flex="46">
+                    <div layout="column" flex="50">
 
                         <label class="property-label"
                                ng-class="{'text-stroke':!key_value_property.inModel, 'default-value-color': key_value_property.defaultValue && !key_value_property.value} "
                         >{{key_value_property.name}}</label>
-                        <md-tooltip md-direction="top" ng-show="key_value_property.comment">
-                            {{key_value_property.comment}}
-                        </md-tooltip>
+                        <md-tooltip md-direction="top" ng-show="key_value_property.comment">{{key_value_property.comment}}</md-tooltip>
                     </div>
-                    <div layout="column"  flex>
+                    <div layout="column" flex>
                         <input ng-model="key_value_property.value"
                                ng-trim="true"
                                ng-readonly="true"
@@ -86,11 +83,5 @@
             </div>
         </md-virtual-repeat-container>
     </md-content>
-
-</div>
-
-<h3 ng-show="properties.iterable_properties.length > 0">Proprietes multiples :</h3>
-<dl class="dl-horizontal text-overflow" style="margin-bottom:0" ng-repeat="iterable_property in properties.iterable_properties | orderBy:'name' track by $index">
-    <dt>{{ iterable_property.name }}</dt>
-    <dd ng-repeat="field in iterable_property.fields | orderBy:'name' track by $index">{{ field.name }}<small style="padding-left: 10px;"><em>{{ field.comment }}</em></small></dd>
-</dl>
+</form>
+<!-- End list of properties -->

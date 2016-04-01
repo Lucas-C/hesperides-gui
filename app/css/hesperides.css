@@ -793,6 +793,7 @@ input.default-value-color-focus:placeholder-shown{color: #FFFFFF;}
 /*Hesperides Time Style*/
 .angularjs-datetime-picker {
     z-index: 999;
+    position:fixed !important;
 }
 
 /*Properties list*/

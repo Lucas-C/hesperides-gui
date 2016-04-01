@@ -287,47 +287,52 @@ hesperidesModule.directive('konami', function() {
     }
 });
 
-hesperidesModule.factory('$hesperidesHttp', ['$http', function($http){
-    var returnResponseAndHideLoading = function(response) {
+hesperidesModule.factory('$hesperidesHttp', ['$http', '$q', function($http, $q){
+    var returnResponseAndHideLoadingSucces = function(response) {
         $('#loading').hide();
-        return response;
+        return $q.resolve(response);
+    };
+
+    var returnResponseAndHideLoadingError = function(response) {
+        $('#loading').hide();
+        return $q.reject(response);
     };
 
     return {
         get: function(url, config) {
             $('#loading').show();
 
-            return $http.get(url, config).then(returnResponseAndHideLoading, returnResponseAndHideLoading);
+            return $http.get(url, config).then(returnResponseAndHideLoadingSucces, returnResponseAndHideLoadingError);
         },
         head: function(url, config) {
             $('#loading').show();
 
-            return $http.head(url, config).then(returnResponseAndHideLoading, returnResponseAndHideLoading);
+            return $http.head(url, config).then(returnResponseAndHideLoadingSucces, returnResponseAndHideLoadingError);
         },
         post: function(url, data, config) {
             $('#loading').show();
 
-            return $http.post(url, data, config).then(returnResponseAndHideLoading, returnResponseAndHideLoading);
+            return $http.post(url, data, config).then(returnResponseAndHideLoadingSucces, returnResponseAndHideLoadingError);
         },
         put: function(url, data, config) {
             $('#loading').show();
 
-            return $http.put(url, data, config).then(returnResponseAndHideLoading, returnResponseAndHideLoading);
+            return $http.put(url, data, config).then(returnResponseAndHideLoadingSucces, returnResponseAndHideLoadingError);
         },
         delete: function(url, config) {
             $('#loading').show();
 
-            return $http.delete(url, config).then(returnResponseAndHideLoading, returnResponseAndHideLoading);
+            return $http.delete(url, config).then(returnResponseAndHideLoadingSucces, returnResponseAndHideLoadingError);
         },
         jsonp: function(url, config) {
             $('#loading').show();
 
-            return $http.jsonp(url, config).then(returnResponseAndHideLoading, returnResponseAndHideLoading);
+            return $http.jsonp(url, config).then(returnResponseAndHideLoadingSucces, returnResponseAndHideLoadingError);
         },
         patch: function(url, data, config) {
             $('#loading').show();
 
-            return $http.patch(url, data, config).then(returnResponseAndHideLoading, returnResponseAndHideLoading);
+            return $http.patch(url, data, config).then(returnResponseAndHideLoadingSucces, returnResponseAndHideLoadingError);
         }
     };
 }]);

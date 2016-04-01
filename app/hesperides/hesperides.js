@@ -357,7 +357,7 @@ hesperidesModule.directive('hesperidesCompareDateTime', function (){
             scope.year = year;
             scope.month = month;
             scope.day = day;
-            scope.holder = date.getDate() + ' ' + date.getTime();
+            scope.holder = date;
         }
     }
 });

@@ -17,6 +17,18 @@
 </div>
 <div layout="row">
     <div flex>
+        <div class="bg-light module-file" flex>
+            <h4>Les fichiers spécifiques du module</h4>
+            <hesperides-template-list template-entries="templateEntries"
+                                      add="add_template"
+                                      edit="edit_template"
+                                      delete="delete_template"
+                                      is-read-only="is_release"></hesperides-template-list>
+        </div>
+    </div>
+</div>
+<div layout="row">
+    <div flex>
         <div class="bg-light" flex>
             <h4>Les technos de ce module</h4>
             <list-of-items items="module.technos"
@@ -31,18 +43,6 @@
                            placeholder="Rechercher une techno"
                            typeaheadexpression="techno in $parent.$parent.$parent.search_technos(ctrl.searchText)"
                     ></list-of-items>
-        </div>
-    </div>
-</div>
-<div layout="row">
-    <div flex>
-        <div class="bg-light module-file" flex>
-            <h4>Les fichiers spécifiques du module</h4>
-            <hesperides-template-list template-entries="templateEntries"
-                                      add="add_template"
-                                      edit="edit_template"
-                                      delete="delete_template"
-                                      is-read-only="is_release"></hesperides-template-list>
         </div>
     </div>
 </div>

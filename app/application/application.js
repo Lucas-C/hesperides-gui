@@ -203,7 +203,6 @@ applicationModule.factory('Instance', function () {
         }
 
         this.switchOrder = function () {
-            console.log ("Bien");
           this.is_sorted_desc = !this.is_sorted_desc;
         }
 

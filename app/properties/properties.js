@@ -1509,9 +1509,7 @@ propertiesModule.directive('warningValue', function () {
  */
 propertiesModule.filter('displayUnspecifiedProperties', function () {
     return function (items, display) {
-        console.log (display);
         return _.filter(items, function(item) {
-            console.log (item);
             // item.filtrable_value don't work with instances
             return _.isUndefined(display) || !display || _.isEmpty(item.defaultValue) && _.isEmpty(item.value);
         });

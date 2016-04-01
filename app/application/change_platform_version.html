@@ -60,7 +60,7 @@
                         <label>Nouvelle version {{newVersion}}</label>
                         <md-autocomplete
                                 ng-if="ndlVersions"
-                                required
+                                ng-required="sourceFromNdl"
                                 ng-model="newVersion"
                                 md-no-cache="true"
                                 md-selected-item="ctrl.selectedItem"
@@ -78,7 +78,9 @@
                     </md-input-container>
                     <md-input-container md-no-float class="md-block" ng-show="!sourceFromNdl">
                         <label>Nouvelle version {{newVersion}}</label>
-                        <input type="text" required ng-trim="true"
+                        <input type="text"
+                               ng-required="!sourceFromNdl"
+                               ng-trim="true"
                                ng-model="newVersion"
                                placeholder="Saisir une version manuellement"
                                md-autofocus="true"

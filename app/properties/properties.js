@@ -224,16 +224,17 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
      */
     $scope.change_platform_version = function (platform) {
         var dialogNdl = function (ndlVersions) {
-            var modalScope = $scope.$new(true);
+            var modalScope = $scope.$new();
             modalScope.platform = platform;
-            modalScope.sourceFromNdl = _.isArray(ndlVersions);
+            modalScope.sourceFromNdl = _.isArray(ndlVersions) && ndlVersions.length != 0;
+
             modalScope.ndlVersions = modalScope.sourceFromNdl ? ndlVersions : [];
 
             $mdDialog.show({
                 templateUrl: 'application/change_platform_version.html',
                 controller: 'PlatformVersionModule',
                 clickOutsideToClose:true,
-                scope:$scope
+                scope:modalScope
             });
         };
 

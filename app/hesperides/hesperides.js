@@ -218,41 +218,51 @@ hesperidesModule.directive('propertyToolButton', function ($mdUtil, $propertyToo
     };
 });
 
-hesperidesModule.directive('propertyToolButtonOver', function ($mdUtil, $propertyToolButtonService) {
+hesperidesModule.directive('propertyToolButtonOver', function ($mdUtil, $propertyToolButtonService,$timeout) {
     return {
         restrict: 'E',
         scope: true,
-        template: '<div class="popover"><property-tool-button /></div>',
+        template: '<div class="popover" ><property-tool-button /></div>',
         link: function (scope, element) {
             var parent = element.parent();
             var popover = element.children();
 
+            // gestion d'un timer pour afficher la popup après 1 secondes (pour faciliter navigation mode arbre)
+            var timer;
+
             // Display popup
             parent.on('mouseenter', function() {
-                var tooltipParent = angular.element(document.body);
-                var tipRect = $mdUtil.offsetRect(popover, tooltipParent);
-                var parentRect = $mdUtil.offsetRect(parent, tooltipParent);
 
-                var newPosition = {
-                    left: parentRect.left + parentRect.width / 2 - tipRect.width / 2,
-                    top: parentRect.top - tipRect.height
-                };
+                timer = $timeout(
+                    function() {
+                        var tooltipParent = angular.element(document.body);
+                        var tipRect = $mdUtil.offsetRect(popover, tooltipParent);
+                        var parentRect = $mdUtil.offsetRect(parent, tooltipParent);
 
-                popover.css({
-                    left: newPosition.left + 'px',
-                    top: newPosition.top + 'px'
-                });
+                        var newPosition = {
+                            left: parentRect.left + parentRect.width / 2 - tipRect.width / 2,
+                            top: parentRect.top - tipRect.height
+                        };
 
-                if ($propertyToolButtonService.currentPopup)  {
-                    $propertyToolButtonService.currentPopup.removeClass('popover-hover');
-                }
+                        popover.css({
+                            left: newPosition.left + 'px',
+                            top: newPosition.top + 'px'
+                        });
 
-                element.children().addClass('popover-hover');
-                $propertyToolButtonService.currentPopup = element.children();
+                        if ($propertyToolButtonService.currentPopup)  {
+                            $propertyToolButtonService.currentPopup.removeClass('popover-hover');
+                        }
+
+                        element.children().addClass('popover-hover');
+                        $propertyToolButtonService.currentPopup = element.children();
+                    },
+                    1000
+                );
             });
 
             // Hide popup
             parent.on('mouseleave', function() {
+                $timeout.cancel(timer);
                 element.children().removeClass('popover-hover');
                 $propertyToolButtonService.currentPopup = null;
             });

@@ -50,14 +50,14 @@
 
         <init-instances ng-model="module"></init-instances>
         <div layout="row" class="property-tree-module">
-            <div flex="1" layout="row" layout-align="none center">
+            <div layout="row" layout-align="none center">
                 <span ng-click="displayInstances()"
                       class="property-tree-sign">
                     {{sign}}
                 </span>
             </div>
 
-            <div flex="noshrink" ng-mouseenter="moduleButtonsVisible=true" layout="row" layout-align="none center">
+            <div flex="noshrink" layout="row" layout-align="none center">
                 <property-tool-button-over></property-tool-button-over>
                 <a href="" class="module-link" ng-click="edit_properties(platform, module);movePropertiesDivHolderToCursorPosition($event);">
                     {{module.title}}

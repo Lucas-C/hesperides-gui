@@ -45,13 +45,12 @@
                                 md-search-text="ctrl.searchText1"
                                 md-items="application in find_applications_by_name(ctrl.searchText1)"
                                 md-item-text="application.name"
-                                md-selected-item-change="(application) ? new_platform.from_application = application : false"
+                                md-selected-item-change="(application) ? new_platform.from_application = application.name : false"
                                 md-min-length="0"
                                 md-autoselect="true"
                                 placeholder="Nom de l'application source">
                             <span md-highlight-text="ctrl.searchText1">{{application.name}}</span>
                         </md-autocomplete>
-
                     </md-input-container>
                     <md-input-container md-no-float class="md-block">
                         <md-autocomplete
@@ -61,9 +60,9 @@
                                 md-no-cache="true"
                                 md-selected-item="ctrl.selectedItem2"
                                 md-search-text="ctrl.searchText2"
-                                md-items="platform in find_platforms_of_application(applicationSearched)"
+                                md-items="platform in find_platforms_of_application(ctrl.searchText1, ctrl.searchText2)"
                                 md-item-text="platform.name"
-                                md-selected-item-change="(platform) ? new_platform.from_platform = platform : false"
+                                md-selected-item-change="(platform) ? new_platform.from_platform = platform.name : false"
                                 md-min-length="0"
                                 md-autoselect="true"
                                 placeholder="Rechercher une plateforme existante, par nom et numéro de version...">

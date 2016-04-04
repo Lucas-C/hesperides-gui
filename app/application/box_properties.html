@@ -1,26 +1,33 @@
 <div layout="row" class="vertical-align">
-    <h3><span style="padding-right: 10px">Propriétés niveau plateforme</span>
-        <md-button class="md-raised"
-                   ng-click="showGlobalProperties = !showGlobalProperties">Voir/Masquer</md-button>
+    <h3>
+            <span style="padding-right: 10px">Propriétés niveau plateforme</span>
+    </h3>
+    <div layout="row" class="vertical-align">
+        <md-button ng-click="showButtonAndEye = !showButtonAndEye;showGlobalProperties = !showGlobalProperties"
+                   class="md-fab md-primary md-mini" aria-label="Deplier/Plier le menu">
+            <i class="fa" ng-class="{'fa-eye': !showButtonAndEye, 'fa-eye-slash': showButtonAndEye}"></i>
+        </md-button>
 
-        <md-button class="md-raised md-primary"
+        <md-button class="md-raised md-mini"
+                   ng-click="diff_global_properties(platform)"><i class="fa fa-exchange"></i> Comparer les propriétés globales</md-button>
+
+        <md-button class="md-raised md-primary md-mini"  ng-show="showButtonAndEye"
                    ng-click="save_global_properties(platform.global_properties)"><i class="fa fa-check"></i> Sauver les propriétés globales</md-button>
 
-        <md-button class="md-raised"
-                   ng-click="diff_global_properties(platform)"><i class="fa fa-exchange"></i> Comparer les propriétés globales</md-button>
-    </h3>
+        <md-switch class="md-primary md-block ng-pristine ng-untouched ng-valid tri-switch" ng-click="platform.global_properties.switchOrder()"
+                   ng-show="showButtonAndEye"
+                   aria-label="Trier les propriétés"
+                   role="checkbox">
+                <span class="fa"
+                      data-ng-class="{'fa-sort-alpha-asc': !platform.global_properties.isReverseOrder(), 'fa-sort-alpha-desc': platform.global_properties.isReverseOrder()}"></span>
+            <span class="ng-binding ng-scope">Tri des propriétés</span>
+        </md-switch>
+    </div>
 </div>
 
 <div layout="row" class="vertical-align" ng-show="showGlobalProperties">
     <div flex="100">
         <form>
-            <div>
-                <md-button class="md-raised"
-                           id="sortGlobalPropertiesButton"
-                           ng-click="platform.global_properties.switchOrder()">
-                    <i class="fa" data-ng-class="{'fa-sort-alpha-asc': !platform.global_properties.isReverseOrder(), 'fa-sort-alpha-desc': platform.global_properties.isReverseOrder()}"></i>
-                    Tri par nom de propriété</md-button>
-            </div>
             <properties-globales-box />
         </form>
     </div>

@@ -784,12 +784,19 @@ input.default-value-color-focus:placeholder-shown{color: #FFFFFF;}
     font-weight : bold;
     font-style : italic;
 }
+
 .event > * > p > event-time > span.event-date{
     font-size : 80%;
     font-style : italic;
     font-weight : bold;
 }
 
+.no-events {
+    font-size: x-large;
+    color: darkgray;
+    font-weight: normal;
+    text-align: center;
+}
 /*Hesperides Time Style*/
 .angularjs-datetime-picker {
     z-index: 999;

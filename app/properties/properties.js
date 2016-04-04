@@ -527,7 +527,6 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
             });
         });
-
     };
 
     $scope.movePropertiesDivHolderToCursorPosition = function(event){

@@ -347,6 +347,29 @@ hesperidesModule.factory('$hesperidesHttp', ['$http', '$q', function($http, $q){
     };
 }]);
 
+/**
+ * This is used to auto scroll to the bottom of the
+ * page when edit button is clicked !
+ * Added by Tidane SIDIBE on 04/04/2016
+ *
+ */
+hesperidesModule.directive('hesperidesScroll', function (){
+    return {
+        restrict: 'A',
+        controller: ['$scope', '$location', '$anchorScroll', function ($scope, $location, $anchorScroll){
+            $scope.scroll = function (){
+                $location.hash('bottom');
+                $anchorScroll();
+            }
+        }],
+        link: function (scope, element, attr){
+            element.on('click', function (){
+                scope.scroll();
+            })
+        }
+    }
+});
+
 hesperidesModule.directive('hesperidesCompareDateTime', function (){
     return {
         scope: {

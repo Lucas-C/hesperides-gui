@@ -32,7 +32,7 @@
     <li ng-if="box.modules.length > 0" class="jumbotron instance" ng-repeat="module in box.modules | orderObjectBy:'name'">
         <div layout="row">
             <div class="property-box-module-name layout-align-start-center layout-row flex-none" layout="row" layout-align="start center" flex="none">
-                <a href="" class="module-link" ng-click="edit_properties(platform, module);movePropertiesDivHolderToCursorPosition($event);">
+                <a href="" class="module-link" ng-click="edit_properties(platform, module)"  hesperides-scroll>
                     {{module.title}}
                     <md-tooltip>Editer les propriétés</md-tooltip>
                 </a>

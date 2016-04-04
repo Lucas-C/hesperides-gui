@@ -3,8 +3,11 @@
         <div class="ng-binding">
             <h2>Events de {{title}}</h2>
             <md-content layout-padding class="autoScroll">
-                <md-virtual-repeat-container class="events" style="height: 1000px;">
-                    <div md-virtual-repeat="event in eventEntries" >
+                <div ng-show="!(eventEntries) || eventEntries.length == 0">
+                    <h2 class="no-events"> Aucun event à afficher </h2>
+                </div>
+                <md-virtual-repeat-container ng-show="eventEntries && eventEntries.length > 0" class="events" style="height: 500px;">
+                    <div ng-repeat="event in eventEntries" >
                         <div ng-switch="event._type" class="event">
 
                             <!-- Platforms -->

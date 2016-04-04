@@ -29,7 +29,7 @@ eventModule.factory('EventEntry', function (){
 /**
  * Hesperides event http service
  */
-eventModule.service("EventService", ['$http', 'EventEntry', function ($http, EventEntry){
+eventModule.service("EventService", ['$hesperidesHttp', 'EventEntry', function ($http, EventEntry){
     return {
         get : function (stream) {
             var url =  "rest/events/" + encodeURIComponent(stream);

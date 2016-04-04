@@ -70,9 +70,12 @@ fileModule.factory('FileService', ['$hesperidesHttp', 'Application', 'Platform',
 
             newRights = 'user: ' + user + ' group:' + group;
 
-            if (!(_.isUndefined(user) || _.isUndefined(group))) {
+            if (user == "" && group == "") {
                 newRights = 'Aucun droit positionné';
             }
+        } else {
+            // cas pour valeur filesRights null
+            newRights = 'Aucun droit positionné';
         }
 
         return newRights;

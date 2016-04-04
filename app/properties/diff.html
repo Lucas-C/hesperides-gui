@@ -299,31 +299,32 @@
         </div>
     </div>
     <md-divider ng-show="toggle3"></md-divider>
-    <div layout="row" vs-repeat class="diff-area" ng-show="toggle3"
+    <div vs-repeat class="diff-area" ng-show="toggle3"
          layout-align="start">
+
         <div layout="column" class="diff-row-property"
              ng-repeat="diff_container in diff_containers3 = (diff_containers | filter:{'status':3, 'property_name': propertiesKeyFilter3}  | orderBy:'property_name')">
+
             <div layout="row" layout-align="center" layout-margin
-                 class="diff-property property-not-used"
-                 id="different-row-{{dot_to_underscore(diff_container.property_name)}}">
-                <div flex="35" class="diff-value" layout="row" layout-align="end center">
+                 class="diff-property">
+                <div flex="35" class="diff-value" layout="row" layout-align="end">
                     <label class="diff-value">{{diff_container.property_name}}</label>
                 </div>
-                <div flex="30" layout="row" layout-align="end">
-            <span class="diff-value diff-text-modifiable"
-                  id="value_to_replace-{{dot_to_underscore(diff_container.property_name)}}"
-                    >{{diff_container.property_to_modify.value ? diff_container.property_to_modify.value : "Propriété non présente"}}</span>
+                <div flex="30" layout="row" layout-align="end center">
+                    <span class="diff-text-modifiable diff-value">
+                        {{diff_container.property_to_modify.value ? diff_container.property_to_modify.value : "Propriété non présente"}}
+                    </span>
                 </div>
                 <div flex="5" layout="row" layout-align="space-around">
-                    <md-checkbox aria-label="Reporter la valeur" ng-model="diff_container.selected">
-                    </md-checkbox>
+                    <md-checkbox aria-label="Reporter la valeur" ng-model="diff_container.selected" class="diff-checkbox"></md-checkbox>
                 </div>
                 <div flex="30" layout="row" layout-align="start">
-            <span class="diff-value diff-text-unmodifiable"
-                  id="value_to_use-{{dot_to_underscore(diff_container.property_name)}}"
-                  popover="{{diff_container.property_to_compare_to.value}}" popover-trigger="mouseenter">{{diff_container.property_to_compare_to.value ? diff_container.property_to_compare_to.value : "Aucune valeur renseignée"}}</span>
+                    <span class="diff-text-unmodifiable diff-value" popover="{{diff_container.property_to_compare_to.value}}" popover-trigger="mouseenter">
+                        {{diff_container.property_to_compare_to.value ? diff_container.property_to_compare_to.value : "Aucune valeur renseignée"}}
+                    </span>
                 </div>
             </div>
+
             <md-divider></md-divider>
         </div>
     </div>

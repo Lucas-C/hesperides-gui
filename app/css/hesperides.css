@@ -805,6 +805,7 @@ input.default-value-color-focus:placeholder-shown{color: #FFFFFF;}
     height: 250px !important;
     background-color:#FFFFFF !important;
 }
+
 /*Global properties list*/
 .global-properties-container,global-properties-line {
     width:100%;
@@ -823,3 +824,14 @@ input.default-value-color-focus:placeholder-shown{color: #FFFFFF;}
     width:60%;
 }
 
+/* Code mirror line number style*/
+.CodeMirror-sizer {
+    margin-left: 30px !important;
+}
+.CodeMirror-linenumbers {
+    width: 30px !important;
+}
+.CodeMirror-linenumber {
+    padding: 0 !important;
+    text-align: center !important;
+}

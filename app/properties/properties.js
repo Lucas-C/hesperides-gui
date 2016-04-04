@@ -566,11 +566,18 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
     $scope.new_kv_value = '';
 
     $scope.save_global_properties = function (properties) {
+        // Getting information with querySelector, this is because there is
+        // a scope problem
+        var nameEl = angular.element(document.querySelector('#new_kv_name'));
+        var valueEl = angular.element(document.querySelector('#new_kv_value'));
+
         // Check if there is new global property then add before saving
-        if ( !(_.isEmpty($scope.new_kv_name) || _.isEmpty($scope.new_kv_value))){
-            properties.addKeyValue({'name':  $scope.new_kv_name, 'value': $scope.new_kv_value,'comment': ''});
-            $scope.new_kv_name = '';
-            $scope.new_kv_value = '';
+        if ( !(_.isEmpty(nameEl.val()) || _.isEmpty(valueEl.val()))){
+            properties.addKeyValue({'name':  nameEl.val(), 'value': valueEl.val(),'comment': ''});
+
+            // Clear contents
+            nameEl.val("");
+            valueEl.val("");
         }
 
         ApplicationService.save_properties($routeParams.application, $scope.platform, properties, '#').then(function (properties) {

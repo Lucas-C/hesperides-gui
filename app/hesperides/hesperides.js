@@ -229,16 +229,12 @@ hesperidesModule.directive('propertyToolButtonOver', function ($mdUtil, $propert
 
             // gestion d'un timer pour afficher la popup après 1 secondes (pour faciliter navigation mode arbre)
             var timer;
-            scope.hovering = false;
 
             // Display popup
             parent.on('mouseenter', function() {
 
                 timer = $timeout(
                     function() {
-                        console.log( "Timeout executed", Date.now() );
-                        scope.hovering = true;
-
                         var tooltipParent = angular.element(document.body);
                         var tipRect = $mdUtil.offsetRect(popover, tooltipParent);
                         var parentRect = $mdUtil.offsetRect(parent, tooltipParent);
@@ -267,7 +263,6 @@ hesperidesModule.directive('propertyToolButtonOver', function ($mdUtil, $propert
             // Hide popup
             parent.on('mouseleave', function() {
                 $timeout.cancel(timer);
-                scope.hovering = false;
                 element.children().removeClass('popover-hover');
                 $propertyToolButtonService.currentPopup = null;
             });

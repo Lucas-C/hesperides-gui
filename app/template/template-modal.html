@@ -57,68 +57,8 @@
                     </div>
 
                     <div class="template-right">
-                        <fieldset class="standard">
-                            <legend>User</legend>
-
-                            <md-input-container>
-                              <label><strong>R</strong></label>
-                              <md-select ng-model="template.rights.user.read">
-                                <md-option ng-repeat="currentLabel in rights" value="{{currentLabel.value}}">
-                                    {{currentLabel.label}}
-                                </md-option>
-                            </md-select>
-                            </md-input-container>
-
-                            <md-input-container>
-                                <label>W</label>
-                                <md-select ng-model="template.rights.user.write">
-                                    <md-option ng-repeat="currentLabel in rights" value="{{currentLabel.value}}">
-                                        {{currentLabel.label}}
-                                    </md-option>
-                                </md-select>
-                            </md-input-container>
-
-                            <md-input-container>
-                                <label>X</label>
-                                <md-select ng-model="template.rights.user.execute">
-                                    <md-option ng-repeat="currentLabel in rights" value="{{currentLabel.value}}">
-                                        {{currentLabel.label}}
-                                    </md-option>
-                                </md-select>
-                            </md-input-container>
-                        </select>
-                        </fieldset>
-
-                        <fieldset class="standard">
-                            <legend>Group</legend>
-
-                            <md-input-container>
-                                <label><strong>R</strong></label>
-                                <md-select ng-model="template.rights.group.read">
-                                    <md-option ng-repeat="currentLabel in rights" value="{{currentLabel.value}}">
-                                        {{currentLabel.label}}
-                                    </md-option>
-                                </md-select>
-                            </md-input-container>
-
-                            <md-input-container>
-                                <label>W</label>
-                                <md-select ng-model="template.rights.group.write">
-                                    <md-option ng-repeat="currentLabel in rights" value="{{currentLabel.value}}">
-                                        {{currentLabel.label}}
-                                    </md-option>
-                                </md-select>
-                            </md-input-container>
-
-                            <md-input-container>
-                                <label>X</label>
-                                <md-select ng-model="template.rights.group.execute">
-                                    <md-option ng-repeat="currentLabel in rights" value="{{currentLabel.value}}">
-                                        {{currentLabel.label}}
-                                    </md-option>
-                                </md-select>
-                            </md-input-container>
-                        </fieldset>
+                        <file-rights model="template.rights.user" label="User :"></file-rights>
+                        <file-rights model="template.rights.group" label="Group :"></file-rights>
                     </div>
                 </form>
             </md-content>

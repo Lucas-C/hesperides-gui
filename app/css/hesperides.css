@@ -427,6 +427,18 @@ kbd {
     min-height: 20px !important;
 }
 
+.md-xxs {
+    min-width: 20px !important;
+    min-height: 20px !important;
+    margin: 0;
+    padding: 0;
+    line-height: 0;
+}
+
+.md-strike {
+    text-decoration: line-through !important;
+}
+
 .md-instance {
     margin: 0px !important;
 }

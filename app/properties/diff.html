@@ -130,7 +130,8 @@
         </div>
     </div>
     <md-divider ng-show="toggle1"></md-divider>
-    <div layout="row" ng-show="toggle1" ng-repeat="diff_container in diff_containers1 = (diff_containers | filter:{'status':1, 'property_name': propertiesKeyFilter1}  | orderBy:'property_name')">
+    <div layout="row" ng-show="toggle1"
+         ng-repeat="diff_container in diff_containers1 = (diff_containers | filter: show_only_modified ? {'status':1, 'modified': true, 'property_name': propertiesKeyFilter1} : {'status':1, 'property_name': propertiesKeyFilter1}  | orderBy:'property_name')">
         <div flex="20" layout-align="end start" layout="row">
             <div class="diff-property-name">{{diff_container.property_name}}</div>
         </div>

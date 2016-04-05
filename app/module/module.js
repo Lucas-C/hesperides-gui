@@ -247,20 +247,20 @@ applicationModule.factory('ModuleService', [
         },
         save: function (module) {
             if (!module.is_working_copy) {
-                $.notify("Operation impossible. Une release ne peut être creee qu'a partir d'une working copy et n'est pas modifiable", "error");
+                $.notify("Opération impossible. Une release ne peut être créée qu'à partir d'une working copy et n'est pas modifiable", "error");
                 throw module;
             } else {
                 module = module.to_rest_entity();
                 if (module.version_id < 0) {
                     return $http.post('rest/modules', module).then(function (response) {
-                        $.notify("La workingcopy du module a bien ete creee", "success");
+                        $.notify("La workingcopy du module a bien ete créée", "success");
                         return new Module(response.data);
                     }, function (error) {
                         $.notify(error.data.message, "error");
                     });
                 } else {
                     return $http.put('rest/modules', module).then(function (response) {
-                        $.notify("La workingcopy du module a bien ete mise a jour", "success");
+                        $.notify("La workingcopy du module a bien été mise à jour", "success");
                         return new Module(response.data);
                     }, function (error) {
                         $.notify(error.data.message, "error");
@@ -307,17 +307,17 @@ applicationModule.factory('ModuleService', [
         },
         save_template: function (module, template) {
             if (!module.is_working_copy) {
-                $.notify("Operation impossible. On ne peut modifier les templates que dans une workingcopy", "error");
+                $.notify("Opération impossible. On ne peut modifier les templates que dans une workingcopy", "error");
                 throw module;
             } else {
                 template = template.toHesperidesEntity();
                 if (template.version_id < 0) {
                     return $http.post('rest/modules/' + encodeURIComponent(module.name) + '/' + encodeURIComponent(module.version) + '/workingcopy/templates', template).then(function (response) {
-                        $.notify("Le template bien ete cree", "success");
+                        $.notify("Le template bien ete creée", "success");
                         return new Template(response.data);
                     }, function (error) {
                         if (error.status === 409) {
-                            $.notify("Impossible de creer le template car il existe deja un template avec ce nom", "error");
+                            $.notify("Impossible de créer le template car il existe déjà un template avec ce nom", "error");
                         } else {
                             $.notify(error.data.message, "error");
                         }
@@ -325,7 +325,7 @@ applicationModule.factory('ModuleService', [
                     });
                 } else {
                     return $http.put('rest/modules/' + encodeURIComponent(module.name) + '/' + encodeURIComponent(module.version) + '/workingcopy/templates', template).then(function (response) {
-                        $.notify("Le template a ete mis a jour", "success");
+                        $.notify("Le template a été mis à jour", "success");
                         return new Template(response.data);
                     }, function (error) {
                         $.notify(error.data.message, "error");
@@ -336,11 +336,11 @@ applicationModule.factory('ModuleService', [
         },
         delete_template: function (module, template_name) {
             if (!module.is_working_copy) {
-                $.notify("Operation impossible. Une release ne peut être creee qu'a partir d'une working copy et n'est pas modifiable", "error");
+                $.notify("Opération impossible. Une release ne peut être créée qu'à partir d'une working copy et n'est pas modifiable", "error");
                 throw module;
             } else {
                 return $http.delete('rest/modules/' + encodeURIComponent(module.name) + '/' + encodeURIComponent(module.version) + '/workingcopy/templates/' + encodeURIComponent(template_name)).then(function (response) {
-                    $.notify("Le template a bien ete supprime", "success");
+                    $.notify("Le template a bien été supprimé", "success");
                     return response;
                 }, function (error) {
                     $.notify(error.data.message, "error");
@@ -350,11 +350,11 @@ applicationModule.factory('ModuleService', [
         },
         create_release: function (module, release_version) {
             if (!module.is_working_copy) {
-                $.notify("Operation impossible. Une release ne peut être creee qu'a partir d'une working copy", "error");
+                $.notify("Opération impossible. Une release ne peut être créée qu'à partir d'une working copy", "error");
                 throw module;
             } else {
                 return $http.post('rest/modules/create_release?module_name=' + encodeURIComponent(module.name) + '&module_version=' + encodeURIComponent(module.version) + '&release_version=' + encodeURIComponent(release_version)).then(function (response) {
-                    $.notify("La release " + module.name + ", " + release_version + " a bien ete creee", "success");
+                    $.notify("La release " + module.name + ", " + release_version + " a bien été créée", "success");
                     return new Module(response.data);
                 }, function (error) {
                     $.notify(error.data.message, "error");
@@ -365,7 +365,7 @@ applicationModule.factory('ModuleService', [
         create_workingcopy_from: function(name, version, fromModule) {
             var newModule = new Module({name: name, version:version}).to_rest_entity();
             return $http.post('rest/modules?from_module_name='+encodeURIComponent(fromModule.name)+'&from_module_version='+encodeURIComponent(fromModule.version)+'&from_is_working_copy='+encodeURIComponent(fromModule.is_working_copy), newModule).then(function(response){
-                $.notify("La working copy " + name + ", " + version + " a bien ete creee", "success");
+                $.notify("La working copy " + name + ", " + version + " a bien été créée", "success");
                 return new Module(response.data);
             }, function (error) {
                 $.notify(error.data.message, "error");

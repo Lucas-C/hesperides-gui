@@ -4,6 +4,19 @@
 
 var components = angular.module('hesperides.components', []);
 
+components.filter('filterPlatform', function () {
+    return function (items, filter) {
+        return _.filter(items, function(item) {
+            if(_.isUndefined(filter) || _.isEmpty(filter)) {
+                return item;
+            } else {
+                var regex_name = new RegExp(filter, 'i');
+                return regex_name.test(item.name) || regex_name.test(item.application_version) ? item : undefined;
+            }
+        });
+    };
+});
+
 components.directive('listOfItems', ['$parse', function ($parse) {
 
     return {
@@ -12,7 +25,8 @@ components.directive('listOfItems', ['$parse', function ($parse) {
             items: '=',
             selectedItem: '=',
             selectable: '=',
-            editable: '='
+            editable: '=',
+            filter: '='
         },
         templateUrl: 'shared/list-of-items.html',
         link: function (scope, element, attrs) {
@@ -24,6 +38,7 @@ components.directive('listOfItems', ['$parse', function ($parse) {
             scope.size = attrs.size;
             scope.input = {};
             scope.tooltip = attrs.tooltip;
+
             scope.cssClass = function(item) {
                 var listClass = "";
 

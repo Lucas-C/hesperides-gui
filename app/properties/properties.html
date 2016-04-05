@@ -3,8 +3,15 @@
     <div flex="100">
         <div class="bg-light">
             <h3>Plateformes de <strong>{{application.name}}</strong></h3>
+            <div>
+                <md-input-container class="md-block">
+                    <label>Filtrer les plateformes</label>
+                    <input type="text" ng-trim="true" ng-model="searchInPlatforms" />
+                </md-input-container>
+            </div>
             <list-of-items items="platforms"
                            label="$item.name + ' [' + $item.application_version + ']'"
+                           filter="searchInPlatforms"
                            sorton="$item.name"
                            selected-item="platform"
                            createfunction="add_platform($name)"

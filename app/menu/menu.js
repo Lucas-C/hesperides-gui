@@ -221,7 +221,7 @@ menuModule.controller('MenuPropertiesCtrl', ['$hesperidesHttp', '$scope', '$mdDi
                 platform.name = platform_name;
                 platform.application_name = application_name;
                 platform.production = production;
-                platform.version = application_version;
+                platform.application_version = application_version;
                 platform.version_id = -1;
 
                 //Empty the instances for each module (we don't want to copy the instances)

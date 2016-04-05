@@ -704,7 +704,7 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
     $scope.compare_splited_path = $routeParams.compare_path.split('#');
     $scope.compare_module = "";
 
-    $scope.show_only_modified = true;
+    $scope.show_only_modified = false;
 
     $scope.propertiesKeyFilter0 = "";
     $scope.propertiesKeyFilter1 = "";

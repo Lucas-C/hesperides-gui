@@ -2,12 +2,17 @@
 <div layout="row">
     <div flex="100">
         <div class="bg-light">
-            <h3>Plateformes de <strong>{{application.name}}</strong></h3>
-            <div>
-                <md-input-container class="md-block">
-                    <label>Filtrer les plateformes (en fonction du nom de la plateforme, ou de la version)</label>
-                    <input type="text" ng-trim="true" ng-model="searchInPlatforms" />
-                </md-input-container>
+            <div layout="row" style="height:30px">
+                <div>
+                    <h3>Plateformes de <strong>{{application.name}}</strong></h3>
+                </div>
+                <div flex>
+                    <md-input-container md-no-float class="md-block filter-platform" style>
+                        <label></label>
+                        <input type="text" ng-trim="true" ng-model="searchInPlatforms"
+                               placeholder="Filtrer les plateformes (en fonction du nom de la plateforme, ou de la version)"/>
+                    </md-input-container>
+                </div>
             </div>
             <list-of-items items="platforms"
                            label="$item.name + ' [' + $item.application_version + ']'"
@@ -51,9 +56,9 @@
                 )</strong>
 
                 <!-- Show events for platform -->
-                <md-button aria-label="Afficher les events" ng-click="show_events(application, platform, 'platform')" class="md-xs">
+                <md-button aria-label="Afficher l'historique" ng-click="show_events(application, platform, 'platform')" class="md-xs">
                     <span class="fa fa-history fa-2x"></span>
-                    <md-tooltip>Afficher les events</md-tooltip>
+                    <md-tooltip>Afficher l'historique</md-tooltip>
                 </md-button>
 
             </span>

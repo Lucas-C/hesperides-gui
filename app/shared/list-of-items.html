@@ -5,7 +5,7 @@
                    ng-mouseleave="hover = false"
                    ng-show="!isReadOnly"
                    ng-click="selfEdit(item)"
-                   ng-class="cssClass(item)"
+                   ng-style="{'background-color': backgroundColor(item)}"
                 >{{selfLabel(item)}}
             <md-button class="md-warn md-xs"
                        ng-really-message="Etes-vous sur de vouloir supprimer '{{selfLabel(item)}}' ?"

@@ -39,6 +39,17 @@ components.directive('listOfItems', ['$parse', function ($parse) {
             scope.input = {};
             scope.tooltip = attrs.tooltip;
 
+            /* fonction utilitaire pour générer un code couleur en fonction de la string passée en paramètre
+             * utilisé pour la couleur des plateformes sur l'écran de valorisation
+             */
+            var stringToColour = function(str) {
+                // str to hash
+                for (var i = 0, hash = 0; i < str.length; hash = str.charCodeAt(i++) + ((hash << 5) - hash));
+                // int/hash to hex
+                for (var i = 0, colour = "#"; i < 3; colour += ("00" + ((hash >> i++ * 8) & 0xFF).toString(16)).slice(-2));
+                return colour;
+            }
+
             scope.cssClass = function(item) {
                 var listClass = "";
 
@@ -53,6 +64,11 @@ components.directive('listOfItems', ['$parse', function ($parse) {
                 }
 
                 return listClass;
+            }
+
+            scope.backgroundColor = function(item) {
+                var bgColor = stringToColour(item.name);
+                return bgColor;
             }
 
             scope.selfLabel = function (item) {

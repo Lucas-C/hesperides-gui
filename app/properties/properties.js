@@ -1322,59 +1322,77 @@ propertiesModule.filter('displayProperties', function () {
     };
 });
 
-propertiesModule.filter('filterBox', ['$filter', function ($filter) {
+propertiesModule.filter('filterBox', function () {
     return function (boxes_object, searchString) {
         //A box is filtered by its name or its modules names or its children boxes
-        var filter_one_box = function(box){
+        var filter_one_box = function(box) {
             //See if the parent box was previously fitered thanks to its name
-            if(box.parent_box != undefined && box.parent_box.name_filtered == true){
+            if(!_.isUndefined(box.parent_box) && box.parent_box.name_filtered == true){
                 //If the parent box was filtered by its name, we want to display the children boxes, just return true
                 return true;
             }
 
             //See if this box can be filtered by its name
-            if(box.name.indexOf($filter('uppercase')(searchString)) > -1 ||
-                box.name.indexOf(searchString) > -1) {
+            if(box.name.toUpperCase().indexOf(searchString) > -1) {
 
                 //If so, hold a boolean on that box. It will be helpful when the filter will be called by one of the box's children
                 box.name_filtered = true;
+
                 return true;
             }
 
             //We couldn't filter by name so we try to iterate over the modules directly located in that box and filter by their name
             var found_matching_module = false;
-            angular.forEach(box.modules, function(module){
-                if(module.name.indexOf($filter('uppercase')(searchString)) > -1 ||
-                    module.name.indexOf(searchString) > -1) {
+
+            _(box.modules).each(function(module) {
+                if(module.name.toUpperCase().indexOf(searchString) > -1) {
 
                     found_matching_module = true;
+                } else {
+                    // Search in each instance
+                    _(module.instances).each(function(instance) {
+                        if (instance.name.toUpperCase().indexOf(searchString) > -1) {
+                            found_matching_module = true;
+                            module.opened = true;
+                        }
+                    });
                 }
             });
 
-            if(found_matching_module){
+            if(found_matching_module) {
                 box.name_filtered = false;
+
                 return true;
             }
 
             var found_matching_children_box = false;
-            angular.forEach(box.children, function(box){
-                if(filter_one_box(box)){
+
+            _(box.children).each(function(box){
+                if(filter_one_box(box)) {
                     found_matching_children_box = true;
                 }
             });
 
             box.name_filtered = false;
+
             return found_matching_children_box;
         };
 
-        if (searchString != undefined && searchString != "") {
-            var picked = _.pick(boxes_object, function(box){
-                return filter_one_box(box);
+        if (!_.isEmpty(searchString)) {
+            searchString = searchString.toUpperCase();
+
+            var picked = _.pick(boxes_object, function(box) {
+                box.opened = filter_one_box(box);
+
+                return box.opened;
             });
+
             return picked;
-        } else return boxes_object;
+        } else {
+            return boxes_object;
+        }
     };
-}]);
+});
 
 propertiesModule.directive('initInstanceFunctions', function () {
     return {

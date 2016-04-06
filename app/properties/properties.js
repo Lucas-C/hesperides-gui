@@ -229,12 +229,17 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
             modalScope.sourceFromNdl = _.isArray(ndlVersions) && ndlVersions.length != 0;
 
             modalScope.ndlVersions = modalScope.sourceFromNdl ? ndlVersions : [];
+            modalScope.onLoading = true;
 
             $mdDialog.show({
                 templateUrl: 'application/change_platform_version.html',
                 controller: 'PlatformVersionModule',
                 clickOutsideToClose:true,
-                scope:modalScope
+                scope:modalScope,
+                onComplete: function() {
+                    // Use to prevent display list of version at wrong position
+                    modalScope.onLoading = false;
+                }
             });
         };
 

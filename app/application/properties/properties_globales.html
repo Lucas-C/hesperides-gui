@@ -27,13 +27,15 @@
                     <md-button ng-really-message="Supprimer la property globale {{kv_property.name}} ?"
                                aria-label="Supprimer"
                                ng-really-click="platform.global_properties.deleteKeyValue(kv_property)"
-                               class="md-warn">
+                               class="md-warn"
+                               ng-mouseenter="hover = true"
+                               ng-mouseleave="hover = false">
                         <md-tooltip>Supprimer {{kv_property.name}}</md-tooltip>
                         <i class="fa fa-trash"></i>
                     </md-button>
                 </td>
                 <td class="global-properties-label">
-                    <label type="text" ng-trim="true" aria-label="{{kv_property.name}}" ng-readonly="true" class="property-label">
+                    <label type="text" ng-trim="true" aria-label="{{kv_property.name}}" ng-readonly="true" class="property-label" ng-class="{'text-stroke': hover}">
                         {{kv_property.name}}
                     </label>
                     <md-tooltip md-direction="top" ng-show="kv_property.comment">
@@ -41,7 +43,7 @@
                     </md-tooltip>
                 </td>
                 <td class="global-properties-value">
-                    <input class="property-value" type="text" ng-trim="true" id="input-{{ kv_property.name }}" ng-model="kv_property.value" aria-label="{{ kv_property.name }}" focus-save-global-properties/>
+                    <input class="property-value" type="text" ng-trim="true" id="input-{{ kv_property.name }}" ng-model="kv_property.value" aria-label="{{ kv_property.name }}" focus-save-global-properties ng-class="{'text-stroke': hover}" />
                 </td>
             </tr>
         </tbody>

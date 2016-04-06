@@ -353,13 +353,15 @@ hesperidesModule.factory('$hesperidesHttp', ['$http', '$q', function($http, $q){
  * Added by Tidane SIDIBE on 04/04/2016
  *
  */
-hesperidesModule.directive('hesperidesScroll', function (){
+hesperidesModule.directive('hesperidesScroll', function ($timeout){
     return {
         restrict: 'A',
         controller: ['$scope', '$location', '$anchorScroll', function ($scope, $location, $anchorScroll){
             $scope.scroll = function (){
-                $location.hash('bottom');
-                $anchorScroll();
+                $location.hash('properties-list');
+                $timeout(function (){
+                    $anchorScroll();
+                }, 500);
             }
         }],
         link: function (scope, element, attr){

@@ -654,6 +654,31 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         }
     };
 
+    /**
+     * Box and tree display relative vars
+     * The tree mode is displayed by default
+     */
+    $scope.box = true;
+    $scope.tree = false;
+
+    /**
+     * This will display the properties in the box mode.
+     */
+    $scope.boxModeShow = function (){
+        $("#loading").show();
+        $scope.box = true;
+        $scope.tree = false;
+    }
+
+    /**
+     * This will display the properties in the tree mode.
+     */
+    $scope.treeModeShow = function (){
+        $("#loading").show();
+        $scope.box = false;
+        $scope.tree = true;
+    }
+
     /* Get the application */
     ApplicationService.get($routeParams.application).then(function (application) {
         $scope.application = application;
@@ -677,6 +702,36 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
     });
 
 }]);
+
+/**
+ * Directive for rendering properties on box mode.
+ */
+propertiesModule.directive('boxProperties', function ($timeout){
+    return {
+        restrict : 'E',
+        templateUrl: 'application/box_properties.html',
+        link: function ($scope, element, attrs, ctrl){
+            $timeout(function (){
+                $("#loading").hide();
+                }, 0);
+        }
+    }
+});
+
+/**
+ * Directive for rendering properties on tree mode.
+ */
+propertiesModule.directive('treeProperties', function ($timeout){
+    return {
+        restrict : 'E',
+        templateUrl: 'application/tree_properties.html',
+        link: function ($scope, element, attrs, ctrl){
+            $timeout(function (){
+                $("#loading").hide();
+                }, 0);
+        }
+    }
+});
 
 propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$timeout', '$route', 'ApplicationService', 'ModuleService', function ($filter, $scope, $routeParams, $timeout, $route, ApplicationService, ModuleService) {
 

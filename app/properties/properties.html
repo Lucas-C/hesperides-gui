@@ -73,26 +73,27 @@
         </div>
     </div>
 
-
-    <div layout="row" ng-init="box=false;tree=true">
-
-
+    <div layout="row">
         <div flex="none">
-            <md-button ng-click="box=false;tree=true" ng-class="{'md-raised':tree}" aria-label="Afficher en mode arbre">
+            <md-button ng-click="treeModeShow()" ng-class="{'md-raised':tree}" aria-label="Afficher en mode arbre">
                 <md-tooltip>Afficher en mode arbre</md-tooltip>
                 <i class="fa fa-tree"></i>
             </md-button>
         </div>
         <div flex>
-            <md-button ng-click="box=true;tree=false" ng-class="{'md-raised':box}" aria-label="Afficher en mode bloc">
+            <md-button ng-click="boxModeShow()" ng-class="{'md-raised':box}" aria-label="Afficher en mode bloc">
                 <md-tooltip>Afficher en mode bloc</md-tooltip>
                 <i class="fa fa-clone"></i>
             </md-button>
         </div>
     </div>
 
-    <div class="slide-animate" ng-include="'application/box_properties.html'" ng-if="box"></div>
-    <div class="slide-animate" ng-include="'application/tree_properties.html'" ng-if="tree"></div>
+    <div id="box" class="slide-animate" ng-if="box" >
+        <box-properties></box-properties>
+    </div>
+    <div id="tree" class="slide-animate" ng-if="tree">
+        <tree-properties></tree-properties>
+    </div>
 </div>
 
 

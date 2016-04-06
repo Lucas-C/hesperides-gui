@@ -1365,7 +1365,6 @@ propertiesModule.filter('filterBox', function () {
 
             if(found_matching_module) {
                 box.name_filtered = false;
-
                 return true;
             }
 
@@ -1373,6 +1372,7 @@ propertiesModule.filter('filterBox', function () {
 
             _(box.children).each(function(box){
                 if(filter_one_box(box)) {
+                    box.opened = true;
                     found_matching_children_box = true;
                 }
             });
@@ -1448,6 +1448,11 @@ propertiesModule.directive('initInstances', function () {
             // We can't use isolate scope. We take attribut and parse it.
             if(attrs.ngModel){
                 scope.ngModel = scope.$eval(attrs.ngModel);
+
+                // Watch attribut for filter
+                scope.$watch('ngModel.opened', function() {
+                    setSign();
+                });
             }
 
             scope.displayInstances = displayInstances;

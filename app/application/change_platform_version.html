@@ -6,7 +6,12 @@
             <md-content layout-padding class="autoScroll">
                 <form name="platformVersionForm"
                       ng-submit="platformVersionForm.$valid && $change({new_version: newVersion, use_ndl: useNdl, copy_properties: copyProperties})">
-                    <md-input-container class="md-block" ng-show="sourceFromNdl">
+                    <md-switch class="md-primary md-block" aria-label="Utiliser la note de livraison json de la version" ng-model="useNdl">
+                        <span ng-style="{'text-decoration': (useNdl ? '' : 'line-through'), 'font-weight' : (useNdl ? 'bold' : 'normal')}">
+                            Utiliser la note de livraison json de la version {{newVersion}}
+                        </span>
+                    </md-switch>
+                    <md-input-container class="md-block" ng-show="sourceFromNdl && useNdl">
                         <label>Nouvelle version {{newVersion}}</label>
                         <md-autocomplete
                                 ng-disabled="onLoading"
@@ -18,16 +23,15 @@
                                 md-search-text="ctrl.searchText"
                                 md-items="version in ndlVersions | filter:ctrl.searchText"
                                 md-item-text="version"
-                                md-selected-item-change="(version) ? newVersion = version : false"
+                                md-selected-item-change="(version) ? setItem('newVersion', version) : setItem('newVersion', '')"
                                 md-min-length="0"
                                 md-autoselect="true"
                                 md-autofocus="true"
                                 placeholder="Rechercher une version depuis une note Katana">
-                            <span md-highlight-text="ctrl.searchText">{{version}}</span>
+                                <span md-highlight-text="ctrl.searchText">{{version}}</span>
                         </md-autocomplete>
-                        <input ng-if="!ndlVersions" required ng-model="newVersion" />
                     </md-input-container>
-                    <md-input-container md-no-float class="md-block" ng-show="!sourceFromNdl">
+                    <md-input-container md-no-float class="md-block" ng-show="!sourceFromNdl || !useNdl">
                         <label>Nouvelle version {{newVersion}}</label>
                         <input type="text"
                                ng-required="!sourceFromNdl"
@@ -40,11 +44,6 @@
                     <md-switch class="md-primary md-block" aria-label="Copier les properties valorisées de la version" ng-model="copyProperties">
                         <span ng-style="{'text-decoration': (copyProperties ? '' : 'line-through'), 'font-weight' : (copyProperties ? 'bold' : 'normal')}">
                             Copier les propriétés valorisées de la version {{platform.application_version}} vers la version {{newVersion}}
-                        </span>
-                    </md-switch>
-                    <md-switch class="md-primary md-block" aria-label="Utiliser la note de livraison json de la version" ng-model="useNdl" ng-show="newVersion">
-                        <span ng-style="{'text-decoration': (useNdl ? '' : 'line-through'), 'font-weight' : (useNdl ? 'bold' : 'normal')}">
-                            Utiliser la note de livraison json de la version {{newVersion}}
                         </span>
                     </md-switch>
                     <input type="submit" id="submit" value="Submit" ng-hide="true"/>

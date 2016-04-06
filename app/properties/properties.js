@@ -39,6 +39,10 @@ propertiesModule.controller('PlatformVersionModule', ['$scope', '$mdDialog', 'Ne
 
         $mdDialog.cancel();
     };
+
+    $scope.setItem = function(name, value) {
+        $scope[name] = value;
+    }
 }]);
 
 

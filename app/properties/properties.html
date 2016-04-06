@@ -7,7 +7,7 @@
                     <h3>Plateformes de <strong>{{application.name}}</strong></h3>
                 </div>
                 <div flex>
-                    <md-input-container md-no-float class="md-block filter-platform" style>
+                    <md-input-container md-no-float class="md-block filter-platform" style="width:50%">
                         <label></label>
                         <input type="text" ng-trim="true" ng-model="searchInPlatforms"
                                placeholder="Filtrer les plateformes (en fonction du nom de la plateforme, ou de la version)"/>
@@ -49,7 +49,6 @@
         <div flex="66">
             <h3><span>Représentation logique de <strong>{{platform.name}} (version
                 <a href="" ng-click="change_platform_version(platform)"
-                   title="Modifier la version de la plateforme"
                    class="ng-binding"
                    onaftersave="save_platform_from_box(mainBox)">{{platform.application_version}}</a>
                 <md-tooltip>Modifier le label 'version de l'application'</md-tooltip>

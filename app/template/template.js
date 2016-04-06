@@ -250,18 +250,18 @@ templateModule.factory('TemplateService', ['$hesperidesHttp', 'Template', 'Templ
             template = template.toHesperidesEntity();
             if (template.version_id < 0) {
                 return $http.post('rest/templates/' + encodeURIComponent(template.namespace) + '/' + encodeURIComponent(template.name), template).then(function (response) {
-                    $.notify("Le template bien ete cree", "success");
+                    $.notify("Le template bien été crée", "success");
                     return new Template(response.data);
                 }, function (error) {
                     if (error.status === 409) {
-                        $.notify("Impossible de creer le template car il existe deja un template avec ce nom", "error");
+                        $.notify("Impossible de créer le template car il existe déjà un template avec ce nom", "error");
                     } else {
                         $.notify(error.data.message, "error");
                     }
                 });
             } else {
                 return $http.put('rest/templates/' + encodeURIComponent(template.namespace) + '/' + encodeURIComponent(template.name), template).then(function (response) {
-                    $.notify("Le template a ete mis a jour", "success");
+                    $.notify("Le template a été mis a jour", "success");
                     return new Template(response.data);
                 }, function (error) {
                     $.notify(error.data.message, "error");
@@ -270,7 +270,7 @@ templateModule.factory('TemplateService', ['$hesperidesHttp', 'Template', 'Templ
         },
         delete: function (namespace, name) {
             return $http.delete('rest/templates/' + encodeURIComponent(namespace) + '/' + encodeURIComponent(name)).then(function (response) {
-                $.notify("Le template a bien ete supprime", "success");
+                $.notify("Le template a bien été supprimé", "success");
                 return response;
             }, function (error) {
                 $.notify(error.data.message, "error");
@@ -293,25 +293,61 @@ templateModule.factory('TemplateService', ['$hesperidesHttp', 'Template', 'Templ
 
 }]);
 
-templateModule.directive('fileRightsSelect', function () {
+templateModule.directive('fileRights', function () {
     var controller = ['$scope', function ($scope) {
-            $scope.fileRightsOption = [{text: "O", value: true}, {text: "N", value: false}, {text: "-", value: null}];
+            var setValue = function(item, value) {
+                $scope.model[item.attr] = value;
+            };
+
+            var getValue = function(item) {
+                return $scope.model[item.attr];
+            };
+
+            $scope.fileRightsOption = [
+                {text: "R", attr: 'read'},
+                {text: "W", attr: 'write'},
+                {text: "X", attr: 'execute'}];
+
+            $scope.getValue = getValue;
+
+            $scope.getHelp = function(item) {
+                var str;
+                var value = getValue(item);
+
+                if (_.isNull(value)) {
+                    str = "Droit par défaut";
+                } else if (value === true) {
+                    str = "Droit positionné";
+                } else {
+                    str = "Droit supprimé";
+                }
+
+                return str;
+            };
+
+            $scope.doClick = function(item) {
+                var value = getValue(item);
+
+                if (_.isNull(value)) {
+                    setValue(item, true);
+                } else if (value === true) {
+                    setValue(item, false);
+                } else {
+                    setValue(item, null);
+                }
+            };
         }];
 
     return {
         restrict: 'E',
         scope: {
-            model: '='
+            model: '=',
+            label: '@'
         },
-        template: 'R <select ng-model="model.read">' +
-                  '  <option ng-repeat="item in fileRightsOption" value="{{item.value}}" ng-selected="item.value == model.read">{{item.text}}</option>' +
-                  '</select>' +
-                  'W <select ng-model="model.write">' +
-                  '  <option ng-repeat="item in fileRightsOption" value="{{item.value}}" ng-selected="item.value == model.write">{{item.text}}</option>' +
-                  '</select>' +
-                  'X <select ng-model="model.execute">' +
-                  '  <option ng-repeat="item in fileRightsOption" value="{{item.value}}" ng-selected="item.value == model.execute">{{item.text}}</option>' +
-                  '</select>',
+        template: '{{label}} <md-button ng-repeat="item in fileRightsOption" class="md-xxs" ng-class="{\'md-raised\': getValue(item) !== null, \'md-warn\': getValue(item) === true, \'md-strike\': getValue(item) === false}" ng-click="doClick(item)">' +
+                  '{{item.text}}' +
+                  '<md-tooltip>{{getHelp(item)}}</md-tooltip>' +
+                  '</md-button>',
         controller: controller
     };
 

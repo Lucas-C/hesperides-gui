@@ -663,25 +663,29 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
      * Box and tree display relative vars
      * The tree mode is displayed by default
      */
-    $scope.box = true;
-    $scope.tree = false;
+    $scope.box = false;
+    $scope.tree = true;
 
     /**
      * This will display the properties in the box mode.
      */
     $scope.boxModeShow = function (){
-        $("#loading").show();
-        $scope.box = true;
-        $scope.tree = false;
+        if (!$scope.box){
+            $("#loading").show();
+            $scope.box = true;
+            $scope.tree = false;
+        }
     }
 
     /**
      * This will display the properties in the tree mode.
      */
     $scope.treeModeShow = function (){
-        $("#loading").show();
-        $scope.box = false;
-        $scope.tree = true;
+        if (!$scope.tree){
+            $("#loading").show();
+            $scope.box = false;
+            $scope.tree = true;
+        }
     }
 
     /* Get the application */

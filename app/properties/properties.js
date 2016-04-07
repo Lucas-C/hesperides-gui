@@ -690,6 +690,8 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
             $("#loading").show();
             $scope.box = true;
             $scope.tree = false;
+            $scope.properties = undefined;
+            $scope.instance = undefined;
         }
     }
 
@@ -701,6 +703,8 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
             $("#loading").show();
             $scope.box = false;
             $scope.tree = true;
+            $scope.properties = undefined;
+            $scope.instance = undefined;
         }
     }
 

@@ -297,6 +297,9 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
         var modalScope = $scope.$new();
 
+        // init du champ avec le nom de la plateforme
+        modalScope.from={'application' : $scope.platform.application_name};
+
         modalScope.$diff = function() {
             $mdDialog.hide();
         }
@@ -333,6 +336,9 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
     $scope.diff_global_properties = function () {
         var modalScope = $scope.$new();
+
+        // init du champ avec le nom de la plateforme
+        modalScope.from={'application' : $scope.platform.application_name};
 
         modalScope.$diff = function(from) {
             $mdDialog.cancel();

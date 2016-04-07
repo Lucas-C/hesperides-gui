@@ -297,12 +297,15 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
         var modalScope = $scope.$new();
 
-        // init du champ avec le nom de la plateforme
-        modalScope.from={'application' : $scope.platform.application_name};
+        modalScope.from=$scope.platform;
 
         modalScope.$diff = function() {
             $mdDialog.hide();
         }
+
+        modalScope.updatePlatformField = function(itemName) {
+             modalScope.from.platform_name = itemName;
+        };
 
         var t = $mdDialog.show({
             templateUrl: 'application/properties_diff_wizard.html',
@@ -337,8 +340,11 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
     $scope.diff_global_properties = function () {
         var modalScope = $scope.$new();
 
-        // init du champ avec le nom de la plateforme
-        modalScope.from={'application' : $scope.platform.application_name};
+        modalScope.from=$scope.platform;
+
+        modalScope.updatePlatformField = function(itemName) {
+             modalScope.from.platform_name = itemName;
+        };
 
         modalScope.$diff = function(from) {
             $mdDialog.cancel();
@@ -1634,4 +1640,17 @@ propertiesModule.filter('hideHesperidesPredefinedProperties', function () {
             return !item.name.startsWith("hesperides.");
         });
     };
+});
+
+propertiesModule.filter('orderObjectBy', function() {
+  return function(items, field) {
+    var filtered = [];
+    angular.forEach(items, function(item) {
+      filtered.push(item);
+    });
+    filtered.sort(function (a, b) {
+      return (a[field] > b[field] ? 1 : -1);
+    });
+    return filtered;
+  };
 });

@@ -1,12 +1,12 @@
 <div>
-    <div vs-repeat style="max-height: 510px; overflow: auto">
+    <div>
         <dl class="dl-horizontal text-overflow" style="margin-bottom:0" ng-animate="'animate'"
-            ng-repeat="keyValueProperty in model.key_value_properties | hideHesperidesPredefinedProperties | orderBy:'name' track by $index">
+            ng-repeat="keyValueProperty in model.key_value_properties | hideHesperidesPredefinedProperties | orderBy:'name' track by $index"
+            vs-repeat style="max-height: 510px; overflow: auto">
             <dt style="width: 100%; text-align: left" ng-if="keyValueProperty.comment"><a href=""
-                                                                                          title="{{ keyValueProperty.name }}"
-                                                                                          popover-trigger="focus"
-                                                                                          popover="{{keyValueProperty.comment}}">{{
-                keyValueProperty.name }}</a></dt>
+                title="{{ keyValueProperty.name }}"
+                popover-trigger="focus"
+                popover="{{keyValueProperty.comment}}">{{keyValueProperty.name }}</a></dt>
             <dt style="width: 100%; text-align: left" ng-if="!keyValueProperty.comment">{{ keyValueProperty.name }}</dt>
         </dl>
     </div>

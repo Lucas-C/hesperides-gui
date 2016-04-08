@@ -1,5 +1,29 @@
 <!-- List of global properties -->
 <div>
+
+    <table class="global-properties-container">
+        <tbody>
+            <tr class="global-properties-line">
+                <td class="global-properties-action">
+                    <md-button ng-click="platform.global_properties.addKeyValue({
+                            'name': new_kv_name,
+                            'value': new_kv_value,
+                            'comment': ''
+                        });new_kv_name = ''; new_kv_value= ''" aria-label="Ajouter">
+                        <md-tooltip>Ajouter</md-tooltip>
+                        <span class="fa fa-plus"></span>
+                    </md-button>
+                </td>
+                <td class="global-properties-label">
+                    <input id="new_kv_name" class="property-value" type="text" required ng-trim="true" ng-model="new_kv_name" aria-label="Nouvelle propriété globale" placeholder="Nouvelle propriété globale" focus-save-global-properties/>
+                </td>
+                <td class="global-properties-value">
+                    <input id="new_kv_value" class="property-value" type="text" required ng-trim="true" ng-model="new_kv_value" aria-label="Valorisation" placeholder="Valorisation" focus-save-global-properties/>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
     <div layout="row" flex="auto">
         <!-- div de 5 pour aligner avec la column de l'icon trash -->
         <div flex="5"></div>
@@ -35,7 +59,6 @@
                 <div layout="column" flex>
                     <input ng-model="key_value_property.value"
                            ng-trim="true"
-                           ng-readonly="!key_value_property.inModel"
                            ng-focus="focusthis = true"
                            ng-blur="focusthis = false"
                            ng-class="{'text-stroke': hover}"

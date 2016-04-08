@@ -397,6 +397,8 @@ applicationModule.directive('propertiesGlobalesBox', function () {
         templateUrl: "application/properties/properties_globales.html",
         link: function (scope) {
             scope.isBox = true;
+            scope.globalPropertiesKeyFilter = "";
+            scope.globalPropertiesValueFilter = "";
         }
     };
 });
@@ -407,6 +409,8 @@ applicationModule.directive('propertiesGlobalesTree', function () {
         templateUrl: "application/properties/properties_globales.html",
         link: function (scope) {
             scope.isBox = false;
+            scope.globalPropertiesKeyFilter = "";
+            scope.globalPropertiesValueFilter = "";
         }
     };
 });

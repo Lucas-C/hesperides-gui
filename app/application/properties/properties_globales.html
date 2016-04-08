@@ -1,51 +1,47 @@
 <!-- List of global properties -->
-<div layout="column">
-    <table class="global-properties-container">
-        <tbody>
-            <tr class="global-properties-line">
-                <td class="global-properties-action">
-                    <md-button ng-click="platform.global_properties.addKeyValue({
-                        'name': new_kv_name,
-                        'value': new_kv_value,
-                        'comment': ''
-                    });new_kv_name = ''; new_kv_value= ''" aria-label="Ajouter">
-                        <md-tooltip>Ajouter</md-tooltip>
-                        <span class="fa fa-plus"></span>
-                    </md-button>
-                </td>
-                <td class="global-properties-label">
-                    <input id="new_kv_name" class="property-value" type="text" required ng-trim="true" ng-model="new_kv_name" aria-label="Nouvelle propriété globale" placeholder="Nouvelle propriété globale" focus-save-global-properties/>
-                </td>
-                <td class="global-properties-value">
-                    <input id="new_kv_value" class="property-value" type="text" required ng-trim="true" ng-model="new_kv_value" aria-label="Valorisation" placeholder="Valorisation" focus-save-global-properties/>
-                </td>
-            </tr>
+<div>
+    <div layout="row" flex="auto">
+        <!-- div de 5 pour aligner avec la column de l'icon trash -->
+        <div flex="5"></div>
+        <div flex="30">
+            <md-input-container class="md-block">
+                <label>Filtrer par clef</label>
+                <input type="text" ng-trim="true" ng-model="globalPropertiesKeyFilter" aria-label="Filtrer par clef" />
+            </md-input-container>
+        </div>
+        <div flex>
+            <md-input-container class="md-block">
+                <label>Filtrer par valeur (les valeurs modifiées ne seront filtrables qu'après une sauvegarde)</label>
+                <input type="text" ng-trim="true" ng-model="globalPropertiesValueFilter" aria-label="Filtrer par valeur (les valeurs modifiées ne seront filtrables qu'après une sauvegarde)" />
+            </md-input-container>
+        </div>
+    </div>
 
-            <!-- Valorisations -->
-            <tr ng-repeat="kv_property in platform.global_properties.key_value_properties | orderBy:'name':platform.global_properties.isReverseOrder() track by $index" class="global-properties-line">
-                <td class="global-properties-action">
-                    <md-button ng-really-message="Supprimer la property globale {{kv_property.name}} ?"
-                               aria-label="Supprimer"
-                               ng-really-click="platform.global_properties.deleteKeyValue(kv_property)"
-                               class="md-warn"
-                               ng-mouseenter="hover = true"
-                               ng-mouseleave="hover = false">
-                        <md-tooltip>Supprimer {{kv_property.name}}</md-tooltip>
-                        <i class="fa fa-trash"></i>
-                    </md-button>
-                </td>
-                <td class="global-properties-label">
-                    <label type="text" ng-trim="true" aria-label="{{kv_property.name}}" ng-readonly="true" class="property-label" ng-class="{'text-stroke': hover}">
-                        {{kv_property.name}}
-                    </label>
-                    <md-tooltip md-direction="top" ng-show="kv_property.comment">
-                        {{kv_property.comment}}
-                    </md-tooltip>
-                </td>
-                <td class="global-properties-value">
-                    <input class="property-value" type="text" ng-trim="true" id="input-{{ kv_property.name }}" ng-model="kv_property.value" aria-label="{{ kv_property.name }}" focus-save-global-properties ng-class="{'text-stroke': hover}" />
-                </td>
-            </tr>
-        </tbody>
-    </table>
+    <md-content layout="column" style="height: 500px;">
+        <!-- Warning ! We need md-virtual-repeat to have reactive UI -->
+        <md-virtual-repeat-container id="vertical-container" style="height: 1500px;">
+            <div md-virtual-repeat="key_value_property in platform.global_properties.key_value_properties | filterProperties:{'name':globalPropertiesKeyFilter, 'filtrable_value':globalPropertiesValueFilter} | orderBy:'name':platform.global_properties.isReverseOrder()" class="repeated-item" flex style="height: 20px;margin:1%;" layout="row">
+                <div layout="column" flex="5">
+                    <span class="fa fa-trash" ng-really-message="Supprimer la property globale {{key_value_property.name}} ?"
+                          aria-label="Supprimer"
+                          ng-really-click="platform.global_properties.deleteKeyValue(key_value_property)"
+                          ng-mouseenter="hover = true"
+                          ng-mouseleave="hover = false" style="color:red;cursor: pointer;"></span>
+                </div>
+                <div layout="column" flex="30">
+                    <label class="property-label"
+                           ng-class="{'text-stroke': hover}" >{{key_value_property.name}}</label>
+                </div>
+                <div layout="column" flex>
+                    <input ng-model="key_value_property.value"
+                           ng-trim="true"
+                           ng-readonly="!key_value_property.inModel"
+                           ng-focus="focusthis = true"
+                           ng-blur="focusthis = false"
+                           ng-class="{'text-stroke': hover}"
+                           class="property-value" >
+                </div>
+            </div>
+        </md-virtual-repeat-container>
+    </md-content>
 </div>

@@ -194,8 +194,8 @@ technoModule.factory('TechnoService', [
                 return response.data.map(function (data) {
                     var entry = new TemplateEntry(data);
                     var url ='rest/templates/packages/' + encodeURIComponent(r_name) + '/' + encodeURIComponent(r_version) + '/release/templates/' + encodeURIComponent(entry.name);
-                    entry.getRights(url).then (function (template){
-                        entry.rights = template.rights != null ? template.rights : 'Rien à afficher';
+                    entry.getRights(url).then (function (template) {
+                        entry.rights = FileService.files_rights_to_string(template.rights);
                     });
                     return entry;
                 }, function (error) {

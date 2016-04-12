@@ -567,6 +567,11 @@ button.md-primary.md-button.md-confirm-hesperides-dialog-theme.md-ink-ripple {
     color: white;
     font-weight: bold;
 }
+
+.properties-container{
+   margin-top: -3%;
+   height: 500px;
+}
 .property-instance {
     display: inline;
     display:inline-block;

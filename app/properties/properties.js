@@ -309,7 +309,6 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
         modalScope.from.lookPast = false;
         modalScope.switched = function (){
-            console.log (modalScope.from.lookPast);
             if ( !modalScope.from.lookPast){
                 $timeout(function (){
                     var el = angular.element(document.querySelector("#look-past-date-time"));
@@ -364,7 +363,6 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
         modalScope.from.lookPast = false;
         modalScope.switched = function (){
-            console.log (modalScope.from.lookPast);
             if ( !modalScope.from.lookPast){
                 $timeout(function (){
                     var el = angular.element(document.querySelector("#look-past-date-time"));
@@ -493,7 +491,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
             modalScope.title =  param2.name + '-' + param2.version;
         }
 
-        EventService.get(stream).then (function (entries){
+        EventService.get(stream, 0).then (function (entries){
 
             modalScope.eventEntries = entries;
 
@@ -501,11 +499,25 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
                 $mdDialog.cancel();
             };
 
+            modalScope.noMoreEvents = false;
+            modalScope.msgMoreEvents = "Plus encore ...";
+            modalScope.showMoreEvents = function (){
+                EventService.get(stream, modalScope.eventEntries.length).then(function (nextEntries){
+                    if (nextEntries.length > 0) {
+                        modalScope.eventEntries = _.union(modalScope.eventEntries, nextEntries);
+                    }else {
+                        // no more events to load
+                        modalScope.noMoreEvents = true;
+                        modalScope.msgMoreEvents = "C'est fini !";
+                    }
+                })
+            };
+
             var modal = $mdDialog.show({
-                        templateUrl: 'event/event-modal.html',
-                        clickOutsideToClose:true,
-                        scope: modalScope
-                    });
+                templateUrl: 'event/event-modal.html',
+                clickOutsideToClose:true,
+                scope: modalScope
+            });
         });
     };
 

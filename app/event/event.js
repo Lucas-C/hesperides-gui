@@ -31,8 +31,13 @@ eventModule.factory('EventEntry', function (){
  */
 eventModule.service("EventService", ['$hesperidesHttp', 'EventEntry', function ($http, EventEntry){
     return {
-        get : function (stream) {
-            var url =  "rest/events/" + encodeURIComponent(stream);
+        /**
+         * Get events from the back.
+         * @param {String} stream : is the name of the stream, application or module
+         * @param {Integer} size : is the size of the events hold by the view.
+         */
+        get : function (stream, currentSize) {
+            var url =  "rest/events/" + encodeURIComponent(stream) + "?size=" + encodeURIComponent(currentSize);
             return $http.get(url).then (function (response){
                return response.data.map (function(item){
                     var event = new EventEntry(item);

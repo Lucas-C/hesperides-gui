@@ -25,7 +25,7 @@
                         </li>
                     </ul>
 
-                    <md-switch class="md-primary md-block" aria-label="Comparer à une date" ng-model="from.lookPast" ng-show="from.application_name != null && from.platform_name != null" ng-click="console.log('11')">
+                    <md-switch ng-click="switched()" class="md-primary md-block" aria-label="Comparer à une date" ng-model="from.lookPast" ng-show="from.application_name != null && from.platform_name != null" ng-click="console.log('11')">
                         Comparer à {{from.application_name}} - {{from.platform_name}} à une date spécifique ?
                     </md-switch>
 

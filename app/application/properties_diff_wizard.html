@@ -27,7 +27,7 @@
                                 </li>
                             </ul>
 
-                            <md-switch class="md-primary md-block" aria-label="Utiliser la note de livraison json de la version"
+                            <md-switch ng-click="switched()" class="md-primary md-block" aria-label="Utiliser la note de livraison json de la version"
                                        ng-model="from.lookPast" ng-show="from.application_name != null && from.platform_name != null">
                                 Comparer à {{from.application_name}} - {{from.platform_name}} à une date spécifique ?
                             </md-switch>

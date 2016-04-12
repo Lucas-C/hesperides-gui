@@ -307,6 +307,17 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
              modalScope.from.platform_name = itemName;
         };
 
+        modalScope.from.lookPast = false;
+        modalScope.switched = function (){
+            console.log (modalScope.from.lookPast);
+            if ( !modalScope.from.lookPast){
+                $timeout(function (){
+                    var el = angular.element(document.querySelector("#look-past-date-time"));
+                    el.focus();
+                }, 200)
+            }
+        };
+
         var t = $mdDialog.show({
             templateUrl: 'application/properties_diff_wizard.html',
             clickOutsideToClose:true,
@@ -349,6 +360,17 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         modalScope.$diff = function(from) {
             $mdDialog.cancel();
             $scope.open_global_diff_page(from);
+        };
+
+        modalScope.from.lookPast = false;
+        modalScope.switched = function (){
+            console.log (modalScope.from.lookPast);
+            if ( !modalScope.from.lookPast){
+                $timeout(function (){
+                    var el = angular.element(document.querySelector("#look-past-date-time"));
+                    el.focus();
+                }, 200)
+            }
         };
 
         $mdDialog.show({

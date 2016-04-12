@@ -66,7 +66,7 @@ templateModule.factory('HesperidesTemplateModal', ['TemplateService', '$mdDialog
         ],
         codeMirrorOptions: {
             mode: 'hesperides',
-            lineNumbers: true,
+            lineNumbers: false, // there is a bug on line numbers, so keep it hidden !
             lineWrapping : true,
             extraKeys: {
                 'F11': function (cm) {

@@ -322,7 +322,9 @@
           }
         });
 
-        element[0].addEventListener('click', function() {
+        // Modified by Tidiane SIDIBE
+        // click => focus
+        element[0].addEventListener('focus', function() {
           DatetimePicker.open({
             triggerEl: element[0],
             dateFormat: attrs.dateFormat,

@@ -70,11 +70,7 @@ menuModule.controller('MenuModuleCtrl', ['$scope', '$mdDialog', '$location', '$t
     }
 
     $scope.find_modules_by_name = function (name) {
-        if (name) {
-            return ModuleService.with_name_like(name);
-        } else {
-            return null;
-        }
+        return ModuleService.with_name_like(name);
     };
 
     $scope.create_module = function(name, version){
@@ -153,11 +149,7 @@ menuModule.controller('MenuPropertiesCtrl', ['$hesperidesHttp', '$scope', '$mdDi
     };
 
     $scope.find_applications_by_name = function (name) {
-        if (name) {
-            return ApplicationService.with_name_like(name);
-        } else {
-            return null;
-        }
+        return ApplicationService.with_name_like(name);
     };
 
     $scope.find_platforms_of_application = function (application_name, filter_env) {

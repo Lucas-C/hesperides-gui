@@ -19,7 +19,10 @@
 
                     <ul class="shared-list-inline">
                         <li ng-repeat="item in platforms | orderObjectBy:'name'">
-                            <md-button ng-model="chosenPlatform" ng-click="updatePlatformField(item.name)" class="md-raised md-mini diffPlatformTag">
+                            <md-button ng-model="chosenPlatform"
+                                       ng-click="updatePlatformField(item.name)"
+                                       class="md-raised md-mini diff-platform-tag"
+                                       ng-style="{'background-color': backgroundColor(item)}">
                                 {{item.name}}
                             </md-button>
                         </li>

@@ -46,7 +46,7 @@ propertiesModule.controller('PlatformVersionModule', ['$scope', '$mdDialog', 'Ne
 }]);
 
 
-propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDialog', '$location', '$route', '$timeout', 'ApplicationService', 'FileService', 'EventService', 'ModuleService', 'ApplicationModule', 'Page', 'NexusService', function ($scope, $routeParams, $mdDialog, $location, $route, $timeout, ApplicationService, FileService, EventService, ModuleService, Module, Page, NexusService) {
+propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDialog', '$location', '$route', '$timeout', 'ApplicationService', 'FileService', 'EventService', 'ModuleService', 'ApplicationModule', 'Page', 'PlatformColorService', 'NexusService', function ($scope, $routeParams, $mdDialog, $location, $route, $timeout, ApplicationService, FileService, EventService, ModuleService, Module, Page, PlatformColorService, NexusService) {
     Page.setTitle("Properties");
 
     $scope.platform = $routeParams.platform;
@@ -307,6 +307,10 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
              modalScope.from.platform_name = itemName;
         };
 
+        modalScope.backgroundColor = function(item) {
+            return PlatformColorService.calculateColor(item.name);
+        };
+
         modalScope.from.lookPast = false;
         modalScope.switched = function (){
             if ( !modalScope.from.lookPast){
@@ -354,6 +358,10 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
         modalScope.updatePlatformField = function(itemName) {
              modalScope.from.platform_name = itemName;
+        };
+
+        modalScope.backgroundColor = function(item) {
+            return PlatformColorService.calculateColor(item.name);
         };
 
         modalScope.$diff = function(from) {

@@ -567,11 +567,6 @@ button.md-primary.md-button.md-confirm-hesperides-dialog-theme.md-ink-ripple {
     color: white;
     font-weight: bold;
 }
-
-.properties-container{
-   margin-top: -3%;
-   height: 500px;
-}
 .property-instance {
     display: inline;
     display:inline-block;
@@ -876,7 +871,7 @@ input.default-value-color-focus:placeholder-shown{color: #FFFFFF;}
     margin-left:2% !important;
 }
 
-.diffPlatformTag {
+.diff-platform-tag {
     height: 5px !important;
     margin-top: 0px !important;
     margin-botton: 0px !important;

@@ -401,3 +401,48 @@ hesperidesModule.directive('hesperidesCompareDateTime', function (){
         }
     }
 });
+
+/**
+ * A commom service for color calculation
+ */
+hesperidesModule.service ('PlatformColorService', function (){
+    return {
+
+            /**
+             * Getting a color according to input.
+             * @param {String} name : the input string
+             */
+            calculateColor: function (name){
+
+                /**
+                 * Private utility function that calculates
+                 * a RGB color code according to the input string
+                 */
+                pastelColour = function(name) {
+
+                    var baseRed = 220;
+                    var baseGreen = 220;
+                    var baseBlue = 220;
+
+                    //lazy seeded random hack to get values from 0 - 256
+                    //for seed just take bitwise XOR of first two chars
+                    var seed = name.charCodeAt(0) ^ name.charCodeAt(1) ^ name.charCodeAt(2);
+                    var rand_1 = Math.abs((Math.sin(seed++) * 10000)) % 256;
+                    var rand_2 = Math.abs((Math.sin(seed++) * 10000)) % 256;
+                    var rand_3 = Math.abs((Math.sin(seed++) * 10000)) % 256;
+
+                    //build colour
+                    var red = Math.round((rand_1 + baseRed) / 2);
+                    var green = Math.round((rand_2 + baseGreen) / 2);
+                    var blue = Math.round((rand_3 + baseBlue) / 2);
+
+                    return { red: red, green: green, blue: blue };
+                };
+
+                // get the final color in rgb
+                var rgb_pastel = pastelColour(name);
+                var bgColor = "rgb("+rgb_pastel.red+", "+rgb_pastel.green+", "+rgb_pastel.blue+")";
+                return bgColor;
+            }
+    };
+});

@@ -17,7 +17,7 @@ components.filter('filterPlatform', function () {
     };
 });
 
-components.directive('listOfItems', ['$parse', function ($parse) {
+components.directive('listOfItems', ['$parse', 'PlatformColorService', function ($parse, PlatformColorService) {
 
     return {
         restrict: 'E',
@@ -39,32 +39,6 @@ components.directive('listOfItems', ['$parse', function ($parse) {
             scope.input = {};
             scope.tooltip = attrs.tooltip;
 
-            /* fonction utilitaire pour générer un code couleur en fonction de la string passée en paramètre
-             * utilisé pour la couleur des plateformes sur l'écran de valorisation
-             */
-
-            function pastel_colour(input_str) {
-
-                //TODO: adjust base colour values below based on theme
-                var baseRed = 220;
-                var baseGreen = 220;
-                var baseBlue = 220;
-
-                //lazy seeded random hack to get values from 0 - 256
-                //for seed just take bitwise XOR of first two chars
-                var seed = input_str.charCodeAt(0) ^ input_str.charCodeAt(1) ^ input_str.charCodeAt(2);
-                var rand_1 = Math.abs((Math.sin(seed++) * 10000)) % 256;
-                var rand_2 = Math.abs((Math.sin(seed++) * 10000)) % 256;
-                var rand_3 = Math.abs((Math.sin(seed++) * 10000)) % 256;
-
-                //build colour
-                var red = Math.round((rand_1 + baseRed) / 2);
-                var green = Math.round((rand_2 + baseGreen) / 2);
-                var blue = Math.round((rand_3 + baseBlue) / 2);
-
-                return { red: red, green: green, blue: blue };
-            }
-
             scope.cssClass = function(item) {
                 var listClass = "";
 
@@ -82,9 +56,7 @@ components.directive('listOfItems', ['$parse', function ($parse) {
             }
 
             scope.backgroundColor = function(item) {
-                var rgb_pastel = pastel_colour(item.name);
-                var bgColor = "rgb("+rgb_pastel.red+", "+rgb_pastel.green+", "+rgb_pastel.blue+")";
-                return bgColor;
+                return PlatformColorService.calculateColor(item.name);
             }
 
             scope.selfLabel = function (item) {

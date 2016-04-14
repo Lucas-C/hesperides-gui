@@ -1,68 +1,56 @@
 <!-- List of global properties -->
 <div>
 
-    <table class="global-properties-container">
-        <tbody>
-            <tr class="global-properties-line">
-                <td class="global-properties-action">
-                    <md-button ng-click="platform.global_properties.addKeyValue({
-                            'name': new_kv_name,
-                            'value': new_kv_value,
-                            'comment': ''
-                        });new_kv_name = ''; new_kv_value= ''" aria-label="Ajouter">
-                        <md-tooltip>Ajouter</md-tooltip>
-                        <span class="fa fa-plus"></span>
-                    </md-button>
-                </td>
-                <td class="global-properties-label">
-                    <input id="new_kv_name" class="property-value" type="text" required ng-trim="true" ng-model="new_kv_name" aria-label="Nouvelle propriété globale" placeholder="Nouvelle propriété globale" focus-save-global-properties/>
-                </td>
-                <td class="global-properties-value">
-                    <input id="new_kv_value" class="property-value" type="text" required ng-trim="true" ng-model="new_kv_value" aria-label="Valorisation" placeholder="Valorisation" focus-save-global-properties/>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-
     <div layout="row" flex="auto">
-        <!-- div de 5 pour aligner avec la column de l'icon trash -->
-        <div flex="5"></div>
-        <div flex="30">
-            <md-input-container class="md-block">
-                <label>Filtrer par clef</label>
-                <input type="text" ng-trim="true" ng-model="globalPropertiesKeyFilter" aria-label="Filtrer par clef" />
-            </md-input-container>
+        <div flex="40">
+            <input id="new_kv_name" class="property-value" type="text" required ng-trim="true" ng-model="new_kv_name" aria-label="Nouvelle propriété globale" placeholder="Nouvelle propriété globale" focus-save-global-properties/>
         </div>
-        <div flex>
-            <md-input-container class="md-block">
-                <label>Filtrer par valeur (les valeurs modifiées ne seront filtrables qu'après une sauvegarde)</label>
-                <input type="text" ng-trim="true" ng-model="globalPropertiesValueFilter" aria-label="Filtrer par valeur (les valeurs modifiées ne seront filtrables qu'après une sauvegarde)" />
-            </md-input-container>
+        <div flex="60">
+            <input id="new_kv_value" class="property-value" type="text" required ng-trim="true" ng-model="new_kv_value" aria-label="Valorisation" placeholder="Valorisation" focus-save-global-properties/>
         </div>
     </div>
 
-    <md-content layout="column" class="properties-container">
+    <div layout="row" flex="auto">
+        <md-input-container class="md-block" flex="36">
+            <label>Filtrer par clef</label>
+            <input type="text" ng-trim="true" ng-model="globalPropertiesKeyFilter" aria-label="Filtrer par clef" />
+        </md-input-container>
+
+        <md-input-container class="md-block" flex="60">
+            <label>Filtrer par valeur (ne filtre que les valeurs enregistrées)</label>
+            <input type="text" ng-trim="true" ng-model="globalPropertiesValueFilter" aria-label="Filtrer par valeur (les valeurs modifiées ne seront filtrables qu'après une sauvegarde)" />
+        </md-input-container>
+    </div>
+
+    <md-content class="properties-container">
         <!-- Warning ! We need md-virtual-repeat to have reactive UI -->
-        <md-virtual-repeat-container id="vertical-container" style="height: 1500px;">
+        <md-virtual-repeat-container id="vertical-container" style="height: inherit;">
             <div md-virtual-repeat="key_value_property in platform.global_properties.key_value_properties | filterProperties:{'name':globalPropertiesKeyFilter, 'filtrable_value':globalPropertiesValueFilter} | orderBy:'name':platform.global_properties.isReverseOrder()" class="repeated-item" flex style="height: 20px;margin:1%;" layout="row">
-                <div layout="column" flex="5">
-                    <span class="fa fa-trash" ng-really-message="Supprimer la property globale {{key_value_property.name}} ?"
-                          aria-label="Supprimer"
-                          ng-really-click="platform.global_properties.deleteKeyValue(key_value_property)"
-                          ng-mouseenter="hover = true"
-                          ng-mouseleave="hover = false" style="color:red;cursor: pointer;"></span>
-                </div>
-                <div layout="column" flex="30">
-                    <label class="property-label"
-                           ng-class="{'text-stroke': hover}" >{{key_value_property.name}}</label>
-                </div>
-                <div layout="column" flex>
-                    <input ng-model="key_value_property.value"
-                           ng-trim="true"
-                           ng-focus="focusthis = true"
-                           ng-blur="focusthis = false"
-                           ng-class="{'text-stroke': hover}"
-                           class="property-value" >
+                <div layout="row" flex="auto">
+                    <div flex="40">
+                        <div layout="row" flex="auto">
+                            <div flex="5">
+                                <span class="fa fa-trash" ng-really-message="Supprimer la property globale {{key_value_property.name}} ?"
+                                      aria-label="Supprimer"
+                                      ng-really-click="platform.global_properties.deleteKeyValue(key_value_property)"
+                                      ng-mouseenter="hover = true"
+                                      ng-mouseleave="hover = false" style="color:red;cursor: pointer;">
+                                </span>
+                            </div>
+                            <div flex="95" class="property-label">
+                                <label
+                                       ng-class="{'text-stroke': hover}" >{{key_value_property.name}}</label>
+                            </div>
+                        </div>
+                    </div>
+                    <div flex="60">
+                        <input ng-model="key_value_property.value"
+                               ng-trim="true"
+                               ng-focus="focusthis = true"
+                               ng-blur="focusthis = false"
+                               ng-class="{'text-stroke': hover}"
+                               class="property-value" >
+                    </div>
                 </div>
             </div>
         </md-virtual-repeat-container>

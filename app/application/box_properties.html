@@ -1,6 +1,7 @@
-<div layout="row" class="vertical-align">
+<!-- Properties commands -->
+<div layout="row" class="vertical-align" style="padding-bottom: 20px;">
     <h3>
-            <span style="padding-right: 10px">Propriétés niveau plateforme</span>
+        <span style="padding-right: 10px">Propriétés niveau plateforme</span>
     </h3>
     <div layout="row" >
         <md-button ng-click="showButtonAndEye = !showButtonAndEye;showGlobalProperties = !showGlobalProperties"
@@ -24,7 +25,7 @@
         </md-switch>
     </div>
 </div>
-
+<!-- / Properties commands -->
 <div layout="row" class="vertical-align" ng-show="showGlobalProperties">
     <div flex="100">
         <form>
@@ -33,12 +34,6 @@
     </div>
 </div>
 
-<!--
-<button ng-click="save_platform_from_box(mainBox, true)" class="btn btn-sm">
-    <span class="glyphicon glyphicon-saved" style="padding-right:10px"></span>
-    <span>Sauver la plateforme</span>
-</button>
--->
 <div layout="row" layout-wrap>
     <div flex="5">
         <md-button ng-click="open_add_box_dialog(mainBox)" class="md-fab properties-add-logical-group"

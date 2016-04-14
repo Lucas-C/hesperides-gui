@@ -683,6 +683,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         $scope.instance = undefined;
         $scope.properties = undefined;
         $scope.showGlobalProperties = true;
+        $scope.showButtonAndEye = true;
     };
 
     $scope.get_platform_to_compare = function (application, platform, lookPast, date) {

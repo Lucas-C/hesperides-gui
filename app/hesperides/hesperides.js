@@ -34,6 +34,8 @@ var hesperidesModule = angular.module('hesperides', [
 }).value('scDateTimeI18n', {
     weekdays: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
     calendar: 'Calendrier'
+}).value('hesperidesGlobals', {
+    eventPaginationSize: 25
 });
 
 hesperidesModule.run(function (editableOptions, editableThemes, $rootScope) {

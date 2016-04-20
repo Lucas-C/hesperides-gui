@@ -507,18 +507,52 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
                 $mdDialog.cancel();
             };
 
+            var stop = false;
+            var events = [];
+
+            /**
+             * Private function to preload next events
+             * This is a recursive function.
+             */
+            var preloadNextEvents = function (){
+                EventService.get(stream, modalScope.eventEntries.length + events.length).then(function (nextEntries){
+                    if ( !stop ){
+                        if (nextEntries.length > 0) {
+                            events = _.union(events, nextEntries);
+                            // recur
+                            preloadNextEvents();
+                        }else{
+                            stop = true;
+                            return;
+                        }
+                    }else {
+                        return;
+                    }
+                });
+            };
+
+            // initial call
+            preloadNextEvents();
+
+            /**
+             * Show more events
+             */
             modalScope.noMoreEvents = false;
             modalScope.msgMoreEvents = "Plus encore ...";
             modalScope.showMoreEvents = function (){
-                EventService.get(stream, modalScope.eventEntries.length).then(function (nextEntries){
-                    if (nextEntries.length > 0) {
-                        modalScope.eventEntries = _.union(modalScope.eventEntries, nextEntries);
+                stop = true;
+                $timeout(function (){
+                    if (events.length > 0) {
+                        modalScope.eventEntries = _.union(modalScope.eventEntries, events);
+                        events = [];
+                        stop = false;
+                        preloadNextEvents();
                     }else {
                         // no more events to load
                         modalScope.noMoreEvents = true;
                         modalScope.msgMoreEvents = "C'est fini !";
                     }
-                })
+                }, 1000);
             };
 
             var modal = $mdDialog.show({

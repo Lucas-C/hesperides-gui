@@ -29,7 +29,7 @@ eventModule.factory('EventEntry', function (){
 /**
  * Hesperides event http service
  */
-eventModule.service("EventService", ['$hesperidesHttp', 'EventEntry', function ($http, EventEntry){
+eventModule.service("EventService", ['$hesperidesHttp', 'EventEntry', 'hesperidesGlobals', function ($http, EventEntry, hesperidesGlobals){
     return {
         /**
          * Get events from the back.
@@ -37,7 +37,7 @@ eventModule.service("EventService", ['$hesperidesHttp', 'EventEntry', function (
          * @param {Integer} size : is the size of the events hold by the view.
          */
         get : function (stream, currentSize) {
-            var url =  "rest/events/" + encodeURIComponent(stream) + "?size=" + encodeURIComponent(currentSize);
+            var url =  "rest/events/" + encodeURIComponent(stream) + "?actual=" + encodeURIComponent(currentSize) + "&size=" + encodeURIComponent(hesperidesGlobals.eventPaginationSize);
             return $http.get(url).then (function (response){
                return response.data.map (function(item){
                     var event = new EventEntry(item);

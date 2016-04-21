@@ -562,7 +562,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
                         modalScope.noMoreEvents = true;
                         modalScope.msgMoreEvents = "C'est fini !";
                     }
-                }, 1000);
+                }, 500);
             };
 
             var modal = $mdDialog.show({

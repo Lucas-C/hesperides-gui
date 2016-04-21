@@ -34,10 +34,10 @@ eventModule.service("EventService", ['$hesperidesHttp', 'EventEntry', 'hesperide
         /**
          * Get events from the back.
          * @param {String} stream : is the name of the stream, application or module
-         * @param {Integer} size : is the size of the events hold by the view.
+         * @param {Integer} page : is the page number to retrieve.
          */
-        get : function (stream, currentSize) {
-            var url =  "rest/events/" + encodeURIComponent(stream) + "?actual=" + encodeURIComponent(currentSize) + "&size=" + encodeURIComponent(hesperidesGlobals.eventPaginationSize);
+        get : function (stream, page) {
+            var url =  "rest/events/" + encodeURIComponent(stream) + "?page=" + encodeURIComponent(page) + "&size=" + encodeURIComponent(hesperidesGlobals.eventPaginationSize);
             return $http.get(url).then (function (response){
                return response.data.map (function(item){
                     var event = new EventEntry(item);

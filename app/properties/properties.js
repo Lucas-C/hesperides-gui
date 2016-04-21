@@ -482,6 +482,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
      */
     $scope.show_events = function (param1, param2, action) {
         var modalScope = $scope.$new(true);
+        var page = 1; // the starting page is 1.
 
         // Creating the stream name
         var stream = undefined;
@@ -499,15 +500,17 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
             modalScope.title =  param2.name + '-' + param2.version;
         }
 
-        EventService.get(stream, 0).then (function (entries){
+        EventService.get(stream, page).then (function (entries){
 
             modalScope.eventEntries = entries;
+            page ++;
 
             modalScope.$closeDialog = function() {
                 $mdDialog.cancel();
             };
 
             var stop = false;
+            var finished = false;
             var events = [];
 
             /**
@@ -515,14 +518,16 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
              * This is a recursive function.
              */
             var preloadNextEvents = function (){
-                EventService.get(stream, modalScope.eventEntries.length + events.length).then(function (nextEntries){
-                    if ( !stop ){
+                EventService.get(stream, page).then(function (nextEntries){
+                    if ( !(stop || finished)){
                         if (nextEntries.length > 0) {
                             events = _.union(events, nextEntries);
                             // recur
+                            page ++;
                             preloadNextEvents();
                         }else{
                             stop = true;
+                            finished = true;
                             return;
                         }
                     }else {
@@ -545,8 +550,13 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
                     if (events.length > 0) {
                         modalScope.eventEntries = _.union(modalScope.eventEntries, events);
                         events = [];
-                        stop = false;
-                        preloadNextEvents();
+
+                        // if not finished, start preload next
+                        if (!finished){
+                            stop = false;
+                            preloadNextEvents();
+                        }
+
                     }else {
                         // no more events to load
                         modalScope.noMoreEvents = true;

@@ -484,6 +484,10 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         var modalScope = $scope.$new(true);
         var page = 1; // the starting page is 1.
 
+        var stop = false;
+        var finished = false;
+        var events = [];
+
         // Creating the stream name
         var stream = undefined;
         if ( action === 'platform'){
@@ -505,13 +509,22 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
             modalScope.eventEntries = entries;
             page ++;
 
+            //
+            // Show the modal
+            //
+            var modal = $mdDialog.show({
+                templateUrl: 'event/event-modal.html',
+                clickOutsideToClose:true,
+                scope: modalScope
+            });
+
+            //
+            // Close the events modal
+            //
             modalScope.$closeDialog = function() {
+                stop = true;
                 $mdDialog.cancel();
             };
-
-            var stop = false;
-            var finished = false;
-            var events = [];
 
             /**
              * Private function to preload next events
@@ -564,12 +577,6 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
                     }
                 }, 500);
             };
-
-            var modal = $mdDialog.show({
-                templateUrl: 'event/event-modal.html',
-                clickOutsideToClose:true,
-                scope: modalScope
-            });
         });
     };
 

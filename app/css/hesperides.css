@@ -889,3 +889,17 @@ input.default-value-color-focus:placeholder-shown{color: #FFFFFF;}
     padding-right: 0px !important;
     min-width: 80px !important;
 }
+
+/*Responsive text truncation*/
+.truncate-ellipsis {
+  display: table;
+  table-layout: fixed;
+  width: 100%;
+  white-space: nowrap;
+}
+
+.truncate-ellipsis > * {
+  display: table-cell;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

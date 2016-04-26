@@ -35,13 +35,15 @@
                      ng_if="!key_value_property.inGlobal"
                      style="margin:1%;">
                     <div layout="column" flex="50">
-                        <label class="property-label"
-                               ng-class="{'text-stroke':!key_value_property.inModel, 'default-value-color': key_value_property.defaultValue && !key_value_property.value}"
-                        >{{key_value_property.name}} <span ng-show="key_value_property.required"
-                                                           class="property-required">*</span></label>
-                        <md-tooltip md-direction="top" ng-show="key_value_property.comment">
-                            {{key_value_property.comment}}
-                        </md-tooltip>
+                        <div class="truncate-ellipsis">
+                            <label class="property-label"
+                                   ng-class="{'text-stroke':!key_value_property.inModel, 'default-value-color': key_value_property.defaultValue && !key_value_property.value}"
+                            >{{key_value_property.name}} <span ng-show="key_value_property.required"
+                                                               class="property-required">*</span></label>
+                            <md-tooltip md-direction="top" ng-show="key_value_property.comment">
+                                {{key_value_property.comment}}
+                            </md-tooltip>
+                        </div>
                     </div>
                     <div layout="column" flex>
                         <input ng-model="key_value_property.value"
@@ -61,11 +63,12 @@
                      ng_if="key_value_property.inGlobal"
                      style="margin:1%;">
                     <div layout="column" flex="50">
-
-                        <label class="property-label"
-                               ng-class="{'text-stroke':!key_value_property.inModel, 'default-value-color': key_value_property.defaultValue && !key_value_property.value} "
-                        >{{key_value_property.name}}</label>
-                        <md-tooltip md-direction="top" ng-show="key_value_property.comment">{{key_value_property.comment}}</md-tooltip>
+                        <div class="truncate-ellipsis">
+                            <label class="property-label"
+                                   ng-class="{'text-stroke':!key_value_property.inModel, 'default-value-color': key_value_property.defaultValue && !key_value_property.value} "
+                            >{{key_value_property.name}}</label>
+                            <md-tooltip md-direction="top" ng-show="key_value_property.comment">{{key_value_property.comment}}</md-tooltip>
+                        </div>
                     </div>
                     <div layout="column" flex>
                         <input ng-model="key_value_property.value"

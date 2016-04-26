@@ -37,9 +37,11 @@
                                       ng-mouseleave="hover = false" style="color:red;cursor: pointer;">
                                 </span>
                             </div>
-                            <div flex="95" class="property-label">
-                                <label
-                                       ng-class="{'text-stroke': hover}" >{{key_value_property.name}}</label>
+                            <div flex="95">
+                                <div class="truncate-ellipsis">
+                                    <label class="property-label"
+                                           ng-class="{'text-stroke': hover}" >{{key_value_property.name}}</label>
+                                </div>
                             </div>
                         </div>
                     </div>

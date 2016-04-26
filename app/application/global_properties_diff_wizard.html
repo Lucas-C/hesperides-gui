@@ -8,17 +8,17 @@
                 <form name="comparedPlatformForm" ng-submit="comparedPlatformForm.$valid">
                     <md-input-container md-no-float class="md-block">
                         <label><strong>Application à laquelle comparer</strong></label>
-                        <input type="text" required ng-trim="true" ng-model="from.application_name"
+                        <input type="text" required ng-trim="true" ng-model="from.application" ng-change="get_target_platforms(from.application)"
                                placeholder="WDI, PAO, STF, ..." />
                     </md-input-container>
                     <md-input-container md-no-float class="md-block">
                         <label><strong>Plateforme à laquelle comparer</strong></label>
-                        <input type="text" required ng-trim="true" ng-model="from.platform_name" md-autofocus="true"
+                        <input type="text" required ng-trim="true" ng-model="from.platform" md-autofocus="true"
                                placeholder="CUR1, USN1, ..."/>
                     </md-input-container>
 
                     <ul class="shared-list-inline">
-                        <li ng-repeat="item in platforms | orderObjectBy:'name'">
+                        <li ng-repeat="item in target_platforms | orderObjectBy:'name'">
                             <md-button ng-model="chosenPlatform"
                                        ng-click="updatePlatformField(item.name)"
                                        class="md-raised md-mini diff-platform-tag"
@@ -28,12 +28,12 @@
                         </li>
                     </ul>
 
-                    <md-switch ng-click="switched()" class="md-primary md-block" aria-label="Comparer à une date" ng-model="from.lookPast" ng-show="from.application_name != null && from.platform_name != null" ng-click="console.log('11')">
-                        Comparer à {{from.application_name}} - {{from.platform_name}} à une date spécifique ?
+                    <md-switch ng-click="switched()" class="md-primary md-block" aria-label="Comparer à une date" ng-model="from.lookPast" ng-show="from.application != null && from.platform != null" ng-click="console.log('11')">
+                        Comparer à {{from.application}} - {{from.platform}} à une date spécifique ?
                     </md-switch>
 
                     <div ng-show="from.lookPast">
-                        <hesperides-compare-date-time ng-model="dateValue"></hesperides-compare-date-time>
+                        <hesperides-compare-date-time ng-model="from.date"></hesperides-compare-date-time>
                     </div>
                 </form>
             </md-content>

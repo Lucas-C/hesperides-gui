@@ -297,14 +297,35 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
         var modalScope = $scope.$new();
 
-        modalScope.from=$scope.platform;
+        // From platform info
+        modalScope.from = {
+           application: $scope.platform.application_name,
+           platform: $scope.platform.name,
+           date: undefined,
+           lookPast: false
+        }
+
+        // Get the list of platforms for an app
+        modalScope.get_target_platforms = function (application_name){
+           if ( !_.isUndefined(application_name) && application_name.length == 3){
+               ApplicationService.get(application_name).then(function (application){
+                   modalScope.target_platforms = application.platforms;
+               }, function (error){
+                   modalScope.target_platforms = [];
+               });
+           }else {
+               modalScope.target_platforms = [];
+           }
+        }
+
+       modalScope.target_platforms = modalScope.get_target_platforms(modalScope.from.application);
 
         modalScope.$diff = function() {
             $mdDialog.hide();
         }
 
         modalScope.updatePlatformField = function(itemName) {
-             modalScope.from.platform_name = itemName;
+             modalScope.from.platform = itemName;
         };
 
         modalScope.backgroundColor = function(item) {
@@ -348,16 +369,39 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         if (!_.isUndefined($scope.compare_platform.timestamp)) {
             urlParams.timestamp = $scope.compare_platform.timestamp;
         }
+
         $location.path('/diff').search(urlParams);
     };
 
     $scope.diff_global_properties = function () {
+
         var modalScope = $scope.$new();
 
-        modalScope.from=$scope.platform;
+        // From platform info
+        modalScope.from = {
+            application: $scope.platform.application_name,
+            platform: $scope.platform.name,
+            date: undefined,
+            lookPast: false
+        }
+
+        // Get the list of platforms for an app
+        modalScope.get_target_platforms = function (application_name){
+            if ( !_.isUndefined(application_name) && application_name.length == 3){
+                ApplicationService.get(application_name).then(function (application){
+                    modalScope.target_platforms = application.platforms;
+                }, function (error){
+                    modalScope.target_platforms = [];
+                });
+            }else {
+                modalScope.target_platforms = [];
+            }
+        }
+
+        modalScope.target_platforms = modalScope.get_target_platforms(modalScope.from.application);
 
         modalScope.updatePlatformField = function(itemName) {
-             modalScope.from.platform_name = itemName;
+             modalScope.from.platform = itemName;
         };
 
         modalScope.backgroundColor = function(item) {
@@ -388,7 +432,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
     $scope.open_global_diff_page = function (from) {
         //Everything is set in the scope by the modal when calling this
-        //Not very safe but easier to manage with all scopes genrated
+        //Not very safe but easier to manage with all scopes generated
         var urlParams = {
             application: $scope.platform.application_name,
             platform: $scope.platform.name,
@@ -399,7 +443,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         };
 
         if (!_.isUndefined(from.date)) {
-            urlParams.timestamp = from.date.getTime();
+            urlParams.timestamp = Date.parse(from.date);
         }
 
         $location.path('/diff').search(urlParams);
@@ -483,9 +527,6 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
     $scope.show_events = function (param1, param2, action) {
         var modalScope = $scope.$new(true);
         var page = 1; // the starting page is 1.
-
-        var stop = false;
-        var finished = false;
         var events = [];
 
         // Creating the stream name
@@ -504,6 +545,18 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
             modalScope.title =  param2.name + '-' + param2.version;
         }
 
+        /**
+         * Private function to preload next events
+         */
+        var preloadNextEvents = function (){
+            events = [];
+            EventService.get(stream, page).then(function (nextEntries){
+                events = nextEntries;
+                page ++;
+            });
+        };
+
+        // Get evevents
         EventService.get(stream, page).then (function (entries){
 
             modalScope.eventEntries = entries;
@@ -518,64 +571,30 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
                 scope: modalScope
             });
 
+            // Preload the next page
+            preloadNextEvents();
+
             //
             // Close the events modal
             //
             modalScope.$closeDialog = function() {
-                stop = true;
                 $mdDialog.cancel();
             };
-
-            /**
-             * Private function to preload next events
-             * This is a recursive function.
-             */
-            var preloadNextEvents = function (){
-                EventService.get(stream, page).then(function (nextEntries){
-                    if ( !(stop || finished)){
-                        if (nextEntries.length > 0) {
-                            events = _.union(events, nextEntries);
-                            // recur
-                            page ++;
-                            preloadNextEvents();
-                        }else{
-                            stop = true;
-                            finished = true;
-                            return;
-                        }
-                    }else {
-                        return;
-                    }
-                });
-            };
-
-            // initial call
-            preloadNextEvents();
 
             /**
              * Show more events
              */
             modalScope.noMoreEvents = false;
             modalScope.msgMoreEvents = "Plus encore ...";
+
             modalScope.showMoreEvents = function (){
-                stop = true;
-                $timeout(function (){
-                    if (events.length > 0) {
-                        modalScope.eventEntries = _.union(modalScope.eventEntries, events);
-                        events = [];
-
-                        // if not finished, start preload next
-                        if (!finished){
-                            stop = false;
-                            preloadNextEvents();
-                        }
-
-                    }else {
-                        // no more events to load
-                        modalScope.noMoreEvents = true;
-                        modalScope.msgMoreEvents = "C'est fini !";
-                    }
-                }, 500);
+                if (events.length > 0) {
+                    modalScope.eventEntries = _.union(modalScope.eventEntries, events);
+                    preloadNextEvents();
+                }else {
+                    // no more events to load
+                    modalScope.noMoreEvents = true;
+                }
             };
         });
     };

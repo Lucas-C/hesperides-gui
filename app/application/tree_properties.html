@@ -4,7 +4,8 @@
         <div>
             <md-input-container class="md-block" style="margin: inherit">
                 <label>Filtrer sur l'arbre</label>
-                <input type="text" ng-trim="true" ng-model="searchInTree" />
+                <!-- Add ngModelOptions for big tree, to prevent key press hang -->
+                <input type="text" ng-trim="true" ng-model="searchInTree" ng-model-options="{ debounce: { 'default': 250 } }" />
             </md-input-container>
         </div>
 

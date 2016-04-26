@@ -907,3 +907,8 @@ input.default-value-color-focus:placeholder-shown{color: #FFFFFF;}
 .diff-divider {
     padding-bottom: 15px;
 }
+
+#title {
+    text-decoration: initial;
+    color: #FFFFFF;
+}

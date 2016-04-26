@@ -35,6 +35,7 @@ var hesperidesModule = angular.module('hesperides', [
     weekdays: ['D', 'L', 'M', 'M', 'J', 'V', 'S'],
     calendar: 'Calendrier'
 }).value('hesperidesGlobals', {
+    versionName: 'PHOBOS',
     eventPaginationSize: 25
 });
 
@@ -83,17 +84,18 @@ hesperidesModule.run(function (editableOptions, editableThemes, $rootScope) {
     };
 });
 
-hesperidesModule.factory('Page', function () {
-    var title = 'Hesperides - Release PHOBOS';
+hesperidesModule.factory('Page', ['hesperidesGlobals', function (hesperidesGlobals) {
+    var base  = 'Hesperides ( ' + hesperidesGlobals.versionName + ' )'
+    var title = base;
     return {
         title: function () {
             return title;
         },
         setTitle: function (newTitle) {
-            title = "Hesperides > " + newTitle
+            title = base + " > " + newTitle
         }
     }
-});
+}]);
 
 hesperidesModule.controller("TitleCtrl", ['$scope', 'Page', function ($scope, Page) {
     $scope.Page = Page;

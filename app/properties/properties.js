@@ -997,17 +997,15 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
                 return prop_to_modify.name === prop.name;
             });
 
-            if (_.isUndefined(prop_to_compare_to) || prop_to_compare_to.value === '') {
+            if ((_.isUndefined(prop_to_modify) && _.isUndefined(prop_to_compare_to)) || (prop_to_modify.value === prop_to_compare_to.value)) {
+                $scope.diff_containers.push(new DiffContainer(1, prop_to_modify.name, prop_to_modify, prop_to_compare_to));
+            } else if (_.isUndefined(prop_to_compare_to) || prop_to_compare_to.value === '') {
                 //Avoid null pointer create prop to compare to with an empty value
                 var prop_to_compare_to = angular.copy(prop_to_modify);
                 prop_to_compare_to.value = '';
                 $scope.diff_containers.push(new DiffContainer(0, prop_to_modify.name, prop_to_modify, {}));
             } else {
-                if (prop_to_modify.value === prop_to_compare_to.value) {
-                    $scope.diff_containers.push(new DiffContainer(1, prop_to_modify.name, prop_to_modify, prop_to_compare_to));
-                } else {
-                    $scope.diff_containers.push(new DiffContainer(2, prop_to_modify.name, prop_to_modify, prop_to_compare_to));
-                }
+                $scope.diff_containers.push(new DiffContainer(2, prop_to_modify.name, prop_to_modify, prop_to_compare_to));
             }
         });
 

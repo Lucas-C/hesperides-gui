@@ -903,3 +903,7 @@ input.default-value-color-focus:placeholder-shown{color: #FFFFFF;}
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.diff-divider {
+    padding-bottom: 15px;
+}

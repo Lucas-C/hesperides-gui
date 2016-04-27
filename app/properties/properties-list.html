@@ -41,8 +41,8 @@
                             <label class="property-label"
                                    ng-class="{'text-stroke':!key_value_property.inModel, 'default-value-color': key_value_property.defaultValue && !key_value_property.value}"
                             >{{key_value_property.name}} <span ng-show="key_value_property.required" class="property-required">*</span></label>
-                            <md-tooltip md-direction="top" ng-show="key_value_property.comment">
-                                {{key_value_property.comment}}
+                            <md-tooltip md-direction="top">
+                                {{key_value_property.name}}
                             </md-tooltip>
                         </div>
                     </div>
@@ -68,8 +68,8 @@
                             <label class="property-label"
                                    ng-class="{'text-stroke':!key_value_property.inModel, 'default-value-color': key_value_property.defaultValue && !key_value_property.value} "
                             >{{key_value_property.name}}</label>
-                            <md-tooltip md-direction="top" ng-show="key_value_property.comment">
-                                {{key_value_property.comment}}
+                            <md-tooltip md-direction="top">
+                                {{key_value_property.name}}
                             </md-tooltip>
                         </div>
                     </div>

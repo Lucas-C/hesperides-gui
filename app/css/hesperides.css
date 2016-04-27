@@ -23,15 +23,33 @@ textarea,
      font-size: inherit;
 }
 
-/*
+/**
  * Header
  */
 #header  input:focus{
 	outline-width: 0;
 }
 
+/**
+ * Welcome
+ */
+#welcome {
+    margin-left: auto;
+    margin-right: auto;
+    display: block;
+    width: 485px;
+    height: 200px;
+    background-image: url('/img/evolution-ordinateur.png');
+}
 
-/*
+/**
+ * Title
+ */
+#title {
+    text-decoration: initial;
+}
+
+/**
  * CodeMirror
  */
 .CodeMirror {
@@ -262,9 +280,9 @@ md-checkbox.diff {
 /******************************************************************************
  * Menu
  */
-.menu {
+.menu, .menu > a, .menu > span {
     background-color: #009587;
-    color: white;
+    color: rgba(255, 255, 255, 0.84);
 }
 
 .menu-item {
@@ -906,9 +924,4 @@ input.default-value-color-focus:placeholder-shown{color: #FFFFFF;}
 
 .diff-divider {
     padding-bottom: 15px;
-}
-
-#title {
-    text-decoration: initial;
-    color: #FFFFFF;
 }

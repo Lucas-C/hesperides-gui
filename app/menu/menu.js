@@ -282,7 +282,7 @@ menuModule.controller('MenuPropertiesCtrl', ['$hesperidesHttp', '$scope', '$mdDi
     };
 }]);
 
-menuModule.controller('MenuHelpCtrl', ['$scope', '$mdDialog', '$hesperidesHttp', function($scope, $mdDialog, $http){
+menuModule.controller('MenuHelpCtrl', ['$scope', '$mdDialog', '$hesperidesHttp', 'hesperidesGlobals', function($scope, $mdDialog, $http, hesperidesGlobals){
 
     $scope.closeDialog = function() {
         $mdDialog.cancel();
@@ -291,6 +291,7 @@ menuModule.controller('MenuHelpCtrl', ['$scope', '$mdDialog', '$hesperidesHttp',
     $scope.display_hesperides_informations = function(){
 
         $scope.front_version = '${project.version}';
+        $scope.release = hesperidesGlobals.versionName;
 
         //Get the backend versions
         $http.get('rest/versions').then(function(response){

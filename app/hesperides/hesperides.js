@@ -85,7 +85,7 @@ hesperidesModule.run(function (editableOptions, editableThemes, $rootScope) {
 });
 
 hesperidesModule.factory('Page', ['hesperidesGlobals', function (hesperidesGlobals) {
-    var base  = 'Hesperides ( ' + hesperidesGlobals.versionName + ' )'
+    var base  = 'Hesperides'
     var title = base;
     return {
         title: function () {

@@ -1,4 +1,4 @@
-<md-dialog flex="auto">
+<md-dialog flex="60">
     <md-dialog-content>
         <wizard>
             <wz-step title="Choisir la plateforme à comparer">
@@ -8,30 +8,33 @@
                         {{platform.name}}</h2>
                     <md-content layout-padding class="autoScroll">
                         <form name="comparedPlatformForm">
-                            <md-input-container md-no-float class="md-block">
-                                <label><strong>Application à laquelle comparer</strong></label>
-                                <input type="text" required ng-trim="true" ng-model="from.application" ng-change="get_target_platforms(from.application)"
-                                       placeholder="WDI, PAO, STF,..."/>
-                            </md-input-container>
-                            <md-input-container md-no-float class="md-block">
-                                <label><strong>Plateforme à laquelle comparer</strong></label>
-                                <input type="text" required ng-trim="true" ng-model="from.platform"
-                                       placeholder="CUR1, USN1, ..."/>
-                            </md-input-container>
+                            <div layout="row" flex="100">
+                                <md-input-container md-no-float class="md-block" flex="50">
+                                    <label><strong>Application à laquelle comparer</strong></label>
+                                    <input type="text" required ng-trim="true" ng-model="from.application" ng-change="get_target_platforms(from.application)"
+                                           placeholder="WDI, PAO, STF,..."/>
+                                </md-input-container>
+                                <md-input-container md-no-float class="md-block" flex="50">
+                                    <label><strong>Plateforme à laquelle comparer</strong></label>
+                                    <input type="text" required ng-trim="true" ng-model="from.platform"
+                                           placeholder="CUR1, USN1, ..."/>
+                                </md-input-container>
+                            </div>
 
-                            <ul class="shared-list-inline">
-                                <li ng-repeat="item in target_platforms | orderObjectBy:'name'">
-                                    <md-button ng-model="chosenPlatform" ng-click="updatePlatformField(item.name)"
-                                               class="md-raised md-mini diff-platform-tag"
-                                               ng-style="{'background-color': backgroundColor(item)}">
-                                        {{item.name}}
-                                    </md-button>
-                                </li>
-                            </ul>
-
+                            <div layout="row" flex="100">
+                                <ul class="shared-list-inline" flex>
+                                    <li ng-repeat="item in target_platforms | orderObjectBy:'name'">
+                                        <md-button ng-model="chosenPlatform" ng-click="updatePlatformField(item.name)"
+                                                   class="md-raised md-mini diff-platform-tag"
+                                                   ng-style="{'background-color': backgroundColor(item)}">
+                                            {{item.name}}
+                                        </md-button>
+                                    </li>
+                                </ul>
+                            </div>
                             <md-switch ng-click="switched()" class="md-primary md-block" aria-label="Utiliser la note de livraison json de la version"
                                        ng-model="from.lookPast" ng-show="from.application != null && from.platform != null">
-                                Comparer à {{from.application}} - {{from.platform}} à une date spécifique ?
+                                <strong>Comparer à {{from.application}} - {{from.platform}} à une date spécifique ?</strong>
                             </md-switch>
 
                             <div ng-show="from.lookPast">

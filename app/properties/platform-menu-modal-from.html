@@ -33,14 +33,15 @@
                                placeholder="Cette information est purement indicative et pourra être changée par la suite"/>
                     </md-input-container>
                     <md-switch class="md-primary" ng-model="new_platform.production" aria-label="Plateforme production" class="md-block">
-                        Est-ce une plateforme de production ?
+                        <strong>Est-ce une plateforme de production ?</strong>
                     </md-switch>
                     <md-switch class="md-primary" ng-model="new_platform.copyInstances" aria-label="Plateforme production" class="md-block">
-                        Copier les instances ?
+                        <strong>Copier les instances ?</strong>
                     </md-switch>
                     <div layout="row" flex="100">
-                        <md-input-container md-no-float class="md-block" flex="50">
+                        <!--<md-input-container md-no-float class="md-block" >-->
                             <md-autocomplete
+                                    flex="50"
                                     required
                                     ng-trim="true"
                                     ng-model="new_platform.from_application"
@@ -55,9 +56,10 @@
                                     placeholder="Nom de l'application source">
                                 <span md-highlight-text="ctrl.searchText1">{{application.name}}</span>
                             </md-autocomplete>
-                        </md-input-container>
-                        <md-input-container md-no-float class="md-block" flex="50">
+                        <!--</md-input-container>-->
+                        <!--<md-input-container md-no-float class="md-block" >-->
                             <md-autocomplete
+                                    flex="50"
                                     required
                                     ng-trim="true"
                                     ng-model="new_platform.from_platform"
@@ -72,7 +74,7 @@
                                     placeholder="Rechercher une plateforme existante, par nom et numéro de version...">
                                 <span md-highlight-text="ctrl.searchText2">{{platform.name}}</span>
                             </md-autocomplete>
-                        </md-input-container>
+                        <!--</md-input-container>-->
                     </div>
 
                     <input type="submit" id="submit" value="Submit" ng-hide="true"/>

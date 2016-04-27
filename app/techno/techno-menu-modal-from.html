@@ -6,17 +6,19 @@
             <md-content layout-padding class="autoScroll">
                 <form name="technoForm" novalidate
                       ng-submit="technoForm.$valid && create_techno_from(new_techno.name, new_techno.version, technoSearched.name, technoSearched.version, technoSearched.is_working_copy)">
-                    <md-input-container md-no-float class="md-block">
-                        <label><strong>Nom</strong></label>
-                        <input type="text" required ng-trim="true" ng-model="new_techno.name" md-autofocus="true"
-                               id="technoName" placeholder="Entrer un nom (tomcat, hadoop, flume, ...)" />
-                    </md-input-container>
-                    <md-input-container md-no-float class="md-block">
-                        <label><strong>Numéro de version</strong></label>
-                        <input type="text" required ng-trim="true" ng-model="new_techno.version"
-                               id="technoVersion" placeholder="Entrer un numero de version"/>
-                    </md-input-container>
-                    <md-input-container class="md-block">
+                    <div layout="row" flex="100">
+                        <md-input-container md-no-float class="md-block" flex="50">
+                            <label><strong>Nom</strong></label>
+                            <input type="text" required ng-trim="true" ng-model="new_techno.name" md-autofocus="true"
+                                   id="technoName" placeholder="Entrer un nom (tomcat, hadoop, flume, ...)" />
+                        </md-input-container>
+                        <md-input-container md-no-float class="md-block" flex="50">
+                            <label><strong>Numéro de version</strong></label>
+                            <input type="text" required ng-trim="true" ng-model="new_techno.version"
+                                   id="technoVersion" placeholder="Entrer un numero de version"/>
+                        </md-input-container>
+                    </div>
+                    <!--<md-input-container class="md-block">-->
                         <label><strong>Rechercher une techno existante...</strong></label>
                         <md-autocomplete
                                 required
@@ -32,7 +34,7 @@
                                 placeholder="Rechercher une techno existante...">
                             <span md-highlight-text="ctrl.searchText">{{techno.name}} {{techno.version}}</span>
                         </md-autocomplete>
-                    </md-input-container>
+                    <!--</md-input-container>-->
                     <input type="submit" id="submit" value="Submit" ng-hide="true"/>
                 </form>
             </md-content>

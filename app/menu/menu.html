@@ -1,7 +1,7 @@
 <div id="header">
     <md-toolbar class="md-menu-toolbar" style="min-height: inherit">
         <md-menu-bar class="menu">
-            <a id="title" href ="/">{{ Page.title() }}</a>
+            <a id="title" href="/" onclick="window.location.reload()">{{ Page.title() }}</a>
             <span class="menu-header"> / Regrouper des templates <i class="fa fa-arrow-right"></i></span>
             <md-menu ng-controller="MenuTechnoCtrl">
                 <button ng-click="$mdOpenMenu()" class="menu">

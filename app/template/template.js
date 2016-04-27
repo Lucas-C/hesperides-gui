@@ -195,6 +195,10 @@ templateModule.factory('Template', function () {
             filename: "",
             location: "",
             content: "",
+            rights: {
+              user:{},
+              group:{}
+            },
             version_id: -1
         }, data);
 

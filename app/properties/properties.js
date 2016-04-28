@@ -506,10 +506,6 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
             FileService.download_files (modalScope.fileEntries, modalScope.instance.name);
         };
 
-        modalScope.download_file = function (url) {
-            location.replace(url);
-        };
-
         // Manager accordion open/close
         modalScope.open = function (index){
             if ( index === modalScope.isOpen){

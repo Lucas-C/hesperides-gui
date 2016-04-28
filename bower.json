@@ -17,6 +17,7 @@
     "underscore": "1.6.0",
     "angular-ui-codemirror": "0.3.0",
     "angular-material": "1.0.7",
+    "angular-i18n": "1.5.5",
     "sc-date-time":"1.1.6",
     "angular-wizard": "0.5.5",
     "momentjs": "2.10.6",

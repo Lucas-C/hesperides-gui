@@ -289,6 +289,16 @@ md-checkbox.diff {
     color: black;
 }
 
+md-menu-item > * {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+md-menu-content.md-menu-bar-menu.md-dense {
+    padding-top: 16px;
+    padding-bottom: 10px;
+}
+
 .menu-header {
     font-size: 14px;
     font-family: AvenirBook,Arial,sans-serif;

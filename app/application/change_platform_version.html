@@ -1,4 +1,4 @@
-<md-dialog flex="auto">
+<md-dialog flex="50">
     <md-dialog-content>
         <div class="ng-binding">
             <h2>Changer la version de la plateforme</h2>
@@ -11,9 +11,11 @@
                             Utiliser la note de livraison json de la version {{newVersion}}
                         </span>
                     </md-switch>
-                    <md-input-container class="md-block" ng-show="sourceFromNdl && useNdl">
-                        <label>Nouvelle version {{newVersion}}</label>
+                    <!--<md-input-container class="md-block" ng-show="sourceFromNdl && useNdl">-->
+                    <div flex="100" ng-show="sourceFromNdl && useNdl">
+                        <label><strong>Nouvelle version {{newVersion}}</strong></label>
                         <md-autocomplete
+                                flex="100"
                                 ng-disabled="onLoading"
                                 ng-if="ndlVersions"
                                 ng-required="sourceFromNdl"
@@ -30,9 +32,10 @@
                                 placeholder="Rechercher une version depuis une note Katana">
                                 <span md-highlight-text="ctrl.searchText">{{version}}</span>
                         </md-autocomplete>
-                    </md-input-container>
+                    </div>
+                    <!--</md-input-container>-->
                     <md-input-container md-no-float class="md-block" ng-show="!sourceFromNdl || !useNdl">
-                        <label>Nouvelle version {{newVersion}}</label>
+                        <label><strong>Nouvelle version {{newVersion}}</strong></label>
                         <input type="text"
                                ng-required="!sourceFromNdl"
                                ng-trim="true"

@@ -780,12 +780,12 @@ input.default-value-color-focus:placeholder-shown{color: #FFFFFF;}
     font-weight:bold;
 }
 
-.btn-download-file {
+.btn-download-alert-file {
     padding-top: 5px;
 }
 
 .file-title:hover,
-.btn-download-file:hover {
+.btn-download-alert-file:hover {
     background-color: transparent !important;
 }
 

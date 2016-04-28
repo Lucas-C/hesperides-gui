@@ -7,13 +7,18 @@
                     <section class="file-header">
                         <div layout="row" flex="100">
                             <div flex="5">
-                                <a class="md-button md-xs btn-download-file" href="{{item.url}}" ng-if ="item.on_error == false" download="{{item.name}}">
+                                <a class="md-button md-xs btn-download-alert-file" href="{{item.url}}" ng-if ="item.on_error == false" download="{{item.name}}">
                                     <md-icon class="fa fa-download"></md-icon>
+                                </a>
+                                <a class="md-button md-xs btn-download-alert-file" href="" ng-if="item.on_error == true" ng-click="open(index)">
+                                    <md-icon class="fa fa-exclamation-triangle"></md-icon>
                                 </a>
                             </div>
                             <div flex="95">
                                 <md-button ng-click="open(index)" class="file-title">{{item.name}} ( {{item.rights}} )</md-button>
                             </div>
+                            <!-- Error tooltip text -->
+                            <md-tooltip ng-if="item.on_error == true">Ce fichier est en erreur, cliquer pour voir pourquoi.</md-tooltip>
                         </div>
 
                         <!-- Add css class 'ng-hide' to disable display at startup and for working autorefresh plugin -->

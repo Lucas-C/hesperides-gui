@@ -21,10 +21,10 @@
                         </div>
                         <div flex="50">
                             <md-input-container md-no-float class="md-block">
-                                <label><strong>Nom du fichier final</strong></label>
+                                <label><strong>Nom du fichier sur le serveur</strong></label>
                                 <input type="text" required ng-trim="true" ng-model="template.filename"
                                        ng-disabled="isReadOnly"
-                                       id="templateFilename" placeholder="Indiquer le nom qu'aura le fichier sur le serveur. On peut utiliser des proprietes dans ce champ"/>
+                                       id="templateFilename" placeholder="On peut utiliser des propriétés dans ce champ"/>
                             </md-input-container>
                         </div>
                     </div>
@@ -32,10 +32,10 @@
                     <div layout="row">
                         <div flex="100">
                             <md-input-container md-no-float class="md-block">
-                                <label><strong>Dossier de destination</strong></label>
+                                <label><strong>Dossier de destination sur le serveur</strong></label>
                                 <input type="text" required ng-trim="true" ng-model="template.location"
                                        ng-disabled="isReadOnly"
-                                       id="templateLocation" placeholder="Indiquer le dossier dans lequel sera copie le fichier sur le serveur. On peut utiliser des proprietes dans ce champ"/>
+                                       id="templateLocation" placeholder="On peut utiliser des propriétés dans ce champ"/>
                             </md-input-container>
                         </div>
                     </div>
@@ -44,7 +44,7 @@
                         <div flex>
                             <label class="template-section-header">Contenu du fichier</label>
                             <kbd>F11</kbd> Activer /
-                            <kbd>Esc</kbd> Désactiver l'édition en plein ecran
+                            <kbd>Esc</kbd> Désactiver l'édition en plein écran
                         </div>
                         <div flex="none">
                             <label class="template-section-header">Mode MIME:</label>

@@ -7,14 +7,14 @@
                       ng-submit="moduleForm.$valid && create_module(new_module.name, new_module.version)">
                     <div layout="row" flex="100">
                         <md-input-container md-no-float class="md-block" flex="50">
-                            <label ><strong>Nom</strong></label>
+                            <label ><strong>Nom du module</strong></label>
                             <input type="text" required ng-trim="true" ng-model="new_module.name" md-autofocus="true"
-                                   id="moduleName" placeholder="Nom du package. Par ex. wdiCore-war"/>
+                                   id="moduleName" placeholder="Par ex. wdiCore-war (nom indiqué dans la note de livraison)"/>
                         </md-input-container>
                         <md-input-container md-no-float class="md-block" flex="50">
                             <label><strong>Numéro de version</strong></label>
                             <input type="text" required ng-trim="true" ng-model="new_module.version"
-                                   id="moduleVersion" placeholder="Version du package. Par ex : 1.0.0.0"/>
+                                   id="moduleVersion" placeholder="Par ex : 1.0.0.0 (version indiquée dans la note de livraison)"/>
                         </md-input-container>
                     </div>
                     <input type="submit" id="submit" value="Submit" ng-hide="true"/>

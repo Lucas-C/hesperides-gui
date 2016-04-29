@@ -601,7 +601,12 @@ button.md-primary.md-button.md-confirm-hesperides-dialog-theme.md-ink-ripple {
 
 .properties-container{
     margin-top: -3%;
-    height: 500px;
+    min-height: 150px;
+    max-height: 500px;
+}
+
+md-content.properties-container {
+    background-color: #F8F8F8;
 }
 
 .property-instance {
@@ -881,8 +886,21 @@ input.default-value-color-focus:placeholder-shown{color: #FFFFFF;}
 /*Properties list*/
 .md-virtual-repeat-container {
     background-color: #F8F8F8;
+    min-height: 150px;
+    max-height: 500px;
 }
 
+.md-virtual-repeat-container .md-virtual-repeat-scroller {
+    /*position: relative;*/
+    height: auto;
+}
+
+.md-virtual-repeat-sizer {
+    min-height: 150px;
+    max-height: 500px;
+}
+
+repeated-item
 .modal-md-virtual-repeat-container {
     height: 250px !important;
     background-color:#FFFFFF !important;
@@ -906,6 +924,9 @@ input.default-value-color-focus:placeholder-shown{color: #FFFFFF;}
     width:60%;
 }
 
+.delete-property-icon {
+    color:red;cursor: pointer;
+}
 /* Code mirror line number style*/
 .CodeMirror-sizer {
     margin-left: 30px !important;

@@ -1,4 +1,7 @@
 <md-input-container class="md-block">
     <label><strong>Date & heure de la comparaison</strong></label>
     <input type="text" id="look-past-date-time" ng-model="ngModel" datetime-picker date-format="yyyy-MM-dd HH:mm:ss Z" year="year" month="month" day="day" flex="35" placeholder="{{holder|date: 'yyyy-MM-dd HH:mm:ss Z' }}"/>
+    <div ng-message="min" ng-show="!isValid" class="diff-date-error-message">
+        La date doit être inférieure ou égale à aujourd'hui !
+    </div>
 </md-input-container>

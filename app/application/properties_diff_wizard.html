@@ -38,13 +38,13 @@
                             </md-switch>
 
                             <div ng-show="from.lookPast">
-                                <hesperides-compare-date-time ng-model="from.date"></hesperides-compare-date-time>
+                                <hesperides-compare-date-time ng-model="from.date" is-valid="from.dateValid"></hesperides-compare-date-time>
                             </div>
                         </form>
                     </md-content>
                 </div>
                 <md-dialog-actions>
-                    <md-button ng-click="get_platform_to_compare(from.application, from.platform, from.lookPast, from.date)" class="md-raised md-primary" wz-next ng-disabled="comparedPlatformForm.$invalid">Suivant</md-button>
+                    <md-button ng-click="get_platform_to_compare(from.application, from.platform, from.lookPast, from.date)" class="md-raised md-primary" wz-next ng-disabled="comparedPlatformForm.$invalid || (from.lookPast && !from.dateValid)">Suivant</md-button>
                     <md-button ng-click="$closeDialog()" class="md-raised md-warn">Annuler</md-button>
                 </md-dialog-actions>
             </wz-step>

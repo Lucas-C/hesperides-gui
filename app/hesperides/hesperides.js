@@ -379,10 +379,12 @@ hesperidesModule.directive('hesperidesScroll', function ($timeout){
 hesperidesModule.directive('hesperidesCompareDateTime', function (){
     return {
         scope: {
-            ngModel: '='
+            ngModel: '=',
+            isValid: '='
         },
+
         templateUrl: 'hesperides/hesperides-compare-date-time.html',
-        link:function (scope, element, attrs){
+        link:function (scope, element, attrs, ctrl){
             //-- date for start
             var date = new Date();
             var year = date.getFullYear();
@@ -402,6 +404,16 @@ hesperidesModule.directive('hesperidesCompareDateTime', function (){
             scope.month = month;
             scope.day = day;
             scope.holder = date;
+
+            // Private function for date validation
+            var validate = function (){
+                scope.isValid = Date.parse(scope.ngModel) < (new Date()).getTime();
+            };
+
+            //Watch the model
+            scope.$watch('ngModel', function (newVal, oldVal){
+                validate();
+            });
         }
     }
 });

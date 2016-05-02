@@ -985,3 +985,7 @@ repeated-item
 .diff-divider {
     padding-bottom: 15px;
 }
+
+.diff-date-error-message {
+    color: rgb(255,87,34) !important;;
+}

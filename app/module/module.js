@@ -253,7 +253,7 @@ applicationModule.factory('ModuleService', [
                 module = module.to_rest_entity();
                 if (module.version_id < 0) {
                     return $http.post('rest/modules', module).then(function (response) {
-                        $.notify("La workingcopy du module a bien ete créée", "success");
+                        $.notify("La workingcopy du module a bien été créée", "success");
                         return new Module(response.data);
                     }, function (error) {
                         $.notify(error.data.message, "error");
@@ -313,7 +313,7 @@ applicationModule.factory('ModuleService', [
                 template = template.toHesperidesEntity();
                 if (template.version_id < 0) {
                     return $http.post('rest/modules/' + encodeURIComponent(module.name) + '/' + encodeURIComponent(module.version) + '/workingcopy/templates', template).then(function (response) {
-                        $.notify("Le template bien ete creée", "success");
+                        $.notify("Le template a bien été créé", "success");
                         return new Template(response.data);
                     }, function (error) {
                         if (error.status === 409) {

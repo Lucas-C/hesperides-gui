@@ -253,7 +253,7 @@ templateModule.factory('TemplateService', ['$hesperidesHttp', 'Template', 'Templ
             template = template.toHesperidesEntity();
             if (template.version_id < 0) {
                 return $http.post('rest/templates/' + encodeURIComponent(template.namespace) + '/' + encodeURIComponent(template.name), template).then(function (response) {
-                    $.notify("Le template bien été crée", "success");
+                    $.notify("Le template a bien été créé", "success");
                     return new Template(response.data);
                 }, function (error) {
                     if (error.status === 409) {

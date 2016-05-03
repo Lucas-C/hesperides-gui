@@ -4,7 +4,7 @@
             <h2>Historique de {{title}}</h2>
             <md-content layout-padding class="autoScroll">
                 <div ng-show="!(eventEntries) || eventEntries.length == 0">
-                    <h2 class="no-events"> Aucun historique à afficher </h2>
+                    <h2 class="no-entries"> Aucun historique à afficher </h2>
                 </div>
                 <md-virtual-repeat-container ng-show="eventEntries && eventEntries.length > 0" class="events" style="height: 500px;">
                     <div ng-repeat="event in eventEntries" >

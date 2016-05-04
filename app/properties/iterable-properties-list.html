@@ -1,0 +1,53 @@
+<!-- Displaying new fields from the model -->
+<div class="form-group iterable-main-block" id="it-prop-{{modelProperty.name}}">
+    <div>
+        <md-button aria-label="Ajouter un block" class="md-btn md-xs md-button" ng-click = "addValue()">
+            <md-tooltip>Ajouter un block</md-tooltip>
+            <md-icon class="fa fa-plus fa-lg"></md-icon>{{modelProperty.name}}
+        </md-button>
+    </div>
+    <!-- Pour chaque valorisation d'un bloc iterable -->
+    <div layout ="column" class="iterable-block" ng-repeat="(index, blockValue) in valueProperty.iterable_valorisation_items">
+        <!-- Pour chaque champ d'une valorisation d'un bloc iterable -->
+        <md-virtual-repeat-container id="vertical-container" style="height: 100px;">
+
+            <div md-virtual-repeat="fieldValue in blockValue.values | filterIterableProperties: filterValues | displayProperties: filterDeleted | displayUnspecifiedProperties: filterUnspecified" class="repeated-item" flex style="height: 20px;">
+
+                <div ng-if="fieldValue.iterable_valorisation_items">
+                    <!--<h2>TODO : Iterable property that have other itrables inside</h2>-->
+                    <!--<iterable-properties-list ng-repeat = "innerModelProp in modelProp.iterable_properties" model-property = "innerModelProp" value-property = "getValues(innerModelProp.name)" ></iterable-properties-list>-->
+                </div>
+
+                <div layout="row" ng-if="!fieldValue.iterable_valorisation_items" style="margin:1%;">
+                    <div layout="column" flex="46">
+                        <div class="truncate-ellipsis">
+                            <label class="property-label"
+                                   ng-class="{'text-stroke':!fieldValue.inModel, 'default-value-color': fieldValue.defaultValue && !fieldValue.value}"
+                            >{{fieldValue.name}} <span ng-show="fieldValue.required" class="property-required">*</span></label>
+                            <md-tooltip md-direction="top">
+                                {{fieldValue.name}}
+                            </md-tooltip>
+                        </div>
+                    </div>
+                    <div layout="column"  flex>
+                        <input ng-model="fieldValue.value"
+                               ng-trim="true"
+                               ng-readonly="!fieldValue.inModel"
+                               ng-focus="focusthis = true"
+                               ng-blur="focusthis = false"
+                               ng-class="{'text-stroke':!fieldValue.inModel, 'default-value-color': fieldValue.defaultValue && !fieldValue.value, 'default-value-color-focus': focusthis}"
+                               placeholder="{{fieldValue.defaultValue ? '[default=' + fieldValue.defaultValue + '] ' : ''}} {{fieldValue.comment}}"
+                               ng-pattern="fieldValue.pattern"
+                               class="property-value" >
+                    </div>
+                </div>
+            </div>
+
+            <md-button aria-label="Supprimer un block" class = "md-btn md-xs md-button" ng-click = "removeValue(index)">
+                <md-tooltip>Supprimer ce block</md-tooltip>
+                <md-icon class="fa fa-minus fa-lg"></md-icon>
+            </md-button>
+
+        </md-virtual-repeat-container>
+    </div>
+</div>

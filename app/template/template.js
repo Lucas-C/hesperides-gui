@@ -303,7 +303,7 @@ templateModule.directive('fileRights', function () {
             };
 
             var getValue = function(item) {
-                return $scope.model[item.attr];
+                return !_.isUndefined($scope.model) ? $scope.model[item.attr] : null;
             };
 
             $scope.fileRightsOption = [

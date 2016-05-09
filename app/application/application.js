@@ -156,8 +156,7 @@ applicationModule.factory('Instance', function () {
 
         angular.extend(this, {
             name: "",
-            key_values: [],
-            is_sorted_desc: false
+            key_values: []
         }, data);
 
         this.hasKey = function (name) {
@@ -200,14 +199,6 @@ applicationModule.factory('Instance', function () {
                     }
                 })
             }
-        }
-
-        this.switchOrder = function () {
-          this.is_sorted_desc = !this.is_sorted_desc;
-        }
-
-        this.isReverseOrder = function () {
-          return this.is_sorted_desc;
         }
 
     };
@@ -394,6 +385,10 @@ applicationModule.factory('ApplicationService', ['$hesperidesHttp', 'Application
 applicationModule.directive('propertiesGlobalesBox', function () {
     return {
         restrict: 'E',
+        scope: {
+            platform: "=",
+            sortOrder: "="
+        },
         templateUrl: "application/properties/properties_globales.html",
         link: function (scope) {
             scope.isBox = true;
@@ -406,6 +401,10 @@ applicationModule.directive('propertiesGlobalesBox', function () {
 applicationModule.directive('propertiesGlobalesTree', function () {
     return {
         restrict: 'E',
+        scope: {
+            platform: "=",
+            sortOrder: "="
+        },
         templateUrl: "application/properties/properties_globales.html",
         link: function (scope) {
             scope.isBox = false;

@@ -4,14 +4,7 @@
     <!-- Filtring contents -->
     <div layout="row">
         <div flex="none" style="margin-right:2%">
-            <md-switch class="md-primary md-block ng-pristine ng-untouched ng-valid" ng-click="instance.switchOrder()"
-                       ng-model="toggle" ng-init="toggle=false"
-                       aria-label="Trier les propriétés"
-                       role="checkbox">
-                <span class="fa"
-                      data-ng-class="{'fa-sort-alpha-desc': instance.isReverseOrder(), 'fa-sort-alpha-asc': !instance.isReverseOrder()}"></span>
-                <span class="ng-binding ng-scope">Tri des propriétés</span>
-            </md-switch>
+            <toggle-sort-properties sort-order="order"></toggle-sort-properties>
         </div>
         <div flex="none" style="margin-right:2%">
             <toggle-deleted-properties key-value-properties="instance.key_values"
@@ -28,7 +21,7 @@
     <md-content layout="column" style="height: 500px;">
         <!-- Warning ! We need md-virtual-repeat to have reactive UI -->
         <md-virtual-repeat-container id="vertical-container" style="height: 1500px;">
-            <div md-virtual-repeat="key_value_property in instance.key_values | hideHesperidesPredefinedProperties | displayUnspecifiedProperties:displayUnspecified | displayProperties:displayDeletedProperties | orderBy:'name':instance.isReverseOrder()"
+            <div md-virtual-repeat="key_value_property in instance.key_values | hideHesperidesPredefinedProperties | displayUnspecifiedProperties:displayUnspecified | displayProperties:displayDeletedProperties | orderBy:'name':order"
                  class="repeated-item" flex style="height: 20px;">
                 <!-- Non Global Properties -->
                 <div layout="row"

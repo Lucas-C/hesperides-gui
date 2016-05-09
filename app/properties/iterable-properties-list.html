@@ -11,6 +11,11 @@
         <!-- Pour chaque champ d'une valorisation d'un bloc iterable -->
         <md-virtual-repeat-container id="vertical-container" style="height: 100px;">
 
+            <md-button aria-label="Supprimer un block" class = "md-btn md-xs md-button" ng-click = "removeValue(index)">
+                <md-tooltip>Supprimer ce block</md-tooltip>
+                <md-icon class="fa fa-minus fa-lg"></md-icon>
+            </md-button>
+
             <div md-virtual-repeat="fieldValue in blockValue.values | filterIterableProperties: filterValues | displayProperties: filterDeleted | displayUnspecifiedProperties: filterUnspecified" class="repeated-item" flex style="height: 20px;">
 
                 <div ng-if="fieldValue.iterable_valorisation_items">
@@ -42,11 +47,6 @@
                     </div>
                 </div>
             </div>
-
-            <md-button aria-label="Supprimer un block" class = "md-btn md-xs md-button" ng-click = "removeValue(index)">
-                <md-tooltip>Supprimer ce block</md-tooltip>
-                <md-icon class="fa fa-minus fa-lg"></md-icon>
-            </md-button>
 
         </md-virtual-repeat-container>
     </div>

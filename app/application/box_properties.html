@@ -15,21 +15,14 @@
         <md-button class="md-raised md-primary md-mini"  ng-show="showButtonAndEye"
                    ng-click="save_global_properties(platform.global_properties)"><i class="fa fa-check"></i> Sauver les propriétés globales</md-button>
 
-        <md-switch class="md-primary md-block ng-pristine ng-untouched ng-valid tri-switch" ng-click="platform.global_properties.switchOrder()"
-                   ng-show="showButtonAndEye"
-                   aria-label="Trier les propriétés"
-                   role="checkbox">
-                <span class="fa"
-                      data-ng-class="{'fa-sort-alpha-asc': !platform.global_properties.isReverseOrder(), 'fa-sort-alpha-desc': platform.global_properties.isReverseOrder()}"></span>
-            <span class="ng-binding ng-scope">Tri des propriétés</span>
-        </md-switch>
+        <toggle-sort-properties sort-order="order"></toggle-sort-properties>
     </div>
 </div>
 <!-- / Properties commands -->
 <div layout="row" class="vertical-align" ng-show="showGlobalProperties">
     <div flex="100">
         <form>
-            <properties-globales-box />
+            <properties-globales-box platform="platform" sort-order="order"/>
         </form>
     </div>
 </div>

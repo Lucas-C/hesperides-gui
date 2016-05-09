@@ -46,11 +46,13 @@
                 <i class="fa fa-check"></i>
                 Sauver les propriétés globales
             </md-button>
+
+            <toggle-sort-properties sort-order="order"></toggle-sort-properties>
         </div>
         <div layout="row" ng-show="showGlobalProperties" flex="100">
             <div flex="100">
                 <form>
-                    <properties-globales-tree />
+                    <properties-globales-tree platform="platform" sort-order="order"/>
                 </form>
             </div>
         </div>

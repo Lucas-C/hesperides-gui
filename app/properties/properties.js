@@ -1179,7 +1179,7 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
      * @param {String} name : the value name field.
      * @return true if it's in, false otherwise.
      */
-    isInModel = function (model, name){
+    var isInModel = function (model, name){
         var _model = _.find(model.fields, {name : name});
         return !_.isUndefined(_model);
     };
@@ -1190,7 +1190,7 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
      * @param {JSON Object} model : the model of the iterable block
      * @param {JSON Object} values : the values of the iterable block
      */
-    mergeValue = function (model, values){
+    var mergeValue = function (model, values){
 
         // for each valorisation block
         _(values.iterable_valorisation_items).each (function (value){
@@ -1390,6 +1390,10 @@ propertiesModule.directive('propertiesList', function () {
             scope.propertiesValueFilter = "";
             scope.isOpen = undefined;
 
+            /**
+             * Gets the properties values from the model name.
+             * This is for iterable properties only.
+             */
             scope.getValues = function (name){
                 if (scope.properties){
                     values = _.find(scope.properties.iterable_properties, {name : name});
@@ -1462,7 +1466,7 @@ propertiesModule.directive('focusSaveGlobalProperties', function () {
     return function (scope, element) {
         element.bind("keydown keypress", function (event) {
             if(event.which === 13) {
-                scope.save_global_properties(scope.platform.global_properties);
+                scope.$parent.save_global_properties(scope.$parent.platform.global_properties);
                 event.preventDefault();
             }
         });
@@ -1497,7 +1501,6 @@ propertiesModule.factory('Properties', function () {
         angular.extend(this, {
             key_value_properties: [],
             iterable_properties: [],
-            is_sorted_desc: false,
             versionID: -1
         }, data);
 
@@ -1712,14 +1715,6 @@ propertiesModule.factory('Properties', function () {
                     }
                 })
             }
-        }
-
-        this.switchOrder = function () {
-            this.is_sorted_desc = !this.is_sorted_desc;
-        }
-
-        this.isReverseOrder = function () {
-            return this.is_sorted_desc;
         }
 
         this.mergeWithDefaultValue = function () {
@@ -2054,6 +2049,29 @@ propertiesModule.directive('toggleUnspecifiedProperties', function ($filter) {
 
                 return count;
             };
+        }]
+    }
+});
+
+/**
+ * This directive is for sorting the properties list in asc and desc order of properties name
+ * This is shared between all properties display :
+        Global Properties, Simple Properties, Iterable Properties and Instance Properties.
+ */
+propertiesModule.directive('toggleSortProperties', function (){
+    return {
+        restrict : 'E',
+        scope: {
+            sortOrder: "="
+        },
+        templateUrl: '/shared/toggle-sort-properties.html',
+        controller: ['$scope', function ($scope){
+            /**
+             * Inverse the sort order
+             */
+            $scope.switchOrder = function (){
+               $scope.sortOrder = !$scope.sortOrder;
+            }
         }]
     }
 });

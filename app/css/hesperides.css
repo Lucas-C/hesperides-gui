@@ -589,7 +589,7 @@ button.md-primary.md-button.md-confirm-hesperides-dialog-theme.md-ink-ripple {
     border-right-style: none;
     border-bottom-width: thin;
     border-bottom-color: rgb(0,150,136);
-    background-color: #F8F8F8;
+    background-color: transparent;
     width: 90%;
 }
 
@@ -780,6 +780,7 @@ input.default-value-color-focus:placeholder-shown{color: #FFFFFF;}
     -webkit-border-radius: 10px 10px 0px 0px;
     -moz-border-radius: 10px 10px 0px 0px;
     border-radius: 10px 10px 0px 0px;
+    margin: 10px;
 }
 
 .file-header .md-button {
@@ -893,6 +894,7 @@ input.default-value-color-focus:placeholder-shown{color: #FFFFFF;}
 .md-virtual-repeat-container .md-virtual-repeat-scroller {
     /*position: relative;*/
     height: auto;
+    background-color: rgba(224, 224, 224, 0.63);
 }
 
 .md-virtual-repeat-sizer {
@@ -988,4 +990,21 @@ repeated-item
 
 .diff-date-error-message {
     color: rgb(255,87,34) !important;;
+}
+
+/* Styling Iterable*/
+
+.iterable-main-block {
+    border-style: solid;
+    border-width: thin;
+    border-spacing: 2px;
+    margin-left: 12px !important;
+    margin-right: 12px !important;
+}
+
+.iterable-block {
+    border-style: solid;
+    border-width: thin;
+    width: 95%;
+    margin: 12px;
 }

@@ -2058,19 +2058,6 @@ propertiesModule.directive('toggleUnspecifiedProperties', function ($filter) {
     }
 });
 
-propertiesModule.directive("addIterableProperty", function () {
-    return {
-        restrict: "E",
-        template: "<button><span>{{ iterable_property.name }}</span><span class='glyphicon' style='padding-left:10px'></span></button>"
-    }
-});
-
-propertiesModule.directive("displayIterableProperty", function () {
-    return {
-        templateUrl: 'properties/iterate.html'
-    };
-});
-
 /**
  * Diplay warning message when value is same/or not and source of value is different.
  */

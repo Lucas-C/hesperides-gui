@@ -5,7 +5,7 @@
             <md-content layout-padding class="autoScroll">
                 <form name="searchModuleForm" novalidate
                       ng-submit="searchModuleForm.$valid && $add(moduleSearched)">
-                    <md-input-container class="md-block">
+                    <!--<md-input-container class="md-block">-->
                         <label><strong>Rechercher...</strong></label>
                         <br/>
                         <md-autocomplete
@@ -24,7 +24,7 @@
                             <span md-highlight-text="ctrl.searchText" ng-show="!module.is_working_copy">{{module.name}} {{module.version}}</span>
                             <span md-highlight-text="ctrl.searchText" ng-show="module.is_working_copy">{{module.name}} {{module.version}} (working copy)</span>
                         </md-autocomplete>
-                    </md-input-container>
+                    <!--</md-input-container>-->
                     <input type="submit" id="submit" value="Submit" ng-hide="true"/>
                 </form>
             </md-content>

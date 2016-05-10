@@ -1967,6 +1967,7 @@ propertiesModule.filter('filterIterableProperties', function() {
 
 });
 
+
 /**
  * Function wich filter the properties' display with string or regex.
  * Modified by Sahar CHAILLOU on 12/01/2016.
@@ -1989,25 +1990,49 @@ propertiesModule.filter('filterProperties', function() {
             return input;
         }
 
-        var output = [];
+        /**
+         * Private function for filtering by name.
+         */
+        var applyNameFilter = function (input) {
+            var output = [];
 
-        //Filter the array by the values which respect the regex
-        angular.forEach(input, function(item) {
-            /*
-             * If filter on name, check name with regex -> display properties if match
-             * If filter on value, check if filtrable_value is set, check of regex match
-             * If not filter on name and no filter on value -> display properties
-             *
-             * filtrable_value is only defined on properties with value !
-             * */
-            if ((!_.isEmpty(filter.name) && regex_name.test(item.name))
-                || (!_.isEmpty(filter.filtrable_value) && !_.isUndefined(item.filtrable_value) && regex_value.test(item.filtrable_value))
-                || (_.isEmpty(filter.name) && _.isEmpty(filter.filtrable_value))) {
-                output.push(item);
-            }
-        });
+            angular.forEach(input, function(item) {
 
-        return output;
+                if (!_.isEmpty(filter.name)){
+                    if (regex_name.test(item.name)){
+                        output.push(item);
+                    }
+                }else{
+                    output.push(item);
+                }
+            });
+
+            return output;
+        };
+
+        /**
+         * Private function for filtering by value.
+         */
+        var applyValueFilter = function (input) {
+            var output = [];
+
+            angular.forEach(input, function(item) {
+
+                if ( !_.isEmpty(filter.filtrable_value) ) {
+                    if (regex_value.test(item.filtrable_value)){
+                        output.push(item);
+                    }
+                }else{
+                    output.push(item);
+                }
+            });
+
+            return output;
+        };
+
+        // make the filter
+        return applyValueFilter(applyNameFilter(input));
+
     };
 });
 

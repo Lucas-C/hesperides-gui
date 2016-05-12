@@ -297,16 +297,18 @@ technoModule.factory('TechnoService',
             });
         },
         with_name_like: function (name) {
-            if(name.length > 2) { //prevent search with too few characters
-                return $http.post('rest/templates/packages/perform_search?terms=' + encodeURIComponent(name.replace(' ', '#'))).then(function (response) {
-                    return _.map(response.data, function (techno) {
-                        return new Techno(techno.name, techno.version, techno.working_copy);
+            if (!_.isUndefined(name)){
+                if(name.length > 2) { //prevent search with too few characters
+                    return $http.post('rest/templates/packages/perform_search?terms=' + encodeURIComponent(name.replace(' ', '#').replace('-', '#'))).then(function (response) {
+                        return _.map(response.data, function (techno) {
+                            return new Techno(techno.name, techno.version, techno.working_copy);
+                        });
                     });
-                });
-            } else {
-                var deferred = $q.defer();
-                deferred.resolve([]);
-                return deferred.promise;
+                } else {
+                    var deferred = $q.defer();
+                    deferred.resolve([]);
+                    return deferred.promise;
+                }
             }
         }
     }

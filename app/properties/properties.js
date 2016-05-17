@@ -58,6 +58,15 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         $mdDialog.cancel();
     };
 
+    /**
+     * This function will determine if the authenticated user
+     * is a production user or not.
+     * See user.js for more details about : hesperidesAutheticatedUser
+     */
+     $scope.isProductionUser = function (){
+        return hesperidesAutheticatedUser.isProdUser;
+     };
+
     var Box = function (data) {
         return angular.extend(this, {
             parent_box: null,

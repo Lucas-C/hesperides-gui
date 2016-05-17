@@ -1,7 +1,7 @@
 <!-- Properties commands -->
-<div layout="row" class="vertical-align" style="padding-bottom: 20px;">
+<div layout="row" class="vertical-align padding-bottom-20px">
     <h3>
-        <span style="padding-right: 10px">Propriétés niveau plateforme</span>
+        <span class="padding-right-10px" >Propriétés niveau plateforme</span>
     </h3>
     <div layout="row" >
         <md-button ng-click="showButtonAndEye = !showButtonAndEye;showGlobalProperties = !showGlobalProperties"
@@ -16,6 +16,7 @@
                    ng-click="save_global_properties(platform.global_properties)"><i class="fa fa-check"></i> Sauver les propriétés globales</md-button>
 
         <toggle-sort-properties sort-order="order"></toggle-sort-properties>
+
     </div>
 </div>
 <!-- / Properties commands -->
@@ -54,12 +55,12 @@
 
 <div layout="row" ng-show="properties">
     <div flex="50">
-        <h3><span style="margin-right: 30px">Les propriétés associées à <strong>{{selected_module.path.split('#').join('
+        <h3><span class="margin-right-30px">Les propriétés associées à <strong>{{selected_module.path.split('#').join('
             | ')}} | {{selected_module.title}}</strong></span>
         </h3>
     </div>
     <div flex="50">
-        <div id="propertiesButtonsContainer" layout="row" layout-align="space-around" style="z-index: 1000">
+        <div id="propertiesButtonsContainer" layout="row" layout-align="space-around">
             <md-button id="cleanPropertiesButton" ng-click="clean_properties(properties)"
                        class="md-raised">
                 <span class="fa fa-trash"></span>
@@ -82,7 +83,7 @@
 <div layout="row" ng-show="instance">
     <div flex="100">
         <h3>
-                <span style="margin-right: 30px">Les propriétés d'instance associées à <strong>
+                <span class="margin-right-30px">Les propriétés d'instance associées à <strong>
                     <a href="" editable-text="instance.name"
                        onbeforesave="update_instance_name(instance, $data)">{{instance.name}}</a></strong></span>
             <md-button ng-click="save_platform_from_box(mainBox)"

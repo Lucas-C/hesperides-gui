@@ -43,7 +43,20 @@
                                ng-class="{'text-stroke':!fieldValue.inModel, 'default-value-color': fieldValue.defaultValue && !fieldValue.value, 'default-value-color-focus': focusthis}"
                                placeholder="{{fieldValue.defaultValue ? '[default=' + fieldValue.defaultValue + '] ' : ''}} {{fieldValue.comment}}"
                                ng-pattern="fieldValue.pattern"
-                               class="property-value" >
+                               class="property-value"
+                               ng-show="!(fieldValue.password && isPasswordHideable())">
+
+                        <!-- None production users cain't see production password -->
+                        <input ng-show = "fieldValue.password && isPasswordHideable()"
+                               ng-trim="true"
+                               ng-readonly="!fieldValue.inModel"
+                               ng-focus="focusthis = true"
+                               ng-blur="focusthis = false"
+                               ng-class="{'text-stroke':!fieldValue.inModel, 'default-value-color': fieldValue.defaultValue && !fieldValue.value, 'default-value-color-focus': focusthis}"
+                               placeholder="{{fieldValue.defaultValue ? '[default=' + fieldValue.defaultValue + '] ' : ''}} {{fieldValue.comment}}"
+                               ng-pattern="fieldValue.pattern"
+                               value="********"
+                               class="property-value">
                     </div>
                 </div>
             </div>

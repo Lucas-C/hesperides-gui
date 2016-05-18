@@ -4,7 +4,7 @@
  * This contains stuff for user authentication.
  */
 
-var userModule = angular.module("hesperides.user", [])
+angular.module("hesperides.user", [])
 
 /**
  * The user entity
@@ -27,7 +27,7 @@ var userModule = angular.module("hesperides.user", [])
  })
 
 /**
- * The authentication service for users
+ * The authentication service for users.
  */
  .service("UserService", ["$http", "User", function ($http, User){
     return {
@@ -41,24 +41,44 @@ var userModule = angular.module("hesperides.user", [])
     }
  }]);
 
+/**
+ * This is an authentication class for Hesperides.
+ * It uses the angular 'UserService' for http request.
+ * It's a kind of singleton implementation in pure JavaScript.
+ */
+var HesperidesAuthenticatorClass = function (){
+    // The user authenticated
+    this.user = null;
+
+    // Angular UserService.
+    this.UserService = angular.injector(['ng', 'hesperides.user']).get("UserService");
+}
 
 /**
-  * This is the authenticated user object.
-  * It's populated at the load of the file and share all over the app as a global variable.
-  */
- var hesperidesAutheticatedUser = null;
+ * Methods of the class
+ */
+HesperidesAuthenticatorClass.prototype = {
 
- /**
-  * Authenticate the user function
-  */
- var auth = function (){
-    var UserService = angular.injector(['ng', 'hesperides.user']).get("UserService");
-    UserService.authenticate().then(function (user){
-        hesperidesAutheticatedUser = user;
-    });
- };
+    /**
+     * Authenticates the user and save the authenticated user.
+     */
+    auth: function (){
+        var _this = this;
 
-setTimeout (function (){
-    auth();
-}, 1000)
+        if (_this.user == null ){
+            _this.UserService.authenticate().then(function (user){
+                _this.user = user;
+                return _this.user;
+            });
+        }else{
+            return _this.user;
+        }
+    }
+};
 
+// Creating a global instance
+// So it's shared in all Hesperides.
+var HesperidesAuthenticator = new HesperidesAuthenticatorClass();
+
+// try to authenticate immediately
+HesperidesAuthenticator.auth();

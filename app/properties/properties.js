@@ -58,15 +58,6 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         $mdDialog.cancel();
     };
 
-    /**
-     * This function will determine if the authenticated user
-     * is a production user or not.
-     * See user.js for more details about : hesperidesAutheticatedUser
-     */
-     $scope.isProductionUser = function (){
-        return hesperidesAutheticatedUser.isProdUser;
-     };
-
     var Box = function (data) {
         return angular.extend(this, {
             parent_box: null,
@@ -214,6 +205,15 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
             scope: modalScope
         });
     };
+
+    /**
+     * This function will determine if the authenticated user
+     * is a production user or not.
+     * See user.js for more details about : HesperidesAuthenticator
+     */
+     $scope.isProductionUser = function (){
+        return HesperidesAuthenticator.auth().isProdUser;
+     };
 
     $scope.open_add_instance_dialog = function (module) {
         var modalScope = $scope.$new();
@@ -1142,9 +1142,19 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
      return {
          restrict: 'E',
          scope: {
-             properties: '='
+             properties: '=',
+             platform: '='
          },
          templateUrl: "properties/simple-properties-list.html",
+         controller:  ['$scope', function ($scope){
+
+            /**
+             * Checks if we need to hide passwords or not.
+             */
+            $scope.isPasswordHideable = function (){
+               return $scope.platform.production && !HesperidesAuthenticator.auth().isProdUser;
+            };
+         }],
          link: function (scope, element, attrs) {
              scope.propertiesKeyFilter = "";
              scope.propertiesValueFilter = "";
@@ -1165,7 +1175,8 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
              valueProperty: '=',
              filterDeleted: '=',
              filterUnspecified: '=',
-             filterValues: '='
+             filterValues: '=',
+             platform: '='
          },
          templateUrl: 'properties/iterable-properties-list.html',
          controller : 'iterablePropertiesListController',
@@ -1236,6 +1247,13 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
 
     // call the merge
     mergeValue($scope.modelProperty, $scope.valueProperty);
+
+    /**
+     * Checks if we need to hide passwords or not.
+     */
+    $scope.isPasswordHideable = function (){
+       return $scope.platform.production && !HesperidesAuthenticator.auth().isProdUser;
+    };
 
     /**
      * Adds the new void iterable block
@@ -1391,7 +1409,8 @@ propertiesModule.directive('propertiesList', function () {
         restrict: 'E',
         scope: {
             properties: '=',
-            propertiesModel: '='
+            propertiesModel: '=',
+            platform: '='
         },
         templateUrl: "properties/properties-list.html",
         link: function (scope) {
@@ -1584,9 +1603,11 @@ propertiesModule.factory('Properties', function () {
                     });
 
                     key_value.required = (prop.required) ? prop.required : false;
+                    key_value.password = (prop.password) ? prop.password : false;
                     key_value.defaultValue = (prop.defaultValue) ? prop.defaultValue : "";
                 } else {
                     key_value.required = false;
+                    key_value.password = false;
                     key_value.defaultValue = "";
                 }
             });
@@ -1605,6 +1626,7 @@ propertiesModule.factory('Properties', function () {
                     value: "",
                     inModel: true,
                     required: (model_key_value.required) ? model_key_value.required : false,
+                    password: (model_key_value.password) ? model_key_value.password : false,
                     defaultValue: (model_key_value.defaultValue) ? model_key_value.defaultValue : ""
                 });
             });
@@ -1669,6 +1691,7 @@ propertiesModule.factory('Properties', function () {
                                         item.comment = prop.comment;
                                         item.inModel = true;
                                         item.required = (prop.required) ? prop.required : false;
+                                        item.password = (prop.password) ? prop.password : false;
                                         item.defaultValue = (prop.defaultValue) ? prop.defaultValue : "";
                                     });
                                 }

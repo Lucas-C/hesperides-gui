@@ -49,7 +49,20 @@
                                ng-class="{'text-stroke':!key_value_property.inModel, 'default-value-color': key_value_property.defaultValue && !key_value_property.value, 'default-value-color-focus': focusthis}"
                                placeholder="{{key_value_property.defaultValue ? '[default=' + key_value_property.defaultValue + '] ' : ''}} {{key_value_property.comment}}"
                                ng-pattern="key_value_property.pattern"
-                               class="property-value" >
+                               class="property-value"
+                               ng-show="!(key_value_property.password && isPasswordHideable())">
+
+                        <!-- None production users cain't see production password -->
+                        <input ng-show = "key_value_property.password && isPasswordHideable()"
+                               ng-trim="true"
+                               ng-readonly="!key_value_property.inModel"
+                               ng-focus="focusthis = true"
+                               ng-blur="focusthis = false"
+                               ng-class="{'text-stroke':!key_value_property.inModel, 'default-value-color': key_value_property.defaultValue && !key_value_property.value, 'default-value-color-focus': focusthis}"
+                               placeholder="{{key_value_property.defaultValue ? '[default=' + key_value_property.defaultValue + '] ' : ''}} {{key_value_property.comment}}"
+                               ng-pattern="key_value_property.pattern"
+                               value="********"
+                               class="property-value">
                     </div>
                 </div>
 

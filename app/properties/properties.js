@@ -1416,8 +1416,7 @@ propertiesModule.directive('propertiesList', function () {
         link: function (scope) {
             scope.propertiesKeyFilter = "";
             scope.propertiesValueFilter = "";
-            scope.isOpen = undefined;
-
+            scope.isOpen = 1;
             /**
              * Gets the properties values from the model name.
              * This is for iterable properties only.

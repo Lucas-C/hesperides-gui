@@ -1142,19 +1142,9 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
      return {
          restrict: 'E',
          scope: {
-             properties: '=',
-             platform: '='
+             properties: '='
          },
          templateUrl: "properties/simple-properties-list.html",
-         controller:  ['$scope', function ($scope){
-
-            /**
-             * Checks if we need to hide passwords or not.
-             */
-            $scope.isPasswordHideable = function (){
-               return $scope.platform.production && !HesperidesAuthenticator.auth().isProdUser;
-            };
-         }],
          link: function (scope, element, attrs) {
              scope.propertiesKeyFilter = "";
              scope.propertiesValueFilter = "";
@@ -1175,8 +1165,7 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
              valueProperty: '=',
              filterDeleted: '=',
              filterUnspecified: '=',
-             filterValues: '=',
-             platform: '='
+             filterValues: '='
          },
          templateUrl: 'properties/iterable-properties-list.html',
          controller : 'iterablePropertiesListController',
@@ -1247,13 +1236,6 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
 
     // call the merge
     mergeValue($scope.modelProperty, $scope.valueProperty);
-
-    /**
-     * Checks if we need to hide passwords or not.
-     */
-    $scope.isPasswordHideable = function (){
-       return $scope.platform.production && !HesperidesAuthenticator.auth().isProdUser;
-    };
 
     /**
      * Adds the new void iterable block

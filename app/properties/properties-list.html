@@ -10,7 +10,7 @@
 
         <!-- Add css class 'ng-hide' to disable display at startup and for working autorefresh plugin -->
         <div ng-show="1 === isOpen" class="file-content ng-hide" layout="column" flex="100">
-            <simple-properties-list properties = "properties.key_value_properties" platform = "platform"></simple-properties-list>
+            <simple-properties-list properties = "properties.key_value_properties"></simple-properties-list>
         </div>
     </section>
 
@@ -42,7 +42,7 @@
                 </div>
             </div>
 
-            <iterable-properties-list ng-repeat = "modelProp in propertiesModel.iterable_properties" platform = "platform" model-property = "modelProp" value-property = "getValues(modelProp.name)" filter-deleted="displayIterableDeletedProperties" filter-unspecified="displayIterableUnspecifiedProperties" filter-values="iterablePropertiesValueFilter"></iterable-properties-list>
+            <iterable-properties-list ng-repeat = "modelProp in propertiesModel.iterable_properties" model-property = "modelProp" value-property = "getValues(modelProp.name)" filter-deleted="displayIterableDeletedProperties" filter-unspecified="displayIterableUnspecifiedProperties" filter-values="iterablePropertiesValueFilter"></iterable-properties-list>
 
         </div>
     </section>

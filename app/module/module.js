@@ -67,7 +67,6 @@ applicationModule.controller('ModuleCtrl', [
                 entry.filename = savedTemplate.filename;
 
                 entry.rights = FileService.files_rights_to_string(savedTemplate.rights);
-                savedTemplate.rights = FileService.files_rights_to_string(savedTemplate.rights);
             } else {
                 var new_entry = {
                     name: savedTemplate.name,

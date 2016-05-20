@@ -299,6 +299,10 @@ templateModule.factory('TemplateService', ['$hesperidesHttp', 'Template', 'Templ
 templateModule.directive('fileRights', function () {
     var controller = ['$scope', function ($scope) {
             var setValue = function(item, value) {
+                if (_.isUndefined($scope.model)) {
+                    $scope.model = {};
+                }
+
                 $scope.model[item.attr] = value;
             };
 

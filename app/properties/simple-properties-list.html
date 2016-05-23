@@ -1,9 +1,9 @@
 <div>
     <div layout="row">
-        <div flex="none" style="margin-right:2%">
+        <div flex="none" class="margin-right-2pc">
             <toggle-sort-properties sort-order="order"></toggle-sort-properties>
         </div>
-        <div flex="none" style="margin-right:2%"><toggle-deleted-properties key-value-properties="properties" toggle="displayDeletedProperties"></toggle-deleted-properties></div>
+        <div flex="none" class="margin-right-2pc"><toggle-deleted-properties key-value-properties="properties" toggle="displayDeletedProperties"></toggle-deleted-properties></div>
         <div flex="none"><toggle-unspecified-properties key-value-properties="properties" toggle="displayUnspecified"></toggle-unspecified-properties></div>
     </div>
 
@@ -24,12 +24,12 @@
 
     <md-content layout="column" class="properties-container">
         <!-- Warning ! We need md-virtual-repeat to have reactive UI -->
-        <md-virtual-repeat-container id="vertical-container" style="height: 300px;">
-            <div md-virtual-repeat="key_value_property in properties | hideHesperidesPredefinedProperties | displayUnspecifiedProperties:displayUnspecified | filterProperties:{'name':propertiesKeyFilter, 'filtrable_value':propertiesValueFilter} | displayProperties:displayDeletedProperties | orderBy:'name':order" class="repeated-item" flex style="height: 20px;">
+        <md-virtual-repeat-container id="vertical-container" class="height-300px">
+            <div md-virtual-repeat="key_value_property in properties | hideHesperidesPredefinedProperties | displayUnspecifiedProperties:displayUnspecified | filterProperties:{'name':propertiesKeyFilter, 'filtrable_value':propertiesValueFilter} | displayProperties:displayDeletedProperties | orderBy:'name':order" class="repeated-item height-20px" flex>
                 <!-- Non Global Properties -->
                 <div layout="row"
                      ng_if="!key_value_property.inGlobal"
-                     style="margin:1%;">
+                     class="margin-1pc">
                     <div layout="column" flex="46">
                         <div class="truncate-ellipsis">
                             <label class="property-label"
@@ -56,7 +56,7 @@
                 <!-- Global Properties -->
                 <div layout="row"
                      ng_if="key_value_property.inGlobal"
-                     style="margin:1%;">
+                     class="margin-1pc">
                     <div layout="column" flex="46">
                         <div class="truncate-ellipsis">
                             <label class="property-label"
@@ -87,7 +87,7 @@
 </div>
 
 <h3 ng-show="properties.iterable_properties.length > 0">Proprietes multiples :</h3>
-<dl class="dl-horizontal text-overflow" style="margin-bottom:0" ng-repeat="iterable_property in properties.iterable_properties | orderBy:'name' track by $index">
+<dl class="dl-horizontal text-overflow margin-bottom-0px" ng-repeat="iterable_property in properties.iterable_properties | orderBy:'name' track by $index">
     <dt>{{ iterable_property.name }}</dt>
-    <dd ng-repeat="field in iterable_property.fields | orderBy:'name' track by $index">{{ field.name }}<small style="padding-left: 10px;"><em>{{ field.comment }}</em></small></dd>
+    <dd ng-repeat="field in iterable_property.fields | orderBy:'name' track by $index">{{ field.name }}<small class="padding-10px"><em>{{ field.comment }}</em></small></dd>
 </dl>

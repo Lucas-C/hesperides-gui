@@ -54,9 +54,9 @@
                         {{compare_platform.name}} à comparer à {{compare_module.title}} sur
                         {{platform.application_name}} - {{platform.name}}</h2>
                     <md-content layout-padding class="autoScroll">
-                        <div layout="row" style="align-items: center" layout-margin>
+                        <div layout="row" class="align-items-center" layout-margin>
                             <div flex="66">
-                                <ul class="breadcrumb" style="margin-bottom: 2px">
+                                <ul class="breadcrumb margin-bottom-2px">
                                     <li>{{platform.application_name}}</li>
                                     <li>{{platform.name}}</li>
                                     <li ng-repeat="token in compare_module.path.substr(1).split('#')">{{token}}</li>
@@ -68,7 +68,7 @@
                                     <i class="fa fa-arrows-v"></i>
                                     <i class="fa fa-arrows-v"></i>
                                 </div>
-                                <ul class="breadcrumb" style="margin-bottom: 2px">
+                                <ul class="breadcrumb margin-bottom-2px">
                                     <li>{{compare_platform.application_name}}</li>
                                     <li>{{compare_platform.name}}</li>
                                     <li ng-repeat="token in compare_platform.chosen_module.path.substr(1).split('#')">
@@ -78,7 +78,7 @@
                                     </li>
                                 </ul>
                             </div>
-                            <div flex style="text-align: end">
+                            <div flex class="text-align-end">
                                 <md-button ng-click="$diff()" class="md-raised md-primary" wz-next aria-label="Lancer le diff"
                                            ng-disabled="!compare_platform.chosen_module">Lancer le diff</md-button>
                             </div>
@@ -92,7 +92,7 @@
                             <md-progress-circular class="md-warn md-hue-3" md-mode="indeterminate"
                                                   ng-show="loading_compare_platform"></md-progress-circular>
                             <div flex ng-hide="loading_compare_platform">
-                                <ul class="breadcrumb" style="margin-bottom: 2px" ng-show="modules_toggle"
+                                <ul class="breadcrumb margin-bottom-2px" ng-show="modules_toggle"
                                     ng-repeat="module in compare_platform.modules | orderBy:'path'">
                                     <li ng-repeat="token in module.path.split('#')">{{token}}</li>
                                     <li class="active"><a href="" ng-click="compare_platform.chosen_module = module">{{module.title}}</a>

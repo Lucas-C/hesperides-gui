@@ -2,7 +2,7 @@
     <div flex="30">
         <!-- Filtre sur l'arbre -->
         <div>
-            <md-input-container class="md-block" style="margin: inherit">
+            <md-input-container class="md-block margin-inherit">
                 <label>Filtrer sur l'arbre</label>
                 <!-- Add ngModelOptions for big tree, to prevent key press hang -->
                 <input type="text" ng-trim="true" ng-model="searchInTree" ng-model-options="{ debounce: { 'default': 250 } }" />
@@ -56,14 +56,14 @@
                 </form>
             </div>
         </div>
-        <div style="margin-top: 5px;" layout="row" ng-show="properties">
+        <div class="margin-top-5px" layout="row" ng-show="properties">
             <div >
                 <h3><span>Les propriétés associées à <strong>{{selected_module.path.split('#').join('
                     | ')}} | {{selected_module.title}}</strong></span>
                 </h3>
             </div>
         </div>
-        <div style="margin-top: 5px;" layout="row" ng-show="properties">
+        <div class="margin-top-5px" layout="row" ng-show="properties">
             <div>
                 <md-button id="cleanPropertiesButton" ng-click="clean_properties(properties)" class="md-raised">
                     <i class="fa fa-trash"></i>
@@ -84,8 +84,8 @@
 
         <div layout="row" ng-show="instance">
             <div>
-                <h3 style="margin-top: 0;">
-                <span style="margin-right: 30px">Les propriétés d'instance associées à <strong>
+                <h3 class="margin-top-0px">
+                <span class="margin-right-30px">Les propriétés d'instance associées à <strong>
                     <a href="" editable-text="instance.name"
                        onbeforesave="update_instance_name(instance, $data)">{{instance.name}}</a></strong></span>
                     <md-button ng-click="save_platform_from_box(mainBox)" class="md-raised md-primary">

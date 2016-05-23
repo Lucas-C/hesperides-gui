@@ -1,5 +1,5 @@
 <h4>Technos:</h4>
-<ul class="list-inline" style="padding-left: 20px;">
+<ul class="list-inline padding-left-20px" >
     <li ng-repeat="techno in technos_namespaces track by $index">
         <button class="btn btn-default btn-sm" ng-mouseenter="hover = true"
                 ng-mouseleave="hover = false">{{techno.name}}, version
@@ -7,15 +7,14 @@
         </button>
         <button ng-mouseenter="hover = true" ng-mouseleave="hover = false" ng-show="hover"
                 ng-really-message="Supprimer la techno '{{techno.name}}'"
-                ng-really-click="del_techno(techno, editing_unit)" class="btn btn-danger btn-sm"
-                style="padding-left: 2px; padding-right: 2px"><span
+                ng-really-click="del_techno(techno, editing_unit)" class="btn btn-danger btn-sm padding-left-20px padding-right-20px"><span
                 class="glyphicon glyphicon-trash"></span></button>
     </li>
-    <li style="vertical-align: middle">
+    <li class="vertical-align-middle">
         <button ng-click="show_input = true;focus_choose_techno()" ng-hide="show_input"
                 class="btn btn-success btn-sm"><span class="glyphicon glyphicon-plus"></span>
         </button>
-        <input id="chooseTechnoInput" type="text" style="height: 31px"
+        <input id="chooseTechnoInput" type="text"
                ng-show="show_input" ng-blur="show_input=false; asyncTechnoSelected=''"
                ng-model="asyncTechnoSelected" placeholder="Rechercher une techno"
                typeahead-on-select="add_techno(asyncTechnoSelected, editing_unit); asyncTechnoSelected=''; show_input=false"

@@ -24,6 +24,125 @@ textarea,
 }
 
 /**
+ * Global Styles (Externalisation)
+ */
+.width-50-pc {
+    width:50% !important;
+}
+
+.height-500px {
+    height: 500px !important;
+}
+
+.height-300px {
+    height: 300px !important;
+}
+
+.height-30px {
+    height: 30px !important;
+}
+
+.height-100px {
+    height: 100px !important;
+}
+
+.height-20px {
+    height: 20px !important;
+}
+
+.margin-top-5px {
+    margin-top: 5px !important;
+}
+
+.margin-top-0px {
+    margin-top: 0 !important;
+}
+
+.margin-right-2pc {
+    margin-right:2% !important;
+}
+
+.margin-right-30px{
+    margin-right:30px !important;
+}
+
+.margin-bottom-2px {
+    margin-bottom:2px !important;
+}
+
+.margin-bottom-0px {
+    margin-bottom:0 !important;
+}
+
+.margin-bottom-minus-4pc {
+    margin-bottom: -4% !important;
+}
+
+.margin-inherit{
+    margin: inherit !important;
+}
+
+.margin-1pc {
+    margin:1% !important;
+}
+
+.padding-10px {
+    padding-left: 10px !important;
+}
+
+.padding-bottom-20px {
+   padding-bottom: 20px !important;
+}
+
+.padding-bottom-0px {
+   padding-bottom: 0px !important;
+}
+
+.padding-left-10px {
+    padding-left: 10px !important;
+}
+
+.padding-left-20px {
+    padding-left: 20px !important;
+}
+
+.padding-right-20px {
+    padding-right: 20px !important;
+}
+
+.padding-right-10px {
+    padding-right: 10px !important;
+}
+
+.max-width-none{
+    max-width: none !important:
+}
+
+.vertical-align-middle {
+    vertical-align: middle !important;
+}
+
+.align-items-center {
+    align-items: center !important;
+}
+
+.text-align-end {
+    text-align: end !important;
+}
+
+.tooltip {
+    display: block;
+    position: absolute;
+    background-color: white;
+    border-style: solid;
+    border-width: 1px
+}
+
+#propertiesButtonsContainer {
+    z-index: 1000 !important;
+}
+
+/**
  * Header
  */
 #header  input:focus{
@@ -547,6 +666,10 @@ button.md-primary.md-button.md-confirm-hesperides-dialog-theme.md-ink-ripple {
 
 .techno-file blockquote {
     font-size: 14px;
+}
+
+#chooseTechnoInput {
+    height: 31px;
 }
 
 /******************************************************************************

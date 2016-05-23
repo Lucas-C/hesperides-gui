@@ -1,5 +1,5 @@
 /**
- * Created by william_montaz on 17/10/2014.
+ * Created by william_montaz on 17/10/2014 .
  */
 var propertiesModule = angular.module('hesperides.properties', ['hesperides.nexus']);
 
@@ -280,6 +280,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
         var modalScope = $scope.$new();
         modalScope.module = module;
+        modalScope.copyProperties = true;
 
         modalScope.$update = function (modal_data) {
             var new_module = modal_data.new_module;

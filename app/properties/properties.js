@@ -1,5 +1,5 @@
 /**
- * Created by william_montaz on 17/10/2014.
+ * Created by william_montaz on 17/10/2014 .
  */
 var propertiesModule = angular.module('hesperides.properties', ['hesperides.nexus']);
 

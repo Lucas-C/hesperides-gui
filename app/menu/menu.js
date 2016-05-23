@@ -258,6 +258,16 @@ menuModule.controller('MenuPropertiesCtrl', ['$hesperidesHttp', '$scope', '$mdDi
     };
 
     $scope.open_create_platform_dialog = function () {
+
+        /**
+         * This function will determine if the authenticated user
+         * is a production user or not.
+         * See user.js for more details about : HesperidesAuthenticator
+         */
+         $scope.isProductionUser = function (){
+            return !_.isUndefined(hesperidesUser) ? hesperidesUser.isProdUser : false;
+         };
+
         $mdDialog.show({
             templateUrl: 'properties/platform-menu-modal.html',
             controller: 'MenuPropertiesCtrl',
@@ -271,6 +281,10 @@ menuModule.controller('MenuPropertiesCtrl', ['$hesperidesHttp', '$scope', '$mdDi
         var modalScope = $scope.$new(true);
 
         modalScope.applicationSearched = "";
+
+        modalScope.isProductionUser = function (){
+            return !_.isUndefined(hesperidesUser) ? hesperidesUser.isProdUser : false;
+        };
 
         $mdDialog.show({
             templateUrl: 'properties/platform-menu-modal-from.html',

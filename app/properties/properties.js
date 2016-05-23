@@ -209,10 +209,10 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
     /**
      * This function will determine if the authenticated user
      * is a production user or not.
-     * See user.js for more details about : HesperidesAuthenticator
+     * See hesperides.js for more details about : hesperidesUser
      */
      $scope.isProductionUser = function (){
-        return HesperidesAuthenticator.auth().isProdUser;
+        return !_.isUndefined(hesperidesUser) ? hesperidesUser.isProdUser : false;
      };
 
     $scope.open_add_instance_dialog = function (module) {

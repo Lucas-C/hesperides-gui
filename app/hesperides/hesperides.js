@@ -13,6 +13,7 @@ var hesperidesModule = angular.module('hesperides', [
     'hesperides.techno',
     'hesperides.template',
     'hesperides.components',
+    'hesperides.user',
     'ngMaterial',
     'ngAnimate',
     'xeditable',
@@ -97,8 +98,16 @@ hesperidesModule.factory('Page', ['hesperidesGlobals', function (hesperidesGloba
     }
 }]);
 
-hesperidesModule.controller("TitleCtrl", ['$scope', 'Page', function ($scope, Page) {
+var hesperidesUser = undefined;
+hesperidesModule.controller("TitleCtrl", ['$scope', 'Page', 'UserService', function ($scope, Page, UserService) {
     $scope.Page = Page;
+
+    // authenticate the user
+    $scope.authenticate = function (){
+        UserService.authenticate().then(function (user){
+           hesperidesUser = user;
+        });
+    }
 }]);
 
 hesperidesModule.config(['$routeProvider', '$mdThemingProvider', '$ariaProvider', '$mdIconProvider', function ($routeProvider, $mdThemingProvider, $ariaProvider, $mdIconProvider) {

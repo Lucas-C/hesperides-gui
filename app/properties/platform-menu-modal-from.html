@@ -32,7 +32,7 @@
                                id="platformApplicationVersion"
                                placeholder="Cette information est purement indicative et pourra être changée par la suite"/>
                     </md-input-container>
-                    <md-switch class="md-primary" ng-model="new_platform.production" aria-label="Plateforme production" class="md-block">
+                    <md-switch class="md-primary" ng-model="new_platform.production" ng-disabled="!isProductionUser()" aria-label="Plateforme production" class="md-block">
                         <strong>Est-ce une plateforme de production ?</strong>
                     </md-switch>
                     <md-switch class="md-primary" ng-model="new_platform.copyInstances" aria-label="Plateforme production" class="md-block">

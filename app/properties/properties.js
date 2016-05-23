@@ -1586,10 +1586,12 @@ propertiesModule.factory('Properties', function () {
                     key_value.required = (prop.required) ? prop.required : false;
                     key_value.password = (prop.password) ? prop.password : false;
                     key_value.defaultValue = (prop.defaultValue) ? prop.defaultValue : "";
+                    key_value.pattern = (prop.pattern) ? prop.pattern : "";
                 } else {
                     key_value.required = false;
                     key_value.password = false;
                     key_value.defaultValue = "";
+                    key_value.pattern = "";
                 }
             });
 
@@ -1608,7 +1610,8 @@ propertiesModule.factory('Properties', function () {
                     inModel: true,
                     required: (model_key_value.required) ? model_key_value.required : false,
                     password: (model_key_value.password) ? model_key_value.password : false,
-                    defaultValue: (model_key_value.defaultValue) ? model_key_value.defaultValue : ""
+                    defaultValue: (model_key_value.defaultValue) ? model_key_value.defaultValue : "",
+                    pattern: (model_key_value.pattern) ? model_key_value.pattern : ""
                 });
             });
 
@@ -1674,6 +1677,7 @@ propertiesModule.factory('Properties', function () {
                                         item.required = (prop.required) ? prop.required : false;
                                         item.password = (prop.password) ? prop.password : false;
                                         item.defaultValue = (prop.defaultValue) ? prop.defaultValue : "";
+                                        item.pattern = (prop.pattern) ? prop.pattern : "";
                                     });
                                 }
                             });
@@ -1983,7 +1987,7 @@ propertiesModule.filter('filterIterableProperties', function() {
 
 /**
  * Function wich filter the properties' display with string or regex.
- * Modified by Sahar CHAILLOU on 12/01/2016.
+ * Modified by Sahar CHAILLOU on 12/01/2016
  */
 propertiesModule.filter('filterProperties', function() {
     return function(input, filter) {

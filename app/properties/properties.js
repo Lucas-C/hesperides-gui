@@ -244,6 +244,10 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
             modalScope.ndlVersions = modalScope.sourceFromNdl ? ndlVersions : [];
             modalScope.onLoading = true;
 
+            modalScope.isValid = function (){
+                return !_.isUndefined(modalScope.newVersion) && !_.isEmpty(modalScope.newVersion);
+            }
+
             $mdDialog.show({
                 templateUrl: 'application/change_platform_version.html',
                 controller: 'PlatformVersionModule',
@@ -281,6 +285,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         var modalScope = $scope.$new();
         modalScope.module = module;
         modalScope.copyProperties = true;
+        modalScope.searchText = module.name + ' ';
 
         modalScope.$update = function (modal_data) {
             var new_module = modal_data.new_module;
@@ -299,6 +304,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
             clickOutsideToClose:true,
             scope: modalScope
         });
+
     };
 
     $scope.diff_properties = function (compare_module) {

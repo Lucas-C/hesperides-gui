@@ -330,7 +330,8 @@ applicationModule.factory('ApplicationService', ['$hesperidesHttp', 'Application
                 $.notify("Les propriétés ont bien été sauvegardées", "success");
                 return new Properties(response.data);
             }, function (error) {
-                $.notify(error.data.message, "error");
+                //$.notify(error.data.message, "error");
+                $.notify("Enregistrement impossible - une ou plusieurs propriétés ne respectent pas l'annotation @required et/ou @pattern", "error");
                 throw error;
             });
         },

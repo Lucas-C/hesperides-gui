@@ -1101,7 +1101,7 @@ repeated-item
   white-space: nowrap;
 }
 
-.truncate-ellipsis > * {
+.truncate-ellipsis > label {
   display: table-cell;
   overflow: hidden;
   text-overflow: ellipsis;

@@ -1227,7 +1227,7 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
                     // not existing existing value found, then add one
                     value.values.push({
                         name: field.name,
-                        value: "",
+                        value: (field.required) ? undefined : "", // 'required' to make difference with void string.
                         comment: (field.comment) ? field.comment : "",
                         password: (field.password) ? field.password : false,
                         defaultValue: (field.defaultValue) ? field.defaultValue : "",
@@ -1265,7 +1265,7 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
             _(model.fields).each (function (field){
                 iterableValue.values.push({
                     name: field.name,
-                    value: "",
+                    value: (field.required) ? undefined : "",
                     inModel: true,
                     comment: (field.comment) ? field.comment : "",
                     password: (field.password) ? field.password : false,

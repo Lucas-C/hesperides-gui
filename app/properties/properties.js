@@ -1613,7 +1613,7 @@ propertiesModule.factory('Properties', function () {
                 me.key_value_properties.push({
                     name: model_key_value.name,
                     comment: model_key_value.comment,
-                    value: "",
+                    value: (model_key_value.required) ? undefined : "", // 'undefined' to make difference with void string.
                     inModel: true,
                     required: (model_key_value.required) ? model_key_value.required : false,
                     password: (model_key_value.password) ? model_key_value.password : false,

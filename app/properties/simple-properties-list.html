@@ -49,6 +49,7 @@
                                ng-class="{'text-stroke':!key_value_property.inModel, 'default-value-color': key_value_property.defaultValue && !key_value_property.value, 'default-value-color-focus': focusthis}"
                                placeholder="{{key_value_property.defaultValue ? '[default=' + key_value_property.defaultValue + '] ' : ''}} {{key_value_property.comment}}"
                                ng-pattern="key_value_property.pattern"
+                               required
                                class="property-value">
                     </div>
                 </div>

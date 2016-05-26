@@ -365,7 +365,7 @@ hesperidesModule.factory('$hesperidesHttp', ['$http', '$q', function($http, $q){
  * page when edit button is clicked !
  * Added by Tidane SIDIBE on 04/04/2016
  *
- */
+ *
 hesperidesModule.directive('hesperidesScroll', function ($timeout){
     return {
         restrict: 'A',
@@ -384,7 +384,7 @@ hesperidesModule.directive('hesperidesScroll', function ($timeout){
         }
     }
 });
-
+**/
 hesperidesModule.directive('hesperidesCompareDateTime', function (){
     return {
         scope: {

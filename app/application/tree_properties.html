@@ -69,7 +69,9 @@
                     <i class="fa fa-trash"></i>
                     <span>Nettoyer les valorisations inutiles</span>
                 </md-button>
-                <md-button id="savedPropertiesButton" ng-click="save_properties(properties, selected_module)" class="md-raised md-primary">
+                <md-button id="savedPropertiesButton"
+                           ng-click="save_properties(properties, selected_module)"
+                           class="md-raised md-primary">
                     <i class="fa fa-check"></i>
                     <span>Sauver les propriétés</span>
                 </md-button>
@@ -83,16 +85,24 @@
         </div>
 
         <div layout="row" ng-show="instance">
-            <div>
+            <div >
                 <h3 class="margin-top-0px">
-                <span class="margin-right-30px">Les propriétés d'instance associées à <strong>
-                    <a href="" editable-text="instance.name"
-                       onbeforesave="update_instance_name(instance, $data)">{{instance.name}}</a></strong></span>
-                    <md-button ng-click="save_platform_from_box(mainBox)" class="md-raised md-primary">
-                        <i class="fa fa-check"></i>
-                        <span>Sauver les propriétés</span>
-                    </md-button>
+                    <span class="margin-right-30px">Les propriétés d'instance associées à
+                        <strong>
+                            <a href="" editable-text="instance.name" onbeforesave="update_instance_name(instance, $data)">{{instance.name}}</a>
+                        </strong>
+                    </span>
                 </h3>
+
+                <md-button id="cleanPropertiesButton" ng-click="clean_properties(properties)" class="md-raised">
+                    <i class="fa fa-trash"></i>
+                    <span>Nettoyer les valorisations inutiles</span>
+                </md-button>
+
+                <md-button ng-click="save_platform_from_box(mainBox)" class="md-raised md-primary">
+                    <i class="fa fa-check"></i>
+                    <span>Sauver les propriétés</span>
+                </md-button>
 
                 <!-- Showing instance properties -->
                 <instance-properties instance="instance"></instance-properties>

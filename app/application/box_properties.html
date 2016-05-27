@@ -81,19 +81,25 @@
     </div>
 </div>
 <div layout="row" ng-show="instance">
-    <div flex="100">
-        <h3>
-                <span class="margin-right-30px">Les propriétés d'instance associées à <strong>
-                    <a href="" editable-text="instance.name"
-                       onbeforesave="update_instance_name(instance, $data)">{{instance.name}}</a></strong></span>
+    <div flex="100" >
+        <div layout = "row">
+            <h3>
+                <span class="margin-right-30px">Les propriétés d'instance associées à <strong><a href="" editable-text="instance.name" onbeforesave="update_instance_name(instance, $data)">{{instance.name}}</a></strong></span>
+            </h3>
+
+            <md-button id="cleanPropertiesButton" ng-click="clean_properties(properties)"
+                       class="md-raised">
+                <span class="fa fa-trash"></span>
+                <span>Nettoyer les valorisations inutiles</span>
+            </md-button>
+
             <md-button ng-click="save_platform_from_box(mainBox)"
                        ng-disabled="technoForm.$invalid"
-                    class="md-raised md-primary">
+                       class="md-raised md-primary">
                 <i class="fa fa-check"></i>
-                Sauver les propriétés d'instance
+                Sauver les propriétés
             </md-button>
-        </h3>
-
+        </div>
         <!-- Showing instance properties -->
         <instance-properties instance="instance"></instance-properties>
     </div>

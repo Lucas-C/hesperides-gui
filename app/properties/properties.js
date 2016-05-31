@@ -799,9 +799,9 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
     $scope.open_module_page = function (name, version, is_working_copy) {
         if(is_working_copy){
-            $location.path('/module/' + name + '/' + version).search({type : "workingcopy"});
+            return '#/module/' + name + '/' + version + '?type=workingcopy';
         } else {
-            $location.path('/module/' + name + '/' + version).search({});
+            return '#/module/' + name + '/' + version + '?';
         }
     };
 

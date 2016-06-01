@@ -8,9 +8,11 @@
     <md-tooltip>Comparer les propriétés</md-tooltip>
 </md-button>
 
-<md-button ng-click="open_module_page(module.name, module.version, module.is_working_copy)" aria-label="Afficher le module" class="md-xs">
-    <i class="fa fa-pencil"></i>
-    <md-tooltip>Afficher le module {{module.title}}</md-tooltip>
+<md-button aria-label="Afficher le module" class="md-xs">
+    <a ng-href="{{open_module_page(module.name, module.version, module.is_working_copy)}}">
+        <i class="fa fa-pencil fa-inverse"></i>
+        <md-tooltip>Afficher le module {{module.title}}</md-tooltip>
+    </a>
 </md-button>
 
 <md-button aria-label="Modifier la version du module" class="md-xs" ng-click="change_module(module)">

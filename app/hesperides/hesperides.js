@@ -291,7 +291,8 @@ hesperidesModule.filter('interpolate', ['version', function (version) {
 
 hesperidesModule.directive('konami', function() {
     return {
-        restrict: 'E',
+        restrict: 'EA',
+        scope: {name: '@'},
         link: function(scope, element, attrs) {
             var keys = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65];
             var i = 0;
@@ -300,7 +301,7 @@ hesperidesModule.directive('konami', function() {
                     if(i === keys.length) {
                         $(document).unbind('keydown', arguments.callee);
                         //Konami code is active, do some fun stuff here
-                        element.append('<img src="img/konami_egg.jpg" width="100%"></img>');
+                        element.append('<img src="img/'+scope.name+'" width="100%"></img>');
                     }
                 } else {
                     i = 0;

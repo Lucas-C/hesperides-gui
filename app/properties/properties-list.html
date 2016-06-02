@@ -2,10 +2,10 @@
     <section class="file-header">
         <div layout="row" flex="100">
             <div flex>
-                <md-button ng-click="open(1)" class="file-title">Propriétés simples ( {{properties.key_value_properties.length}} )</md-button>
+                <md-button ng-click="open(1)" class="file-title">{{ 'properties.module.editProperties.simpleProperties.title' | translate }} ( {{properties.key_value_properties.length}} )</md-button>
             </div>
             <!-- Error tooltip text -->
-            <md-tooltip>Voir les propriétés simples</md-tooltip>
+            <md-tooltip>{{ 'properties.module.editProperties.simpleProperties.tooltip' | translate }}</md-tooltip>
         </div>
 
         <!-- Add css class 'ng-hide' to disable display at startup and for working autorefresh plugin -->
@@ -17,10 +17,10 @@
     <section class="file-header">
         <div layout="row" flex="100">
             <div flex>
-                <md-button ng-click="open(2)" class="file-title">Propriétés itérables ( {{properties.iterable_properties.length}} )</md-button>
+                <md-button ng-click="open(2)" class="file-title">{{ 'properties.module.editProperties.iterableProperties.title' | translate }} ( {{properties.iterable_properties.length}} )</md-button>
             </div>
             <!-- Error tooltip text -->
-            <md-tooltip>Voir les propriétes itérables</md-tooltip>
+            <md-tooltip>{{ 'properties.module.editProperties.iterableProperties.tooltip' | translate }}</md-tooltip>
         </div>
 
         <!-- Add css class 'ng-hide' to disable display at startup and for working autorefresh plugin -->
@@ -36,8 +36,8 @@
             <div layout="row">
                 <div flex="90">
                     <md-input-container class="md-block">
-                        <label>Filtrer les propriétés itérables par valeur (les valeurs modifiées ne seront filtrables que suite à une sauvegarde)</label>
-                        <input type="text" ng-trim="true" ng-model="iterablePropertiesValueFilter" aria-label="Filtrer les properties par valeur (les valeurs modifiées ne seront filtrables que suite &agrave; une sauvegarde)" />
+                        <label>{{ 'properties.module.editProperties.iterableProperty.filter' | translate }}</label>
+                        <input type="text" ng-trim="true" ng-model="iterablePropertiesValueFilter" aria-label="{{ 'properties.module.editProperties.iterableProperty.filter' | translate }}" />
                     </md-input-container>
                 </div>
             </div>

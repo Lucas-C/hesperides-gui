@@ -1,9 +1,9 @@
 <md-switch class="md-primary md-block ng-pristine ng-untouched ng-valid"
            ng-click="switchOrder()"
            ng-model="toggle" ng-init="toggle=false"
-           aria-label="Afficher les propriétés supprimées"
+           aria-label="{{ 'properties.sort.switch' | translate }}"
            role="checkbox"
            ng-init="sortOrder=true">
     <span class="fa" data-ng-class="{'fa-sort-alpha-desc': sortOrder, 'fa-sort-alpha-asc': !sortOrder}"></span>
-    <span class="ng-binding ng-scope">Tri des propriétés</span>
+    <span class="ng-binding ng-scope">{{ 'properties.sort.switch' | translate }}</span>
 </md-switch>

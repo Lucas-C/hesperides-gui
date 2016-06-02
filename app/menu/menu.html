@@ -2,20 +2,20 @@
     <md-toolbar class="md-menu-toolbar">
         <md-menu-bar class="menu">
             <a id="title" href="/" onclick="window.location.reload()">{{ Page.title() }}</a>
-            <span class="menu-header"> / Regrouper des templates <i class="fa fa-arrow-right"></i></span>
+            <span class="menu-header"> / {{ 'menu.template.title' | translate }} <i class="fa fa-arrow-right"></i></span>
             <md-menu ng-controller="MenuTechnoCtrl">
                 <button ng-click="$mdOpenMenu()" class="menu">
-                    En techno <i class="fa fa-caret-down"></i>
+                    {{ 'menu.techno.title' | translate }} <i class="fa fa-caret-down"></i>
                 </button>
                 <md-menu-content class="menu-item">
                     <md-menu-item>
                         <md-button ng-click="open_create_techno_dialog()">
-                            Créer une working copy
+                           {{ 'menu.techno.create' | translate }}
                         </md-button>
                     </md-menu-item>
                     <md-menu-item>
                         <md-button ng-click="open_create_techno_from_dialog()">
-                            Créer une working copy à partir de...
+                            {{ 'menu.techno.createFrom' | translate }}
                         </md-button>
                     </md-menu-item>
                     <md-menu-divider></md-menu-divider>
@@ -32,7 +32,7 @@
                                 md-selected-item-change="(item) ? open_techno_page(item.name, item.version, item.is_working_copy, '#fakeButtonSearchTechno') : false"
                                 md-min-length="0"
                                 md-autoselect="true"
-                                placeholder="Rechercher...">
+                                placeholder="{{ 'placeholder.search' | translate}}">
                             <span md-highlight-text="ctrl.searchText" ng-show="item.is_working_copy">{{item.name}} {{item.version}} (working copy)</span>
                             <span md-highlight-text="ctrl.searchText" ng-show="!item.is_working_copy">{{item.name}} {{item.version}}</span>
                         </md-autocomplete>
@@ -41,17 +41,17 @@
             </md-menu>
             <md-menu ng-controller="MenuModuleCtrl">
                 <button ng-click="$mdOpenMenu()" class="menu">
-                    En module <i class="fa fa-caret-down"></i>
+                    {{ 'menu.module.title' | translate }} <i class="fa fa-caret-down"></i>
                 </button>
                 <md-menu-content class="menu-item">
                     <md-menu-item>
                         <md-button ng-click="open_create_module_dialog()">
-                            Créer un nouveau module
+                            {{ 'menu.module.create' | translate }}
                         </md-button>
                     </md-menu-item>
                     <md-menu-item>
                         <md-button ng-click="open_create_module_from_dialog()">
-                            Créer une working copy à partir de...
+                            {{ 'menu.module.createFrom' | translate }}
                         </md-button>
                     </md-menu-item>
                     <md-menu-divider></md-menu-divider>
@@ -68,27 +68,27 @@
                                          md-selected-item-change="(item) ? open_module_page(item.name, item.version, item.is_working_copy, '#fakeButtonSearchModule') : false"
                                          md-min-length="0"
                                          md-autoselect="true"
-                                         placeholder="Rechercher...">
+                                         placeholder="{{ 'placeholder.search' | translate}}">
                             <span md-highlight-text="ctrl.searchText" ng-show="item.is_working_copy">{{item.name}} {{item.version}} (working copy)</span>
                             <span md-highlight-text="ctrl.searchText" ng-show="!item.is_working_copy">{{item.name}} {{item.version}}</span>
                         </md-autocomplete>
                     </md-menu-item>
                 </md-menu-content>
             </md-menu>
-            <span class="menu-header">Valoriser des propriétés <i class="fa fa-arrow-right"></i></span>
+            <span class="menu-header">{{ 'menu.properties.title' | translate }} <i class="fa fa-arrow-right"></i></span>
             <md-menu ng-controller="MenuPropertiesCtrl">
                 <button ng-click="$mdOpenMenu()" class="menu">
-                    Pour des applications <i class="fa fa-caret-down"></i>
+                    {{ 'menu.platform.title' | translate }} <i class="fa fa-caret-down"></i>
                 </button>
                 <md-menu-content class="menu-item">
                     <md-menu-item>
                         <md-button ng-click="open_create_platform_dialog()">
-                            Créer une plateforme
+                            {{ 'menu.platform.create' | translate }}
                         </md-button>
                     </md-menu-item>
                     <md-menu-item>
                         <md-button ng-click="open_create_platform_from_dialog()">
-                            Créer une plateforme à partir de...
+                            {{ 'menu.platform.createFrom' | translate }}
                         </md-button>
                     </md-menu-item>
                     <md-menu-divider></md-menu-divider>
@@ -105,7 +105,7 @@
                                 md-selected-item-change="(item) ? open_properties_page(item.name, null, '#fakeButtonSearchProperties') : false"
                                 md-min-length="0"
                                 md-autoselect="true"
-                                placeholder="Rechercher...">
+                                placeholder="{{ 'placeholder.search' | translate}}">
                             <span md-highlight-text="ctrl.searchText">{{item.name}} {{item.version}}</span>
                         </md-autocomplete>
                     </md-menu-item>
@@ -114,17 +114,17 @@
 
             <md-menu ng-controller="MenuHelpCtrl" class="menu-help">
                 <button ng-click="$mdOpenMenu()" class="menu">
-                    Aide <i class="fa fa-question"></i>
+                    {{ 'menu.help.title' | translate}} <i class="fa fa-question"></i>
                 </button>
                 <md-menu-content class="menu-item">
                     <md-menu-item>
                         <md-button ng-click="display_swagger()">
-                            Swagger
+                            {{ 'menu.help.swagger' | translate}}
                         </md-button>
                     </md-menu-item>
                     <md-menu-item>
                         <md-button ng-click="display_hesperides_informations()">
-                            A propos
+                            {{ 'menu.help.about' | translate}}
                         </md-button>
                     </md-menu-item>
                 </md-menu-content>

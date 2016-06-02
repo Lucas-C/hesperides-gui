@@ -1,25 +1,25 @@
 <md-dialog flex="50">
     <md-dialog-content>
         <div class="ng-binding">
-            <h2>Nouvelle techno (working copy) à partir d'une précédente version</h2>
+            <h2>{{ 'techno.modalFrom.title' | translate }}</h2>
 
             <md-content layout-padding class="autoScroll">
                 <form name="technoForm" novalidate
                       ng-submit="technoForm.$valid && create_techno_from(new_techno.name, new_techno.version, technoSearched.name, technoSearched.version, technoSearched.is_working_copy)">
                     <div layout="row" flex="100">
                         <md-input-container md-no-float class="md-block" flex="50">
-                            <label><strong>Nom</strong></label>
+                            <label><strong>{{ 'techno.modal.name' | translate }}</strong></label>
                             <input type="text" required ng-trim="true" ng-model="new_techno.name" md-autofocus="true"
-                                   id="technoName" placeholder="Entrer un nom (tomcat, hadoop, flume, ...)" />
+                                   id="technoName" placeholder="{{ 'techno.modal.name.placeholder' | translate }}" />
                         </md-input-container>
                         <md-input-container md-no-float class="md-block" flex="50">
-                            <label><strong>Numéro de version</strong></label>
+                            <label><strong>{{ 'techno.modal.version' | translate }}</strong></label>
                             <input type="text" required ng-trim="true" ng-model="new_techno.version"
-                                   id="technoVersion" placeholder="Entrer un numero de version"/>
+                                   id="technoVersion" placeholder="{{ 'techno.modal.version.placeholder' | translate }}"/>
                         </md-input-container>
                     </div>
                     <!--<md-input-container class="md-block">-->
-                        <label><strong>A partir de ...</strong></label>
+                        <label><strong>{{ 'modalFrom.origin' | translate }}</strong></label>
                         <md-autocomplete
                                 required
                                 ng-model="technoSearched"
@@ -31,7 +31,7 @@
                                 md-selected-item-change="(techno) ? technoSearched = techno : false"
                                 md-min-length="0"
                                 md-autoselect="true"
-                                placeholder="Nom de la techno existante...">
+                                placeholder="{{ 'techno.modalFrom.origin.placeholder' | translate }}">
                             <span md-highlight-text="ctrl.searchText">{{techno.name}} {{techno.version}}</span>
                         </md-autocomplete>
                     <!--</md-input-container>-->
@@ -40,8 +40,8 @@
             </md-content>
         </div>
         <md-dialog-actions>
-            <md-button ng-click="create_techno_from(new_techno.name, new_techno.version, technoSearched.name, technoSearched.version, technoSearched.is_working_copy)" class="md-raised md-primary" ng-disabled="technoForm.$invalid">Créer</md-button>
-            <md-button ng-click="closeDialog()" class="md-raised md-warn">Annuler</md-button>
+            <md-button ng-click="create_techno_from(new_techno.name, new_techno.version, technoSearched.name, technoSearched.version, technoSearched.is_working_copy)" class="md-raised md-primary" ng-disabled="technoForm.$invalid">{{ 'button.modal.create' | translate }}</md-button>
+            <md-button ng-click="closeDialog()" class="md-raised md-warn">{{ 'button.modal.cancel' | translate }}</md-button>
         </md-dialog-actions>
     </md-dialog-content>
 </md-dialog>

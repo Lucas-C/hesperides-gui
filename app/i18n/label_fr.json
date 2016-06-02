@@ -1,0 +1,178 @@
+{
+  "menu.template.title" : "Regrouper des templates",
+  "menu.techno.title" : "En techno",
+  "menu.techno.create": "Créer une working copy",
+  "menu.techno.createFrom" : "Créer une working copy à partir de...",
+  "menu.module.title" : "En module",
+  "menu.module.create" : "Créer un nouveau module",
+  "menu.module.createFrom" : "Créer une working copy à partir de...",
+  "menu.properties.title" : "Valoriser des propriétés",
+  "menu.platform.title" : "Pour des applications",
+  "menu.platform.create" : "Créer une plateforme",
+  "menu.platform.createFrom" : "Créer une plateforme à partir de...",
+  "menu.help.title" : "Aide",
+  "menu.help.swagger" : "Swagger",
+  "menu.help.about" : "A propos",
+
+
+
+  "techno.all.title" : "Toutes les technos",
+
+  "techno.associateFiles.title" : "Les fichiers associés à la techno",
+  "techno.associateProperties.title" : "Propriétés associées à la techno {{name}}",
+
+  "techno.modal.title" : "Nouvelle techno (working copy)",
+  "techno.modal.name" : "Nom",
+  "techno.modal.name.placeholder" : "Entrer un nom (tomcat, hadoop, flume, ...)",
+  "techno.modal.version" : "Numéro de version",
+  "techno.modal.version.placeholder" : "Entrer un numéro de version",
+  "techno.modalFrom.title" : "Nouvelle techno (working copy) à partir d'une précédente version",
+  "techno.modalFrom.origin.placeholder" : "Nom de la techno existante...",
+
+
+  "module.message.workingCopy.created": "a modifié la working copy du module",
+  "module.message.created": "a créé le module (version : {{version}}, workingcopy)",
+  "module.message.updated": "a modifié le module",
+
+  "module.specificFiles":"Les fichiers spécifiques du module",
+  "module.technoList":"Les technos de ce module",
+  "module.search.techno":"Rechercher une techno",
+
+
+  "module.modal.title" : "Nouveau module (working copy)",
+  "module.modal.name" : "Nom du module",
+  "module.modal.name.placeholder" : "Par ex. wdiCore-war (nom indiqué dans la NDL)",
+  "module.modal.version" : "Numéro de version",
+  "module.modal.version.placeholder" : "Par ex : 1.0.0.0 (version indiquée dans la NDL)",
+  "module.modalFrom.title" : "Nouveau module (working copy) à partir d'une précédente version",
+  "module.modalFrom.origin.placeholder" : "Rechercher un module existant, par nom et numéro de version...",
+
+  "module.release.modal.title":"Créer une release",
+  "module.release.modal.version":"Version de la release",
+  "module.release.modal.version.placeholder":"Le numéro...",
+  "module.release.modal.message":"Etes-vous sûr de vouloir créer la release {{version}} ? C'est une opération irreversible !",
+
+  "template.button.add" : "Ajouter un template",
+  "template.modal.add.title" : "Ajout de template",
+  "template.modal.edit.title" : "Edition de template",
+  "template.modal.name" : "Titre",
+  "template.modal.name.placeholder" : "Le titre du template est unique",
+  "template.modal.fileName" : "Nom du fichier sur le serveur",
+  "template.modal.fileName.placeholder" : "On peut utiliser des propriétés dans ce champ",
+  "template.modal.directory" : "Dossier de destination sur le serveur",
+  "template.modal.directory.placeholder" : "On peut utiliser des propriétés dans ce champ",
+  "template.modal.fileContent" : "Contenu du fichier",
+  "template.modal.function.enable" : "Activer",
+  "template.modal.function.disable" : "Désactiver l'édition en plein écran",
+  "template.button.save": "Sauver le template",
+  "template.button.saveAndClose" : "Sauver et fermer",
+  "template.message.delete" : "Êtes-vous sur de vouloir supprimer le template {{name}} ?",
+  "template.rights" : "(Droits : {{list}} )",
+
+  "model.modal.title" : "Propriétés associées au module {{name}}",
+  "model.modal.empty" : "Aucune propriété à afficher",
+  "model.modal.simpleProperties.title" : "Propriétés simples :",
+  "model.modal.multipleProperties.title" : "Propriétés multiples :",
+
+
+  "platform.modal.title" : "Nouvelle plateforme",
+  "platform.modal.applicationName" : "Nom de l'application",
+  "platform.modal.applicationName.placeholder" : "Par ex. VSL, EPM, ACW …",
+  "platform.modal.platformName" : "Nom de la plateforme",
+  "platform.modal.platformName.placeholder" : "Par ex. USN1, REC2, PRD3 …",
+  "platform.modal.applicationVersion" : "Version de l'application sur cette plateforme",
+  "platform.modal.applicationVersion.placeholder" : "Cette information est purement indicative et pourra être changée par la suite",
+  "platform.modal.isProduction" : "Est-ce une plateforme de production ?",
+
+  "platform.modalFrom.title" : "Nouvelle plateforme à partir d'une existante",
+  "platform.modalFrom.needCopy" : "Copier les instances ?",
+  "platform.modalFrom.originApplication" : "Nom de l'application source",
+  "platform.modalFrom.originPlatform" : "Nom de la plateforme source",
+
+   "properties.application.title" : "Plateformes de ",
+   "properties.platformFilter.placeholder" : "Filtrer les plateformes (en fonction du nom de la plateforme, ou de la version)",
+   "properties.platformDisplay.tooltip" : "Afficher la plateforme",
+   "properties.platformLogic.title" : "Représentation logique de ",
+   "properties.platformLogic.version.tooltip" : "Modifier le label 'version de l'application'",
+   "properties.platformLogic.version.history" : "Afficher l'historique",
+   "properties.production.switch" : "Plateforme de production",
+   "properties.production.switch.tooltip" : "Cette action est réservée aux exploitants",
+   "properties.platform.treeMode.tooltip" : "Afficher en mode arbre",
+   "properties.platform.boxMode.tooltip" : "Afficher en mode bloc",
+
+  "properties.globalProperties.edit" : "Editer les propriétés globales",
+  "properties.globalProperties.compare" : "Comparer les propriétés globales",
+  "properties.globalProperties.save" : "Sauver les propriétés globales",
+  "properties.globalProperties.delete" : "Supprimer la property globale {{name}} ?",
+
+   "properties.treeMode.title" : "Filtrer sur l'arbre",
+   "properties.treeMode.platform.title" : "Plateforme",
+
+   "properties.boxMode.title" : "Propriétés niveau plateforme",
+   "properties.boxMode.globalProperties.newOne.key" : "Nouvelle propriété globale",
+   "properties.boxMode.globalProperties.newOne.value" : "Valorisation",
+   "properties.boxMode.globalProperties.filter.key" : "Filtrer par clef",
+   "properties.boxMode.globalProperties.filter.value" : "Filtrer par valeur (ne filtre que les valeurs enregistrées)",
+
+   "properties.sort.switch": "Tri des propriétés",
+   "properties.logicGroup.add" : "Ajouter un groupe logique",
+   "properties.logicGroup.add.name" : "Nom",
+   "properties.logicGroup.add.name.placeholder" : "Exemple WDIGST,...",
+   "properties.logicGroup.update" : "Modifier le nom du groupe logique",
+   "properties.logicGroup.delete" : "Supprimer le groupe logique {{name}} ?",
+
+  "properties.module.add" : "Ajouter un module",
+  "properties.module.search.placeholder" : "Rechercher un module par nom",
+
+  "properties.module.editProperties.tooltip" : "Editer les propriétés",
+  "properties.module.editProperties.title" : "Les propriétés associées à ",
+  "properties.module.editProperties.cleanUselessValues" : "Nettoyer les valorisations inutiles",
+  "properties.module.editProperties.save" : "Sauver les propriétés",
+  "properties.module.editProperties.simpleProperties.title" : "Propriétés simples",
+  "properties.module.editProperties.simpleProperties.tooltip" : "Voir les propriétés simples",
+  "properties.module.editProperties.simpleProperties.global" : "Valeur automatiquement valorisée par la variable globale du même nom. Pour la modifier, changez son nom dans le template ou éditez la variable globale.",
+
+  "properties.module.editProperties.multipleProperties.title" : "Propriétés multiples :",
+
+  "properties.module.editProperties.iterableProperties.title" : "Propriétés itérables",
+  "properties.module.editProperties.iterableProperties.tooltip" : "Voir les propriétes itérables",
+  "properties.module.editProperties.iterableProperties.filter" : "Filtrer les propriétés itérables par valeur (les valeurs modifiées ne seront filtrables que suite à une sauvegarde)",
+  "properties.module.editProperties.iterableProperties.addBlock" : "Ajouter un block",
+  "properties.module.editProperties.iterableProperties.deleteBlock" : "Supprimer un block",
+
+  "properties.module.editProperties.filter.byKey" : "Filtrer les propriétés par clef",
+  "properties.module.editProperties.filter.byValue" : "Filtrer les propriétés par valeur (les valeurs modifiées ne seront filtrables que suite à une sauvegarde)",
+
+  "properties.module.instance.add" : "Ajouter une instance",
+  "properties.module.instance.name" : "Nom",
+
+  "properties.module.instance.editProperties.tooltip" : "Editer les propriétés de l'instance",
+  "properties.module.instance.editProperties.title" : "Les propriétés d'instance associées à",
+
+
+
+  "properties.module.instance.preview" : "Prévisualiser l'instance",
+  "properties.module.instance.delete" : "Supprimer l'instance",
+  "properties.module.instance.delete.message" : "Supprimer l'instance {{name}} ?",
+
+  "properties.module.compareProperties" : "Comparer les propriétés",
+  "properties.module.display" : "Afficher le module {{name}}",
+  "properties.module.updateVersion" : "Modifier la version du module",
+  "properties.module.history" : "Afficher l'historique",
+  "properties.module.delete" : "Supprimer le module",
+  "properties.module.delete.message" : "Supprimer le module {{name}} et toutes ses instances ?",
+
+
+  "message.delete" : "Etes-vous sur de vouloir supprimer {{name}} ?",
+  "message.emptyResult" : "Aucun résultat trouvé",
+  "placeholder.search" : "Rechercher...",
+
+  "modalFrom.origin" : "A partir de...",
+  "button.modal.create" : "Créer",
+  "button.modal.add" : "Ajouter",
+  "button.modal.cancel" : "Annuler",
+  "button.release.create" : "Créer la release",
+  "button.release.create.message" : "Êtes-vous sur de vouloir créer la release {{version}} ?",
+  "button.associateProperties" : "Les propriétés associées"
+
+}

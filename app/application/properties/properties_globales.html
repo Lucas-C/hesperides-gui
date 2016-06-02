@@ -3,22 +3,22 @@
 
     <div layout="row" flex="auto">
         <div flex="40">
-            <input id="new_kv_name" class="property-value" type="text" required ng-trim="true" ng-model="new_kv_name" aria-label="Nouvelle propriété globale" placeholder="Nouvelle propriété globale" focus-save-global-properties/>
+            <input id="new_kv_name" class="property-value" type="text" required ng-trim="true" ng-model="new_kv_name" aria-label="Nouvelle propriété globale" placeholder="{{ 'properties.boxMode.globalProperties.newOne.key' | translate }}" focus-save-global-properties/>
         </div>
         <div flex="60">
-            <input id="new_kv_value" class="property-value" type="text" required ng-trim="true" ng-model="new_kv_value" aria-label="Valorisation" placeholder="Valorisation" focus-save-global-properties/>
+            <input id="new_kv_value" class="property-value" type="text" required ng-trim="true" ng-model="new_kv_value" aria-label="Valorisation" placeholder="{{ 'properties.boxMode.globalProperties.newOne.value' | translate }}" focus-save-global-properties/>
         </div>
     </div>
 
     <div layout="row" flex="auto">
         <md-input-container class="md-block" flex="36">
-            <label>Filtrer par clef</label>
-            <input type="text" ng-trim="true" ng-model="globalPropertiesKeyFilter" aria-label="Filtrer par clef" />
+            <label>{{ 'properties.boxMode.globalProperties.filter.key' | translate }}</label>
+            <input type="text" ng-trim="true" ng-model="globalPropertiesKeyFilter" aria-label="{{ 'properties.boxMode.globalProperties.filter.key' | translate }}" />
         </md-input-container>
 
         <md-input-container class="md-block" flex="60">
-            <label>Filtrer par valeur (ne filtre que les valeurs enregistrées)</label>
-            <input type="text" ng-trim="true" ng-model="globalPropertiesValueFilter" aria-label="Filtrer par valeur (les valeurs modifiées ne seront filtrables qu'après une sauvegarde)" />
+            <label>{{ 'properties.boxMode.globalProperties.filter.value' | translate }}</label>
+            <input type="text" ng-trim="true" ng-model="globalPropertiesValueFilter" aria-label="{{ 'properties.boxMode.globalProperties.filter.value' | translate }}" />
         </md-input-container>
     </div>
 
@@ -30,7 +30,7 @@
                     <div flex="40">
                         <div layout="row" flex="auto">
                             <div flex="5">
-                                <span class="fa fa-trash delete-property-icon" ng-really-message="Supprimer la property globale {{key_value_property.name}} ?"
+                                <span class="fa fa-trash delete-property-icon" ng-really-message="{{ 'properties.globalProperties.delete' | translate : {name:key_value_property.name} }}"
                                       aria-label="Supprimer"
                                       ng-really-click="platform.global_properties.deleteKeyValue(key_value_property)"
                                       ng-mouseenter="hover = true"

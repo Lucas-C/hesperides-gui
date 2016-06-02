@@ -1,8 +1,8 @@
 <!-- Displaying new fields from the model -->
 <div class="form-group iterable-main-block" id="it-prop-{{modelProperty.name}}">
     <div>
-        <md-button aria-label="Ajouter un block" class="md-btn md-xs md-button" ng-click = "addValue()">
-            <md-tooltip>Ajouter un block</md-tooltip>
+        <md-button aria-label="{{ 'properties.module.editProperties.iterableProperty.addBlock' | translate }}" class="md-btn md-xs md-button" ng-click = "addValue()">
+            <md-tooltip>{{ 'properties.module.editProperties.iterableProperty.addBlock' | translate }}</md-tooltip>
             <md-icon class="fa fa-plus fa-lg"></md-icon>{{modelProperty.name}}
         </md-button>
     </div>
@@ -11,8 +11,8 @@
         <!-- Pour chaque champ d'une valorisation d'un bloc iterable -->
         <md-virtual-repeat-container id="vertical-container" class="height-100px">
 
-            <md-button aria-label="Supprimer un block" class = "md-btn md-xs md-button" ng-click = "removeValue(index)">
-                <md-tooltip>Supprimer ce block</md-tooltip>
+            <md-button aria-label="{{ 'properties.module.editProperties.iterableProperty.deleteBlock' | translate }}" class = "md-btn md-xs md-button" ng-click = "removeValue(index)">
+                <md-tooltip>{{ 'properties.module.editProperties.iterableProperty.deleteBlock' | translate }}</md-tooltip>
                 <md-icon class="fa fa-minus fa-lg"></md-icon>
             </md-button>
 

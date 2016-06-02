@@ -1,4 +1,4 @@
 <p>
-    <span class ="event-user">{{event.user}}</span><span class = "event-action"> a modifié le module <strong>{{event.data.platform.platform_name}}</strong></span>
+    <span class ="event-user">{{event.user}}</span><span class = "event-action"> {{ 'module.message.created' | translate }} <strong>{{event.data.platform.platform_name}}</strong></span>
     <event-time timestamp = "event.timestamp"></event-time>
 </p>

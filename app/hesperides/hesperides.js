@@ -21,7 +21,8 @@ var hesperidesModule = angular.module('hesperides', [
     'mgo-angular-wizard',
     'vs-repeat',
     'scDateTime',
-    'angularjs-datetime-picker'
+    'angularjs-datetime-picker',
+    'pascalprecht.translate'
 ]).value('scDateTimeConfig', {
     defaultTheme: 'sc-date-time/hesperides.tpl',
     autosave: false,
@@ -110,9 +111,23 @@ hesperidesModule.controller("TitleCtrl", ['$scope', 'Page', 'UserService', funct
     }
 }]);
 
-hesperidesModule.config(['$routeProvider', '$mdThemingProvider', '$ariaProvider', '$mdIconProvider', function ($routeProvider, $mdThemingProvider, $ariaProvider, $mdIconProvider) {
+hesperidesModule.config(['$routeProvider', '$mdThemingProvider', '$ariaProvider', '$mdIconProvider', '$translateProvider', function ($routeProvider, $mdThemingProvider, $ariaProvider, $mdIconProvider, $translateProvider) {
     $mdIconProvider.fontSet('fa', 'fontawesome');
 
+    var configureTranslation = function(){
+        $translateProvider.useStaticFilesLoader({
+            prefix: '/i18n/label_',
+            suffix: '.json'
+        });
+        $translateProvider.fallbackLanguage('fr');
+        $translateProvider.determinePreferredLanguage(function(){
+            if (window.navigator.language == 'fr') {
+                return 'fr'
+            }
+            return 'en';
+        });
+    };
+    
     $routeProvider.
         when('/module/:name/:version', {
             templateUrl: 'module/module.html',
@@ -156,6 +171,9 @@ hesperidesModule.config(['$routeProvider', '$mdThemingProvider', '$ariaProvider'
         tabindex: false,
         bindKeypress: false
     });
+
+    
+    configureTranslation();
 }]);
 
 hesperidesModule.directive('ngReallyClick', ['$mdDialog', '$timeout', function ($mdDialog, $timeout) {

@@ -17,12 +17,12 @@
                     <md-tooltip>{{ 'properties.logicGroup.add' | translate }}</md-tooltip>
                     <i class="fa fa-inbox"></i>
                 </md-button>
-                <md-button class="md-xs" aria-label="Editer les propriétés" ng-click="showGlobalPropertiesDisplay();movePropertiesDivHolderToCursorPosition($event);">
-                    <md-tooltip>{{ 'properties.globalProperties.edit' | translate }}</md-tooltip>
+                <md-button class="md-xs" aria-label="{{ 'properties.platform.globalProperties.edit' | translate }}" ng-click="showGlobalPropertiesDisplay();movePropertiesDivHolderToCursorPosition($event);">
+                    <md-tooltip>{{ 'properties.platform.globalProperties.edit' | translate }}</md-tooltip>
                     <i class="fa fa-list"></i>
                 </md-button>
-                <md-button class="md-xs" aria-label="Comparer les propriétés globales" ng-click="diff_global_properties(platform)">
-                    <md-tooltip>{{ 'properties.globalProperties.compare' | translate }}</md-tooltip>
+                <md-button class="md-xs" aria-label="{{ 'properties.platform.globalProperties.compare' | translate }}" ng-click="diff_global_properties(platform)">
+                    <md-tooltip>{{ 'properties.platform.globalProperties.compare' | translate }}</md-tooltip>
                     <i class="fa fa-exchange"></i>
                 </md-button>
             </div>
@@ -44,7 +44,7 @@
             <md-button class="md-raised md-primary"
                        ng-click="save_global_properties(platform.global_properties)">
                 <i class="fa fa-check"></i>
-                {{ 'properties.globalProperties.save' | translate }}
+                {{ 'properties.platform.globalProperties.save' | translate }}
             </md-button>
 
             <toggle-sort-properties sort-order="order"></toggle-sort-properties>

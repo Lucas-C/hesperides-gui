@@ -12,13 +12,13 @@
 
     <div layout="row" flex="auto">
         <md-input-container class="md-block" flex="36">
-            <label>{{ 'properties.boxMode.globalProperties.filter.key' | translate }}</label>
-            <input type="text" ng-trim="true" ng-model="globalPropertiesKeyFilter" aria-label="{{ 'properties.boxMode.globalProperties.filter.key' | translate }}" />
+            <label>{{ 'properties.filter.byKey' | translate }}</label>
+            <input type="text" ng-trim="true" ng-model="globalPropertiesKeyFilter" aria-label="{{ 'properties.filter.byKey' | translate }}" />
         </md-input-container>
 
         <md-input-container class="md-block" flex="60">
-            <label>{{ 'properties.boxMode.globalProperties.filter.value' | translate }}</label>
-            <input type="text" ng-trim="true" ng-model="globalPropertiesValueFilter" aria-label="{{ 'properties.boxMode.globalProperties.filter.value' | translate }}" />
+            <label>{{ 'properties.filter.byValue' | translate }}</label>
+            <input type="text" ng-trim="true" ng-model="globalPropertiesValueFilter" aria-label="{{ 'properties.filter.byValue' | translate }}" />
         </md-input-container>
     </div>
 
@@ -30,7 +30,7 @@
                     <div flex="40">
                         <div layout="row" flex="auto">
                             <div flex="5">
-                                <span class="fa fa-trash delete-property-icon" ng-really-message="{{ 'properties.globalProperties.delete' | translate : {name:key_value_property.name} }}"
+                                <span class="fa fa-trash delete-property-icon" ng-really-message="{{ 'properties.platform.globalProperties.delete' | translate : {name:key_value_property.name} }}"
                                       aria-label="Supprimer"
                                       ng-really-click="platform.global_properties.deleteKeyValue(key_value_property)"
                                       ng-mouseenter="hover = true"

@@ -89,21 +89,25 @@
   "platform.modalFrom.originApplication" : "Nom de l'application source",
   "platform.modalFrom.originPlatform" : "Nom de la plateforme source",
 
-   "properties.application.title" : "Plateformes de ",
-   "properties.platformFilter.placeholder" : "Filtrer les plateformes (en fonction du nom de la plateforme, ou de la version)",
-   "properties.platformDisplay.tooltip" : "Afficher la plateforme",
-   "properties.platformLogic.title" : "Représentation logique de ",
-   "properties.platformLogic.version.tooltip" : "Modifier le label 'version de l'application'",
-   "properties.platformLogic.version.history" : "Afficher l'historique",
-   "properties.production.switch" : "Plateforme de production",
-   "properties.production.switch.tooltip" : "Cette action est réservée aux exploitants",
+   "properties.application.title" : "Plateformes de",
+   "properties.platform.filter.placeholder" : "Filtrer les plateformes (en fonction du nom de la plateforme, ou de la version)",
+   "properties.platform.selection.tooltip" : "Afficher la plateforme",
+   "properties.platform.title" : "Représentation logique de ",
+   "properties.platform.version.tooltip" : "Modifier le label 'version de l'application'",
+   "properties.platform.version.history" : "Afficher l'historique",
+    "properties.platform.version.modal.title" : "Changer la version de la plateforme",
+    "properties.platform.version.modal.newVersion" : "Nouvelle version",
+    "properties.platform.version.modal.newVersion.placeholder" : "Saisir une version manuellement",
+
+   "properties.platform.production.switch" : "Plateforme de production",
+   "properties.platform.production.switch.tooltip" : "Cette action est réservée aux exploitants",
    "properties.platform.treeMode.tooltip" : "Afficher en mode arbre",
    "properties.platform.boxMode.tooltip" : "Afficher en mode bloc",
 
-  "properties.globalProperties.edit" : "Editer les propriétés globales",
-  "properties.globalProperties.compare" : "Comparer les propriétés globales",
-  "properties.globalProperties.save" : "Sauver les propriétés globales",
-  "properties.globalProperties.delete" : "Supprimer la property globale {{name}} ?",
+  "properties.platform.globalProperties.edit" : "Editer les propriétés globales",
+  "properties.platform.globalProperties.compare" : "Comparer les propriétés globales",
+  "properties.platform.globalProperties.save" : "Sauver les propriétés globales",
+  "properties.platform.globalProperties.delete" : "Supprimer la property globale {{name}} ?",
 
    "properties.treeMode.title" : "Filtrer sur l'arbre",
    "properties.treeMode.platform.title" : "Plateforme",
@@ -111,19 +115,28 @@
    "properties.boxMode.title" : "Propriétés niveau plateforme",
    "properties.boxMode.globalProperties.newOne.key" : "Nouvelle propriété globale",
    "properties.boxMode.globalProperties.newOne.value" : "Valorisation",
-   "properties.boxMode.globalProperties.filter.key" : "Filtrer par clef",
-   "properties.boxMode.globalProperties.filter.value" : "Filtrer par valeur (ne filtre que les valeurs enregistrées)",
+
+
+  "properties.filter.byKey" : "Filtrer les propriétés par clé",
+   "properties.filter.byValue" : "Filtrer par valeur (ne filtre que les valeurs enregistrées)",
 
    "properties.sort.switch": "Tri des propriétés",
-   "properties.logicGroup.add" : "Ajouter un groupe logique",
+
+  "properties.logicGroup.add" : "Ajouter un groupe logique",
    "properties.logicGroup.add.name" : "Nom",
    "properties.logicGroup.add.name.placeholder" : "Exemple WDIGST,...",
    "properties.logicGroup.update" : "Modifier le nom du groupe logique",
    "properties.logicGroup.delete" : "Supprimer le groupe logique {{name}} ?",
 
   "properties.module.add" : "Ajouter un module",
-  "properties.module.search.placeholder" : "Rechercher un module par nom",
 
+  "properties.module.version.modal.title" : "Changer la version de ",
+  "properties.module.version.modal.newVersion" : "Nouvelle version",
+  "properties.module.version.modal.newVersion.placeholder" : "Rechercher la nouvelle version",
+  "properties.module.version.modal.copy.switch" : "Copier les propriétés valorisées de la version {{moduleVersion}} vers la version {{moduleSearchedVersion}}",
+
+
+  "properties.module.search.placeholder" : "Rechercher un module par nom",
   "properties.module.editProperties.tooltip" : "Editer les propriétés",
   "properties.module.editProperties.title" : "Les propriétés associées à ",
   "properties.module.editProperties.cleanUselessValues" : "Nettoyer les valorisations inutiles",
@@ -139,9 +152,6 @@
   "properties.module.editProperties.iterableProperties.filter" : "Filtrer les propriétés itérables par valeur (les valeurs modifiées ne seront filtrables que suite à une sauvegarde)",
   "properties.module.editProperties.iterableProperties.addBlock" : "Ajouter un block",
   "properties.module.editProperties.iterableProperties.deleteBlock" : "Supprimer un block",
-
-  "properties.module.editProperties.filter.byKey" : "Filtrer les propriétés par clef",
-  "properties.module.editProperties.filter.byValue" : "Filtrer les propriétés par valeur (les valeurs modifiées ne seront filtrables que suite à une sauvegarde)",
 
   "properties.module.instance.add" : "Ajouter une instance",
   "properties.module.instance.name" : "Nom",
@@ -163,6 +173,29 @@
   "properties.module.delete.message" : "Supprimer le module {{name}} et toutes ses instances ?",
 
 
+  "properties.platform.globalProperties.compare.modal.title" : "Choisir la plateforme à laquelle comparer les propriétés globales de",
+  "properties.compare.modal.title" : "Choisir la plateforme à laquelle comparer",
+
+  "properties.compare.modal.applicationName" : "Application à laquelle comparer",
+  "properties.compare.modal.platformName" : "Plateforme à laquelle comparer",
+  "properties.compare.modal.compareDate.switch" : "Comparer à {{application}} - {{platform}} à une date spécifique ?",
+
+  "properties.compare.modal.moduleChoice" : "Choisir le module de {{comparePlatformApplication}} - {{comparePlatformName}} à comparer à {{compareModule}} sur {{platformApplication}} - {{platform}}",
+  "properties.compare.modal.otherChoice" : "Choisir un autre module de ",
+  "properties.compare.title.part1" : "Diff entre",
+
+  "properties.compare.previewChanges.part1" : "Prévisualiser les changements",
+  "properties.compare.previewChanges.part2" : "ne sauvegarde pas",
+  "properties.compare.saveChanges.part1" : "Sauvegarder",
+  "properties.compare.saveChanges.part2" : "les changements (il faut avoir prévisualisé avant)",
+  "properties.compare.saveChanges.message" : "Les modifications vont être appliquées sur {{application}} - {{platform}}. Continuer ?",
+  "properties.compare.values.onlyOn": "Seulement sur",
+  "properties.compare.values.identicalOnes": "Identiques sur",
+  "properties.compare.values.differentOnes": "Différents sur",
+  "properties.compare.values.selectToReport": "Sélectionner les valeurs à reporter",
+  "properties.compare.values.showLastEdited" :  "Ne montrer que les valeurs venant d'être modifiées",
+
+
   "message.delete" : "Etes-vous sur de vouloir supprimer {{name}} ?",
   "message.emptyResult" : "Aucun résultat trouvé",
   "placeholder.search" : "Rechercher...",
@@ -170,9 +203,13 @@
   "modalFrom.origin" : "A partir de...",
   "button.modal.create" : "Créer",
   "button.modal.add" : "Ajouter",
+  "button.modal.validate" : "Valider",
   "button.modal.cancel" : "Annuler",
+  "button.modal.runComparison" : "Lancer le diff",
+  "button.modal.next" : "Suivant",
   "button.release.create" : "Créer la release",
   "button.release.create.message" : "Êtes-vous sur de vouloir créer la release {{version}} ?",
-  "button.associateProperties" : "Les propriétés associées"
+  "button.associateProperties" : "Les propriétés associées",
+  "common.word.and" : "et"
 
 }

@@ -207,7 +207,8 @@ applicationModule.factory('Instance', function () {
 
 });
 
-applicationModule.factory('ApplicationService', ['$hesperidesHttp', 'Application', 'Platform', 'Properties', 'InstanceModel', function ($http, Application, Platform, Properties, InstanceModel) {
+applicationModule.factory('ApplicationService', ['$hesperidesHttp', 'Application', 'Platform', 'Properties', 'InstanceModel', '$translate',
+    function ($http, Application, Platform, Properties, InstanceModel, $translate) {
 
     return {
         get: function (name) {
@@ -269,7 +270,9 @@ applicationModule.factory('ApplicationService', ['$hesperidesHttp', 'Application
             platform = platform.to_rest_entity();
             if (platform.version_id < 0) {
                 return $http.post('rest/applications/' + encodeURIComponent(platform.application_name) + '/platforms', platform).then(function (response) {
-                    $.notify("La plateforme a bien été créée", "success");
+                    $translate('platform.event.created').then(function(label) {
+                        $.notify(label, "success");
+                    });
                     //Try to get the global properties
                     var platform = new Platform(response.data);
                     me.get_properties(platform.application_name, platform.platform_name, "#").then(function (properties) {
@@ -282,7 +285,9 @@ applicationModule.factory('ApplicationService', ['$hesperidesHttp', 'Application
                 });
             } else {
                 return $http.put('rest/applications/' + encodeURIComponent(platform.application_name) + '/platforms?copyPropertiesForUpgradedModules=' + copyPropertiesOfUpdatedModules, platform).then(function (response) {
-                    $.notify("La plateforme a bien été mise à jour", "success");
+                    $translate('platform.event.updated').then(function(label) {
+                        $.notify(label, "success");
+                    });
                     //Try to get the global properties
                     var platform = new Platform(response.data);
                     me.get_properties(platform.application_name, platform.platform_name, "#").then(function (properties) {
@@ -299,7 +304,9 @@ applicationModule.factory('ApplicationService', ['$hesperidesHttp', 'Application
             var me = this;
             platform = platform.to_rest_entity();
             return $http.post('rest/applications/' + encodeURIComponent(platform.application_name) + '/platforms?from_application=' + encodeURIComponent(from_application) + '&from_platform=' + encodeURIComponent(from_platform), platform).then(function (response) {
-                $.notify("La plateforme a bien été créée", "success");
+                $translate('platform.event.created').then(function(label) {
+                    $.notify(label, "success");
+                });
                 //Try to get the global properties
                 var platform = new Platform(response.data);
                 me.get_properties(platform.application_name, platform.platform_name, "#").then(function (properties) {
@@ -327,11 +334,15 @@ applicationModule.factory('ApplicationService', ['$hesperidesHttp', 'Application
         save_properties: function (application_name, platform, properties, path) {
             properties = properties.to_rest_entity();
             return $http.post('rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform.name) + '/properties?path=' + encodeURIComponent(path) + '&platform_vid=' + encodeURIComponent(platform.version_id), properties).then(function (response) {
-                $.notify("Les propriétés ont bien été sauvegardées", "success");
+                $translate('properties.event.saved').then(function(label) {
+                    $.notify(label, "success");
+                });
                 return new Properties(response.data);
             }, function (error) {
                 //$.notify(error.data.message, "error");
-                $.notify("Enregistrement impossible - une ou plusieurs propriétés ne respectent pas l'annotation @required et/ou @pattern", "error");
+                $translate('properties.event.error').then(function(label) {
+                    $.notify(label, "error");
+                });                
                 throw error;
             });
         },

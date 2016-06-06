@@ -169,8 +169,8 @@ technoModule.factory('Techno', function () {
 });
 
 technoModule.factory('TechnoService',
-    ['$hesperidesHttp', '$q', 'Techno', 'Template', 'TemplateEntry', 'Properties', 'FileService',
-     function ($http, $q, Techno, Template, TemplateEntry, Properties, FileService) {
+    ['$hesperidesHttp', '$q', 'Techno', 'Template', 'TemplateEntry', 'Properties', 'FileService','$translate',
+     function ($http, $q, Techno, Template, TemplateEntry, Properties, FileService, $translate) {
 
     return {
         get_model: function (name, version, isWorkingCopy){
@@ -242,11 +242,15 @@ technoModule.factory('TechnoService',
             template = template.toHesperidesEntity();
             if (template.version_id < 0) {
                 return $http.post('rest/templates/packages/' + encodeURIComponent(wc_name) + '/' + encodeURIComponent(wc_version) + '/workingcopy/templates', template).then(function (response) {
-                    $.notify("Le template a bien été crée", "success");
+                    $translate('template.event.created').then(function(label) {
+                        $.notify(label, "success");
+                    });
                     return new Template(response.data);
                 }, function (error) {
                     if (error.status === 409) {
-                        $.notify("Impossible de créer le template car il existe déjà un template avec ce nom", "error");
+                        $translate('template.event.error').then(function(label) {
+                            $.notify(label, "error");                            
+                        })
                     } else {
                         $.notify(error.data.message, "error");
                     }
@@ -254,7 +258,9 @@ technoModule.factory('TechnoService',
                 });
             } else {
                 return $http.put('rest/templates/packages/' + encodeURIComponent(wc_name) + '/' + encodeURIComponent(wc_version) + '/workingcopy/templates', template).then(function (response) {
-                    $.notify("Le template a été mis à jour", "success");
+                    $translate('template.event.updated').then(function(label) {
+                        $.notify(label, "success");
+                    });
                     return new Template(response.data);
                 }, function (error) {
                     $.notify(error.data.message, "error");
@@ -264,7 +270,9 @@ technoModule.factory('TechnoService',
         },
         delete_template_in_workingcopy: function (wc_name, wc_version, template_name) {
             return $http.delete('rest/templates/packages/' + encodeURIComponent(wc_name) + '/' + encodeURIComponent(wc_version) + '/workingcopy/templates/' + encodeURIComponent(template_name)).then(function (response) {
-                $.notify("Le template a bien été supprimé", "success");
+                $translate('template.event.deleted').then(function(label) {
+                    $.notify(label, "success");
+                });
                 return response;
             }, function (error) {
                 $.notify(error.data.message, "error");
@@ -274,7 +282,9 @@ technoModule.factory('TechnoService',
         create_release: function (r_name, r_version) {
             return $http.post('rest/templates/packages/create_release?package_name=' + encodeURIComponent(r_name) + '&package_version=' + encodeURIComponent(r_version)).then(function (response) {
 				if (response.status === 201) {
-                    $.notify("La release " + r_name + ", " + r_version + " a bien été créée", "success");
+                    $translate('release.event.created', {name:r_name, version:r_version}).then(function(label) {
+                        $.notify(label, "success");
+                    })
                 } else {
                     $.notify(response.data, "warning");
                 }
@@ -286,7 +296,9 @@ technoModule.factory('TechnoService',
         create_workingcopy: function (wc_name, wc_version, from_name, from_version, is_from_workingcopy) {
             return $http.post('rest/templates/packages?from_package_name=' + encodeURIComponent(from_name) + '&from_package_version=' + encodeURIComponent(from_version) + '&from_is_working_copy=' + is_from_workingcopy, {name:encodeURIComponent(wc_name), version: encodeURIComponent(wc_version), working_copy:true}).then(function (response) {
                 if (response.status === 201) {
-                    $.notify("La working copy a bien été créée", "success");
+                    $translate('workingCopy.event.created').then(function(label) {
+                        $.notify(label, "success");                        
+                    })
                 } else {
                     $.notify(response.data, "warning");
                 }

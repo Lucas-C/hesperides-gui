@@ -95,13 +95,13 @@
             </md-switch>
         </div>
         <div flex="35" layout-align="end start" layout="row">
-            <div class="diff-text-modifiable">{{application_name}} - {{platform_name}} (destination =&gt; modifiable)</div>
+            <div class="diff-text-modifiable">{{application_name}} - {{platform_name}} {{ 'properties.compare.values.editable' | translate }}</div>
         </div>
         <div flex="5">
 
         </div>
         <div flex="40">
-            <span class="diff-text-unmodifiable">{{compare_application}} - {{compare_platform}} (source =&gt; non modifiable)</span>
+            <span class="diff-text-unmodifiable">{{compare_application}} - {{compare_platform}} {{ 'properties.compare.values.readOnly' | translate }}</span>
         </div>
     </div>
     <div layout="row" layout-wrap ng-show="toggle1">
@@ -127,7 +127,7 @@
             </div>
         </div>
         <div flex="40">
-            Tous
+            {{ 'common.word.all' | translate }}
         </div>
     </div>
     <md-divider ng-show="toggle1" class="diff-divider"></md-divider>
@@ -181,13 +181,13 @@
 
         </div>
         <div flex="35" layout-align="end start" layout="row">
-            <div><span class="diff-text-modifiable">{{application_name}} - {{platform_name}} (destination =&gt; modifiable)</span></div>
+            <div><span class="diff-text-modifiable">{{application_name}} - {{platform_name}} {{ 'properties.compare.values.editable' | translate }}</span></div>
         </div>
         <div flex="5">
 
         </div>
         <div flex="40">
-            <span class="diff-text-unmodifiable">{{compare_application}} - {{compare_platform}} (source =&gt; non modifiable)</span>
+            <span class="diff-text-unmodifiable">{{compare_application}} - {{compare_platform}} {{ 'properties.compare.values.readOnly' | translate }}</span>
         </div>
     </div>
     <div layout="row" layout-wrap ng-show="toggle2">
@@ -213,7 +213,7 @@
             </div>
         </div>
         <div flex="40">
-            Tous
+            {{ 'common.word.all' | translate }}
         </div>
     </div>
     <md-divider ng-show="toggle2" class="diff-divider"></md-divider>
@@ -260,13 +260,13 @@
         <div flex="20">
         </div>
         <div flex="35" layout-align="end start" layout="row">
-            <div class="diff-text-modifiable">{{application_name}} - {{platform_name}} (destination =&gt; modifiable)</div>
+            <div class="diff-text-modifiable">{{application_name}} - {{platform_name}} {{ 'properties.compare.values.editable' | translate }}</div>
         </div>
         <div flex="5">
 
         </div>
         <div flex="40">
-            <span class="diff-text-unmodifiable">{{compare_application}} - {{compare_platform}} (source =&gt; non modifiable)</span>
+            <span class="diff-text-unmodifiable">{{compare_application}} - {{compare_platform}} {{ 'properties.compare.values.readOnly' | translate }}</span>
         </div>
     </div>
     <div layout="row" layout-wrap ng-show="toggle3">
@@ -291,7 +291,7 @@
             </div>
         </div>
         <div flex="40">
-            Tous
+            {{ 'common.word.all' | translate }}
         </div>
     </div>
     <md-divider ng-show="toggle3" class="diff-divider"></md-divider>

@@ -173,7 +173,7 @@ hesperidesModule.config(['$routeProvider', '$mdThemingProvider', '$ariaProvider'
     });
 
     
-    configureTranslation();
+   configureTranslation();
 }]);
 
 hesperidesModule.directive('ngReallyClick', ['$mdDialog', '$timeout', function ($mdDialog, $timeout) {

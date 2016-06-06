@@ -3,7 +3,8 @@
  */
 var propertiesModule = angular.module('hesperides.properties', ['hesperides.nexus']);
 
-propertiesModule.controller('PlatformVersionModule', ['$scope', '$mdDialog', 'NexusService', 'ApplicationService', 'TechnoService', function ($scope, $mdDialog, NexusService, ApplicationService, TechnoService) {
+propertiesModule.controller('PlatformVersionModule', ['$scope', '$mdDialog', 'NexusService', 'ApplicationService', 'TechnoService', '$translate',
+    function ($scope, $mdDialog, NexusService, ApplicationService, TechnoService, $translate) {
     $scope.$change = function (modal_data) {
         if (modal_data.use_ndl === true) {
             // on met à jour les modules de l'application à partir des infos de la ndl
@@ -20,7 +21,9 @@ propertiesModule.controller('PlatformVersionModule', ['$scope', '$mdDialog', 'Ne
 
                             // notification des modules mis à jour
                             _.each(updatedModules, function (updatedModule) {
-                                $.notify("Module mis à jour : " + updatedModule.name, "success");
+                                $translate('module.event.updated.details', {name:updatedModule.name}).then(function(label) {
+                                    $.notify(label, "success");
+                                });                                
                             })
                         });
                 });
@@ -46,7 +49,8 @@ propertiesModule.controller('PlatformVersionModule', ['$scope', '$mdDialog', 'Ne
 }]);
 
 
-propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDialog', '$location', '$route', '$anchorScroll', '$timeout', 'ApplicationService', 'FileService', 'EventService', 'ModuleService', 'ApplicationModule', 'Page', 'PlatformColorService', 'NexusService', function ($scope, $routeParams, $mdDialog, $location, $route, $anchorScroll, $timeout, ApplicationService, FileService, EventService, ModuleService, Module, Page, PlatformColorService, NexusService) {
+propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDialog', '$location', '$route', '$anchorScroll', '$timeout', 'ApplicationService', 'FileService', 'EventService', 'ModuleService', 'ApplicationModule', 'Page', 'PlatformColorService', 'NexusService', '$translate',
+    function ($scope, $routeParams, $mdDialog, $location, $route, $anchorScroll, $timeout, ApplicationService, FileService, EventService, ModuleService, Module, Page, PlatformColorService, NexusService, $translate) {
     Page.setTitle("Properties");
 
     $scope.platform = $routeParams.platform;
@@ -849,7 +853,9 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
                 return platform.name === $routeParams.platform;
             });
             if (_.isUndefined(selected_platform)) {
-                $.notify("La brique technique mentionee dans l'url n'existe pas", "error");
+                $translate('properties.event.notExist.error').then(function(label) {
+                    $.notify(label, "error");
+                });                
             } else {
                 $scope.platform = selected_platform;
                 $scope.update_main_box(selected_platform);
@@ -1314,8 +1320,8 @@ propertiesModule.directive('toggleDeletedIterableProperties', function () {
         template: '<md-switch class="md-primary md-block" style="margin-right:2%"' +
                     'ng-model="toggle"' +
                     'ng-init="toggle=false" ' +
-                    'aria-label="Afficher les propri&eacute;t&eacute;s supprim&eacute;es">' +
-                    'Afficher les propri&eacute;t&eacute;s supprim&eacute;es ({{ getNumberOfDeletedProperties(iterableProperties) }})          ' +
+                    'aria-label="{{ \'properties.deletedOnes.switch\' | translate }}">' +
+                    '{{ \'properties.deletedOnes.switch\' | translate }} ({{ getNumberOfDeletedProperties(iterableProperties) }})          ' +
                     '</md-switch>',
         controller : ['$scope', function ($scope){
             $scope.getNumberOfDeletedProperties = function (tab) {
@@ -1359,8 +1365,8 @@ propertiesModule.directive('toggleUnspecifiedIterableProperties', function () {
         template: '<md-switch class="md-primary md-block"' +
                           'ng-model="toggle"' +
                           'ng-init="toggle=false" ' +
-                          'aria-label="Afficher les propri&eacute;t&eacute;s non renseign&eacute;es">' +
-                          'Afficher les propri&eacute;t&eacute;s non renseign&eacute;es ({{ getNumberOfUnspecifiedProperties(iterableProperties) }})' +
+                          'aria-label="{{ \'properties.unspecifiedValues.switch\' | translate }}">' +
+                          '{{ \'properties.unspecifiedValues.switch\' | translate }} ({{ getNumberOfUnspecifiedProperties(iterableProperties) }})' +
                           '</md-switch>',
         controller : ['$scope', function ($scope){
             $scope.getNumberOfUnspecifiedProperties = function (tab) {
@@ -1456,8 +1462,8 @@ propertiesModule.directive('toggleDeletedProperties', function () {
         template: '<md-switch class="md-primary md-block" ' +
             'ng-model="toggle"' +
             'ng-init="toggle=false" ' +
-            'aria-label="Afficher les propri&eacute;t&eacute;s supprim&eacute;es">' +
-            'Afficher les propri&eacute;t&eacute;s supprim&eacute;es ({{ getNumberOfDeletedProperties(keyValueProperties) }})          ' +
+            'aria-label="{{ \'properties.deletedOnes.switch\' | translate }}">' +
+            '{{ \'properties.deletedOnes.switch\' | translate }} ({{ getNumberOfDeletedProperties(keyValueProperties) }})          ' +
             '</md-switch>',
         link: function (scope) {
             scope.getNumberOfDeletedProperties = function (tab) {
@@ -2078,8 +2084,8 @@ propertiesModule.directive('toggleUnspecifiedProperties', function ($filter) {
         template: '<md-switch class="md-primary md-block" ' +
                   'ng-model="toggle"' +
                   'ng-init="toggle=false" ' +
-                  'aria-label="Afficher les propri&eacute;t&eacute;s non renseign&eacute;es">' +
-                  'Afficher les propri&eacute;t&eacute;s non renseign&eacute;es ({{ getNumberOfUnspecifiedProperties(keyValueProperties) }})' +
+                  'aria-label="{{ \'properties.unspecifiedValues.switch\' | translate }}">' +
+                  '{{ \'properties.unspecifiedValues.switch\' | translate }} ({{ getNumberOfUnspecifiedProperties(keyValueProperties) }})' +
                   '</md-switch>',
         controller: ['$scope', '$filter', function ($scope, $filter){
             /**

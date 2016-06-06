@@ -239,7 +239,7 @@ templateModule.factory('TemplateEntry', ['$hesperidesHttp', 'Template',function 
     return TemplateEntry;
 }]);
 
-templateModule.factory('TemplateService', ['$hesperidesHttp', 'Template', 'TemplateEntry', function ($http, Template, TemplateEntry) {
+templateModule.factory('TemplateService', ['$hesperidesHttp', 'Template', 'TemplateEntry', '$translate', function ($http, Template, TemplateEntry, $translate) {
 
     return {
         get: function (namespace, name) {
@@ -253,18 +253,24 @@ templateModule.factory('TemplateService', ['$hesperidesHttp', 'Template', 'Templ
             template = template.toHesperidesEntity();
             if (template.version_id < 0) {
                 return $http.post('rest/templates/' + encodeURIComponent(template.namespace) + '/' + encodeURIComponent(template.name), template).then(function (response) {
-                    $.notify("Le template a bien été créé", "success");
+                    $translate('template.event.created').then(function(label) {
+                        $.notify(label, "success");
+                    });
                     return new Template(response.data);
                 }, function (error) {
                     if (error.status === 409) {
-                        $.notify("Impossible de créer le template car il existe déjà un template avec ce nom", "error");
+                        $translate('template.event.error').then(function(label) {
+                            $.notify(label, "error");
+                        })
                     } else {
                         $.notify(error.data.message, "error");
                     }
                 });
             } else {
                 return $http.put('rest/templates/' + encodeURIComponent(template.namespace) + '/' + encodeURIComponent(template.name), template).then(function (response) {
-                    $.notify("Le template a été mis a jour", "success");
+                    $translate('template.event.updated').then(function(label) {
+                        $.notify(label, "success");
+                    });
                     return new Template(response.data);
                 }, function (error) {
                     $.notify(error.data.message, "error");
@@ -273,7 +279,9 @@ templateModule.factory('TemplateService', ['$hesperidesHttp', 'Template', 'Templ
         },
         delete: function (namespace, name) {
             return $http.delete('rest/templates/' + encodeURIComponent(namespace) + '/' + encodeURIComponent(name)).then(function (response) {
-                $.notify("Le template a bien été supprimé", "success");
+                $translate('template.event.deleted').then(function(label) {
+                    $.notify(label, "success");
+                });
                 return response;
             }, function (error) {
                 $.notify(error.data.message, "error");

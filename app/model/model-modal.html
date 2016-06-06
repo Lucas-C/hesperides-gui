@@ -20,7 +20,7 @@
 
                 <div ng-show="model.iterable_properties && model.iterable_properties.length > 0">
                     <!-- Iterable properties -->
-                    <h3>{{ 'model.modal.multipleProperties.title' | translate }}</h3>
+                    <h3>{{ 'model.multipleProperties.title' | translate }}</h3>
                     <md-virtual-repeat-container class="modal-md-virtual-repeat-container">
                         <dl class="dl-horizontal model-property-simple" ng-animate="'animate'" md-virtual-repeat="iterableProperty in model.iterable_properties | orderBy:'name'">
                             <dt>{{ iterableProperty.name }}</dt>

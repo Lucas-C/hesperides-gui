@@ -1,6 +1,6 @@
 var nexusModule = angular.module('hesperides.nexus', ['xml']);
 
-nexusModule.factory('NexusService', ['$hesperidesHttp', 'x2js', function ($http, x2js) {
+nexusModule.factory('NexusService', ['$hesperidesHttp', 'x2js', '$translate', function ($http, x2js, $translate) {
     return {
 
         /**
@@ -58,7 +58,9 @@ nexusModule.factory('NexusService', ['$hesperidesHttp', 'x2js', function ($http,
                 .then(function (response) {
                     return response.data;
                 }, function (error) {
-                    $.notify("Impossible de récupérer la note de livraison : " + error.statusText, "error");
+                    $translate('nexus.event.error', {error:error.statusText}).then(function(label) {
+                        $.notify(label, "error");                        
+                    });
                     throw error;
                 });
         }

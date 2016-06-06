@@ -44,8 +44,13 @@
             </md-content>
         </div>
         <md-dialog-actions>
-            <md-button ng-disabled="noMoreEvents" ng-click="showMoreEvents()" class="md-raised md-primary">{{noMoreEvents ? "C'est Fini" : "Plus encore ..."}}</md-button>
-            <md-button ng-click="$closeDialog()" class="md-raised md-warn">Fermer</md-button>
+            <md-button ng-disabled="noMoreEvents" ng-click="showMoreEvents()" class="md-raised md-primary" ng-show="noMoreEvents">
+                {{ 'button.modal.done' | translate }}
+            </md-button>
+            <md-button ng-disabled="noMoreEvents" ng-click="showMoreEvents()" class="md-raised md-primary" ng-show="!noMoreEvents">
+                {{ 'button.modal.more' | translate }}
+            </md-button>
+            <md-button ng-click="$closeDialog()" class="md-raised md-warn">{{ 'button.modal.close' | translate }}</md-button>
         </md-dialog-actions>
     </md-dialog-content>
 </md-dialog>

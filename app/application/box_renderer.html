@@ -3,24 +3,24 @@
         <a href="" editable-text="box.name"
            onbeforesave="update_box_name(box, box.name, $data)">
            {{box.name}}
-           <md-tooltip>Modifier le nom du groupe logique</md-tooltip>
+           <md-tooltip>{{ 'properties.logicGroup.update' | translate }}</md-tooltip>
         </a>
     </div>
     <div flex="50" layout="row" layout-align="end start">
-        <md-button ng-click="search_module(box)" aria-label="Ajouter un module" class="md-xs">
-            <md-tooltip>Ajouter un module</md-tooltip>
+        <md-button ng-click="search_module(box)" aria-label="{{ 'properties.module.add' | translate }}" class="md-xs">
+            <md-tooltip>{{ 'properties.module.add' | translate }}</md-tooltip>
             <i class="fa fa-plus"></i>
         </md-button>
         <md-button ng-click="open_add_box_dialog(box)"
-                   aria-label="Ajouter un groupe logique" class="md-xs">
-            <md-tooltip>Ajouter un groupe logique</md-tooltip>
+                   aria-label="{{ 'properties.logicGroup.add' | translate }}" class="md-xs">
+            <md-tooltip>{{ 'properties.logicGroup.add' | translate }}</md-tooltip>
             <i class="fa fa-inbox"></i>
         </md-button>
-        <md-button ng-really-message="Supprimer le groupe logique {{box.name}} ?"
-                   aria-label="Supprimer le groupe logique"
+        <md-button ng-really-message="{{ 'properties.logicGroup.delete' | translate : {name:box.name} }}"
+                   aria-label="{{ 'properties.logicGroup.delete' | translate }}"
                    ng-really-click="remove_box(box.name, box)" ng-if="box.isEmpty()"
                    class="md-warn md-xs">
-            <md-tooltip>Supprimer le groupe logique</md-tooltip>
+            <md-tooltip>{{ 'properties.logicGroup.delete' | translate : {name:box.name} }}</md-tooltip>
             <i class="fa fa-trash"></i>
         </md-button>
     </div>
@@ -34,7 +34,7 @@
             <div class="property-box-module-name layout-align-start-center layout-row flex-none" layout="row" layout-align="start center" flex="none">
                 <a href="" class="module-link" ng-click="edit_properties(platform, module)">
                     {{module.title}}
-                    <md-tooltip>Editer les propriétés</md-tooltip>
+                    <md-tooltip>{{ 'properties.module.editProperties.tooltip' | translate }}</md-tooltip>
                 </a>
             </div>
             <div flex>
@@ -48,21 +48,21 @@
                 ng-mouseleave="instance.hover = false"
                 class="property-instance" flex="nogrow">
                 <md-button class="md-raised" ng-click="edit_instance(instance, module.properties_path)"
-                           aria-label="Editer les propriétés de l'instance">
-                    <md-tooltip>Editer les propriétés de l'instance</md-tooltip>
+                           aria-label="{{ 'properties.module.instance.editProperties.tooltip' | translate }}">
+                    <md-tooltip>{{ 'properties.module.instance.editProperties.tooltip' | translate }}</md-tooltip>
                     {{instance.name}}
                 </md-button>
                 <md-button ng-click="preview_instance(box, application, platform, instance, module)"
                            class="md-xs" ng-show="instance.hover">
-                    <md-tooltip>Prévisualiser l'instance</md-tooltip>
+                    <md-tooltip>{{ 'properties.module.instance.preview' | translate }}</md-tooltip>
                     <i class="fa fa-eye"></i>
                 </md-button>
-                <md-button ng-really-message="Supprimer l'instance {{instance.name}} ?"
-                           aria-label="Supprimer l'instance"
+                <md-button ng-really-message="{{ 'properties.module.instance.delete.message' | translate :{name:instance.name} }}"
+                           aria-label="{{ 'properties.module.instance.delete' | translate }}"
                            ng-really-click="delete_instance(instance, module)"
                            class="md-warn md-xs"
                            ng-class="{'instance-delete-button-hide': !instance.hover}">
-                    <md-tooltip>Supprimer l'instance</md-tooltip>
+                    <md-tooltip>{{ 'properties.module.instance.delete' | translate }}</md-tooltip>
                     <i class="fa fa-trash"></i>
                 </md-button>
             </div>

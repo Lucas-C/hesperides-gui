@@ -24,7 +24,9 @@
     "angular-xml": "2.2.1",
     "x2js": "1.1.7",
     "jszip": "Stuk/jszip#2.5.0",
-    "angular-vs-repeat": "1.1.7"
+    "angular-vs-repeat": "1.1.7",
+    "angular-translate": "2.11.0",
+    "angular-translate-loader-static-files" : "2.11.0"
   },
   "resolutions": {
     "angular": "1.4.10"

@@ -1,12 +1,12 @@
 <md-dialog flex="50">
     <md-dialog-content>
         <div class="ng-binding">
-            <h2>Changer la version de {{module.title}}</h2>
+            <h2>{{ 'properties.module.version.modal.title' | translate }} {{module.title}}</h2>
             <md-content layout-padding class="autoScroll">
                 <form name="searchModuleForm" novalidate
                       ng-submit="searchModuleForm.$valid && $update({new_module: moduleSearched, copy_properties: copyProperties})">
                     <!--<md-input-container class="md-block">-->
-                        <label><strong>Nouvelle version</strong></label>
+                        <label><strong>{{ 'properties.module.version.modal.newVersion' | translate }}</strong></label>
                         <md-autocomplete
                                 required
                                 ng-model="moduleSearched"
@@ -19,7 +19,7 @@
                                 md-min-length="0"
                                 md-autoselect="true"
                                 md-autofocus="true"
-                                placeholder="Rechercher la nouvelle version">
+                                placeholder="{{ 'properties.module.version.modal.newVersion.placeholder' | translate }}">
                             <span md-highlight-text="searchText" ng-show="!module.is_working_copy">{{module.name}} {{module.version}}</span>
                             <span md-highlight-text="searchText" ng-show="module.is_working_copy">{{module.name}} {{module.version}} (working copy)</span>
                         </md-autocomplete>
@@ -29,7 +29,7 @@
                                ng-model="copyProperties"
                                ng-show="moduleSearched">
                         <span ng-style="{'text-decoration': (copyProperties ? '' : 'line-through'), 'font-weight' : (copyProperties ? 'bold' : 'normal')}">
-                            Copier les propriétés valorisées de la version {{module.version}} vers la version {{moduleSearched.version}}
+                           {{ 'properties.module.version.modal.copy.switch' | translate : {moduleVersion:module.version,moduleSearchedVersion:moduleSearched.version} }}
                         </span>
                     </md-switch>
                     <input type="submit" id="submit" value="Submit" ng-hide="true"/>
@@ -38,8 +38,8 @@
         </div>
         <md-dialog-actions>
             <md-button class="md-raised md-primary" ng-disabled="searchModuleForm.$invalid"
-                       ng-click="$update({new_module: moduleSearched, copy_properties: copyProperties})" ng-hide="isReadOnly">Valider</md-button>
-            <md-button ng-click="$closeDialog()" class="md-raised md-warn">Annuler</md-button>
+                       ng-click="$update({new_module: moduleSearched, copy_properties: copyProperties})" ng-hide="isReadOnly">{{ 'button.modal.validate' | translate }}</md-button>
+            <md-button ng-click="$closeDialog()" class="md-raised md-warn">{{ 'button.modal.cancel' | translate }}</md-button>
         </md-dialog-actions>
     </md-dialog-content>
 </md-dialog>

@@ -21,7 +21,8 @@ var hesperidesModule = angular.module('hesperides', [
     'mgo-angular-wizard',
     'vs-repeat',
     'scDateTime',
-    'angularjs-datetime-picker'
+    'angularjs-datetime-picker',
+    'pascalprecht.translate'
 ]).value('scDateTimeConfig', {
     defaultTheme: 'sc-date-time/hesperides.tpl',
     autosave: false,
@@ -49,8 +50,8 @@ hesperidesModule.run(function (editableOptions, editableThemes, $rootScope) {
 
     //Init bootstrap ripples
     /*$(document).ready(function () {
-        $.material.init();
-    });*/
+     $.material.init();
+     });*/
     //Prevent anoying behavior of bootstrap with dropdowns
     $(document).unbind('keydown.bs.dropdown.data-api');
 
@@ -105,38 +106,52 @@ hesperidesModule.controller("TitleCtrl", ['$scope', 'Page', 'UserService', funct
     // authenticate the user
     $scope.authenticate = function (){
         UserService.authenticate().then(function (user){
-           hesperidesUser = user;
+            hesperidesUser = user;
         });
     }
 }]);
 
-hesperidesModule.config(['$routeProvider', '$mdThemingProvider', '$ariaProvider', '$mdIconProvider', function ($routeProvider, $mdThemingProvider, $ariaProvider, $mdIconProvider) {
+hesperidesModule.config(['$routeProvider', '$mdThemingProvider', '$ariaProvider', '$mdIconProvider', '$translateProvider', function ($routeProvider, $mdThemingProvider, $ariaProvider, $mdIconProvider, $translateProvider) {
     $mdIconProvider.fontSet('fa', 'fontawesome');
 
-    $routeProvider.
-        when('/module/:name/:version', {
-            templateUrl: 'module/module.html',
-            controller: 'ModuleCtrl'
-        }).
-        when('/properties/:application', {
-            templateUrl: 'properties/properties.html',
-            controller: 'PropertiesCtrl',
-            reloadOnSearch: false
-        }).
-        when('/diff', {
-            templateUrl: 'properties/diff.html',
-            controller: 'DiffCtrl'
-        }).
-        when('/techno/:name/:version', {
-            templateUrl: 'techno/techno.html',
-            controller: 'TechnoCtrl'
-        }).
-        when('/help/swagger', {
-            templateUrl: 'swagger/swagger.html'
-        }).
-        otherwise({
-            templateUrl: 'welcome_screen.html'
+    var configureTranslation = function(){
+        $translateProvider.useStaticFilesLoader({
+            prefix: '/i18n/label_',
+            suffix: '.json'
         });
+        $translateProvider.fallbackLanguage('fr');
+        $translateProvider.determinePreferredLanguage(function(){
+            if (window.navigator.language == 'fr') {
+                return 'fr'
+            }
+            return 'en';
+        });
+    };
+
+    $routeProvider.
+    when('/module/:name/:version', {
+        templateUrl: 'module/module.html',
+        controller: 'ModuleCtrl'
+    }).
+    when('/properties/:application', {
+        templateUrl: 'properties/properties.html',
+        controller: 'PropertiesCtrl',
+        reloadOnSearch: false
+    }).
+    when('/diff', {
+        templateUrl: 'properties/diff.html',
+        controller: 'DiffCtrl'
+    }).
+    when('/techno/:name/:version', {
+        templateUrl: 'techno/techno.html',
+        controller: 'TechnoCtrl'
+    }).
+    when('/help/swagger', {
+        templateUrl: 'swagger/swagger.html'
+    }).
+    otherwise({
+        templateUrl: 'welcome_screen.html'
+    });
 
     //Material design theming
     $mdThemingProvider.theme('default')
@@ -156,6 +171,8 @@ hesperidesModule.config(['$routeProvider', '$mdThemingProvider', '$ariaProvider'
         tabindex: false,
         bindKeypress: false
     });
+
+    configureTranslation();
 }]);
 
 hesperidesModule.directive('ngReallyClick', ['$mdDialog', '$timeout', function ($mdDialog, $timeout) {
@@ -168,26 +185,26 @@ hesperidesModule.directive('ngReallyClick', ['$mdDialog', '$timeout', function (
                 }
 
                 /* Why some time working, sometime not working ?
-                if (attrs.ngReallyMessage) {
-                    var confirm = $mdDialog.confirm()
-                        .title('Question ?')
-                        .textContent(attrs.ngReallyMessage)
-                        .ariaLabel(attrs.ngReallyMessage)
-                        //.targetEvent(ev)
-                        .theme('confirm-hesperides-dialog')
-                        .ok('Oui')
-                        .cancel('Non');
+                 if (attrs.ngReallyMessage) {
+                 var confirm = $mdDialog.confirm()
+                 .title('Question ?')
+                 .textContent(attrs.ngReallyMessage)
+                 .ariaLabel(attrs.ngReallyMessage)
+                 //.targetEvent(ev)
+                 .theme('confirm-hesperides-dialog')
+                 .ok('Oui')
+                 .cancel('Non');
 
-                    $mdDialog.show(confirm).then(function() {
-                        // To prevent '$digest already in progress' message
-                        // see https://stackoverflow.com/questions/12729122/angularjs-prevent-error-digest-already-in-progress-when-calling-scope-apply
-                        $timeout(function() {
-                            scope.$apply(attrs.ngReallyClick);
-                        });
-                    }, function() {
-                        //$scope.status = 'You decided to keep your debt.';
-                    });
-                }*/
+                 $mdDialog.show(confirm).then(function() {
+                 // To prevent '$digest already in progress' message
+                 // see https://stackoverflow.com/questions/12729122/angularjs-prevent-error-digest-already-in-progress-when-calling-scope-apply
+                 $timeout(function() {
+                 scope.$apply(attrs.ngReallyClick);
+                 });
+                 }, function() {
+                 //$scope.status = 'You decided to keep your debt.';
+                 });
+                 }*/
             });
         }
     }
@@ -291,7 +308,7 @@ hesperidesModule.filter('interpolate', ['version', function (version) {
 
 hesperidesModule.directive('konami', function() {
     return {
-        restrict: 'EA',
+        restrict: 'E',
         scope: {name: '@'},
         link: function(scope, element, attrs) {
             var keys = [38, 38, 40, 40, 37, 39, 37, 39, 66, 65];
@@ -301,7 +318,7 @@ hesperidesModule.directive('konami', function() {
                     if(i === keys.length) {
                         $(document).unbind('keydown', arguments.callee);
                         //Konami code is active, do some fun stuff here
-                        element.append('<img src="img/'+scope.name+'" width="100%"></img>');
+                        element.append('<img src="img/' + scope.name + '" width="100%" />');
                     }
                 } else {
                     i = 0;
@@ -367,7 +384,7 @@ hesperidesModule.factory('$hesperidesHttp', ['$http', '$q', function($http, $q){
  * Added by Tidane SIDIBE on 04/04/2016
  *
  *
-hesperidesModule.directive('hesperidesScroll', function ($timeout){
+ hesperidesModule.directive('hesperidesScroll', function ($timeout){
     return {
         restrict: 'A',
         controller: ['$scope', '$location', '$anchorScroll', function ($scope, $location, $anchorScroll){
@@ -385,7 +402,7 @@ hesperidesModule.directive('hesperidesScroll', function ($timeout){
         }
     }
 });
-**/
+ **/
 hesperidesModule.directive('hesperidesCompareDateTime', function (){
     return {
         scope: {
@@ -394,7 +411,7 @@ hesperidesModule.directive('hesperidesCompareDateTime', function (){
         },
 
         templateUrl: 'hesperides/hesperides-compare-date-time.html',
-        link:function (scope, element, attrs, ctrl){
+        link:function (scope){
             //-- date for start
             var date = new Date();
             var year = date.getFullYear();
@@ -434,41 +451,41 @@ hesperidesModule.directive('hesperidesCompareDateTime', function (){
 hesperidesModule.service ('PlatformColorService', function (){
     return {
 
+        /**
+         * Getting a color according to input.
+         * @param {String} name : the input string
+         */
+        calculateColor: function (name){
+
             /**
-             * Getting a color according to input.
-             * @param {String} name : the input string
+             * Private utility function that calculates
+             * a RGB color code according to the input string
              */
-            calculateColor: function (name){
+            pastelColour = function(name) {
 
-                /**
-                 * Private utility function that calculates
-                 * a RGB color code according to the input string
-                 */
-                pastelColour = function(name) {
+                var baseRed = 220;
+                var baseGreen = 220;
+                var baseBlue = 220;
 
-                    var baseRed = 220;
-                    var baseGreen = 220;
-                    var baseBlue = 220;
+                //lazy seeded random hack to get values from 0 - 256
+                //for seed just take bitwise XOR of first two chars
+                var seed = name.charCodeAt(0) ^ name.charCodeAt(1) ^ name.charCodeAt(2);
+                var rand_1 = Math.abs((Math.sin(seed++) * 10000)) % 256;
+                var rand_2 = Math.abs((Math.sin(seed++) * 10000)) % 256;
+                var rand_3 = Math.abs((Math.sin(seed) * 10000)) % 256;
 
-                    //lazy seeded random hack to get values from 0 - 256
-                    //for seed just take bitwise XOR of first two chars
-                    var seed = name.charCodeAt(0) ^ name.charCodeAt(1) ^ name.charCodeAt(2);
-                    var rand_1 = Math.abs((Math.sin(seed++) * 10000)) % 256;
-                    var rand_2 = Math.abs((Math.sin(seed++) * 10000)) % 256;
-                    var rand_3 = Math.abs((Math.sin(seed++) * 10000)) % 256;
+                //build colour
+                var red = Math.round((rand_1 + baseRed) / 2);
+                var green = Math.round((rand_2 + baseGreen) / 2);
+                var blue = Math.round((rand_3 + baseBlue) / 2);
 
-                    //build colour
-                    var red = Math.round((rand_1 + baseRed) / 2);
-                    var green = Math.round((rand_2 + baseGreen) / 2);
-                    var blue = Math.round((rand_3 + baseBlue) / 2);
+                return { red: red, green: green, blue: blue };
+            };
 
-                    return { red: red, green: green, blue: blue };
-                };
-
-                // get the final color in rgb
-                var rgb_pastel = pastelColour(name);
-                var bgColor = "rgb("+rgb_pastel.red+", "+rgb_pastel.green+", "+rgb_pastel.blue+")";
-                return bgColor;
-            }
+            // get the final color in rgb
+            var rgb_pastel = pastelColour(name);
+            var bgColor = "rgb("+rgb_pastel.red+", "+rgb_pastel.green+", "+rgb_pastel.blue+")";
+            return bgColor;
+        }
     };
 });

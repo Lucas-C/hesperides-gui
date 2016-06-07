@@ -1,12 +1,12 @@
 <md-dialog flex="30">
     <md-dialog-content>
         <div class="ng-binding">
-            <h2>Ajouter un module</h2>
+            <h2>{{ 'properties.module.add' | translate }}</h2>
             <md-content layout-padding class="autoScroll">
                 <form name="searchModuleForm" novalidate
                       ng-submit="searchModuleForm.$valid && $add(moduleSearched)">
                     <!--<md-input-container class="md-block">-->
-                        <label><strong>Rechercher...</strong></label>
+                        <label><strong>{{ 'placeholder.search' | translate }}</strong></label>
                         <br/>
                         <md-autocomplete
                                 required
@@ -20,7 +20,7 @@
                                 md-min-length="0"
                                 md-autoselect="true"
                                 md-autofocus="true"
-                                placeholder="Rechercher un module par nom">
+                                placeholder="{{ 'properties.module.search.placeholder' | translate }}">
                             <span md-highlight-text="ctrl.searchText" ng-show="!module.is_working_copy">{{module.name}} {{module.version}}</span>
                             <span md-highlight-text="ctrl.searchText" ng-show="module.is_working_copy">{{module.name}} {{module.version}} (working copy)</span>
                         </md-autocomplete>
@@ -31,8 +31,8 @@
         </div>
         <md-dialog-actions>
             <md-button class="md-raised md-primary" ng-disabled="addComponentForm.$invalid"
-                       ng-click="$add(moduleSearched)" ng-hide="isReadOnly">Ajouter</md-button>
-            <md-button ng-click="$closeDialog()" class="md-raised md-warn">Annuler</md-button>
+                       ng-click="$add(moduleSearched)" ng-hide="isReadOnly">{{ 'button.modal.add' | translate }}</md-button>
+            <md-button ng-click="$closeDialog()" class="md-raised md-warn">{{ 'button.modal.cancel' | translate }}</md-button>
         </md-dialog-actions>
     </md-dialog-content>
 </md-dialog>

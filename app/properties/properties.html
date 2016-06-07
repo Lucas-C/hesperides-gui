@@ -4,13 +4,13 @@
         <div class="bg-light">
             <div layout="row" class="height-30px">
                 <div>
-                    <h3>Plateformes de <strong>{{application.name}}</strong></h3>
+                    <h3>{{ 'properties.application.title' | translate }} <strong>{{application.name}}</strong></h3>
                 </div>
                 <div flex>
                     <md-input-container md-no-float class="md-block filter-platform width-50-pc">
                         <label></label>
                         <input type="text" ng-trim="true" ng-model="searchInPlatforms"
-                               placeholder="Filtrer les plateformes (en fonction du nom de la plateforme, ou de la version)"/>
+                               placeholder="{{ 'properties.platform.filter.placeholder' | translate }}"/>
                     </md-input-container>
                 </div>
             </div>
@@ -25,7 +25,7 @@
                            selectable="true"
                            editable="false"
                            css="md-warn"
-                           tooltip="Afficher la plateforme"
+                           tooltip="{{ 'properties.platform.selection.tooltip' | translate }}"
                            size="small">
             </list-of-items>
 
@@ -47,17 +47,17 @@
 <div layout="column" ng-show="platform" class="bg-light">
     <div layout="row">
         <div flex="66">
-            <h3><span>Représentation logique de <strong>{{platform.name}} (version
+            <h3><span>{{ 'properties.platform.title' | translate }} <strong>{{platform.name}} (version
                 <a href="" ng-click="change_platform_version(platform)"
                    class="ng-binding"
                    onaftersave="save_platform_from_box(mainBox)">{{platform.application_version}}</a>
-                <md-tooltip>Modifier le label 'version de l'application'</md-tooltip>
+                <md-tooltip>{{ 'properties.platform.version.tooltip' | translate }}</md-tooltip>
                 )</strong>
 
                 <!-- Show events for platform -->
-                <md-button aria-label="Afficher l'historique" ng-click="show_events(application, platform, 'platform')" class="md-xs">
+                <md-button aria-label="{{ 'properties.platform.version.history' | translate }}" ng-click="show_events(application, platform, 'platform')" class="md-xs">
                     <span class="fa fa-history fa-2x"></span>
-                    <md-tooltip>Afficher l'historique</md-tooltip>
+                    <md-tooltip>{{ 'properties.platform.version.history' | translate }}</md-tooltip>
                 </md-button>
 
             </span>
@@ -66,8 +66,8 @@
         <div flex="33" layout-align="center top">
             <h3>
                 <md-switch class="md-primary properties-poduction" aria-label="Production" ng-model="platform.production" ng-disabled="!isProductionUser()" ng-change="save_platform_from_box(mainBox)" id="isProduction">
-                    Plateforme de production
-                    <md-tooltip>Cette action est réservée aux exploitants</md-tooltip>
+                    {{ 'properties.platform.production.switch' | translate }}
+                    <md-tooltip>{{ 'properties.platform.production.switch.tooltip' | translate }}</md-tooltip>
                 </md-switch>
             </h3>
         </div>
@@ -75,14 +75,14 @@
 
     <div layout="row">
         <div flex="none">
-            <md-button ng-click="treeModeShow()" ng-class="{'md-raised':tree}" aria-label="Afficher en mode arbre">
-                <md-tooltip>Afficher en mode arbre</md-tooltip>
+            <md-button ng-click="treeModeShow()" ng-class="{'md-raised':tree}" aria-label="{{ 'properties.platform.treeMode.tooltip' | translate }}">
+                <md-tooltip>{{ 'properties.platform.treeMode.tooltip' | translate }}</md-tooltip>
                 <i class="fa fa-tree"></i>
             </md-button>
         </div>
         <div flex>
-            <md-button ng-click="boxModeShow()" ng-class="{'md-raised':box}" aria-label="Afficher en mode bloc">
-                <md-tooltip>Afficher en mode bloc</md-tooltip>
+            <md-button ng-click="boxModeShow()" ng-class="{'md-raised':box}" aria-label="{{ 'properties.platform.boxMode.tooltip' | translate }}">
+                <md-tooltip>{{ 'properties.platform.boxMode.tooltip' | translate }}</md-tooltip>
                 <i class="fa fa-clone"></i>
             </md-button>
         </div>

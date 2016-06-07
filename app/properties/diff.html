@@ -1,13 +1,13 @@
-<h3>Diff entre <span class="diff-text-modifiable">{{application_name}} - {{platform_name}} {{properties_path}}</span>
-    et <span class="diff-text-unmodifiable">{{compare_application}} -
+<h3>{{ 'properties.compare.title.part1' | translate }} <span class="diff-text-modifiable">{{application_name}} - {{platform_name}} {{properties_path}}</span>
+    {{ 'common.word.and' | translate }} <span class="diff-text-unmodifiable">{{compare_application}} -
     {{compare_platform}} {{compare_path}}</span></h3>
 
 <div layout="row" layout-margin>
     <md-button class="md-raised md-primary" ng-click="apply_diff()">
-        1/ Prévisualiser les changements <span class="diff-warning-text-button">ne sauvegarde pas</span>
+        1/  {{ 'properties.compare.previewChanges.part1' | translate }} <span class="diff-warning-text-button">{{ 'properties.compare.previewChanges.part2' | translate }}</span>
     </md-button>
-    <md-button class="md-raised md-primary"  ng-really-click="save_diff()" ng-really-message="Les modifications vont être appliquées sur {{application_name}} - {{platform_name}}. Continuer ?">
-        2/ <span class="diff-warning-text-button">Sauvegarder</span> les changements (il faut avoir prévisualisé avant)
+    <md-button class="md-raised md-primary"  ng-really-click="save_diff()" ng-really-message="{{ 'properties.compare.saveChanges.message' | translate : {application:application_name,platform:platform_name} }}">
+        2/ <span class="diff-warning-text-button">{{ 'properties.compare.saveChanges.part1' | translate }} </span>{{ 'properties.compare.saveChanges.part2' | translate }}
     </md-button>
 </div>
 
@@ -23,14 +23,14 @@
         </div>
 
         <div flex>
-            <h3>Seulement sur <span class="diff-text-modifiable">{{application_name}} - {{platform_name}}</span>
+            <h3>{{ 'properties.compare.values.onlyOn' | translate }} <span class="diff-text-modifiable">{{application_name}} - {{platform_name}}</span>
                 ({{(diff_containers | filter:{'status':0}).length}})</h3>
         </div>
     </div>
     <div layout="row" layout-wrap ng-show="toggle0">
         <div flex="20">
             <md-input-container class="md-block">
-                <label>Filtrer les propriétés par clé</label>
+                <label>{{ 'properties.filter.byKey' | translate }}</label>
                 <input type="text"required ng-trim="true"
                        ng-model="propertiesKeyFilter0">
             </md-input-container>
@@ -82,7 +82,7 @@
         </div>
 
         <div flex>
-            <h3>Identiques sur <span class="diff-text-modifiable">{{application_name}} - {{platform_name}}</span> et <span
+            <h3>{{ 'properties.compare.values.identicalOnes' | translate }} <span class="diff-text-modifiable">{{application_name}} - {{platform_name}}</span> {{ 'common.word.and' | translate }} <span
                     class="diff-text-unmodifiable">{{compare_application}} -
                 {{compare_platform}}</span>
                 ({{(diff_containers | filter:{'status': 1}).length}})</h3>
@@ -90,31 +90,31 @@
     </div>
     <div layout="row" layout-wrap ng-show="toggle1">
         <div flex="20">
-            <md-switch class="md-primary" ng-model="show_only_modified" aria-label="Ne montrer que les valeurs venant d'être modifiées" class="md-block">
-                Ne montrer que les valeurs <br/>venant d'être modifiées
+            <md-switch class="md-primary" ng-model="show_only_modified" aria-label="{{ 'properties.compare.values.showLastEdited' | translate }}" class="md-block">
+                {{ 'properties.compare.values.showLastEdited' | translate }}
             </md-switch>
         </div>
         <div flex="35" layout-align="end start" layout="row">
-            <div class="diff-text-modifiable">{{application_name}} - {{platform_name}} (destination =&gt; modifiable)</div>
+            <div class="diff-text-modifiable">{{application_name}} - {{platform_name}} {{ 'properties.compare.values.editable' | translate }}</div>
         </div>
         <div flex="5">
 
         </div>
         <div flex="40">
-            <span class="diff-text-unmodifiable">{{compare_application}} - {{compare_platform}} (source =&gt; non modifiable)</span>
+            <span class="diff-text-unmodifiable">{{compare_application}} - {{compare_platform}} {{ 'properties.compare.values.readOnly' | translate }}</span>
         </div>
     </div>
     <div layout="row" layout-wrap ng-show="toggle1">
         <div flex="20">
             <md-input-container class="md-block">
-                <label>Filtrer les propriétés par clé</label>
+                <label>{{ 'properties.filter.byKey' | translate }}</label>
                 <input type="text"required ng-trim="true"
                        ng-model="propertiesKeyFilter1">
             </md-input-container>
         </div>
         <div flex="35" layout-align="end start" layout="row">
             <div>
-                <span>Sélectionner les valeurs à reporter <span
+                <span>{{ 'properties.compare.values.selectToReport' | translate }} <span
                         class="fa fa-stop diff-text-unmodifiable"></span> =====&gt; <span
                         class="fa fa-stop diff-text-modifiable"></span></span>
             </div>
@@ -127,7 +127,7 @@
             </div>
         </div>
         <div flex="40">
-            Tous
+            {{ 'common.word.all' | translate }}
         </div>
     </div>
     <md-divider ng-show="toggle1" class="diff-divider"></md-divider>
@@ -170,7 +170,7 @@
         </div>
 
         <div flex>
-            <h3>Différents sur <span class="diff-text-modifiable">{{application_name}} - {{platform_name}}</span> et <span
+            <h3>{{ 'properties.compare.values.differentOnes' | translate }} <span class="diff-text-modifiable">{{application_name}} - {{platform_name}}</span> et <span
                     class="diff-text-unmodifiable">{{compare_application}} -
                 {{compare_platform}}</span>
                 ({{(diff_containers | filter:{'status':2}).length}})</h3>
@@ -181,26 +181,26 @@
 
         </div>
         <div flex="35" layout-align="end start" layout="row">
-            <div><span class="diff-text-modifiable">{{application_name}} - {{platform_name}} (destination =&gt; modifiable)</span></div>
+            <div><span class="diff-text-modifiable">{{application_name}} - {{platform_name}} {{ 'properties.compare.values.editable' | translate }}</span></div>
         </div>
         <div flex="5">
 
         </div>
         <div flex="40">
-            <span class="diff-text-unmodifiable">{{compare_application}} - {{compare_platform}} (source =&gt; non modifiable)</span>
+            <span class="diff-text-unmodifiable">{{compare_application}} - {{compare_platform}} {{ 'properties.compare.values.readOnly' | translate }}</span>
         </div>
     </div>
     <div layout="row" layout-wrap ng-show="toggle2">
         <div flex="20">
             <md-input-container class="md-block">
-                <label>Filtrer les propriétés par clé</label>
+                <label>{{ 'properties.filter.byKey' | translate }}</label>
                 <input type="text"required ng-trim="true"
                        ng-model="propertiesKeyFilter2">
             </md-input-container>
         </div>
         <div flex="35" layout-align="end start" layout="row">
             <div>
-                <span>Sélectionner les valeurs à reporter <span
+                <span>{{ 'properties.compare.values.selectToReport' | translate }} <span
                         class="fa fa-stop diff-text-unmodifiable"></span> =====&gt; <span
                         class="fa fa-stop diff-text-modifiable"></span></span>
             </div>
@@ -213,7 +213,7 @@
             </div>
         </div>
         <div flex="40">
-            Tous
+            {{ 'common.word.all' | translate }}
         </div>
     </div>
     <md-divider ng-show="toggle2" class="diff-divider"></md-divider>
@@ -252,7 +252,7 @@
         </div>
 
         <div flex>
-            <h3>Seulement sur <span class="diff-text-unmodifiable">{{compare_application}} - {{compare_platform}}</span>
+            <h3>{{ 'properties.compare.values.onlyOn' | translate }} <span class="diff-text-unmodifiable">{{compare_application}} - {{compare_platform}}</span>
                 ({{(diff_containers | filter:{'status':3}).length}})</h3>
         </div>
     </div>
@@ -260,26 +260,26 @@
         <div flex="20">
         </div>
         <div flex="35" layout-align="end start" layout="row">
-            <div class="diff-text-modifiable">{{application_name}} - {{platform_name}} (destination =&gt; modifiable)</div>
+            <div class="diff-text-modifiable">{{application_name}} - {{platform_name}} {{ 'properties.compare.values.editable' | translate }}</div>
         </div>
         <div flex="5">
 
         </div>
         <div flex="40">
-            <span class="diff-text-unmodifiable">{{compare_application}} - {{compare_platform}} (source =&gt; non modifiable)</span>
+            <span class="diff-text-unmodifiable">{{compare_application}} - {{compare_platform}} {{ 'properties.compare.values.readOnly' | translate }}</span>
         </div>
     </div>
     <div layout="row" layout-wrap ng-show="toggle3">
         <div flex="20">
             <md-input-container class="md-block">
-                <label>Filtrer les propriétés par clé</label>
+                <label>{{ 'properties.filter.byKey' | translate }}</label>
                 <input type="text"required ng-trim="true"
                        ng-model="propertiesKeyFilter3">
             </md-input-container>
         </div>
         <div flex="35" layout-align="end start" layout="row">
             <div>
-                <span>Sélectionner les valeurs à reporter <span
+                <span>{{ 'properties.compare.values.selectToReport' | translate }} <span
                         class="fa fa-stop diff-text-unmodifiable"></span> =====&gt; <span
                         class="fa fa-stop diff-text-modifiable"></span></span>            </div>
         </div>
@@ -291,7 +291,7 @@
             </div>
         </div>
         <div flex="40">
-            Tous
+            {{ 'common.word.all' | translate }}
         </div>
     </div>
     <md-divider ng-show="toggle3" class="diff-divider"></md-divider>
@@ -321,9 +321,9 @@
 
 <div layout="row" layout-margin>
     <md-button class="md-raised md-primary" ng-click="apply_diff()">
-        1/ Prévisualiser les changements <span class="diff-warning-text-button">ne sauvegarde pas</span>
+        1/ {{ 'properties.compare.previewChanges.part1' | translate }} <span class="diff-warning-text-button">{{ 'properties.compare.previewChanges.part2' | translate }}</span>
     </md-button>
-    <md-button class="md-raised md-primary"  ng-really-click="save_diff()" ng-really-message="Les modifications vont être appliquées sur {{application_name}} - {{platform_name}}. Continuer ?">
-        2/ <span class="diff-warning-text-button">Sauvegarder</span> les changements (il faut avoir prévisualisé avant)
+    <md-button class="md-raised md-primary"  ng-really-click="save_diff()" ng-really-message="{{ 'properties.compare.saveChanges.message' | translate : {application:application_name,platform:platform_name} }}">
+        2/ <span class="diff-warning-text-button">{{ 'properties.compare.saveChanges.part1' | translate }}</span> {{ 'properties.compare.saveChanges.part2' | translate }}
     </md-button>
 </div>

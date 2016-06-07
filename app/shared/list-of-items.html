@@ -8,8 +8,8 @@
                    ng-style="{'background-color': backgroundColor(item)}"
                 >{{selfLabel(item)}}
             <md-button class="md-warn md-xs"
-                       ng-really-message="Etes-vous sur de vouloir supprimer '{{selfLabel(item)}}' ?"
-                       aria-label="Etes-vous sur de vouloir supprimer '{{selfLabel(item)}}' ?"
+                       ng-really-message="{{ 'message.delete' | translate : {name:selfLabel(item)} }}"
+                       aria-label="{{ 'message.delete' | translate : {name:selfLabel(item)} }}"
                        ng-really-click="selfDelete(item)"
                        ng-mouseenter="hover = true"
                        ng-mouseleave="hover = false"
@@ -49,10 +49,10 @@
                     md-min-length="0"
                     md-autoselect="true"
                     md-autofocus="true"
-                    placeholder="Rechercher...">
+                    placeholder="{{ 'placeholder.search' | translate }}">
                 <span md-highlight-text="ctrl.searchText">{{techno.name}} {{techno.version}}</span>
                 <md-not-found>
-                    Aucun résultat trouvé
+                    {{ 'message.emptyResult' | translate }}
                 </md-not-found>
             </md-autocomplete>
         </md-input-container>

@@ -1,31 +1,30 @@
-<md-button ng-click="open_add_instance_dialog(module)" aria-label="Ajouter une instance" class="md-xs">
+<md-button ng-click="open_add_instance_dialog(module)" aria-label="A{{ 'properties.module.instance.add' | translate }}" class="md-xs">
     <span class="fa fa-plus"></span>
-    <md-tooltip>Ajouter une instance</md-tooltip>
+    <md-tooltip>{{ 'properties.module.instance.add' | translate }}</md-tooltip>
 </md-button>
 
-<md-button class="md-xs" aria-label="Comparer les properties" ng-click="diff_properties(module)">
+<md-button class="md-xs" aria-label="{{ 'properties.module.compareProperties' | translate }}" ng-click="diff_properties(module)">
     <span class="fa fa-exchange"></span>
-    <md-tooltip>Comparer les propriétés</md-tooltip>
+    <md-tooltip>{{ 'properties.module.compareProperties' | translate }}</md-tooltip>
 </md-button>
 
-<md-button aria-label="Afficher le module" class="md-xs">
-    <a ng-href="{{open_module_page(module.name, module.version, module.is_working_copy)}}">
-        <i class="fa fa-pencil fa-inverse"></i>
-        <md-tooltip>Afficher le module {{module.title}}</md-tooltip>
-    </a>
+
+<md-button ng-click="open_module_page(module.name, module.version, module.is_working_copy)" aria-label="{{ 'properties.module.display' | translate : {name:module.title} }}" class="md-xs">
+    <i class="fa fa-pencil"></i>
+    <md-tooltip>{{ 'properties.module.display' | translate : {name:module.title} }}</md-tooltip>
 </md-button>
 
-<md-button aria-label="Modifier la version du module" class="md-xs" ng-click="change_module(module)">
-    <md-tooltip>Modifier la version du module</md-tooltip>
+<md-button aria-label="{{ 'properties.module.updateVersion' | translate }}" class="md-xs" ng-click="change_module(module)">
+    <md-tooltip>{{ 'properties.module.updateVersion' | translate }}</md-tooltip>
     <span class="fa fa-tag"></span>
 </md-button>
 
-<md-button aria-label="Afficher l'historique" ng-click="show_events(box, module, 'module')" class="md-xs">
+<md-button aria-label="{{ 'properties.module.history' | translate }}" ng-click="show_events(box, module, 'module')" class="md-xs">
     <span class="fa fa-history"></span>
-    <md-tooltip>Afficher l'historique</md-tooltip>
+    <md-tooltip>{{ 'properties.module.history' | translate }}</md-tooltip>
 </md-button>
 
-<md-button ng-really-message="Supprimer le module {{module.title}} et toutes ses instances ?" aria-label="Supprimer le module" ng-really-click="delete_module(module, box)" class="md-xs md-warn">
+<md-button ng-really-message="{{ 'properties.module.delete.message' | translate : {name:module.title} }}" aria-label="{{ 'properties.module.delete' | translate }}" ng-really-click="delete_module(module, box)" class="md-xs md-warn">
     <span class="fa fa-trash"></span>
-    <md-tooltip>Supprimer le module</md-tooltip>
+    <md-tooltip>{{ 'properties.module.delete' | translate }}</md-tooltip>
 </md-button>

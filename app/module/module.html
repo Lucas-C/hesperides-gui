@@ -7,10 +7,10 @@
                 <md-button class="md-raised md-primary"
                            ng-show="is_workingcopy"
                            ng-click="open_create_release_dialog(module)">
-                    <i class="fa fa-code-fork"></i> Créer la release</md-button>
+                    <i class="fa fa-code-fork"></i> {{ 'button.release.create' | translate }}</md-button>
                 <md-button class="md-raised md-warn"
                            ng-click="open_associated_properties_dialog(module)">
-                    <i class="fa fa-list"></i> Les propriétés associées</md-button>
+                    <i class="fa fa-list"></i> {{ 'button.associateProperties' | translate }}</md-button>
             </h3>
         </div>
     </div>
@@ -18,7 +18,7 @@
 <div layout="row">
     <div flex>
         <div class="bg-light module-file" flex>
-            <h4>Les fichiers spécifiques du module</h4>
+            <h4>{{ 'module.specificFiles' | translate }}</h4>
             <hesperides-template-list template-entries="templateEntries"
                                       add="add_template"
                                       edit="edit_template"
@@ -30,7 +30,7 @@
 <div layout="row">
     <div flex>
         <div class="bg-light" flex>
-            <h4>Les technos de ce module</h4>
+            <h4>{{ 'module.technoList' | translate }}</h4>
             <list-of-items items="module.technos"
                            createfunction="add_techno($name)"
                            ondelete="delete_techno($item)"
@@ -40,7 +40,7 @@
                            selected-item="techno"
                            selectable="true"
                            editable="is_workingcopy"
-                           placeholder="Rechercher une techno"
+                           placeholder="{{ 'module.search.techno' | translate }}"
                            typeaheadexpression="techno in $parent.$parent.$parent.search_technos(ctrl.searchText)"
                     ></list-of-items>
         </div>

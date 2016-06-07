@@ -3,7 +3,7 @@
         <!-- Filtre sur l'arbre -->
         <div>
             <md-input-container class="md-block margin-inherit">
-                <label>Filtrer sur l'arbre</label>
+                <label>{{ 'properties.treeMode.title' | translate }}</label>
                 <!-- Add ngModelOptions for big tree, to prevent key press hang -->
                 <input type="text" ng-trim="true" ng-model="searchInTree" ng-model-options="{ debounce: { 'default': 250 } }" />
             </md-input-container>
@@ -11,18 +11,18 @@
 
         <!-- Element root de l'arbre -->
         <div id="header" layout="row">
-            <div flex="none" layout="row" layout-align="none center"><h3>Plateforme</h3></div>
+            <div flex="none" layout="row" layout-align="none center"><h3>{{ 'properties.treeMode.platform.title' | translate }}</h3></div>
             <div flex="grow" layout="row" layout-align="none center">
                 <md-button ng-click="open_add_box_dialog(mainBox)" class="md-xs" aria-label="Ajouter un groupe logique" tooltip="">
-                    <md-tooltip>Ajouter un groupe logique</md-tooltip>
+                    <md-tooltip>{{ 'properties.logicGroup.add' | translate }}</md-tooltip>
                     <i class="fa fa-inbox"></i>
                 </md-button>
-                <md-button class="md-xs" aria-label="Editer les propriétés" ng-click="showGlobalPropertiesDisplay();movePropertiesDivHolderToCursorPosition($event);">
-                    <md-tooltip>Editer les propriétés globales</md-tooltip>
+                <md-button class="md-xs" aria-label="{{ 'properties.platform.globalProperties.edit' | translate }}" ng-click="showGlobalPropertiesDisplay();movePropertiesDivHolderToCursorPosition($event);">
+                    <md-tooltip>{{ 'properties.platform.globalProperties.edit' | translate }}</md-tooltip>
                     <i class="fa fa-list"></i>
                 </md-button>
-                <md-button class="md-xs" aria-label="Comparer les propriétés globales" ng-click="diff_global_properties(platform)">
-                    <md-tooltip>Comparer les propriétés globales</md-tooltip>
+                <md-button class="md-xs" aria-label="{{ 'properties.platform.globalProperties.compare' | translate }}" ng-click="diff_global_properties(platform)">
+                    <md-tooltip>{{ 'properties.platform.globalProperties.compare' | translate }}</md-tooltip>
                     <i class="fa fa-exchange"></i>
                 </md-button>
             </div>
@@ -44,7 +44,7 @@
             <md-button class="md-raised md-primary"
                        ng-click="save_global_properties(platform.global_properties)">
                 <i class="fa fa-check"></i>
-                Sauver les propriétés globales
+                {{ 'properties.platform.globalProperties.save' | translate }}
             </md-button>
 
             <toggle-sort-properties sort-order="order"></toggle-sort-properties>
@@ -58,7 +58,7 @@
         </div>
         <div class="margin-top-5px" layout="row" ng-show="properties">
             <div >
-                <h3><span>Les propriétés associées à <strong>{{selected_module.path.split('#').join('
+                <h3><span>{{ 'properties.module.editProperties.title' | translate }} <strong>{{selected_module.path.split('#').join('
                     | ')}} | {{selected_module.title}}</strong></span>
                 </h3>
             </div>
@@ -67,13 +67,13 @@
             <div>
                 <md-button id="cleanPropertiesButton" ng-click="clean_properties(properties)" class="md-raised">
                     <i class="fa fa-trash"></i>
-                    <span>Nettoyer les valorisations inutiles</span>
+                    <span>{{ 'properties.module.editProperties.cleanUselessValues' | translate }}</span>
                 </md-button>
                 <md-button id="savedPropertiesButton"
                            ng-click="save_properties(properties, selected_module)"
                            class="md-raised md-primary">
                     <i class="fa fa-check"></i>
-                    <span>Sauver les propriétés</span>
+                    <span>{{ 'properties.module.editProperties.save' | translate }}</span>
                 </md-button>
             </div>
         </div>
@@ -87,7 +87,7 @@
         <div layout="row" ng-show="instance">
             <div >
                 <h3 class="margin-top-0px">
-                    <span class="margin-right-30px">Les propriétés d'instance associées à
+                    <span class="margin-right-30px">{{ 'properties.module.instance.editProperties.title' | translate }}
                         <strong>
                             <a href="" editable-text="instance.name" onbeforesave="update_instance_name(instance, $data)">{{instance.name}}</a>
                         </strong>
@@ -96,12 +96,12 @@
 
                 <md-button id="cleanPropertiesButton" ng-click="clean_properties(properties)" class="md-raised">
                     <i class="fa fa-trash"></i>
-                    <span>Nettoyer les valorisations inutiles</span>
+                    <span>{{ 'properties.module.editProperties.cleanUselessValues' | translate }}</span>
                 </md-button>
 
                 <md-button ng-click="save_platform_from_box(mainBox)" class="md-raised md-primary">
                     <i class="fa fa-check"></i>
-                    <span>Sauver les propriétés</span>
+                    <span>{{ 'properties.module.editProperties.save' | translate }}</span>
                 </md-button>
 
                 <!-- Showing instance properties -->

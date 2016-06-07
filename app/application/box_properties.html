@@ -1,7 +1,7 @@
 <!-- Properties commands -->
 <div layout="row" class="vertical-align padding-bottom-20px">
     <h3>
-        <span class="padding-right-10px" >Propriétés niveau plateforme</span>
+        <span class="padding-right-10px" >{{ 'properties.boxMode.title' | translate }}</span>
     </h3>
     <div layout="row" >
         <md-button ng-click="showButtonAndEye = !showButtonAndEye;showGlobalProperties = !showGlobalProperties"
@@ -10,10 +10,10 @@
         </md-button>
 
         <md-button class="md-raised md-mini"
-                   ng-click="diff_global_properties(platform)"><i class="fa fa-exchange"></i> Comparer les propriétés globales</md-button>
+                   ng-click="diff_global_properties(platform)"><i class="fa fa-exchange"></i> {{ 'properties.platform.globalProperties.compare' | translate }}</md-button>
 
         <md-button class="md-raised md-primary md-mini"  ng-show="showButtonAndEye"
-                   ng-click="save_global_properties(platform.global_properties)"><i class="fa fa-check"></i> Sauver les propriétés globales</md-button>
+                   ng-click="save_global_properties(platform.global_properties)"><i class="fa fa-check"></i> {{ 'properties.platform.globalProperties.save' | translate }}</md-button>
 
         <toggle-sort-properties sort-order="order"></toggle-sort-properties>
 
@@ -31,10 +31,10 @@
 <div layout="row" layout-wrap>
     <div flex="5">
         <md-button ng-click="open_add_box_dialog(mainBox)" class="md-fab properties-add-logical-group"
-                   aria-label="Ajouter un groupe logique">
+                   aria-label="{{ 'properties.logicGroup.add' | translate }}">
             <span class="fa fa-inbox"></span>
             <md-tooltip>
-                Ajouter un groupe logique
+                {{ 'properties.logicGroup.add' | translate }}
             </md-tooltip>
         </md-button>
     </div>
@@ -44,7 +44,7 @@
 
             <li class="jumbotron" ng-if="box.modules.length > 0">
                 <md-button ng-repeat="module in mainBox.modules" class="md-fab"
-                           aria-label="Ajouter un groupe logique">
+                           aria-label="{{ 'properties.logicGroup.add' | translate }}">
                     {{module.title}}<span class="fa fa-list"></span>
                 </md-button>
             </li>
@@ -55,7 +55,7 @@
 
 <div layout="row" ng-show="properties">
     <div flex="50">
-        <h3><span class="margin-right-30px">Les propriétés associées à <strong>{{selected_module.path.split('#').join('
+        <h3><span class="margin-right-30px">{{ 'properties.module.editProperties.title' | translate }} <strong>{{selected_module.path.split('#').join('
             | ')}} | {{selected_module.title}}</strong></span>
         </h3>
     </div>
@@ -64,13 +64,13 @@
             <md-button id="cleanPropertiesButton" ng-click="clean_properties(properties)"
                        class="md-raised">
                 <span class="fa fa-trash"></span>
-                <span>Nettoyer les valorisations inutiles</span>
+                <span>{{ 'properties.module.editProperties.cleanUselessValues' | translate }}</span>
             </md-button>
             <md-button ng-click="save_properties(properties, selected_module)"
                        ng-disabled="technoForm.$invalid"
                        class="md-raised md-primary">
                 <span class="fa fa-check"></span>
-                <span>Sauver les propriétés</span>
+                <span>{{ 'properties.module.editProperties.save' | translate }}</span>
             </md-button>
         </div>
     </div>
@@ -84,20 +84,20 @@
     <div flex="100" >
         <div layout = "row">
             <h3>
-                <span class="margin-right-30px">Les propriétés d'instance associées à <strong><a href="" editable-text="instance.name" onbeforesave="update_instance_name(instance, $data)">{{instance.name}}</a></strong></span>
+                <span class="margin-right-30px">{{ 'properties.module.instance.editProperties.title' | translate }} <strong><a href="" editable-text="instance.name" onbeforesave="update_instance_name(instance, $data)">{{instance.name}}</a></strong></span>
             </h3>
 
             <md-button id="cleanPropertiesButton" ng-click="clean_properties(properties)"
                        class="md-raised">
                 <span class="fa fa-trash"></span>
-                <span>Nettoyer les valorisations inutiles</span>
+                <span>{{ 'properties.module.editProperties.cleanUselessValues' | translate }}</span>
             </md-button>
 
             <md-button ng-click="save_platform_from_box(mainBox)"
                        ng-disabled="technoForm.$invalid"
                        class="md-raised md-primary">
                 <i class="fa fa-check"></i>
-                Sauver les propriétés
+                {{ 'properties.module.editProperties.save' | translate }}
             </md-button>
         </div>
         <!-- Showing instance properties -->

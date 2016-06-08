@@ -26,7 +26,9 @@
     "jszip": "Stuk/jszip#2.5.0",
     "angular-vs-repeat": "1.1.7",
     "angular-translate": "2.11.0",
-    "angular-translate-loader-static-files" : "2.11.0"
+    "angular-translate-loader-static-files" : "2.11.0",
+    "angular-translate-storage-cookie" : "2.11.0",
+    "angular-translate-storage-local" : "2.11.0"
   },
   "resolutions": {
     "angular": "1.4.10"

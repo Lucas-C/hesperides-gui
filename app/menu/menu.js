@@ -296,10 +296,14 @@ menuModule.controller('MenuPropertiesCtrl', ['$hesperidesHttp', '$scope', '$mdDi
     };
 }]);
 
-menuModule.controller('MenuHelpCtrl', ['$scope', '$mdDialog', '$hesperidesHttp', 'hesperidesGlobals', function($scope, $mdDialog, $http, hesperidesGlobals){
 
+menuModule.controller('MenuHelpCtrl', ['$scope', '$mdDialog', '$hesperidesHttp', 'hesperidesGlobals', '$translate', '$cookies', function($scope, $mdDialog, $http, hesperidesGlobals, $translate){
     $scope.closeDialog = function() {
         $mdDialog.cancel();
+    };
+
+    $scope.change_language = function(langKey) {
+        $translate.use(langKey);
     };
 
     $scope.display_hesperides_informations = function(){

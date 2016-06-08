@@ -451,6 +451,28 @@ md-menu-content.md-menu-bar-menu.md-dense {
     float: right;
 }
 
+.menu-language {
+    float: right;
+    min-height: 40px;
+}
+
+.menu-language > button {
+    margin-top: 10px;
+    min-width: 40px;
+    max-width: 40px;
+    max-height: 20px;
+    min-height: 20px;
+    text-indent:-10000px;
+    background-size: 100% ;
+    background-repeat: no-repeat;
+}
+.menu-language--fr {
+    background-image: url('/img/french-flag-small.png');
+}
+.menu-language--en {
+    background-image: url('/img/british-flag-small.png');
+}
+
 #fakeButtonSearchTechno {
     display:none;
 }

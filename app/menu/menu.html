@@ -10,7 +10,7 @@
                 <md-menu-content class="menu-item">
                     <md-menu-item>
                         <md-button ng-click="open_create_techno_dialog()">
-                           {{ 'menu.techno.create' | translate }}
+                            {{ 'menu.techno.create' | translate }}
                         </md-button>
                     </md-menu-item>
                     <md-menu-item>
@@ -19,7 +19,7 @@
                         </md-button>
                     </md-menu-item>
                     <md-menu-divider></md-menu-divider>
-                    <md-menu-item >
+                    <md-menu-item>
                         <md-button id="fakeButtonSearchTechno">
                             fake
                         </md-button>
@@ -60,15 +60,15 @@
                             fake
                         </md-button>
                         <md-autocomplete
-                                         md-no-cache="true"
-                                         md-selected-item="ctrl.selectedItem"
-                                         md-search-text="ctrl.searchText"
-                                         md-items="item in find_modules_by_name(ctrl.searchText)"
-                                         md-item-text="item.name"
-                                         md-selected-item-change="(item) ? open_module_page(item.name, item.version, item.is_working_copy, '#fakeButtonSearchModule') : false"
-                                         md-min-length="0"
-                                         md-autoselect="true"
-                                         placeholder="{{ 'placeholder.search' | translate}}">
+                                md-no-cache="true"
+                                md-selected-item="ctrl.selectedItem"
+                                md-search-text="ctrl.searchText"
+                                md-items="item in find_modules_by_name(ctrl.searchText)"
+                                md-item-text="item.name"
+                                md-selected-item-change="(item) ? open_module_page(item.name, item.version, item.is_working_copy, '#fakeButtonSearchModule') : false"
+                                md-min-length="0"
+                                md-autoselect="true"
+                                placeholder="{{ 'placeholder.search' | translate}}">
                             <span md-highlight-text="ctrl.searchText" ng-show="item.is_working_copy">{{item.name}} {{item.version}} (working copy)</span>
                             <span md-highlight-text="ctrl.searchText" ng-show="!item.is_working_copy">{{item.name}} {{item.version}}</span>
                         </md-autocomplete>
@@ -112,7 +112,18 @@
                 </md-menu-content>
             </md-menu>
 
-            <md-menu ng-controller="MenuHelpCtrl" class="menu-help">
+
+            <div class="menu-language" ng-controller="MenuHelpCtrl">
+                <md-button ng-click="change_language('fr')" class="menu-language--fr" aria-label="{{ 'menu.language.fr.aria' | translate }}">
+                    fr
+                </md-button>
+
+                <md-button ng-click="change_language('en')" class="menu-language--en" aria-label="{{ 'menu.language.en.aria' | translate }}">
+                    en
+                </md-button>
+            </div>
+
+            <md-menu class="menu-help" ng-controller="MenuHelpCtrl">
                 <button ng-click="$mdOpenMenu()" class="menu">
                     {{ 'menu.help.title' | translate}} <i class="fa fa-question"></i>
                 </button>

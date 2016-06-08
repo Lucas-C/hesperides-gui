@@ -10,6 +10,8 @@
   "menu.platform.title": "For applications",
   "menu.platform.create": "Create a platform",
   "menu.platform.createFrom": "Create a platform from...",
+  "menu.language.fr.aria" : "View the website in french",
+  "menu.language.en.aria" : "View the website in english",
   "menu.help.title": "Help",
   "menu.help.swagger": "Swagger",
   "menu.help.about": "About",

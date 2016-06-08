@@ -170,7 +170,7 @@
         </div>
 
         <div flex>
-            <h3>{{ 'properties.compare.values.differentOnes' | translate }} <span class="diff-text-modifiable">{{application_name}} - {{platform_name}}</span> et <span
+            <h3>{{ 'properties.compare.values.differentOnes' | translate }} <span class="diff-text-modifiable">{{application_name}} - {{platform_name}}</span> {{ 'common.word.and' | translate }} <span
                     class="diff-text-unmodifiable">{{compare_application}} -
                 {{compare_platform}}</span>
                 ({{(diff_containers | filter:{'status':2}).length}})</h3>

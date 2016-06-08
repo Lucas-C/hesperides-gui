@@ -22,7 +22,8 @@ var hesperidesModule = angular.module('hesperides', [
     'vs-repeat',
     'scDateTime',
     'angularjs-datetime-picker',
-    'pascalprecht.translate'
+    'pascalprecht.translate',
+    'ngCookies'
 ]).value('scDateTimeConfig', {
     defaultTheme: 'sc-date-time/hesperides.tpl',
     autosave: false,
@@ -111,7 +112,8 @@ hesperidesModule.controller("TitleCtrl", ['$scope', 'Page', 'UserService', funct
     }
 }]);
 
-hesperidesModule.config(['$routeProvider', '$mdThemingProvider', '$ariaProvider', '$mdIconProvider', '$translateProvider', function ($routeProvider, $mdThemingProvider, $ariaProvider, $mdIconProvider, $translateProvider) {
+hesperidesModule.config(['$routeProvider', '$mdThemingProvider', '$ariaProvider', '$mdIconProvider', '$translateProvider',
+    function ($routeProvider, $mdThemingProvider, $ariaProvider, $mdIconProvider, $translateProvider) {
     $mdIconProvider.fontSet('fa', 'fontawesome');
 
     var configureTranslation = function(){
@@ -119,13 +121,10 @@ hesperidesModule.config(['$routeProvider', '$mdThemingProvider', '$ariaProvider'
             prefix: '/i18n/label_',
             suffix: '.json'
         });
+        $translateProvider.preferredLanguage('fr');
         $translateProvider.fallbackLanguage('fr');
-        $translateProvider.determinePreferredLanguage(function(){
-            if (window.navigator.language == 'fr') {
-                return 'fr'
-            }
-            return 'en';
-        });
+        //Use local storage to keep the preferred language of the user. Fails back to cookie storage if the navigator does not support local storage
+        $translateProvider.useLocalStorage();
     };
 
     $routeProvider.

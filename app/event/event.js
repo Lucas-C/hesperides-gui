@@ -182,7 +182,20 @@ eventModule.directive('propertiesSaved', function (){
         scope : {
             event : '='
         },
-        templateUrl : 'event/directives/properties/properties-saved.html'
+        templateUrl : 'event/directives/properties/properties-saved.html',
+        controller : ['$scope', function ($scope) {
+
+            $scope.parse_data = function (){
+                var path = $scope.event.data.path;
+                var pathsItems = path.split('#');
+
+                $scope.moduleName = pathsItems [3];
+                $scope.moduleVersion = pathsItems [4];
+            }
+
+            // Parsing data for this king of events
+            $scope.parse_data();
+        }]
     };
 });
 

@@ -44,7 +44,7 @@
   "platform.event.created": "La plateforme a bien été créée",
   "platform.event.updated": "La plateforme a été mise à jour",
   "platform.event.deleted": "La plateforme a bien été supprimée",
-  "properties.event.savedByUser": "a sauvegardé les propriétés de la plateforme",
+  "properties.event.savedByUser": "a modifié les valeurs du module",
   "properties.event.saved": "Les propriétés ont bien été sauvegardées",
   "properties.event.error": "Enregistrement impossible - une ou plusieurs propriétés ne respectent pas l'annotation @required et/ou @pattern",
   "properties.event.notExist.error": "La brique technique mentionnée dans l'url n'existe pas",

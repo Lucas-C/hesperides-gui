@@ -726,7 +726,6 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         instance.key_values = _.filter (instance.key_values, function (item) {
             return item.inModel;
         });
-        console.log (instance);
     };
 
     // The new global property info

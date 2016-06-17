@@ -87,11 +87,11 @@
                 <span class="margin-right-30px">{{ 'properties.module.instance.editProperties.title' | translate }} <strong><a href="" editable-text="instance.name" onbeforesave="update_instance_name(instance, $data)">{{instance.name}}</a></strong></span>
             </h3>
 
-            <!--<md-button id="cleanPropertiesButton" ng-click="clean_properties(properties)"
+            <md-button id="cleanPropertiesButton" ng-click="clean_instance_properties(instance)"
                        class="md-raised">
                 <span class="fa fa-trash"></span>
                 <span>{{ 'properties.module.editProperties.cleanUselessValues' | translate }}</span>
-            </md-button>-->
+            </md-button>
 
             <md-button ng-click="save_platform_from_box(mainBox)"
                        ng-disabled="technoForm.$invalid"

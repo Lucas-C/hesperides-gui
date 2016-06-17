@@ -709,9 +709,24 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         }
     };
 
+    /**
+     * Clean properties.
+     * Used to delete unsed properties in module template.
+     */
     $scope.clean_properties = function (properties) {
         //Filter to keep properties only existing in model
         properties.filter_according_to_model();
+    };
+
+    /**
+     * Clean instance properties.
+     * Used to deleted unused instance properties.
+     */
+    $scope.clean_instance_properties = function (instance) {
+        instance.key_values = _.filter (instance.key_values, function (item) {
+            return item.inModel;
+        });
+        console.log (instance);
     };
 
     // The new global property info

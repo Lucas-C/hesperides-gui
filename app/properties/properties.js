@@ -542,6 +542,8 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
      */
     $scope.show_events = function (param1, param2, action) {
         var modalScope = $scope.$new(true);
+        modalScope.filtering = {};
+
         var page = 1; // the starting page is 1.
         var events = [];
 

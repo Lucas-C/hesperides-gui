@@ -21,6 +21,16 @@ eventModule.factory('EventEntry', function (){
         var tab = data.type.split('.');
         this._type = tab[tab.length - 1];
 
+        // Get the module name of the event if applicable
+        if ( !_.isUndefined(this.data.path)){
+            var pathsItems = this.data.path.split('#');
+            if (!_.isUndefined(pathsItems [3])){
+                me.moduleName = pathsItems [3];
+            }
+            if (!_.isUndefined(pathsItems [4])){
+                me.moduleVersion = pathsItems [4];
+            }
+        }
     };
 
     return EventEntry;
@@ -186,11 +196,8 @@ eventModule.directive('propertiesSaved', function (){
         controller : ['$scope', function ($scope) {
 
             $scope.parse_data = function (){
-                var path = $scope.event.data.path;
-                var pathsItems = path.split('#');
-
-                $scope.moduleName = pathsItems [3];
-                $scope.moduleVersion = pathsItems [4];
+                $scope.moduleName = $scope.event.moduleName;
+                $scope.moduleVersion = $scope.event.moduleVersion;
             }
 
             // Parsing data for this king of events
@@ -251,7 +258,6 @@ eventModule.directive('templatePackageDeleted', function (){
     };
 });
 
-
 /**
  * This for event timestamp formatting and displaying
  */
@@ -266,4 +272,64 @@ eventModule.directive('eventTime', function (){
     };
 });
 
+/**
+ * This is the events filtering by module name or version
+ */
+eventModule.filter ('filterByModuleNameAndVersion', function (){
+    return function(events, moduleNameAndVersion){
 
+        if ( _.isUndefined(moduleNameAndVersion) || _.isEmpty(moduleNameAndVersion)) {
+            return events;
+        }
+
+        // Format the filters to construct the regex
+        var module = '.*' + moduleNameAndVersion.split(' ').join('.*');
+
+        // Create the regex
+        try {
+            var moduleRegex = new RegExp(module, 'i');
+
+            return _.filter(events, function (item){
+
+                        var moduleNameAndVersion = item.moduleName ? item.moduleName + " " : "";
+                        moduleNameAndVersion += item.moduleVersion ? item.moduleVersion : "";
+
+                        // all events don't have module name and/or version
+                        if ( !_.isEmpty(moduleNameAndVersion) ){
+                            return moduleRegex.test(moduleNameAndVersion);
+                        }
+                    });
+        } catch(e) {
+            return events;
+        }
+    };
+});
+
+/**
+ * This is the events filtering by user name or my events
+ */
+eventModule.filter ('filterByUserName', function (){
+    return function(events, opts){
+
+        if ( (_.isUndefined(opts.username) || _.isEmpty(opts.username)) && !opts.myevents) {
+            return events;
+        }
+
+        // get the user name according opts
+        var _username = opts.myevents ? hesperidesUser.username : opts.username;
+
+        // Format the filters to construct the regex
+        var username = '.*' + _username.split(' ').join('.*');
+
+        // Create the regex
+        try {
+            var usernameRegex = new RegExp(username, 'i');
+
+            return _.filter(events, function (item){
+                        return usernameRegex.test(item.user);
+                    });
+        } catch(e) {
+            return events;
+        }
+    };
+});

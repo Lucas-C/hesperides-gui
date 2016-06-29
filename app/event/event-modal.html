@@ -1,13 +1,44 @@
 <md-dialog flex="70">
     <md-dialog-content>
         <div class="ng-binding">
+            <!-- modal title -->
             <h2>{{ 'event.modal.title' | translate }} {{title}}</h2>
+
             <md-content layout-padding class="autoScroll">
+
+                <!-- event filters -->
+                <div fle="100" layout="row" class="events">
+
+                    <!-- module filter -->
+                    <md-input-container flex="30">
+                        <label>{{ 'event.modal.filtering.moduleAndVersion' | translate }}</label>
+                        <input ng-model="filtering.moduleNameAndVersion" placeholder="{{ 'event.modal.filtering.moduleAndVersion.placeholder' | translate}}">
+                    </md-input-container>
+
+                    <!-- login filter -->
+                    <md-input-container>
+                        <label>{{ 'event.modal.filtering.user' | translate }}</label>
+                        <input ng-model="filtering.username" placeholder="{{ 'event.modal.filtering.user.placeholder' | translate }}">
+                    </md-input-container>
+
+                    <!-- myevents filter -->
+                    <md-input-container>
+                        <md-checkbox ng-model="filtering.myevents" aria-label="{{ 'event.modal.filtering.myevents' | translate }}">
+                            {{ 'event.modal.filtering.myevents' | translate }}
+                        </md-checkbox>
+                    </md-input-container>
+                </div>
+                <!-- event filters -->
+
+                <!-- if no event to show -->
                 <div ng-show="!(eventEntries) || eventEntries.length == 0">
                     <h2 class="no-entries"> {{ 'event.modal.title.noHistory' | translate }} </h2>
                 </div>
+                <!-- end if no event to show -->
+
+                <!-- showing events -->
                 <md-virtual-repeat-container ng-show="eventEntries && eventEntries.length > 0" class="events height-500px">
-                    <div ng-repeat="event in eventEntries" >
+                    <div ng-repeat="event in eventEntries | filterByModuleNameAndVersion: filtering.moduleNameAndVersion | filterByUserName : {username : filtering.username, myevents: filtering.myevents}" >
                         <div ng-switch="event._type" class="event">
 
                             <!-- Platforms -->
@@ -41,6 +72,7 @@
                         </div>
                     </div>
                 </md-virtual-repeat-container>
+                <!-- end of showing events -->
             </md-content>
         </div>
         <md-dialog-actions>

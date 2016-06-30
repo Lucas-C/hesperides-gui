@@ -193,6 +193,7 @@
   "properties.compare.values.showLastEdited": "Show only values which just have been changed",
   "properties.compare.values.editable": "(destination => can be edited)",
   "properties.compare.values.readOnly": "(source => readonly)",
+  "properties.compare.values.empty": "Empty",
   "file.modal.title": "Preview of",
   "file.modal.error": "This file is in error state, click to see what is going on.",
   "file.modal.content": "File content",

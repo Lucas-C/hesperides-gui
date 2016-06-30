@@ -1593,7 +1593,7 @@ propertiesModule.factory('Properties', function () {
                 } else {
                     //Try to check if it uses a global in the valorisation
                     if (_.some(global_properties.key_value_properties, function (kvp) {
-                        return key_value.value.indexOf("{{" + kvp.name + "}}") > -1;
+                        return !_.isUndefined(key_value.value) && key_value.value.indexOf("{{" + kvp.name + "}}") > -1;
                     })) {
                         key_value.useGlobal = true;
                     }

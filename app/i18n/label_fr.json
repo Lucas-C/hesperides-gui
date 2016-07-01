@@ -194,6 +194,7 @@
   "properties.compare.values.showLastEdited": "Ne montrer que les valeurs venant d'être modifiées",
   "properties.compare.values.editable": "(destination => modifiable)",
   "properties.compare.values.readOnly": "(source => non modifiable)",
+  "properties.compare.values.empty": "Aucune valeur renseignée",
   "file.modal.title": "Prévisualisation de",
   "file.modal.error": "Ce fichier est en erreur, cliquer pour voir pourquoi.",
   "file.modal.content": "Contenu du fichier",

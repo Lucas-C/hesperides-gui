@@ -771,7 +771,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
             //Increase platform number
             $scope.platform.version_id = $scope.platform.version_id + 1;
-        }, function (error) {
+        }, function () {
             //If an error occurs, reload the platform, thus avoiding having a non synchronized $scope model object
             $location.url('/properties/' + $scope.platform.application_name).search({platform: $scope.platform.name});
             $route.reload(); //Force reload if needed
@@ -818,11 +818,16 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
     };
 
     $scope.open_module_page = function (name, version, is_working_copy) {
+        var url;
+
         if(is_working_copy){
-            return '#/module/' + name + '/' + version + '?type=workingcopy';
+            url = '/module/' + name + '/' + version + '?type=workingcopy';
         } else {
-            return '#/module/' + name + '/' + version + '?';
+            url = '/module/' + name + '/' + version + '?';
         }
+
+        $location.url(url);
+        $route.reload(); //Force reload if needed
     };
 
     /**

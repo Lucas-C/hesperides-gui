@@ -8,11 +8,11 @@
     <md-tooltip>{{ 'properties.module.compareProperties' | translate }}</md-tooltip>
 </md-button>
 
-<md-button aria-label="{{ 'properties.module.display' | translate : {name:module.title} }}" class="md-xs">
-    <a ng-href="{{open_module_page(module.name, module.version, module.is_working_copy)}}">
-        <i class="fa fa-pencil fa-inverse"></i>
+<md-button aria-label="{{ 'properties.module.display' | translate : {name:module.title} }}" class="md-xs" ng-click="open_module_page(module.name, module.version, module.is_working_copy)">
+<!--    <a ng-href="{{open_module_page(module.name, module.version, module.is_working_copy)}}">-->
+        <i class="fa fa-pencil"></i>
         <md-tooltip>{{ 'properties.module.display' | translate : {name:module.title} }}</md-tooltip>
-    </a>
+<!--    </a>-->
 </md-button>
 
 <md-button aria-label="{{ 'properties.module.updateVersion' | translate }}" class="md-xs" ng-click="change_module(module)">

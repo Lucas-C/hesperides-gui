@@ -507,8 +507,18 @@ md-menu-content.md-menu-bar-menu.md-dense {
 }
 
 .template-section-header {
+    margin: 0px 10px;
+}
+
+.template-section-header-path {
+    display: block;
+    border-bottom: 1px dashed rgba(0,0,0,0.6);
+    padding-bottom: 5px;
+    margin-bottom: 15px;
+}
+
+.template-section-header-content {
     font-weight: bold;
-    margin: 20px 10px;
 }
 
 .template-file-right {

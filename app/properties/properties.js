@@ -49,8 +49,8 @@ propertiesModule.controller('PlatformVersionModule', ['$scope', '$mdDialog', 'Ne
 }]);
 
 
-propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDialog', '$location', '$route', '$anchorScroll', '$timeout', 'ApplicationService', 'FileService', 'EventService', 'ModuleService', 'ApplicationModule', 'Page', 'PlatformColorService', 'NexusService', '$translate',
-    function ($scope, $routeParams, $mdDialog, $location, $route, $anchorScroll, $timeout, ApplicationService, FileService, EventService, ModuleService, Module, Page, PlatformColorService, NexusService, $translate) {
+propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDialog', '$location', '$route', '$anchorScroll', '$timeout', 'ApplicationService', 'FileService', 'EventService', 'ModuleService', 'ApplicationModule', 'Page', 'PlatformColorService', 'NexusService', '$translate', '$window',
+    function ($scope, $routeParams, $mdDialog, $location, $route, $anchorScroll, $timeout, ApplicationService, FileService, EventService, ModuleService, Module, Page, PlatformColorService, NexusService, $translate, $window) {
     Page.setTitle("Properties");
 
     $scope.platform = $routeParams.platform;
@@ -390,7 +390,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
             urlParams.timestamp = $scope.compare_platform.timestamp;
         }
 
-        $location.path('/diff').search(urlParams);
+        $window.open('/#/diff?' + $.param(urlParams), '_blank');
     };
 
     $scope.diff_global_properties = function () {
@@ -466,7 +466,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
             urlParams.timestamp = Date.parse(from.date);
         }
 
-        $location.path('/diff').search(urlParams);
+        $window.open('/#/diff?' + $.param(urlParams), '_blank');
     };
 
     $scope.find_modules_by_name = function (name) {

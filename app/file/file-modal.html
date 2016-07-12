@@ -24,8 +24,10 @@
                         <!-- Add css class 'ng-hide' to disable display at startup and for working autorefresh plugin -->
                         <div ng-show="index === isOpen" class="file-content ng-hide" layout="column" flex="100">
 
-                            <div flex="5">
-                                <label class="template-section-header">{{ 'file.modal.content' | translate }}</label>
+                            <div flex="5" class="template-section-header">
+                              
+                                <label class="template-section-header-path">{{item.location}}</label>
+                                <label class="template-section-header-content">{{ 'file.modal.content' | translate }}</label>
                                 <!--<kbd>F11</kbd> Activer /
                                 <kbd>Esc</kbd> Désactiver l'édition en plein écran
                                 -->

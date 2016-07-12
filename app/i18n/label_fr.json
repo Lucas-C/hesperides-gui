@@ -109,6 +109,8 @@
   "properties.application.title": "Plateformes de",
   "properties.platform.filter.placeholder": "Filtrer les plateformes (en fonction du nom de la plateforme, ou de la version)",
   "properties.platform.selection.tooltip": "Afficher la plateforme",
+  "properties.platform.show.all": "Afficher les plateformes",
+  "properties.platform.hide.all": "Cacher les plateformes",
   "properties.platform.title": "Représentation logique de ",
   "properties.platform.version.tooltip": "Modifier le label 'version de l'application'",
   "properties.platform.version.history": "Afficher l'historique",

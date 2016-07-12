@@ -108,6 +108,8 @@
   "properties.application.title": "Platforms of",
   "properties.platform.filter.placeholder": "Filter platforms (by name or version of the platform)",
   "properties.platform.selection.tooltip": "Display the platform",
+  "properties.platform.show.all": "Show platforms",
+  "properties.platform.hide.all": "Hide platforms",
   "properties.platform.title": "Logic representation of ",
   "properties.platform.version.tooltip": "Edit the label 'version of the application'",
   "properties.platform.version.history": "Display history",

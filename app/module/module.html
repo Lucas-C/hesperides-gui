@@ -3,7 +3,7 @@
     <div flex>
         <div class="bg-light">
             <h3><span> Module <strong><u>{{module.name}}</u></strong>, Version <strong><u>{{module.version}}</u></strong></span>
-                <span ng-show="isWorkingCopy"> (Working Copy)</span></span>
+                <span ng-show="is_workingcopy"> (Working Copy)</span></span>
                 <md-button class="md-raised md-primary"
                            ng-show="is_workingcopy"
                            ng-click="open_create_release_dialog(module)">
@@ -43,6 +43,27 @@
                            placeholder="{{ 'module.search.techno' | translate }}"
                            typeaheadexpression="techno in $parent.$parent.$parent.search_technos(ctrl.searchText)"
                     ></list-of-items>
+        </div>
+    </div>
+</div>
+<div layout="row">
+    <div flex>
+        <div class="bg-light" flex>
+            <h4>{{ 'module.platformList' | translate }}</h4>
+
+        <list-of-links items="platforms"
+                       label="$item.application_name + ' [' + $item.name + ']'"
+                       filter="searchInPlatforms"
+                       sorton="$item.application_name"
+                       selected-item="platform"
+                       selectable="true"
+                       editable="false"
+                       css="md-warn"
+                       href="'/properties/' + $item.application_name + '?platform=' + $item.name"
+                       new_tab="true"
+                       tooltip="{{ 'properties.platform.selection.tooltip' | translate }}"
+                       size="small">
+        </list-of-links>
         </div>
     </div>
 </div>

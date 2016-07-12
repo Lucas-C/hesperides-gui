@@ -1,18 +1,18 @@
 /**
  * Created by william_montaz on 17/10/2014.
  */
-var applicationModule = angular.module('hesperides.module', []);
+var applicationModule = angular.module('hesperides.module', ['hesperides.application']);
 
 
 applicationModule.controller('ModuleCtrl', [
     '$scope', '$routeParams', '$location', '$mdDialog', 'TechnoService', 'ModuleService', 'HesperidesTemplateModal', 'Template', 'Page',
-    'FileService',
+    'FileService', 'Platform',
     function ($scope, $routeParams, $location, $mdDialog, TechnoService, ModuleService, HesperidesTemplateModal, Template, Page,
-              FileService) {
+              FileService, Platform) {
 
     Page.setTitle('Module');
 
-    $scope.is_workingcopy = ($routeParams.type === "workingcopy");
+    $scope.is_workingcopy = ($routeParams.type == "workingcopy");
     $scope.is_release = !$scope.is_workingcopy;
 
     $scope.refreshModel = function () {
@@ -20,6 +20,9 @@ applicationModule.controller('ModuleCtrl', [
         ModuleService.get_model($scope.module).then(function (model) {
             $scope.model = model;
             $scope.loading_model = false;
+        });
+        ModuleService.get_platforms($scope.module).then(function (platforms) {
+            $scope.platforms = platforms;
         });
     };
 
@@ -232,8 +235,8 @@ applicationModule.factory('Module', ['Techno', function (Techno) {
 }]);
 
 applicationModule.factory('ModuleService', [
-    '$hesperidesHttp', '$q', 'Module', 'Template', 'TemplateEntry', 'Properties', 'FileService', '$translate',
-    function ($http, $q, Module, Template, TemplateEntry, Properties, FileService, $translate) {
+    '$hesperidesHttp', '$q', 'Module', 'Template', 'TemplateEntry', 'Properties', 'FileService', '$translate', 'Platform',
+    function ($http, $q, Module, Template, TemplateEntry, Properties, FileService, $translate, Platform) {
 
     return {
         get: function (name, version, is_working_copy) {
@@ -278,6 +281,17 @@ applicationModule.factory('ModuleService', [
                 return new Properties(response.data);
             }, function () {
                 return new Properties({});
+            });
+        },
+        get_platforms: function (module){
+            return $http.get('rest/applications/using_module/' + encodeURIComponent(module.name) + '/' + encodeURIComponent(module.version) + '/'+ (module.is_working_copy ? "workingcopy" : "release")).then(function(response){
+                platforms = new Array();
+                for (platform in response.data)
+                    platforms.push(new Platform(response.data[platform]));
+
+                return platforms
+            }, function () {
+                return new Platform([]);
             });
         },
         get_template: function (module, template_name) {

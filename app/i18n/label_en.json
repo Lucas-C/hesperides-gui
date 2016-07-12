@@ -61,6 +61,7 @@
   "techno.modalFrom.origin.placeholder": "Name of the existing techno...",
   "module.specificFiles": "Specifics files of the module",
   "module.technoList": "Technos of this module",
+  "module.platformList": "List of platform using this module",
   "module.search.techno": "Search for a techno",
   "module.modal.title": "New module (working copy)",
   "module.modal.name": "Module name",

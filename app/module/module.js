@@ -285,11 +285,9 @@ applicationModule.factory('ModuleService', [
         },
         get_platforms: function (module){
             return $http.get('rest/applications/using_module/' + encodeURIComponent(module.name) + '/' + encodeURIComponent(module.version) + '/'+ (module.is_working_copy ? "workingcopy" : "release")).then(function(response){
-                platforms = new Array();
-                for (platform in response.data)
-                    platforms.push(new Platform(response.data[platform]));
-
-                return platforms
+                return response.data.map(function (current) {
+                                           return new Platform(current);
+                                       });
             }, function () {
                 return new Platform([]);
             });

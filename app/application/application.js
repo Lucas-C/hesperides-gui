@@ -363,7 +363,7 @@ applicationModule.factory('ApplicationService', ['$hesperidesHttp', 'Application
          * @param platform platforme à mettre à jour
          * @param newVersion nouvelle version de la plateforme
          * @param newModulesConfig nouvelle version des modules
-         * @returns {Array} la Fe des modules misà jour
+         * @returns {Array} la liste des modules misà jour
          */
         updatePlatformConfig: function (platform, newVersion, newModulesConfig) {
             var updatedModules = [];

@@ -58,6 +58,8 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
     $scope.fileEntries = [];
 
+    $scope.isPlatformOpen = 1;
+
     $scope.$closeDialog = function() {
         $mdDialog.cancel();
     };

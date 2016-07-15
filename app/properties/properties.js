@@ -1070,6 +1070,16 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
         });
     }
 
+    $scope.formatProperty = function (propertyValue, globalValue) {
+
+        if (globalValue) {
+            return globalValue;
+        }
+
+        return propertyValue;
+
+    }
+
     //Helper for diff conainers ids
     $scope.dot_to_underscore = function (string) {
         return string.replace(/\./g, '_');
@@ -1603,6 +1613,9 @@ propertiesModule.factory('Properties', function () {
                         return !_.isUndefined(key_value.value) && key_value.value.indexOf("{{" + kvp.name + "}}") > -1;
                     })) {
                         key_value.useGlobal = true;
+                        key_value.globalValue = _.find(global_properties.key_value_properties, function (kvp) {
+                                                                    return key_value.value ==='{{' + kvp.name + '}}';
+                                                                }, 'value').value;
                     }
                 }
             });

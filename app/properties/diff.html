@@ -35,18 +35,6 @@
                        ng-model="propertiesKeyFilter0">
             </md-input-container>
         </div>
-        <div flex="35" layout-align="end start" layout="row">
-            <div>
-            </div>
-        </div>
-        <div flex="5" layout="row" layout-align="center start">
-            <div>
-
-            </div>
-        </div>
-        <div flex="40">
-
-        </div>
     </div>
     <md-divider ng-show="toggle0" class="diff-divider"></md-divider>
     <div layout="row" ng-show="toggle0" ng-repeat="diff_container in diff_containers0 = (diff_containers | filter:{'status':0, 'property_name': propertiesKeyFilter0} | orderBy:'property_name')">
@@ -57,7 +45,8 @@
         </div>
         <div flex="35" layout-align="start start" layout="row">
             <div class="diff-text-modifiable diff-value diff-line">
-                {{diff_container.property_to_modify.value ? diff_container.property_to_modify.value : 'properties.compare.values.empty' | translate }}
+                <span ng-if="diff_container.property_to_modify.useGlobal"><i class="fa fa-exclamation-triangle" title="{{'properties.compare.values.global.auto' | translate}}"></i></span>
+                {{diff_container.property_to_modify.value ? formatProperty(diff_container.property_to_modify.value, diff_container.property_to_modify.globalValue) : 'properties.compare.values.empty' | translate}}
             </div>
         </div>
         <div flex="5" layout="row" layout-align="center start">
@@ -138,7 +127,8 @@
         </div>
         <div flex="35" layout-align="end start" layout="row">
             <div class="diff-text-modifiable diff-value">
-                {{diff_container.property_to_modify.value ? diff_container.property_to_modify.value : 'properties.compare.values.empty' | translate}}
+                {{diff_container.property_to_modify.value ? formatProperty(diff_container.property_to_modify.value, diff_container.property_to_modify.globalValue) : 'properties.compare.values.empty' | translate}}
+                <span ng-if="diff_container.property_to_modify.useGlobal"><i class="fa fa-exclamation-triangle" title="{{'properties.compare.values.global.auto' | translate}}"></i></span>
             </div>
         </div>
         <div flex="5" layout="row" layout-align="center start">
@@ -152,7 +142,8 @@
         </div>
         <div flex="40">
             <span class="diff-text-unmodifiable diff-value">
-              {{diff_container.property_to_compare_to.value ? diff_container.property_to_compare_to.value : 'properties.compare.values.empty' | translate}}
+                <span ng-if="diff_container.property_to_compare_to.useGlobal"><i class="fa fa-exclamation-triangle" title="{{'properties.compare.values.global.auto' | translate}}"></i></span>
+                {{diff_container.property_to_compare_to.value ? formatProperty(diff_container.property_to_compare_to.value, diff_container.property_to_compare_to.globalValue) : 'properties.compare.values.empty' | translate}}
             </span>
         </div>
     </div>
@@ -223,7 +214,8 @@
         </div>
         <div flex="35" layout-align="end start" layout="row">
             <div class="diff-text-modifiable diff-value">
-                    {{diff_container.property_to_modify.value ? diff_container.property_to_modify.value : 'properties.compare.values.empty' | translate}}
+                    {{diff_container.property_to_modify.value ? formatProperty(diff_container.property_to_modify.value, diff_container.property_to_modify.globalValue) : 'properties.compare.values.empty' | translate}}
+                    <span ng-if="diff_container.property_to_modify.useGlobal"><i class="fa fa-exclamation-triangle" title="{{'properties.compare.values.global.auto' | translate}}"></i></span>
             </div>
         </div>
         <div flex="5" layout="row" layout-align="center start">
@@ -234,7 +226,8 @@
         </div>
         <div flex="40">
             <span class="diff-text-unmodifiable diff-value">
-              {{diff_container.property_to_compare_to.value ? diff_container.property_to_compare_to.value : 'properties.compare.values.empty' | translate}}
+              <span ng-if="diff_container.property_to_compare_to.useGlobal"><i class="fa fa-exclamation-triangle" title="{{'properties.compare.values.global.auto' | translate}}"></i></span>
+                {{diff_container.property_to_compare_to.value ? formatProperty(diff_container.property_to_compare_to.value, diff_container.property_to_compare_to.globalValue) : 'properties.compare.values.empty' | translate}}
             </span>
         </div>
     </div>
@@ -301,7 +294,7 @@
         </div>
         <div flex="35" layout-align="end start" layout="row">
             <div class="diff-text-modifiable diff-value">
-                {{diff_container.property_to_modify.value ? diff_container.property_to_modify.value : "Propriété non présente"}}
+                {{diff_container.property_to_modify.value ? diff_container.property_to_modify.value : 'properties.compare.missing.property' | translate}}
             </div>
         </div>
         <div flex="5" layout="row" layout-align="center start">
@@ -312,11 +305,13 @@
         </div>
         <div flex="40">
             <span class="diff-text-unmodifiable diff-value">
-              {{diff_container.property_to_compare_to.value ? diff_container.property_to_compare_to.value : 'properties.compare.values.empty' | translate}}
+                <span ng-if="diff_container.property_to_compare_to.useGlobal"><i class="fa fa-exclamation-triangle" title="{{'properties.compare.values.global.auto' | translate}}"></i></span>
+                {{diff_container.property_to_compare_to.value ? formatProperty(diff_container.property_to_compare_to.value, diff_container.property_to_compare_to.globalValue) : 'properties.compare.values.empty' | translate}}
             </span>
         </div>
     </div>
 </div>
+
 
 
 <div layout="row" layout-margin>

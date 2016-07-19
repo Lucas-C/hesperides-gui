@@ -921,7 +921,7 @@ propertiesModule.directive('treeProperties', function ($timeout){
     }
 });
 
-propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$timeout', '$route', 'ApplicationService', 'ModuleService', function ($filter, $scope, $routeParams, $timeout, $route, ApplicationService, ModuleService) {
+propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$timeout', '$route', 'ApplicationService', 'ModuleService', '$translate', function ($filter, $scope, $routeParams, $timeout, $route, ApplicationService, ModuleService, $translate) {
 
     var DiffContainer = function (status, property_name, property_to_modify, property_to_compare_to) {
         // 0 -> only on to_modify
@@ -1070,10 +1070,20 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
         });
     }
 
+    $scope.properties_compare_values_empty = "";
+
+    $translate('properties.compare.values.empty').then(function (translation) {
+        $scope.properties_compare_values_empty = translation;
+    });
+
     $scope.formatProperty = function (propertyValue, globalValue) {
 
         if (globalValue) {
             return globalValue;
+        }
+
+        if (!propertyValue) {
+            return $scope.properties_compare_values_empty;
         }
 
         return propertyValue;

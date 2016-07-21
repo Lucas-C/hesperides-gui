@@ -1,0 +1,16 @@
+<ul class="shared-list-inline">
+    <li ng-repeat="item in items | filterPlatform:filter | orderBy:sortOn">
+        <md-button
+                   ng-mouseenter="hover = true"
+                   ng-mouseleave="hover = false"
+                   ng-show="!isReadOnly"
+                   ng-click="openLink(item)"
+                   ng-style="{'background-color': backgroundColor(item)}"
+                   open_link={{selfOpenLink(item)}}
+                >{{selfLabel(item)}}
+
+            <md-tooltip ng-if="tooltip">{{ tooltip }}</md-tooltip>
+        </md-button>
+
+    </li>
+</ul>

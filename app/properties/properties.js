@@ -921,7 +921,7 @@ propertiesModule.directive('treeProperties', function ($timeout){
     }
 });
 
-propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$timeout', '$route', 'ApplicationService', 'ModuleService', function ($filter, $scope, $routeParams, $timeout, $route, ApplicationService, ModuleService) {
+propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$timeout', '$route', 'ApplicationService', 'ModuleService', '$translate', function ($filter, $scope, $routeParams, $timeout, $route, ApplicationService, ModuleService, $translate) {
 
     var DiffContainer = function (status, property_name, property_to_modify, property_to_compare_to) {
         // 0 -> only on to_modify
@@ -1068,6 +1068,26 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
                 $scope.diff_containers.push(new DiffContainer(3, prop_to_modify.name, prop_to_modify, prop_to_compare_to));
             }
         });
+    }
+
+    $scope.properties_compare_values_empty = "";
+
+    $translate('properties.compare.values.empty').then(function (translation) {
+        $scope.properties_compare_values_empty = translation;
+    });
+
+    $scope.formatProperty = function (propertyValue, globalValue) {
+
+        if (globalValue) {
+            return globalValue;
+        }
+
+        if (!propertyValue) {
+            return $scope.properties_compare_values_empty;
+        }
+
+        return propertyValue;
+
     }
 
     //Helper for diff conainers ids
@@ -1603,6 +1623,9 @@ propertiesModule.factory('Properties', function () {
                         return !_.isUndefined(key_value.value) && key_value.value.indexOf("{{" + kvp.name + "}}") > -1;
                     })) {
                         key_value.useGlobal = true;
+                        key_value.globalValue = _.find(global_properties.key_value_properties, function (kvp) {
+                                                                    return key_value.value ==='{{' + kvp.name + '}}';
+                                                                }, 'value').value;
                     }
                 }
             });

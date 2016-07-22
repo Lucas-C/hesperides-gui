@@ -198,6 +198,8 @@
   "properties.compare.values.editable": "(destination => modifiable)",
   "properties.compare.values.readOnly": "(source => non modifiable)",
   "properties.compare.values.empty": "Aucune valeur renseignée",
+  "properties.compare.values.global.auto": "Valeur automatiquement valorisée par la variable globale du même nom.",
+  "properties.compare.missing.property": "Propriété non présente",
   "file.modal.title": "Prévisualisation de",
   "file.modal.error": "Ce fichier est en erreur, cliquer pour voir pourquoi.",
   "file.modal.content": "Contenu du fichier",

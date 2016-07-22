@@ -197,6 +197,8 @@
   "properties.compare.values.editable": "(destination => can be edited)",
   "properties.compare.values.readOnly": "(source => readonly)",
   "properties.compare.values.empty": "Empty",
+  "properties.compare.values.global.auto": "Value is taken from the global variable with the same name.",
+  "properties.compare.missing.property": "Missing property",
   "file.modal.title": "Preview of",
   "file.modal.error": "This file is in error state, click to see what is going on.",
   "file.modal.content": "File content",

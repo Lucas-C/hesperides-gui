@@ -38,6 +38,7 @@ applicationModule.factory('Platform', ['ApplicationModule', 'Properties', functi
             application_version: "",
             modules: [],
             global_properties: new Properties(),
+            global_properties_usage: null,
             production: false,
             version_id: -1
         }, data);
@@ -63,6 +64,21 @@ applicationModule.factory('Platform', ['ApplicationModule', 'Properties', functi
                 }),
                 version_id: this.version_id
             };
+        };
+
+        this.prettify_path = function (path) {
+
+            splitted_path = path.split('#')
+            last_pos = splitted_path.length - 1
+
+            prettify_module = splitted_path[last_pos - 2] + ' (' + splitted_path[last_pos - 1] +
+            '-' + (splitted_path[last_pos] === 'WORKINGCOPY' ? 'working-copy' : 'release') + ')';
+
+            splitted_path = splitted_path.slice(0, splitted_path.length - 3);
+
+            path = splitted_path.join(' > ') + ' > ' + prettify_module;
+
+            return path;
         };
 
     };
@@ -220,6 +236,9 @@ applicationModule.factory('ApplicationService', ['$hesperidesHttp', 'Application
                     me.get_properties(name, platform.name, "#").then(function (properties) {
                         platform.global_properties = properties;
                     });
+                    me.get_global_properties_usage(name, platform.name).then(function (usage) {
+                        platform.global_properties_usage = usage;
+                    });
                 });
                 return application;
             }, function (error) {
@@ -326,6 +345,16 @@ applicationModule.factory('ApplicationService', ['$hesperidesHttp', 'Application
             }
             return $http.get(url).then(function (response) {
                 return new Properties(response.data);
+            }, function (error) {
+                $.notify(error.data.message, "error");
+                throw error;
+            });
+        },
+        get_global_properties_usage: function (application_name, platform_name) {
+
+            var url = 'rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform_name) + '/global_propeties_usage';
+            return $http.get(url).then(function (response) {
+                return response.data;
             }, function (error) {
                 $.notify(error.data.message, "error");
                 throw error;

@@ -3,41 +3,61 @@
 
     <div layout="row" flex="auto">
         <div flex="40">
-            <input id="new_kv_name" class="property-value" type="text" required ng-trim="true" ng-model="new_kv_name" aria-label="Nouvelle propriété globale" placeholder="{{ 'properties.boxMode.globalProperties.newOne.key' | translate }}" focus-save-global-properties/>
+            <input id="new_kv_name" class="property-value" type="text" required ng-trim="true" ng-model="new_kv_name"
+                   aria-label="Nouvelle propriété globale"
+                   placeholder="{{ 'properties.boxMode.globalProperties.newOne.key' | translate }}"
+                   focus-save-global-properties/>
         </div>
         <div flex="60">
-            <input id="new_kv_value" class="property-value" type="text" required ng-trim="true" ng-model="new_kv_value" aria-label="Valorisation" placeholder="{{ 'properties.boxMode.globalProperties.newOne.value' | translate }}" focus-save-global-properties/>
+            <input id="new_kv_value" class="property-value" type="text" required ng-trim="true" ng-model="new_kv_value"
+                   aria-label="Valorisation"
+                   placeholder="{{ 'properties.boxMode.globalProperties.newOne.value' | translate }}"
+                   focus-save-global-properties/>
         </div>
     </div>
 
     <div layout="row" flex="auto">
         <md-input-container class="md-block" flex="36">
             <label>{{ 'properties.filter.byKey' | translate }}</label>
-            <input type="text" ng-trim="true" ng-model="globalPropertiesKeyFilter" aria-label="{{ 'properties.filter.byKey' | translate }}" />
+            <input type="text" ng-trim="true" ng-model="globalPropertiesKeyFilter"
+                   aria-label="{{ 'properties.filter.byKey' | translate }}"/>
         </md-input-container>
 
         <md-input-container class="md-block" flex="60">
             <label>{{ 'properties.filter.byValue' | translate }}</label>
-            <input type="text" ng-trim="true" ng-model="globalPropertiesValueFilter" aria-label="{{ 'properties.filter.byValue' | translate }}" />
+            <input type="text" ng-trim="true" ng-model="globalPropertiesValueFilter"
+                   aria-label="{{ 'properties.filter.byValue' | translate }}"/>
         </md-input-container>
     </div>
 
     <md-content class="properties-container">
         <!-- Warning ! We need md-virtual-repeat to have reactive UI -->
-        <md-virtual-repeat-container id="vertical-container">
-            <div md-virtual-repeat="key_value_property in platform.global_properties.key_value_properties | filterProperties:{'name':globalPropertiesKeyFilter, 'filtrable_value':globalPropertiesValueFilter} | orderBy:'name':sortOrder" class="repeated-item margin-1pc" flex layout="row">
-                <div layout="row" flex="auto">
+        <md-virtual-repeat-container id="vertical-container" class="height-300px">
+            <div md-virtual-repeat="key_value_property in platform.global_properties.key_value_properties | filterProperties:{'name':globalPropertiesKeyFilter, 'filtrable_value':globalPropertiesValueFilter} | orderBy:'name':sortOrder"
+                 class="repeated-item margin-1pc" flex layout="row">
+                <div layout="column">
+                    <div layout="row" flex="auto">
                     <div flex="40">
                         <div layout="row" flex="auto">
                             <div flex="5">
-                                <span class="fa fa-trash delete-property-icon" ng-really-message="{{ 'properties.platform.globalProperties.delete' | translate : {name:key_value_property.name} }}"
+                                <span class="fa fa-trash delete-property-icon"
+                                      ng-really-message="{{ 'properties.platform.globalProperties.delete' | translate : {name:key_value_property.name} }}"
                                       aria-label="Supprimer"
                                       ng-really-click="platform.global_properties.deleteKeyValue(key_value_property)"
                                       ng-mouseenter="hover = true"
                                       ng-mouseleave="hover = false">
                                 </span>
                             </div>
-                            <div flex="95">
+                            <div flex="5" ng-init="zoomInGlobalProperties = false">
+                                <div layout="column" layout-wrap>
+                                    <span flex class="ng-scope"
+                                          ng-class="zoomInGlobalProperties ? 'fa fa-eye-slash' : 'fa fa-eye'"
+                                          ng-click="zoomInGlobalProperties = !zoomInGlobalProperties"
+                                          ng-show="platform.global_properties_usage[key_value_property.name].length">
+                                    </span>
+                                </div>
+                            </div>
+                            <div flex="90">
                                 <div class="truncate-ellipsis">
                                     <label class="property-label"
                                            ng-class="{'text-stroke': hover}" >{{key_value_property.name}}</label>
@@ -45,17 +65,28 @@
                                         {{key_value_property.name}}
                                     </md-tooltip>
                                 </div>
+
                             </div>
                         </div>
                     </div>
+
                     <div flex="60">
-                        <input ng-model="key_value_property.value"
-                               ng-trim="true"
-                               ng-focus="focusthis = true"
-                               ng-blur="focusthis = false"
-                               ng-class="{'text-stroke': hover}"
-                               class="property-value" >
+                            <input ng-model="key_value_property.value"
+                                   ng-trim="true"
+                                   ng-focus="focusthis = true"
+                                   ng-blur="focusthis = false"
+                                   ng-class="{'text-stroke': hover}"
+                                   class="property-value">
                     </div>
+                </div>
+                    <md-list flex="auto"class="global-property-usage" ng-show="zoomInGlobalProperties">
+                        <md-subheader class="md-no-sticky">{{'properties.platform.globalProperties.used_in' | translate}} : </md-subheader>
+                            <md-list-item ng-repeat="usage in platform.global_properties_usage[key_value_property.name]">
+                                <div class="truncate-ellipsis">
+                                    <label class="global-property-usage-label">{{platform.prettify_path(usage)}}</label>
+                                </div>
+                            </md-list-item>
+                    </md-list>
                 </div>
             </div>
         </md-virtual-repeat-container>

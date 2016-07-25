@@ -46,6 +46,10 @@ textarea,
     height: 100px !important;
 }
 
+.height-100pc {
+    height: 100% !important;
+}
+
 .height-20px {
     height: 20px !important;
 }
@@ -726,6 +730,26 @@ button.md-primary.md-button.md-confirm-hesperides-dialog-theme.md-ink-ripple {
     padding-bottom: 2px!important;
 }
 
+md-list.global-property-usage {
+    padding: 8px 0 0 0;
+}
+
+md-list.global-property-usage .md-subheader {
+    line-height: 30px;
+}
+
+md-list.global-property-usage div.md-subheader-inner {
+    padding: 0 0 0 16px;
+    font-weight: bold;
+}
+
+md-list.global-property-usage md-list-item {
+    min-height: 16px;
+    padding: 8px 16px;
+    font-size: 12px;
+    color: rgba(0,0,0,0.54);
+}
+
 .property-required {
     color:red
 }
@@ -757,7 +781,6 @@ button.md-primary.md-button.md-confirm-hesperides-dialog-theme.md-ink-ripple {
 .properties-container{
     margin-top: -3%;
     min-height: 150px;
-    max-height: 500px;
 }
 
 md-content.properties-container {
@@ -803,6 +826,17 @@ md-content.properties-container {
 
 .property-box-module-name {
     white-space: nowrap;
+}
+
+.global-property-usage {
+    margin: 5px;
+    background-color: #F8F8F8;
+}
+
+.global-property-usage-label {
+    font-weight: bold;
+    border: 0px !important;
+    width: 100%;
 }
 
 /* Change default values fore color*/
@@ -1043,7 +1077,6 @@ input.default-value-color-focus:placeholder-shown{color: #FFFFFF;}
 .md-virtual-repeat-container {
     background-color: #F8F8F8;
     min-height: 150px;
-    max-height: 500px;
 }
 
 .md-virtual-repeat-container .md-virtual-repeat-scroller {
@@ -1054,7 +1087,7 @@ input.default-value-color-focus:placeholder-shown{color: #FFFFFF;}
 
 .md-virtual-repeat-sizer {
     min-height: 150px;
-    max-height: 500px;
+    height: 350px;
 }
 
 repeated-item
@@ -1064,6 +1097,9 @@ repeated-item
 }
 
 /*Global properties list*/
+.md-virtual-repeat-offsetter, md-virtual-repeat-sizer, md-virtual-repeat-scroller{
+    height: 100%;
+}
 .global-properties-container,global-properties-line {
     width:100%;
 }

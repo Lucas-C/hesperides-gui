@@ -81,7 +81,7 @@
                 </div>
                     <md-list flex="auto"class="global-property-usage" ng-show="zoomInGlobalProperties">
                         <md-subheader class="md-no-sticky">{{'properties.platform.globalProperties.used_in' | translate}} : </md-subheader>
-                            <md-list-item ng-repeat="usage in platform.global_properties_usage[key_value_property.name]">
+                            <md-list-item ng-repeat="usage in platform.global_properties_usage[key_value_property.name] track by $index">
                                 <div class="truncate-ellipsis">
                                     <label class="global-property-usage-label">{{platform.prettify_path(usage)}}</label>
                                 </div>

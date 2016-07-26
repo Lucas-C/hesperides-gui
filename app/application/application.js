@@ -232,14 +232,18 @@ applicationModule.factory('ApplicationService', ['$hesperidesHttp', 'Application
             return $http.get('rest/applications/' + encodeURIComponent(name)).then(function (response) {
                 //Load global properties for each platform
                 var application = new Application(response.data);
-                _.each(application.platforms, function (platform) {
-                    me.get_properties(name, platform.name, "#").then(function (properties) {
-                        platform.global_properties = properties;
-                    });
-                    me.get_global_properties_usage(name, platform.name).then(function (usage) {
-                        platform.global_properties_usage = usage;
-                    });
-                });
+
+                // --- Testing (keeping this comments while testing
+                // --- Instead of retrieving the whole infos about all platform, we are firing api call only when needed
+                // --- app/properties/properties.js : method "update_main_box" grep "// --- Testing"
+//                _.each(application.platforms, function (platform) {
+//                    me.get_properties(name, platform.name, "#").then(function (properties) {
+//                        platform.global_properties = properties;
+//                    });
+//                    me.get_global_properties_usage(name, platform.name).then(function (usage) {
+//                        platform.global_properties_usage = usage;
+//                    });
+//                });
                 return application;
             }, function (error) {
                 $.notify(error.data.message, "error");

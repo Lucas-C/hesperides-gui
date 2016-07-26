@@ -1120,6 +1120,11 @@ repeated-item
 .delete-property-icon {
     color:red;cursor: pointer;
 }
+
+.zoom-in-property-icon {
+    cursor: pointer;
+}
+
 /* Code mirror line number style*/
 .CodeMirror-sizer {
     margin-left: 30px !important;

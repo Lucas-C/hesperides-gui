@@ -71,8 +71,8 @@ applicationModule.factory('Platform', ['ApplicationModule', 'Properties', functi
             splitted_path = path.split('#')
             last_pos = splitted_path.length - 1
 
-            prettify_module = splitted_path[last_pos - 2] + ' (' + splitted_path[last_pos - 1] +
-            '-' + (splitted_path[last_pos] === 'WORKINGCOPY' ? 'working-copy' : 'release') + ')';
+            prettify_module = splitted_path[last_pos - 2] + ', ' + splitted_path[last_pos - 1] +
+            (splitted_path[last_pos] === 'WORKINGCOPY' ? ' (working copy) ' : '');
 
             splitted_path = splitted_path.slice(0, splitted_path.length - 3);
 

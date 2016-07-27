@@ -49,8 +49,8 @@ propertiesModule.controller('PlatformVersionModule', ['$scope', '$mdDialog', 'Ne
 }]);
 
 
-propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDialog', '$location', '$route', '$anchorScroll', '$timeout', 'ApplicationService', 'FileService', 'EventService', 'ModuleService', 'ApplicationModule', 'Page', 'PlatformColorService', 'NexusService', '$translate', '$window',
-    function ($scope, $routeParams, $mdDialog, $location, $route, $anchorScroll, $timeout, ApplicationService, FileService, EventService, ModuleService, Module, Page, PlatformColorService, NexusService, $translate, $window) {
+propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDialog', '$location', '$route', '$anchorScroll', '$timeout', 'ApplicationService', 'FileService', 'EventService', 'ModuleService', 'ApplicationModule', 'Page', 'PlatformColorService', 'NexusService', '$translate', '$window', '$http', 'Properties',
+    function ($scope, $routeParams, $mdDialog, $location, $route, $anchorScroll, $timeout, ApplicationService, FileService, EventService, ModuleService, Module, Page, PlatformColorService, NexusService, $translate, $window, $http, Properties) {
     Page.setTitle("Properties");
 
     $scope.platform = $routeParams.platform;
@@ -175,8 +175,34 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
             add_to_box(mainBox, folders, 0, module);
         });
 
-        $scope.mainBox = mainBox;
+        // --- Testing retrive on demand
+        // If the usage is already filled, we don't call the backend, and serve cache instead
+        if (platform.global_properties_usage === null) {
 
+            var url = 'rest/applications/' + encodeURIComponent(platform.application_name) + '/platforms/' + encodeURIComponent(platform.name) + '/properties?path=#';
+
+            $http.get(url).then(function (response) {
+                return new Properties(response.data);
+            }, function (error) {
+                $.notify(error.data.message, "error");
+                throw error;
+            }).then(function (response) {
+                platform.global_properties = response;
+            });
+
+            var url = 'rest/applications/' + encodeURIComponent(platform.application_name) + '/platforms/' + encodeURIComponent(platform.name) + '/global_propeties_usage';
+
+            $http.get(url).then(function (response) {
+                return response.data;
+            }, function (error) {
+                $.notify(error.data.message, "error");
+                throw error;
+            }).then(function (response) {
+                platform.global_properties_usage = response;
+            });
+        }
+
+        $scope.mainBox = mainBox;
     };
 
     $scope.add_box = function (name, box) {
@@ -1624,7 +1650,7 @@ propertiesModule.factory('Properties', function () {
                     })) {
                         key_value.useGlobal = true;
                         key_value.globalValue = _.find(global_properties.key_value_properties, function (kvp) {
-                                                                    return key_value.value ==='{{' + kvp.name + '}}';
+                                                                    return key_value.value.indexOf('{{' + kvp.name + '}}') != -1;
                                                                 }, 'value').value;
                     }
                 }

@@ -148,6 +148,12 @@ menuModule.controller('MenuPropertiesCtrl', ['$hesperidesHttp', '$scope', '$mdDi
         location.reload();
     };
 
+    var apps;
+
+    ApplicationService.with_name_like("").then(function (response) {
+        apps = response.map(elem => elem.name)
+    });
+
     $scope.find_applications_by_name = function (name) {
         return ApplicationService.with_name_like(name);
     };
@@ -165,19 +171,26 @@ menuModule.controller('MenuPropertiesCtrl', ['$hesperidesHttp', '$scope', '$mdDi
 
     };
 
-    $scope.open_properties_page = function (application_name, platform_name, fakeButton) {
-        var path = '/properties/' + application_name;
-        $location.url(path).search({platform: platform_name});
-        $scope.applicationSearched = "";
-        $mdDialog.cancel();
+    $scope.open_properties_page = function (application_name, platform_name, fakeButton, secure) {
 
-        // Very bad trick to close menu :-(
-        if (fakeButton) {
-            $timeout(function() {
-                $(fakeButton).click();
-            }, 0);
+        if (secure || !secure && apps.indexOf(application_name) != -1) {
+
+            var path = '/properties/' + application_name;
+            $location.url(path).search({platform: platform_name});
+            $scope.applicationSearched = "";
+            $mdDialog.cancel();
+
+            // Very bad trick to close menu :-(
+            if (fakeButton) {
+                $timeout(function() {
+                    $(fakeButton).click();
+                }, 0);
+            }
         }
+
     };
+
+
 
     $scope.create_platform = function(application_name, platform_name, production, application_version){
         var platform = new Platform({name: platform_name, application_name: application_name, application_version: application_version, production: production});

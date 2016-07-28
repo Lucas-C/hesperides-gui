@@ -112,6 +112,13 @@ hesperidesModule.controller("TitleCtrl", ['$scope', 'Page', 'UserService', funct
     }
 }]);
 
+hesperidesModule.controller("WelcomeCtrl", ['$scope','$location', function ($scope, $location) {
+    $scope.applications = store.get('applications');
+    $scope.openApplication = function(app) {
+        $location.path('/properties/'+app)
+    }
+}]);
+
 hesperidesModule.config(['$routeProvider', '$mdThemingProvider', '$ariaProvider', '$mdIconProvider', '$translateProvider',
     function ($routeProvider, $mdThemingProvider, $ariaProvider, $mdIconProvider, $translateProvider) {
     $mdIconProvider.fontSet('fa', 'fontawesome');
@@ -121,10 +128,13 @@ hesperidesModule.config(['$routeProvider', '$mdThemingProvider', '$ariaProvider'
             prefix: '/i18n/label_',
             suffix: '.json'
         });
-        $translateProvider.preferredLanguage('fr');
-        $translateProvider.fallbackLanguage('fr');
-        //Use local storage to keep the preferred language of the user. Fails back to cookie storage if the navigator does not support local storage
-        $translateProvider.useLocalStorage();
+        if(store.get('language') == 'fr'){
+            $translateProvider.preferredLanguage('fr');
+            $translateProvider.fallbackLanguage('fr');
+        }else{
+            $translateProvider.preferredLanguage('en');
+            $translateProvider.fallbackLanguage('en');
+        }
     };
 
     $routeProvider.
@@ -149,7 +159,8 @@ hesperidesModule.config(['$routeProvider', '$mdThemingProvider', '$ariaProvider'
         templateUrl: 'swagger/swagger.html'
     }).
     otherwise({
-        templateUrl: 'welcome_screen.html'
+        templateUrl: 'welcome_screen.html',
+        controller: 'WelcomeCtrl'
     });
 
     //Material design theming
@@ -454,7 +465,7 @@ hesperidesModule.service ('PlatformColorService', function (){
          * Getting a color according to input.
          * @param {String} name : the input string
          */
-        calculateColor: function (name){
+        calculateColor: function (name, color){
 
             /**
              * Private utility function that calculates
@@ -462,10 +473,23 @@ hesperidesModule.service ('PlatformColorService', function (){
              */
             pastelColour = function(name) {
 
-                var baseRed = 220;
-                var baseGreen = 220;
-                var baseBlue = 220;
+                var baseRed = 0;
+                var baseGreen = 0;
+                var baseBlue = 0;
 
+               if(color != null){
+                    baseRed = color.red;
+                    baseGreen = color.green;
+                    baseBlue = color.blue;
+                }else{
+                    if(store.get('color_red')){
+                        baseRed = store.get('color_red');
+                    }if(store.get('color_green')){
+                        baseGreen = store.get('color_green');
+                    }if(store.get('color_blue')){
+                        baseBlue = store.get('color_blue');
+                    }
+                }
                 //lazy seeded random hack to get values from 0 - 256
                 //for seed just take bitwise XOR of first two chars
                 var seed = name.charCodeAt(0) ^ name.charCodeAt(1) ^ name.charCodeAt(2);
@@ -482,9 +506,14 @@ hesperidesModule.service ('PlatformColorService', function (){
             };
 
             // get the final color in rgb
+            var bgColor;
             var rgb_pastel = pastelColour(name);
-            var bgColor = "rgb("+rgb_pastel.red+", "+rgb_pastel.green+", "+rgb_pastel.blue+")";
+            bgColor = "rgb("+rgb_pastel.red+", "+rgb_pastel.green+", "+rgb_pastel.blue+")";
             return bgColor;
+        },
+        removeColor: function (){
+            // get the final color in rgb
+            return "rgb(255, 255, 255)";
         }
     };
 });

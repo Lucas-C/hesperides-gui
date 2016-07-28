@@ -174,35 +174,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
             var folders = path.split('#');
             add_to_box(mainBox, folders, 0, module);
         });
-
-        // --- Testing retrive on demand
-        // If the usage is already filled, we don't call the backend, and serve cache instead
-        if (platform.global_properties_usage === null) {
-
-            var url = 'rest/applications/' + encodeURIComponent(platform.application_name) + '/platforms/' + encodeURIComponent(platform.name) + '/properties?path=#';
-
-            $http.get(url).then(function (response) {
-                return new Properties(response.data);
-            }, function (error) {
-                $.notify(error.data.message, "error");
-                throw error;
-            }).then(function (response) {
-                platform.global_properties = response;
-            });
-
-            var url = 'rest/applications/' + encodeURIComponent(platform.application_name) + '/platforms/' + encodeURIComponent(platform.name) + '/global_propeties_usage';
-
-            $http.get(url).then(function (response) {
-                return response.data;
-            }, function (error) {
-                $.notify(error.data.message, "error");
-                throw error;
-            }).then(function (response) {
-                platform.global_properties_usage = response;
-            });
-        }
-
-        $scope.mainBox = mainBox;
+       $scope.mainBox = mainBox;
     };
 
     $scope.add_box = function (name, box) {
@@ -784,6 +756,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
             //Increase platform number
             $scope.platform.version_id = $scope.platform.version_id + 1;
+            $scope.refreshGlobalPropertiesData();
         });
     };
 
@@ -799,6 +772,10 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
             //Increase platform number
             $scope.platform.version_id = $scope.platform.version_id + 1;
+
+            //Specify that the global_properties_usage = null means that data may have become outdated.
+            // So next time user wants global_properties we reload then instead of using cached ones.
+            $scope.platform.global_properties_usage = null;
         }, function () {
             //If an error occurs, reload the platform, thus avoiding having a non synchronized $scope model object
             $location.url('/properties/' + $scope.platform.application_name).search({platform: $scope.platform.name});
@@ -814,7 +791,37 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         });
     };
 
+    $scope.refreshGlobalPropertiesData = function() {
+        var platform = $scope.platform;
+        var url = 'rest/applications/' + encodeURIComponent(platform.application_name) + '/platforms/' + encodeURIComponent(platform.name) + '/properties?path=#';
+
+        $http.get(url).then(function (response) {
+            return new Properties(response.data);
+        }, function (error) {
+            $.notify(error.data.message, "error");
+            throw error;
+        }).then(function (response) {
+            platform.global_properties = response;
+        });
+
+        var url = 'rest/applications/' + encodeURIComponent(platform.application_name) + '/platforms/' + encodeURIComponent(platform.name) + '/global_propeties_usage';
+
+        $http.get(url).then(function (response) {
+            return response.data;
+        }, function (error) {
+            $.notify(error.data.message, "error");
+            throw error;
+        }).then(function (response) {
+            platform.global_properties_usage = response;
+        });
+    }
+
     $scope.showGlobalPropertiesDisplay = function () {
+        // --- Testing retrive on demand
+        // If the usage is already filled, we don't call the backend, and serve cache instead
+        if ($scope.platform.global_properties_usage === null) {
+            $scope.refreshGlobalPropertiesData();
+        }
         $scope.instance = undefined;
         $scope.properties = undefined;
         $scope.showGlobalProperties = true;

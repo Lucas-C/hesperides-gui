@@ -79,7 +79,8 @@
                                    class="property-value">
                     </div>
                 </div>
-                    <md-list flex="auto"class="global-property-usage" ng-show="zoomInGlobalProperties">
+                    <!-- ng-show based on length so if the usage happen to disapear it prevent the used-in text to display, and close / hide this div-->
+                    <md-list flex="auto"class="global-property-usage" ng-show="zoomInGlobalProperties && platform.global_properties_usage[key_value_property.name].length">
                         <md-subheader class="md-no-sticky">{{'properties.platform.globalProperties.used_in' | translate}} : </md-subheader>
                             <md-list-item ng-repeat="usage in platform.global_properties_usage[key_value_property.name] track by $index">
                                 <div class="truncate-ellipsis">

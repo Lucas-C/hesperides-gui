@@ -395,6 +395,9 @@ md-checkbox.diff {
 .ng-binding > h2 {
     margin-left: 10px;
 }
+.ng-binding > p {
+    margin-left: 10px;
+}
 
 /******************************************************************************
  * Menu
@@ -471,6 +474,18 @@ md-menu-content.md-menu-bar-menu.md-dense {
 }
 .menu-language--en {
     background-image: url('/img/british-flag-small.png');
+}
+
+.menu-user {
+    float: right;
+    min-height: 40px;
+}
+
+.menu-user > button {
+    margin-top: 0px;
+    min-width: 25px;
+    max-width: 25px;
+    background-repeat: no-repeat;
 }
 
 #fakeButtonSearchTechno {
@@ -575,6 +590,18 @@ kbd {
     list-style-type: none;
     display: inline;
 }
+
+/******************************************************************************
+ * Custom
+ */
+.custom-list {
+    padding-left: 20px;
+}
+.custom-list li {
+    list-style-type: none;
+    Line-Height: 15px;
+}
+
 
 /******************************************************************************
  * Material Design Button color
@@ -783,7 +810,11 @@ md-content.properties-container {
     cursor:pointer;
     font-size: 25px;
 }
-
+.property-sign {
+    margin-left:15px;
+    cursor:pointer;
+    font-size: 30px;
+}
 .property-tree-techno {
     padding-left: 20px;
     display: inline-block;
@@ -1153,3 +1184,48 @@ repeated-item
     width: 95%;
     margin: 12px;
 }
+
+  @media (max-width: 599px) {
+.whiteframeBasicClassUsage md-whiteframe {
+      margin: 7px;
+      height: 50px;
+      background-color: #FDFDB9; }
+.whiteframeBasicClassUsage md-whiteframe > button {
+       background-color: Transparent;
+       background-repeat:no-repeat;
+       border: none;
+       outline:none;
+       font-size: 0.4em; }}
+  @media (min-width: 600px) and (max-width: 959px) {
+.whiteframeBasicClassUsage md-whiteframe {
+      margin: 20px;
+      height: 75px;
+      background-color: #FDFDB9; }
+.whiteframeBasicClassUsage md-whiteframe > button {
+       background-color: Transparent;
+       background-repeat:no-repeat;
+       border: none;
+       outline:none;
+       font-size: 0.6em; }}
+  @media (min-width: 960px) and (max-width: 1279px) {
+.whiteframeBasicClassUsage md-whiteframe {
+      margin: 20px;
+      height: 90px;
+      background-color: #FDFDB9; }
+.whiteframeBasicClassUsage md-whiteframe > button {
+       background-color: Transparent;
+       background-repeat:no-repeat;
+       border: none;
+       outline:none;
+       font-size: 0.9em; }}
+  @media (min-width: 1280px) {
+.whiteframeBasicClassUsage md-whiteframe {
+      margin: 25px;
+      height: 100px;
+      background-color: #FDFDB9; }
+.whiteframeBasicClassUsage md-whiteframe > button {
+       background-color: Transparent;
+       background-repeat:no-repeat;
+       border: none;
+       outline:none;
+       font-size: 2.0em; }}

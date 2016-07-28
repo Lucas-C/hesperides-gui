@@ -288,7 +288,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
         var modalScope = $scope.$new();
         modalScope.module = module;
-        modalScope.copyProperties = true;
+        modalScope.copyProperties = store.get('copy_properties');
         modalScope.searchText = module.name + ' ';
 
         modalScope.$update = function (modal_data) {
@@ -349,7 +349,9 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         };
 
         modalScope.backgroundColor = function(item) {
-            return PlatformColorService.calculateColor(item.name);
+            //if(!$scope.$$phase) {
+                return PlatformColorService.calculateColor(item.name);
+            //}
         };
 
         modalScope.from.lookPast = false;
@@ -813,8 +815,13 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
      * Box and tree display relative vars
      * The tree mode is displayed by default
      */
-    $scope.box = false;
-    $scope.tree = true;
+    if(store.get('display_mode') == 'arbre'){
+        $scope.box = false;
+        $scope.tree = true;
+    }else{
+        $scope.box = true;
+        $scope.tree = false;
+    }
 
     /**
      * This will display the properties in the box mode.

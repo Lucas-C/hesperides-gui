@@ -297,7 +297,7 @@ menuModule.controller('MenuPropertiesCtrl', ['$hesperidesHttp', '$scope', '$mdDi
 }]);
 
 
-menuModule.controller('MenuHelpCtrl', ['$scope', '$mdDialog', '$hesperidesHttp', 'hesperidesGlobals', '$translate', '$cookies', function($scope, $mdDialog, $http, hesperidesGlobals, $translate){
+menuModule.controller('MenuHelpCtrl', ['$scope', '$mdDialog', '$hesperidesHttp', 'hesperidesGlobals', '$translate', 'PlatformColorService', '$parse', 'ApplicationService', function($scope, $mdDialog, $http, hesperidesGlobals, $translate, PlatformColorService, $parse, ApplicationService){
     $scope.closeDialog = function() {
         $mdDialog.cancel();
     };
@@ -305,6 +305,11 @@ menuModule.controller('MenuHelpCtrl', ['$scope', '$mdDialog', '$hesperidesHttp',
     $scope.change_language = function(langKey) {
         $translate.use(langKey);
     };
+
+     //Refactoring TO DO
+     $scope.find_applications_by_name = function (name) {
+        return ApplicationService.with_name_like(name);
+     };
 
     $scope.display_hesperides_informations = function(){
 
@@ -328,6 +333,68 @@ menuModule.controller('MenuHelpCtrl', ['$scope', '$mdDialog', '$hesperidesHttp',
         });
 
     };
+
+    $scope.display_settings = function(){
+        $scope.settings_copy = store.get('copy_properties');
+        $scope.settings_color = store.get('color_active');
+        $scope.settings_display = store.get('display_mode');
+        $scope.settings_language = store.get('language');
+        $scope.items = [{name:'USN1'}, {name:'INT1'}, {name:'REC1'}];
+        if(!store.get('applications')){
+            $scope.applications = [];
+        }else {
+            $scope.applications = store.get('applications');
+        }
+        $scope.color = {};
+        if(!store.get('color_red')){
+            $scope.color.red = 0;
+        }else{
+            $scope.color.red = store.get('color_red');
+        }
+        if(!store.get('color_green')){
+             $scope.color.green = 0;
+        }else{
+             $scope.color.green = store.get('color_green');
+        }
+        if(!store.get('color_blue')){
+             $scope.color.blue = 0;
+        }else{
+             $scope.color.blue = store.get('color_blue');
+        }
+        $scope.backgroundColor = function(item) {
+            return PlatformColorService.calculateColor(item.name, $scope.color);
+        }
+        $scope.addApplication = function() {
+               if($scope.applications.indexOf($scope.app) == -1){
+                $scope.applications.push($scope.app);
+               }
+        }
+        $scope.removeApplication = function() {
+               var index = $scope.applications.indexOf($scope.app);
+               $scope.applications.splice(index-1, 1);
+        }
+        $scope.saveSettings = function() {
+               store.set('display_mode',$scope.settings_display);
+               store.set('language',$scope.settings_language);
+               store.set('copy_properties',$scope.settings_copy);
+               store.set('color_active',$scope.settings_color);
+               store.set('color_red',$scope.color.red);
+               store.set('color_green',$scope.color.green);
+               store.set('color_blue',$scope.color.blue);
+               store.set('applications',$scope.applications);
+               location.reload();
+               $mdDialog.cancel();
+        }
+        $mdDialog.show({
+            templateUrl: 'hesperides/settings-modal.html',
+            controller: 'MenuHelpCtrl',
+            clickOutsideToClose:true,
+            preserveScope: true, // requiered for not freez menu
+            scope:$scope
+        });
+
+    };
+
 
     $scope.display_swagger = function() {
         window.open('/swagger.html');

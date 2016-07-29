@@ -824,10 +824,11 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         if ($scope.platform.global_properties_usage === null) {
             $scope.refreshGlobalPropertiesData();
         }
+
         $scope.instance = undefined;
         $scope.properties = undefined;
-        $scope.showGlobalProperties = true;
-        $scope.showButtonAndEye = true;
+        $scope.showGlobalProperties = !$scope.showGlobalProperties;
+        $scope.showButtonAndEye = !$scope.showButtonAndEye;
     };
 
     $scope.get_platform_to_compare = function (application, platform, lookPast, date) {

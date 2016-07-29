@@ -4,7 +4,7 @@
         <span class="padding-right-10px" >{{ 'properties.boxMode.title' | translate }}</span>
     </h3>
     <div layout="row" >
-        <md-button ng-click="showButtonAndEye = !showButtonAndEye;showGlobalProperties = !showGlobalProperties"
+        <md-button ng-click="showGlobalPropertiesDisplay()"
                    class="md-fab md-primary md-mini" aria-label="Deplier/Plier le menu">
             <i class="fa" ng-class="{'fa-eye': !showButtonAndEye, 'fa-eye-slash': showButtonAndEye}"></i>
         </md-button>

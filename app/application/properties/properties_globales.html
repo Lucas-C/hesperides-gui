@@ -53,7 +53,7 @@
                                     <span flex class="ng-scope zoom-in-property-icon"
                                           ng-class="zoomInGlobalProperties ? 'fa fa-eye-slash' : 'fa fa-eye'"
                                           ng-click="zoomInGlobalProperties = !zoomInGlobalProperties"
-                                          ng-show="platform.global_properties_usage[key_value_property.name].length">
+                                          ng-show="(platform.global_properties_usage[key_value_property.name] | filter : {inModel:'true'}).length">
                                     </span>
                                 </div>
                             </div>
@@ -80,11 +80,12 @@
                     </div>
                 </div>
                     <!-- ng-show based on length so if the usage happen to disapear it prevent the used-in text to display, and close / hide this div-->
-                    <md-list flex="auto"class="global-property-usage" ng-show="zoomInGlobalProperties && platform.global_properties_usage[key_value_property.name].length">
+                    <md-list flex="auto"class="global-property-usage" ng-show="zoomInGlobalProperties && (platform.global_properties_usage[key_value_property.name] | filter : {inModel:'true'}).length">
                         <md-subheader class="md-no-sticky">{{'properties.platform.globalProperties.used_in' | translate}} : </md-subheader>
-                            <md-list-item ng-repeat="usage in platform.global_properties_usage[key_value_property.name] track by $index">
+                            <!--<md-list-item ng-repeat="usage in platform.global_properties_usage[key_value_property.name] track by $index">-->
+                            <md-list-item ng-repeat="usage in (platform.global_properties_usage[key_value_property.name] | filter : {inModel:'true'}) track by $index">
                                 <div class="truncate-ellipsis">
-                                    <label class="global-property-usage-label">{{platform.prettify_path(usage)}}</label>
+                                    <label class="global-property-usage-label">{{platform.prettify_path(usage.path)}}</label>
                                 </div>
                             </md-list-item>
                     </md-list>

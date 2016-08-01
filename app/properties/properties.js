@@ -1898,7 +1898,7 @@ propertiesModule.factory('Properties', function () {
 propertiesModule.filter('displayProperties', function () {
     return function (items, display) {
         return _.filter(items, function(item) {
-            return (_.isUndefined(display) || display || item.inModel);
+            return (display ? !item.inModel : _.isUndefined(display) || display || item.inModel);
         });
     };
 });

@@ -112,6 +112,7 @@
   "properties.platform.show.all": "Show platforms",
   "properties.platform.hide.all": "Hide platforms",
   "properties.platform.title": "Logic representation of ",
+  "properties.platform.quickDisplay": "Quick extend (module level)",
   "properties.platform.version.tooltip": "Edit the label 'version of the application'",
   "properties.platform.version.history": "Display history",
   "properties.platform.version.modal.title": "Change the platform version",

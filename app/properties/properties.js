@@ -471,6 +471,10 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         $window.open('/#/diff?' + $.param(urlParams), '_blank');
     };
 
+    $scope.quickDisplayInstance = function () {
+        $scope.$broadcast('quickDisplayInstanceDetails', {})
+    };
+
     $scope.find_modules_by_name = function (name) {
         return ModuleService.with_name_like(name);
     };
@@ -1988,6 +1992,18 @@ propertiesModule.directive('initInstanceFunctions', function () {
 
                 setSign();
             };
+
+            scope.$on('quickDisplayInstanceDetails',function(event, data){
+                scope.ngModel.opened = !scope.ngModel.opened;
+
+                Object.keys(scope.ngModel.children).forEach(function (key) {
+                   scope.ngModel.children[key].opened = true;
+                });
+
+
+                setSign();
+            });
+
 
             // We can't use isolate scope. We take attribut and parse it.
             if(attrs.ngModel){

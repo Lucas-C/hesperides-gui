@@ -2,7 +2,7 @@
     <section class="file-header">
         <div layout="row" flex="100">
             <div flex>
-                <md-button ng-click="open(1)" class="file-title">{{ 'properties.module.editProperties.simpleProperties.title' | translate }} ( {{properties.key_value_properties.length}} )</md-button>
+                <md-button ng-click="open(1)" class="file-title">{{ 'properties.module.editProperties.simpleProperties.title' | translate }} ( {{(properties.key_value_properties | displayProperties:false).length}} )</md-button>
             </div>
             <!-- Error tooltip text -->
             <md-tooltip>{{ 'properties.module.editProperties.simpleProperties.tooltip' | translate }}</md-tooltip>

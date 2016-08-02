@@ -69,7 +69,9 @@
         </div>
         <div class="margin-top-5px" layout="row" ng-show="properties">
             <div>
-                <md-button id="cleanPropertiesButton" ng-click="clean_properties(properties)" class="md-raised">
+                <md-button id="cleanPropertiesButton"class="md-raised"
+                           ng-really-click="clean_properties(properties)"
+                           ng-really-message="{{ 'properties.module.editProperties.cleanUselessValuesConfirmation' | translate }}">
                     <i class="fa fa-trash"></i>
                     <span>{{ 'properties.module.editProperties.cleanUselessValues' | translate }}</span>
                 </md-button>
@@ -98,7 +100,9 @@
                     </span>
                 </h3>
 
-                <md-button id="cleanPropertiesButton" ng-click="clean_instance_properties(instance)" class="md-raised">
+                <md-button id="cleanPropertiesButton" class="md-raised"
+                           ng-really-message="{{ 'properties.module.editProperties.cleanUselessValuesConfirmation' | translate }}"
+                           ng-really-click="clean_instance_properties(instance)">
                     <i class="fa fa-trash"></i>
                     <span>{{ 'properties.module.editProperties.cleanUselessValues' | translate }}</span>
                 </md-button>

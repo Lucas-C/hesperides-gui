@@ -760,6 +760,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
                 $scope.selected_module = module;
                 $scope.instance = undefined; //hide the instance panel if opened
                 $scope.showGlobalProperties = undefined;
+                $scope.showButtonAndEye = undefined;
 
                 // Auto scroll to the properties list
                 $location.hash('properties-list');

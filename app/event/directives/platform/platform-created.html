@@ -1,4 +1,6 @@
-<p>
-    <span class ="event-user">{{event.user}}</span><span class = "event-action"> {{ 'platform.event.createdByUser' | translate }}</span>
-    <event-time timestamp = "event.timestamp"></event-time>
-</p>
+<div layout="row" class="event-entry">
+    <div flex="90">
+        <span class ="event-user">{{event.user}}</span><span class = "event-action"> {{ 'platform.event.createdByUser' | translate }}</span>
+        <event-time timestamp = "event.timestamp"></event-time>
+    </div>
+</div>

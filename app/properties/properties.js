@@ -379,7 +379,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
     $scope.open_diff_page = function () {
         //Everything is set in the scope by the modal when calling this
-        //Not very safe but easier to manage with all scopes genrated
+        //Not very safe but easier to manage with all scopes generated
         var urlParams = {
             application: $scope.platform.application_name,
             platform: $scope.platform.name,
@@ -548,10 +548,14 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
      */
     $scope.show_events = function (param1, param2, action) {
         var modalScope = $scope.$new(true);
+        // used for events filtering
         modalScope.filtering = {};
 
         var page = 1; // the starting page is 1.
         var events = [];
+
+        // used for events diff
+        modalScope.selectedEvents = [];
 
         // Creating the stream name
         var stream = undefined;
@@ -573,18 +577,55 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
          * Private function to preload next events
          */
         var preloadNextEvents = function (){
-            events = [];
+            _events = [];
             EventService.get(stream, page).then(function (nextEntries){
                 events = nextEntries;
                 page ++;
             });
         };
 
+        /**
+         * Private function for index calculation
+         */
+        var _setIds = function(lengthOfAll, entries){
+            for (var i = 0; i < entries.length; i ++){
+                entries[i].id = lengthOfAll + i;
+            }
+
+            return entries;
+        }
+
         // Get evevents
         EventService.get(stream, page).then (function (entries){
 
-            modalScope.eventEntries = entries;
+            modalScope.eventEntries = _setIds(0, entries);
             page ++;
+
+            /**
+             * Private function used to check if the events are selectabled or not
+              */
+            modalScope.checkSelectStatus = function (){
+
+                // get the target items
+                var isGlobal = undefined;
+                if ( modalScope.selectedEvents.length == 1){
+                    isGlobal = modalScope.selectedEvents[0].isGlobal;
+                }
+
+                _(modalScope.eventEntries).each (function (e){
+                    if ( modalScope.selectedEvents.length == 2 ){
+                        if ( _.isUndefined(_.find(modalScope.selectedEvents, {id: e.id})) ){
+                            e.isSelectable = false;
+                        }
+                    }else{
+                        if ( !_.isUndefined(isGlobal) && e.isGlobal != isGlobal ){
+                            e.isSelectable = false;
+                        }else{
+                            e.isSelectable = true;
+                        }
+                    }
+                });
+            };
 
             //
             // Show the modal
@@ -613,13 +654,49 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
             modalScope.showMoreEvents = function (){
                 if (events.length > 0) {
+
+                    // adding IDs to events
+                    events = _setIds(modalScope.eventEntries.length, events);
+
+                    // merging the events with the others
                     modalScope.eventEntries = _.union(modalScope.eventEntries, events);
+
+                    // check status
+                    modalScope.checkSelectStatus();
+
                     preloadNextEvents();
                 }else {
                     // no more events to load
                     modalScope.noMoreEvents = true;
                 }
             };
+
+            /**
+             * This function show the diff page between the
+             * selected events.
+             * This show the diff page of both simple and global properties
+             */
+            modalScope.showDiff = function (){
+
+                var from = modalScope.selectedEvents[0];
+                var to = modalScope.selectedEvents[1];
+
+                var urlParams = {
+                    application: from.data.applicationName,
+                    platform: from.data.platformName,
+                    properties_path: from.data.path,
+                    compare_application: to.data.applicationName,
+                    compare_platform: to.data.platformName,
+                    compare_path: to.data.path
+                };
+
+                if (!_.isUndefined(to.timestamp)) {
+                    urlParams.timestamp = to.timestamp;
+                }
+                $window.open('/#/diff?' + $.param(urlParams), '_blank');
+
+            };
+
         });
     };
 

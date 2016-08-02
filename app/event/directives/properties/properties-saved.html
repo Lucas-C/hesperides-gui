@@ -1,4 +1,9 @@
-<p>
-    <span class ="event-user">{{event.user}}</span><span class = "event-action"> {{ 'properties.event.savedByUser' | translate }} <strong>{{moduleName}} {{moduleVersion}}</strong></span>
-    <event-time timestamp = "event.timestamp"></event-time>
-</p>
+<div layout="row" class="event-entry">
+    <div flex="95">
+        <span class ="event-user">{{event.user}}</span><span class = "event-action"> {{ !event.isGlobal ? 'properties.event.savedByUser' : 'properties.event.savedGlobalByUser'| translate }} <strong>{{moduleName}} {{moduleVersion}}</strong></span>
+        <event-time timestamp = "event.timestamp"></event-time>
+    </div>
+    <div flex = "5">
+        <md-checkbox ng-model = "event.isSelected" aria-label = "Select" ng-change = "selectOrUnselect()" ng-disabled = "event.isSelectable == false"></md-checkbox>
+    </div>
+</div>

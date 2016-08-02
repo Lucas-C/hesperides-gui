@@ -10,17 +10,11 @@
                 <div fle="100" layout="row" class="events">
 
                     <!-- module filter -->
-                    <md-input-container flex="30">
-                        <label>{{ 'event.modal.filtering.moduleAndVersion' | translate }}</label>
-                        <input ng-model="filtering.moduleNameAndVersion" placeholder="{{ 'event.modal.filtering.moduleAndVersion.placeholder' | translate}}">
+                    <md-input-container flex="50">
+                        <label>{{ 'event.modal.filtering.findInEvents' | translate }}</label>
+                        <input ng-model="filtering.inputs" placeholder="{{ 'event.modal.filtering.findInEvents.placeholder' | translate}}">
                     </md-input-container>
-
-                    <!-- login filter -->
-                    <md-input-container>
-                        <label>{{ 'event.modal.filtering.user' | translate }}</label>
-                        <input ng-model="filtering.username" placeholder="{{ 'event.modal.filtering.user.placeholder' | translate }}">
-                    </md-input-container>
-
+                    <md-input-container flex="5"></md-input-container>
                     <!-- myevents filter -->
                     <md-input-container>
                         <md-checkbox ng-model="filtering.myevents" aria-label="{{ 'event.modal.filtering.myevents' | translate }}">
@@ -38,7 +32,7 @@
 
                 <!-- showing events -->
                 <md-virtual-repeat-container ng-show="eventEntries && eventEntries.length > 0" class="events height-500px">
-                    <div ng-repeat="event in eventEntries | filterByModuleNameAndVersion: filtering.moduleNameAndVersion | filterByUserName : {username : filtering.username, myevents: filtering.myevents}" >
+                    <div ng-repeat="event in eventEntries | evensFilter: filtering.inputs | myEventsFilter: filtering.myevents" >
                         <div ng-switch="event._type" class="event">
 
                             <!-- Platforms -->
@@ -78,6 +72,9 @@
         <md-dialog-actions>
             <md-button ng-disabled="noMoreEvents" ng-click="showMoreEvents()" class="md-raised md-primary" ng-show="noMoreEvents">
                 {{ 'button.modal.done' | translate }}
+            </md-button>
+            <md-button ng-disabled="!(selectedEvents.length == 2)" ng-click="showDiff()" class="md-raised md-default">
+                {{ 'event.modal.diff' | translate }}
             </md-button>
             <md-button ng-disabled="noMoreEvents" ng-click="showMoreEvents()" class="md-raised md-primary" ng-show="!noMoreEvents">
                 {{ 'button.modal.more' | translate }}

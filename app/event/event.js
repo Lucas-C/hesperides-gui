@@ -16,6 +16,12 @@ eventModule.factory('EventEntry', function (){
         this.data = data.data;
         this.timestamp = data.timestamp;
         this.user = data.user;
+        this.isGlobal = false; // indicates if this event is about global properties
+
+        // For internal use
+        this.id   = 0;
+        this.isSelected = false;
+        this.isSelectable = true;
 
         // The simple type of the event
         var tab = data.type.split('.');
@@ -23,12 +29,18 @@ eventModule.factory('EventEntry', function (){
 
         // Get the module name of the event if applicable
         if ( !_.isUndefined(this.data.path)){
-            var pathsItems = this.data.path.split('#');
-            if (!_.isUndefined(pathsItems [3])){
-                me.moduleName = pathsItems [3];
-            }
-            if (!_.isUndefined(pathsItems [4])){
-                me.moduleVersion = pathsItems [4];
+            if (_.isEqual(this.data.path, '#')){
+               if ( _.isEqual (this._type, 'PropertiesSavedEvent')){
+                this.isGlobal = true;
+               }
+            }else{
+                var pathsItems = this.data.path.split('#');
+                if (!_.isUndefined(pathsItems [3])){
+                    me.moduleName = pathsItems [3];
+                }
+                if (!_.isUndefined(pathsItems [4])){
+                    me.moduleVersion = pathsItems [4];
+                }
             }
         }
     };
@@ -194,14 +206,32 @@ eventModule.directive('propertiesSaved', function (){
         },
         templateUrl : 'event/directives/properties/properties-saved.html',
         controller : ['$scope', function ($scope) {
+            var _event = $scope.event;
 
-            $scope.parse_data = function (){
-                $scope.moduleName = $scope.event.moduleName;
-                $scope.moduleVersion = $scope.event.moduleVersion;
+            // Get the scope of the modal
+            var modalScope = $scope.$parent.$parent.$parent;
+
+            /**
+             * Selectes or unselects the current events for diff.
+             */
+            $scope.selectOrUnselect = function (){
+                if (_event.isSelected){
+                    modalScope.selectedEvents.push(_event);
+                }else{
+                    _.remove(modalScope.selectedEvents, function (item){
+                        return item.id == _event.id;
+                    });
+                }
+                modalScope.checkSelectStatus();
+            };
+
+            $scope.parseData = function (){
+                $scope.moduleName = _event.moduleName;
+                $scope.moduleVersion = _event.moduleVersion;
             }
 
             // Parsing data for this king of events
-            $scope.parse_data();
+            $scope.parseData();
         }]
     };
 });
@@ -275,30 +305,28 @@ eventModule.directive('eventTime', function (){
 /**
  * This is the events filtering by module name or version
  */
-eventModule.filter ('filterByModuleNameAndVersion', function (){
-    return function(events, moduleNameAndVersion){
+eventModule.filter ('evensFilter', function ($filter){
+    return function(events, inputs){
 
-        if ( _.isUndefined(moduleNameAndVersion) || _.isEmpty(moduleNameAndVersion)) {
+        if ( _.isUndefined(inputs) || _.isEmpty(inputs)) {
             return events;
         }
 
         // Format the filters to construct the regex
-        var module = '.*' + moduleNameAndVersion.split(' ').join('.*');
+        var _inputs = '.*' + inputs.split(' ').join('.*');
 
         // Create the regex
         try {
-            var moduleRegex = new RegExp(module, 'i');
+            var regex = new RegExp(_inputs, 'i');
 
             return _.filter(events, function (item){
 
-                        var moduleNameAndVersion = item.moduleName ? item.moduleName + " " : "";
-                        moduleNameAndVersion += item.moduleVersion ? item.moduleVersion : "";
+                var inputs = item.moduleName ? item.moduleName + " " : "";
+                inputs += item.moduleVersion ? item.moduleVersion : "";
 
-                        // all events don't have module name and/or version
-                        if ( !_.isEmpty(moduleNameAndVersion) ){
-                            return moduleRegex.test(moduleNameAndVersion);
-                        }
-                    });
+                return regex.test(inputs) || regex.test(item.user) || regex.test($filter('date')(item.timestamp, 'd MMMM yyyy'));
+
+            });
         } catch(e) {
             return events;
         }
@@ -308,27 +336,13 @@ eventModule.filter ('filterByModuleNameAndVersion', function (){
 /**
  * This is the events filtering by user name or my events
  */
-eventModule.filter ('filterByUserName', function (){
-    return function(events, opts){
+eventModule.filter ('myEventsFilter', function ($filter){
+    return function(events, myevents){
 
-        if ( (_.isUndefined(opts.username) || _.isEmpty(opts.username)) && !opts.myevents) {
-            return events;
-        }
-
-        // get the user name according opts
-        var _username = opts.myevents ? hesperidesUser.username : opts.username;
-
-        // Format the filters to construct the regex
-        var username = '.*' + _username.split(' ').join('.*');
-
-        // Create the regex
-        try {
-            var usernameRegex = new RegExp(username, 'i');
-
-            return _.filter(events, function (item){
-                        return usernameRegex.test(item.user);
-                    });
-        } catch(e) {
+        if ( myevents ) {
+           // reuse a above filter
+           return $filter('evensFilter')(events, hesperidesUser.username);
+        }else{
             return events;
         }
     };

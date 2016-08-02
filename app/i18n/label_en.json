@@ -151,6 +151,7 @@
   "properties.module.editProperties.tooltip": "Edit properties",
   "properties.module.editProperties.title": "Properties attached to ",
   "properties.module.editProperties.cleanUselessValues": "Clean useless values",
+  "properties.module.editProperties.cleanUselessValuesConfirmation": "Would you really clean useless values ?",
   "properties.module.editProperties.save": "Save properties",
   "properties.module.editProperties.simpleProperties.title": "Simple properties",
   "properties.module.editProperties.simpleProperties.tooltip": "Display simple properties",

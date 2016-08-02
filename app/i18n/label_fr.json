@@ -152,6 +152,7 @@
   "properties.module.editProperties.tooltip": "Editer les propriétés",
   "properties.module.editProperties.title": "Les propriétés associées à ",
   "properties.module.editProperties.cleanUselessValues": "Nettoyer les valorisations inutiles",
+  "properties.module.editProperties.cleanUselessValuesConfirmation": "Voulez vous vraiment nettoyer les valorisations inutiles ?",
   "properties.module.editProperties.save": "Sauver les propriétés",
   "properties.module.editProperties.simpleProperties.title": "Propriétés simples",
   "properties.module.editProperties.simpleProperties.tooltip": "Voir les propriétés simples",

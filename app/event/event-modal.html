@@ -70,11 +70,11 @@
             </md-content>
         </div>
         <md-dialog-actions>
-            <md-button ng-disabled="noMoreEvents" ng-click="showMoreEvents()" class="md-raised md-primary" ng-show="noMoreEvents">
-                {{ 'button.modal.done' | translate }}
-            </md-button>
             <md-button ng-disabled="!(selectedEvents.length == 2)" ng-click="showDiff()" class="md-raised md-default">
                 {{ 'event.modal.diff' | translate }}
+            </md-button>
+            <md-button ng-disabled="noMoreEvents" ng-click="showMoreEvents()" class="md-raised md-primary" ng-show="noMoreEvents">
+                {{ 'button.modal.done' | translate }}
             </md-button>
             <md-button ng-disabled="noMoreEvents" ng-click="showMoreEvents()" class="md-raised md-primary" ng-show="!noMoreEvents">
                 {{ 'button.modal.more' | translate }}

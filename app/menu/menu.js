@@ -304,6 +304,13 @@ menuModule.controller('MenuHelpCtrl', ['$scope', '$mdDialog', '$hesperidesHttp',
 
     $scope.change_language = function(langKey) {
         $translate.use(langKey);
+
+        if( langKey == "en" ){
+            $.getScript("bower_components/angular-i18n/en-us.js");
+        }
+        else {
+            $.getScript("bower_components/angular-i18n/fr-fr.js");
+        }
     };
 
     $scope.display_hesperides_informations = function(){

@@ -243,6 +243,7 @@
   "button.modal.close": "Close",
   "button.modal.runComparison": "Run comparison",
   "button.modal.next": "Next",
+  "button.modal.prev": "Prev",
   "button.modal.more": "More...",
   "button.modal.done": "End",
   "button.modal.download": "Download",

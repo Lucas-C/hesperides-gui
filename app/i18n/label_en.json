@@ -210,7 +210,7 @@
   "event.modal.title": "History of",
   "event.modal.title.noHistory": "History is empty",
   "event.modal.filtering.findInEvents": "Filter events",
-  "event.modal.filtering.findInEvents.placeholder": "Filter events according to author, module, version, date ...",
+  "event.modal.filtering.findInEvents.placeholder": "Filter events according to author, module, version, text, date ...",
   "event.modal.filtering.user": "Username",
   "event.modal.filtering.user.placeholder": "Filter by username",
   "event.modal.filtering.myevents": "My events",

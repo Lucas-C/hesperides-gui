@@ -211,7 +211,7 @@
   "event.modal.title": "Historique de",
   "event.modal.title.noHistory": "Aucun historique à afficher",
   "event.modal.filtering.findInEvents": "Filtrer l'historique",
-  "event.modal.filtering.findInEvents.placeholder": "Filtrer l'historique par auteur, module, version, date ...",
+  "event.modal.filtering.findInEvents.placeholder": "Filtrer l'historique par auteur, module, version, text, date ...",
   "event.modal.filtering.user": "Utilisateur",
   "event.modal.filtering.user.placeholder": "Filtrer par nom de user",
   "event.modal.filtering.myevents": "Mon historique",

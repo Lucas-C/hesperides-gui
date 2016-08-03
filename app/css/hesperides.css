@@ -146,6 +146,11 @@ textarea,
     z-index: 1000 !important;
 }
 
+#new-version-label-autocomplete {
+    padding-bottom: 8px;
+}
+
+
 /**
  * Header
  */

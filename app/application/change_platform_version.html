@@ -6,9 +6,7 @@
             <md-content layout-padding class="autoScroll">
                 <form name="platformVersionForm"
                       ng-submit="platformVersionForm.$valid && $change({new_version: newVersion, use_ndl: useNdl, copy_properties: copyProperties})">
-                    <!--
-                    This features are commented because of that ticket : https://jira.vsct.fr/browse/HES-165
-                    When fixing the problem, then please enable these features.
+
 
                     <md-switch class="md-primary md-block" aria-label="Utiliser la note de livraison json de la version" ng-model="useNdl">
                         <span>
@@ -18,7 +16,7 @@
 
                     <md-input-container class="md-block" ng-show="sourceFromNdl && useNdl">
                     <div flex="100" ng-show="useNdl">
-                        <label><strong>Nouvelle version {{newVersion}}</strong></label>
+                        <label id="new-version-label-autocomplete"><strong>Nouvelle version {{newVersion}}</strong></label>
                         <md-autocomplete
                                 flex="100"
                                 ng-disabled="onLoading"
@@ -37,7 +35,8 @@
                                 <span md-highlight-text="ctrl.searchText">{{version}}</span>
                         </md-autocomplete>
                     </div>
-                    <!--</md-input-container>-->
+                    </md-input-container>
+
                     <md-input-container md-no-float class="md-block" ng-show="!useNdl">
                         <label><strong>{{ 'properties.platform.version.modal.newVersion' | translate }} {{newVersion}}</strong></label>
                         <input type="text"
@@ -47,13 +46,13 @@
                                md-autofocus="true"
                                 />
                     </md-input-container>
-                    <!--
+
                     <md-switch class="md-primary md-block" aria-label="Copier les properties valorisées de la version" ng-model="copyProperties">
                         <span>
                             <strong>Copier les propriétés valorisées de la version {{platform.application_version}} vers la version {{newVersion}}</strong>
                         </span>
                     </md-switch>
-                    -->
+
                     <input type="submit" id="submit" value="Submit" ng-hide="true"/>
                 </form>
             </md-content>

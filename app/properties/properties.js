@@ -364,6 +364,10 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
             }
         };
 
+        modalScope.pltfm_not_in_list = function () {
+            return !_.some(modalScope.target_platforms, { 'name': modalScope.from.platform });;
+        }
+
         var t = $mdDialog.show({
             templateUrl: 'application/properties_diff_wizard.html',
             clickOutsideToClose:true,
@@ -444,6 +448,10 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
                 }, 200)
             }
         };
+
+        modalScope.pltfm_not_in_list = function () {
+            return !_.some(modalScope.target_platforms, { 'name': modalScope.from.platform });;
+        }
 
         $mdDialog.show({
             templateUrl: 'application/global_properties_diff_wizard.html',

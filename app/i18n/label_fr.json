@@ -240,6 +240,7 @@
   "button.modal.close": "Fermer",
   "button.modal.runComparison": "Lancer le diff",
   "button.modal.next": "Suivant",
+  "button.modal.prev": "Précédent",
   "button.modal.more": "Plus encore...",
   "button.modal.done": "C'est fini",
   "button.modal.download": "Tout télécharger",

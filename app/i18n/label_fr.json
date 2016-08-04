@@ -179,6 +179,8 @@
   "properties.module.delete": "Supprimer le module",
   "properties.module.delete.message": "Supprimer le module {{name}} et toutes ses instances ?",
   "properties.platform.globalProperties.compare.modal.title": "Choisir la plateforme à laquelle comparer les propriétés globales de",
+  "properties.compare.origin": "Origine",
+  "properties.compare.compare": "Comparée",
   "properties.compare.modal.title": "Choisir la plateforme à laquelle comparer",
   "properties.compare.modal.applicationName": "Application à laquelle comparer",
   "properties.compare.modal.platformName": "Plateforme à laquelle comparer",

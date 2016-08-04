@@ -1159,3 +1159,7 @@ repeated-item
     width: 95%;
     margin: 12px;
 }
+
+.center {
+    text-align: center;
+}

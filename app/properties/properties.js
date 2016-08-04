@@ -684,6 +684,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
                     compare_path: to.data.path
                 };
 
+                urlParams.origin_timestamp = from.timestamp;
                 if (!_.isUndefined(to.timestamp)) {
                     urlParams.timestamp = to.timestamp;
                 }
@@ -1016,6 +1017,9 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
     $scope.compare_path = $routeParams.compare_path;
     $scope.compare_splited_path = $routeParams.compare_path.split('#');
     $scope.compare_module = "";
+
+    $scope.origin_timestamp = $routeParams.origin_timestamp;
+    $scope.timestamp = $routeParams.timestamp;
 
     $scope.show_only_modified = false;
 

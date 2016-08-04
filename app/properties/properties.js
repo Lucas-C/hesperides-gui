@@ -672,6 +672,9 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
                     // check status
                     modalScope.checkSelectStatus();
 
+                    // disable filters
+                    modalScope.filtering = {};
+
                     preloadNextEvents();
                 }else {
                     // no more events to load

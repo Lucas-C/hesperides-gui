@@ -364,9 +364,9 @@ applicationModule.factory('ApplicationService', ['$hesperidesHttp', 'Application
                 throw error;
             });
         },
-        save_properties: function (application_name, platform, properties, path) {
+        save_properties: function (application_name, platform, properties, path, comment) {
             properties = properties.to_rest_entity();
-            return $http.post('rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform.name) + '/properties?path=' + encodeURIComponent(path) + '&platform_vid=' + encodeURIComponent(platform.version_id), properties).then(function (response) {
+            return $http.post('rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform.name) + '/properties?path=' + encodeURIComponent(path) + '&platform_vid=' + encodeURIComponent(platform.version_id) + '&comment=' + encodeURIComponent(comment), properties).then(function (response) {
                 $translate('properties.event.saved').then(function(label) {
                     $.notify(label, "success");
                 });

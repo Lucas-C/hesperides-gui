@@ -1,0 +1,30 @@
+<md-dialog flex="50">
+    <md-dialog-content>
+        <div class="ng-binding">
+            <!-- modal title -->
+            <h2>{{ 'save-properties.modal.title' | translate }} {{title}}</h2>
+
+            <md-content layout-padding class="autoScroll">
+
+                <!-- event filters -->
+                <div fle="100" layout="row" class="events">
+
+                    <!-- module filter -->
+                    <md-input-container flex="100">
+                        <label><strong>{{ 'save-properties.modal.message.label' | translate }}</strong></label>
+                        <br/>
+                        <input ng-model="comment" placeholder="{{ 'save-properties.modal.message.placeholder' | translate}}">
+                    </md-input-container>
+                </div>
+                <!-- event filters -->
+
+            </md-content>
+        </div>
+        <md-dialog-actions>
+            <md-button ng-disabled="!isCommentValid()" ng-click="saveAction()" class="md-raised md-primary">
+                {{ 'button.modal.validate' | translate }}
+            </md-button>
+            <md-button ng-click="$closeDialog()" class="md-raised md-warn">{{ 'button.modal.close' | translate }}</md-button>
+        </md-dialog-actions>
+    </md-dialog-content>
+</md-dialog>

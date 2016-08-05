@@ -91,6 +91,28 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         }, data);
     };
 
+    $scope.contain_empty_module_status = false;
+
+    $scope.contain_empty_module = function (box) {
+
+        var return_value = "";
+
+        if (box) {
+            if (_.some(box.modules, { "has_model": false }))
+                return_value =  "contain_empty_module";
+
+            _.forEach(box.children, function (child) {
+
+                if (_.some(child.modules, { "has_model": false }))
+                    return_value =  "contain_empty_module";
+            });
+        }
+        $scope.contain_empty_module_status = return_value.length ? true : false;
+
+        return return_value;
+
+    }
+
     $scope.update_main_box = function (platform) {
 
         //Try to build the view depending on the different paths of the modules

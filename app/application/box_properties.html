@@ -54,7 +54,7 @@
 </div>
 
 <div layout="row" ng-show="properties">
-    <div flex="50">
+    <div flex="50" class="has_model_{{selected_module.has_model}}">
         <h3><span class="margin-right-30px">{{ 'properties.module.editProperties.title' | translate }} <strong>{{selected_module.path.split('#').join('
             | ')}} | {{selected_module.title}}</strong></span>
         </h3>

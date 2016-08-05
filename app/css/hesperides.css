@@ -888,6 +888,22 @@ input.default-value-color-focus:-ms-input-placeholder{color: #FFFFFF;}
 input.default-value-color-focus:placeholder-shown{color: #FFFFFF;}
 
 /******************************************************************************
+ * Tree - Box renderer
+ */
+
+.contain_empty_module, .module-link.has_model_false, div.has_model_false {
+    color: red!important;
+}
+
+h4.contain_empty_module {
+    margin-top: 0;
+}
+
+.contain_empty_module .fa {
+    padding-right: 10px;
+}
+
+/******************************************************************************
  * Popover
  * From : http://codepen.io/derekpcollins/pen/JCLhG
  */

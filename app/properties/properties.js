@@ -1069,7 +1069,7 @@ propertiesModule.directive('treeProperties', function ($timeout){
     }
 });
 
-propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$timeout', '$route', 'ApplicationService', 'ModuleService', '$translate', 'HesperidesModalFactory', function ($filter, $scope, $routeParams, $timeout, $route, ApplicationService, ModuleService, $translate, HesperidesModalFactory) {
+propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$timeout', '$route', 'ApplicationService', 'ModuleService', '$translate', 'HesperidesModalFactory', 'Platform', function ($filter, $scope, $routeParams, $timeout, $route, ApplicationService, ModuleService, $translate, HesperidesModalFactory, Platform) {
 
     var DiffContainer = function (status, property_name, property_to_modify, property_to_compare_to) {
         // 0 -> only on to_modify
@@ -1099,6 +1099,9 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
     $scope.timestamp = $routeParams.timestamp;
 
     $scope.show_only_modified = false;
+
+    $scope.displayable_properties_path = Platform.prettify_path($routeParams.properties_path);
+    $scope.displayable_compare_path = Platform.prettify_path($routeParams.compare_path);
 
     $scope.propertiesKeyFilter0 = "";
     $scope.propertiesKeyFilter1 = "";

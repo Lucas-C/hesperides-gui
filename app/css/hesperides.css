@@ -1105,6 +1105,10 @@ input.default-value-color-focus:placeholder-shown{color: #FFFFFF;}
     text-align: center;
 }
 
+.event-action{
+    padding-left: 1%;
+}
+
 .event-comment {
     font-style: italic;
     border-left-width: medium;

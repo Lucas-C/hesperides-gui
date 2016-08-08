@@ -5,19 +5,19 @@
             <h2>{{ 'save-properties.modal.title' | translate }} {{title}}</h2>
 
             <md-content layout-padding class="autoScroll">
-
-                <!-- event filters -->
+                <form ng-submit="saveAction()">
+                <!-- Comment -->
                 <div fle="100" layout="row" class="events">
 
-                    <!-- module filter -->
                     <md-input-container flex="100">
                         <label><strong>{{ 'save-properties.modal.message.label' | translate }}</strong></label>
                         <br/>
-                        <input ng-model="comment" placeholder="{{ 'save-properties.modal.message.placeholder' | translate}}">
+                        <input ng-model="comment" placeholder="{{ 'save-properties.modal.message.placeholder' | translate}}" md-autofocus="true">
                     </md-input-container>
-                </div>
-                <!-- event filters -->
 
+                </div>
+                <!-- / Comment -->
+                </form>
             </md-content>
         </div>
         <md-dialog-actions>

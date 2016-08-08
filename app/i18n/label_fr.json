@@ -16,6 +16,7 @@
   "menu.help.title": "Aide",
   "menu.help.swagger": "Swagger",
   "menu.help.about": "A propos",
+  "event.nocomment": "Pas de commentaire",
   "template.event.created": "Le template a bien été créé",
   "template.event.updated": "Le template a été mis à jour",
   "template.event.deleted": "Le template a bien été supprimé",

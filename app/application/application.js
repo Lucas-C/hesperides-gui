@@ -356,7 +356,7 @@ applicationModule.factory('ApplicationService', ['$hesperidesHttp', 'Application
         },
         get_global_properties_usage: function (application_name, platform_name) {
 
-            var url = 'rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform_name) + '/global_propeties_usage';
+            var url = 'rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform_name) + '/global_properties_usage';
             return $http.get(url).then(function (response) {
                 return response.data;
             }, function (error) {

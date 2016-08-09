@@ -471,8 +471,10 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         $window.open('/#/diff?' + $.param(urlParams), '_blank');
     };
 
+    $scope.quickOpen = false;
     $scope.quickDisplayInstance = function () {
-        $scope.$broadcast('quickDisplayInstanceDetails', {})
+        $scope.$broadcast((!$scope.quickOpen ? 'quickDisplayInstanceDetails' : 'quickHideInstanceDetails'), {})
+        $scope.quickOpen = !$scope.quickOpen;
     };
 
     $scope.find_modules_by_name = function (name) {
@@ -662,6 +664,8 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
     $scope.on_edit_platform = function (platform) {
         //http://hesperides:51100
+        $scope.$broadcast('quickHideInstanceDetails', {});
+        $scope.quickOpen = false;
         $location.url('/properties/' + platform.application_name + '?platform=' + platform.name);
 
         $scope.platform = platform;
@@ -1994,12 +1998,21 @@ propertiesModule.directive('initInstanceFunctions', function () {
             };
 
             scope.$on('quickDisplayInstanceDetails',function(event, data){
-                scope.ngModel.opened = !scope.ngModel.opened;
+                scope.ngModel.opened = true;
 
                 Object.keys(scope.ngModel.children).forEach(function (key) {
                    scope.ngModel.children[key].opened = true;
                 });
 
+                setSign();
+            });
+
+            scope.$on('quickHideInstanceDetails',function(event, data){
+                scope.ngModel.opened = false;
+
+                Object.keys(scope.ngModel.children).forEach(function (key) {
+                   scope.ngModel.children[key].opened = false;
+                });
 
                 setSign();
             });

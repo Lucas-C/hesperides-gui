@@ -27,7 +27,7 @@
                 </md-button>
                 <md-button class="md-xs" aria-label="{{ 'properties.platform.quickDisplay' | translate }}" ng-click="quickDisplayInstance()">
                     <md-tooltip>{{ 'properties.platform.quickDisplay' | translate }}</md-tooltip>
-                    <i class="fa fa-bolt"></i>
+                    <i class="fa fa-bolt" ng-class="{'fa-rotate-270': quickOpen}"></i>
                 </md-button>
             </div>
         </div>

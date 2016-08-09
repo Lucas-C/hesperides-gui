@@ -960,7 +960,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
             platform.global_properties = response;
         });
 
-        var url = 'rest/applications/' + encodeURIComponent(platform.application_name) + '/platforms/' + encodeURIComponent(platform.name) + '/global_propeties_usage';
+        var url = 'rest/applications/' + encodeURIComponent(platform.application_name) + '/platforms/' + encodeURIComponent(platform.name) + '/global_properties_usage';
 
         $http.get(url).then(function (response) {
             return response.data;

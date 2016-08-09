@@ -208,7 +208,7 @@
   "properties.compare.values.empty": "Aucune valeur renseignée",
   "properties.compare.values.global.auto": "Valeur automatiquement valorisée par la variable globale du même nom.",
   "properties.compare.missing.property": "Propriété non présente",
-  "save-properties.modal.title": "Sauvegarder les prorpriétés",
+  "save-properties.modal.title": "Sauvegarder les propriétés",
   "save-properties.modal.message.label": "Un message pour les modifications",
   "save-properties.modal.message.placeholder": "Entrer un message clair pour les modifications faites ...",
   "file.modal.title": "Prévisualisation de",

@@ -421,9 +421,16 @@ applicationModule.factory('ModuleService', [
                     return deferred.promise;
                 }
             }
-        }
-
-
+        },
+        search: function (name) {
+            if (!_.isUndefined(name)){
+                return $http.post('rest/modules/search?terms=' + encodeURIComponent(name.toLowerCase())).then(function (response) {
+                    return response.data;
+                }, function () {
+                    return null;
+                });
+             }
+         }
     };
 
 }]);

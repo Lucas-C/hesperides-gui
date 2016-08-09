@@ -517,3 +517,54 @@ hesperidesModule.service ('PlatformColorService', function (){
         }
     };
 });
+
+/* Hesperides global modals module*/
+angular.module ('hesperides.modals', [])
+
+.factory('HesperidesModalFactory', ['$mdDialog', function ($mdDialog){
+    return {
+        displaySavePropertiesModal: function (scope, validationCallback){
+            //
+            // Show the modal
+            //
+            var modalScope = scope.$new(false);
+            modalScope.comment = "";
+            var modal = $mdDialog.show({
+                templateUrl: 'application/properties/save-properties-modal.html',
+                clickOutsideToClose:true,
+                scope: modalScope
+            });
+
+            /**
+             * Checks if the typed comment is valid.
+             * Comments are valids only if they contain two separated words
+             */
+            modalScope.isCommentValid = function (){
+
+                _temp = modalScope.comment.split (" ");
+
+                if ( modalScope.comment.length < 10 || _temp.length < 2){
+                    return false;
+                }
+
+                return true;
+            };
+
+            //
+            // Close the events modal
+            //
+            modalScope.$closeDialog = function() {
+                $mdDialog.cancel();
+            };
+
+            //
+            // Validation action
+            //
+            modalScope.saveAction = function () {
+                // Calling the callback function with the comemnt
+                validationCallback( modalScope.comment );
+                modalScope.$closeDialog();
+            }
+        }
+    };
+}]);

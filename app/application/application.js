@@ -28,6 +28,30 @@ applicationModule.factory('Application', ['Platform', function (Platform) {
 
 applicationModule.factory('Platform', ['ApplicationModule', 'Properties', function (Module, Properties) {
 
+    var _prettify_path = function (path) {
+        // Remove the first '#' if present
+        if (path.charAt(0) === '#') {
+            path = path.substring(1, path.length);
+        }
+
+        if ( path.length == 0 ){
+            return "";
+        }
+
+        splitted_path = path.split('#');
+
+        last_pos = splitted_path.length - 1;
+
+        prettify_module = splitted_path[last_pos - 2] + ', ' + splitted_path[last_pos - 1] +
+        (splitted_path[last_pos] === 'WORKINGCOPY' ? ' (working copy) ' : '');
+
+        splitted_path = splitted_path.slice(0, splitted_path.length - 3);
+
+        path = splitted_path.join(' > ') + ' > ' + prettify_module;
+
+        return path;
+    };
+
     var Platform = function (data) {
 
         var me = this;
@@ -52,7 +76,7 @@ applicationModule.factory('Platform', ['ApplicationModule', 'Properties', functi
             return new Module(data);
         });
 
-        //Volontarly do not turn platform global properties to rest. Thoose are handled via the API Rest for properties
+        //Volontarly do not turn platform global properties to rest. Those are handled via the API Rest for properties
         this.to_rest_entity = function () {
             return {
                 platform_name: this.name,
@@ -66,22 +90,10 @@ applicationModule.factory('Platform', ['ApplicationModule', 'Properties', functi
             };
         };
 
-        this.prettify_path = function (path) {
-
-            splitted_path = path.split('#')
-            last_pos = splitted_path.length - 1
-
-            prettify_module = splitted_path[last_pos - 2] + ', ' + splitted_path[last_pos - 1] +
-            (splitted_path[last_pos] === 'WORKINGCOPY' ? ' (working copy) ' : '');
-
-            splitted_path = splitted_path.slice(0, splitted_path.length - 3);
-
-            path = splitted_path.join(' > ') + ' > ' + prettify_module;
-
-            return path;
-        };
-
+        this.prettify_path = _prettify_path;
     };
+
+    Platform.prettify_path = _prettify_path;
 
     return Platform;
 
@@ -364,9 +376,9 @@ applicationModule.factory('ApplicationService', ['$hesperidesHttp', 'Application
                 throw error;
             });
         },
-        save_properties: function (application_name, platform, properties, path) {
+        save_properties: function (application_name, platform, properties, path, comment) {
             properties = properties.to_rest_entity();
-            return $http.post('rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform.name) + '/properties?path=' + encodeURIComponent(path) + '&platform_vid=' + encodeURIComponent(platform.version_id), properties).then(function (response) {
+            return $http.post('rest/applications/' + encodeURIComponent(application_name) + '/platforms/' + encodeURIComponent(platform.name) + '/properties?path=' + encodeURIComponent(path) + '&platform_vid=' + encodeURIComponent(platform.version_id) + '&comment=' + encodeURIComponent(comment), properties).then(function (response) {
                 $translate('properties.event.saved').then(function(label) {
                     $.notify(label, "success");
                 });

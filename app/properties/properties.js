@@ -1,7 +1,7 @@
 /**
  * Created by william_montaz on 17/10/2014 .
  */
-var propertiesModule = angular.module('hesperides.properties', ['hesperides.nexus']);
+var propertiesModule = angular.module('hesperides.properties', ['hesperides.nexus', 'hesperides.modals']);
 
 propertiesModule.controller('PlatformVersionModule', ['$scope', '$mdDialog', 'NexusService', 'ApplicationService', 'TechnoService', '$translate',
     function ($scope, $mdDialog, NexusService, ApplicationService, TechnoService, $translate) {
@@ -49,8 +49,8 @@ propertiesModule.controller('PlatformVersionModule', ['$scope', '$mdDialog', 'Ne
 }]);
 
 
-propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDialog', '$location', '$route', '$anchorScroll', '$timeout', 'ApplicationService', 'FileService', 'EventService', 'ModuleService', 'ApplicationModule', 'Page', 'PlatformColorService', 'NexusService', '$translate', '$window', '$http', 'Properties',
-    function ($scope, $routeParams, $mdDialog, $location, $route, $anchorScroll, $timeout, ApplicationService, FileService, EventService, ModuleService, Module, Page, PlatformColorService, NexusService, $translate, $window, $http, Properties) {
+propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDialog', '$location', '$route', '$anchorScroll', '$timeout', 'ApplicationService', 'FileService', 'EventService', 'ModuleService', 'ApplicationModule', 'Page', 'PlatformColorService', 'NexusService', '$translate', '$window', '$http', 'Properties', 'HesperidesModalFactory',
+    function ($scope, $routeParams, $mdDialog, $location, $route, $anchorScroll, $timeout, ApplicationService, FileService, EventService, ModuleService, Module, Page, PlatformColorService, NexusService, $translate, $window, $http, Properties, HesperidesModalFactory) {
     Page.setTitle("Properties");
 
     $scope.platform = $routeParams.platform;
@@ -905,38 +905,51 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
             valueEl.val("");
         }
 
-        ApplicationService.save_properties($routeParams.application, $scope.platform, properties, '#').then(function (properties) {
-            if (!_.isUndefined($scope.properties)) {
-                $scope.properties = $scope.properties.mergeWithGlobalProperties(properties);
-            }
+        // Save the properties
+        HesperidesModalFactory.displaySavePropertiesModal($scope, function ( comment ){
+            ApplicationService.save_properties($routeParams.application, $scope.platform, properties, '#', comment ).then(function (properties) {
+                if (!_.isUndefined($scope.properties)) {
+                    $scope.properties = $scope.properties.mergeWithGlobalProperties(properties);
+                }
 
-            //Increase platform number
-            $scope.platform.version_id = $scope.platform.version_id + 1;
-            $scope.refreshGlobalPropertiesData();
+                //Increase platform number
+                $scope.platform.version_id = $scope.platform.version_id + 1;
+                $scope.refreshGlobalPropertiesData();
+            });
         });
+
     };
 
     $scope.save_properties = function (properties, module) {
-        ApplicationService.save_properties($routeParams.application, $scope.platform, properties, module.properties_path).then(function (properties) {
-            //Merge properties with model
-            ModuleService.get_model(module).then(function (model) {
-                $scope.properties = properties.mergeWithModel(model);
+
+        // Save properties
+        HesperidesModalFactory.displaySavePropertiesModal($scope, function ( comment ){
+            ApplicationService.save_properties($routeParams.application, $scope.platform, properties, module.properties_path, comment).then(function (properties) {
+                //Merge properties with model
+                ModuleService.get_model(module).then(function (model) {
+                    $scope.properties = properties.mergeWithModel(model);
+                });
+
+                //Merge with global properties
+                $scope.properties = properties.mergeWithGlobalProperties($scope.platform.global_properties);
+
+                //Increase platform number
+                $scope.platform.version_id = $scope.platform.version_id + 1;
+
+                //Specify that the global_properties_usage = null means that data may have become outdated.
+                // So next time user wants global_properties we reload then instead of using cached ones.
+                $scope.platform.global_properties_usage = null;
+
+                // Dismiss the modal
+                //modalScope.$closeDialog();
+
+            }, function () {
+                //If an error occurs, reload the platform, thus avoiding having a non synchronized $scope model object
+                $location.url('/properties/' + $scope.platform.application_name).search({platform: $scope.platform.name});
+                $route.reload(); //Force reload if needed
             });
-
-            //Merge with global properties
-            $scope.properties = properties.mergeWithGlobalProperties($scope.platform.global_properties);
-
-            //Increase platform number
-            $scope.platform.version_id = $scope.platform.version_id + 1;
-
-            //Specify that the global_properties_usage = null means that data may have become outdated.
-            // So next time user wants global_properties we reload then instead of using cached ones.
-            $scope.platform.global_properties_usage = null;
-        }, function () {
-            //If an error occurs, reload the platform, thus avoiding having a non synchronized $scope model object
-            $location.url('/properties/' + $scope.platform.application_name).search({platform: $scope.platform.name});
-            $route.reload(); //Force reload if needed
         });
+
     };
 
     $scope.edit_instance = function (instance, properties_path) {
@@ -1116,7 +1129,7 @@ propertiesModule.directive('treeProperties', function ($timeout){
     }
 });
 
-propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$timeout', '$route', 'ApplicationService', 'ModuleService', '$translate', function ($filter, $scope, $routeParams, $timeout, $route, ApplicationService, ModuleService, $translate) {
+propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$timeout', '$route', 'ApplicationService', 'ModuleService', '$translate', 'HesperidesModalFactory', 'Platform', function ($filter, $scope, $routeParams, $timeout, $route, ApplicationService, ModuleService, $translate, HesperidesModalFactory, Platform) {
 
     var DiffContainer = function (status, property_name, property_to_modify, property_to_compare_to) {
         // 0 -> only on to_modify
@@ -1146,6 +1159,9 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
     $scope.timestamp = $routeParams.timestamp;
 
     $scope.show_only_modified = false;
+
+    $scope.displayable_properties_path = Platform.prettify_path($routeParams.properties_path);
+    $scope.displayable_compare_path = Platform.prettify_path($routeParams.compare_path);
 
     $scope.propertiesKeyFilter0 = "";
     $scope.propertiesKeyFilter1 = "";
@@ -1383,8 +1399,12 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
         }).value();
 
         $scope.properties_to_modify.key_value_properties = key_value_properties;
-        ApplicationService.save_properties($scope.application_name, $scope.platform, $scope.properties_to_modify, $scope.properties_path).then(function (properties) {
-            $route.reload();
+
+        // Save the properties
+        HesperidesModalFactory.displaySavePropertiesModal($scope, function ( comment ){
+            ApplicationService.save_properties($scope.application_name, $scope.platform, $scope.properties_to_modify, $scope.properties_path, comment ).then(function (properties) {
+                $route.reload();
+            });
         });
     };
 

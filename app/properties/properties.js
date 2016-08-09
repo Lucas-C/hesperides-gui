@@ -91,6 +91,66 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         }, data);
     };
 
+    $scope.contain_empty_module_status = false;
+
+    $scope.cached_empty_module = [];
+
+    $scope.test_obj = {"name": "demoKatana-war", "version": "1.1.2", "working_copy": false, "status": "toDO"};
+
+    function check_modules_models(modules) {
+        _.forEach(modules, function (module) {
+            var ref = {"name": module.name, "version": module.version, "working_copy": module.working_copy};
+
+            if (!_.some($scope.cached_empty_module, ref)) {
+                $scope.cached_empty_module.push(ref);
+                var elem = _.find($scope.cached_empty_module, ref);
+
+                ModuleService.search(module.name + " " + module.version + " " + module.working_copy).then(function (response) {
+                    if (elem && response)
+                        elem.has_model = true;
+                    else if (elem)
+                        elem.has_model = false;
+                });
+            }
+        })
+    }
+
+    $scope.is_module_has_model = function (module) {
+        return _.some($scope.cached_empty_module, {"name": module.name, "version": module.version, "working_copy": module.working_copy, "has_model": true});
+    }
+
+    $scope.contain_empty_module = function (box) {
+
+        var return_value = "";
+
+        if (box) {
+
+            check_modules_models(box.modules);
+
+            _.forEach(box.children, function (child) {
+                check_modules_models(child.modules)
+            });
+
+            _.forEach(box.modules, function (module) {
+                if (_.some($scope.cached_empty_module, {"name": module.name, "version": module.version, "working_copy": module.working_copy, "has_model": false}))
+                    return_value =  "contain_empty_module";
+            });
+
+            _.forEach(box.children, function (child) {
+                _.forEach(child.modules, function (module) {
+                    if (_.some($scope.cached_empty_module, {"name": module.name, "version": module.version, "working_copy": module.working_copy, "has_model": false}))
+                        return_value =  "contain_empty_module";
+                });
+            });
+
+        }
+
+        $scope.contain_empty_module_status = return_value.length ? true : false;
+
+        return return_value;
+
+    }
+
     $scope.update_main_box = function (platform) {
 
         //Try to build the view depending on the different paths of the modules

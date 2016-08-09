@@ -9,7 +9,8 @@
          ng-mouseenter="componentButtonsVisible=true"
          layout="row" layout-align="none center">
         <a href="" buttons="no" editable-text="box.name"
-           onbeforesave="update_box_name(box, box.name, $data)">
+           onbeforesave="update_box_name(box, box.name, $data)"
+           class="{{contain_empty_module(box)}}">
            {{box.name}}
            <md-tooltip>{{ 'properties.logicGroup.update' | translate }}</md-tooltip>
         </a>
@@ -59,7 +60,7 @@
 
             <div flex="noshrink" layout="row" layout-align="none center">
                 <property-tool-button-over></property-tool-button-over>
-                <a href="" class="module-link" ng-click="edit_properties(platform, module);movePropertiesDivHolderToCursorPosition($event);">
+                <a href="" class="module-link has_model_{{is_module_has_model(module)}}" ng-click="edit_properties(platform, module);movePropertiesDivHolderToCursorPosition($event);">
                     {{module.title}}
                     <md-tooltip>{{ 'properties.module.editProperties.tooltip' | translate }}</md-tooltip>
                 </a>

@@ -424,8 +424,12 @@ applicationModule.factory('ApplicationService', ['$hesperidesHttp', 'Application
                 });
 
                 if (newModuleConfig !== undefined) {
-                    platformModule.version = newModuleConfig.version;
-                    platformModule.working_copy = newModuleConfig.version.indexOf('-SNAPSHOT') > -1;
+                    if (newModuleConfig.hesperidesVersion) {
+                        platformModule.version = newModuleConfig.hesperidesVersion;
+                    } else {
+                        platformModule.version = newModuleConfig.version;
+                    }
+                    platformModule.is_working_copy = newVersion.indexOf('-SNAPSHOT') > -1;
 
                     updatedModules.push(platformModule);
                 }

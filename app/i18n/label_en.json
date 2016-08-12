@@ -41,6 +41,7 @@
   "workingCopy.event.created": "The working copy has been created",
   "workingCopy.event.created.details": "The working copy {{ name }}, {{version}} has been created",
   "platform.event.createdByUser": "has created the platform",
+  "platform.event.createdFromExisting": "has created the platform this platform from",
   "platform.event.updatedByUser": "has updated the platform",
   "platform.event.deletedByUser": "has deleted the platform",
   "platform.event.created": "The platform has been created",

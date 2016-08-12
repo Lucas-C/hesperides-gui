@@ -41,6 +41,7 @@
   "workingCopy.event.created": "La working copy a bien été créée",
   "workingCopy.event.created.details": "La working copy {{ name }}, {{version}} a bien été créée",
   "platform.event.createdByUser": "a créé la plateforme",
+  "platform.event.createdFromExisting": "a créé cette plateforme à partir de",
   "platform.event.updatedByUser": "a modifié la plateforme",
   "platform.event.deletedByUser": "a supprimé la plateforme",
   "platform.event.created": "La plateforme a bien été créée",

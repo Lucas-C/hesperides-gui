@@ -159,7 +159,7 @@ menuModule.controller('MenuPropertiesCtrl', ['$hesperidesHttp', '$scope', '$mdDi
     };
 
     $scope.find_platforms_of_application = function (application_name, filter_env) {
-        return ApplicationService.get_platform_name_of_application(application_name, filter_env);
+        return ApplicationService.get_platform_name_of_application(application_name, filter_env.toLowerCase());
     };
 
     $scope.open_properties_page = function (application_name, platform_name, fakeButton, secure) {

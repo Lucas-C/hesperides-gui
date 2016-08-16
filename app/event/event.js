@@ -129,6 +129,28 @@ eventModule.directive('platformCreated', function (){
     };
 });
 
+/* This is for platform creation from an existing event */
+eventModule.directive('platformCreatedFromExisting', function (){
+    return {
+        restrict : 'E',
+        scope : {
+            event : '='
+        },
+        templateUrl : 'event/directives/platform/platform-created-from-existing.html',
+        controller: ['$scope', function ($scope){
+            var _event = $scope.event;
+
+            $scope.parseData = function (){
+                $scope.from = _event.data.originPlatform.key.entityName;
+                _event.buildLabel('platform.event.createdFromExisting', $scope.from);
+            };
+
+            $scope.parseData();
+        }]
+    };
+});
+
+
 /* This is for platform update event */
 eventModule.directive('platformUpdated', function (){
     return {

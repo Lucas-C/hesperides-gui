@@ -1585,15 +1585,16 @@ propertiesModule.directive('toggleDeletedIterableProperties', function () {
         template: '<md-switch class="md-primary md-block" style="margin-right:2%"' +
                     'ng-model="toggle"' +
                     'ng-init="toggle=false" ' +
+                    'ng-disabled="(getNumberOfDeletedProperties() <= 0)" ' +
                     'aria-label="{{ \'properties.deletedOnes.switch\' | translate }}">' +
-                    '{{ \'properties.deletedOnes.switch\' | translate }} ({{ getNumberOfDeletedProperties(iterableProperties) }})          ' +
+                    '{{ \'properties.deletedOnes.switch\' | translate }} ({{ getNumberOfDeletedProperties() }})          ' +
                     '</md-switch>',
         controller : ['$scope', function ($scope){
             $scope.getNumberOfDeletedProperties = function (tab) {
                 var count = 0;
 
-                if (tab) {
-                    _(tab).each(function (item){
+                if ($scope.iterableProperties) {
+                    _($scope.iterableProperties).each(function (item){
                         //is the group in model
                         if (item.inModel){
                             _(item.iterable_valorisation_items).each(function (valorisation){
@@ -1630,15 +1631,16 @@ propertiesModule.directive('toggleUnspecifiedIterableProperties', function () {
         template: '<md-switch class="md-primary md-block"' +
                           'ng-model="toggle"' +
                           'ng-init="toggle=false" ' +
+                          'ng-disabled="(getNumberOfUnspecifiedProperties() <= 0)" ' +
                           'aria-label="{{ \'properties.unspecifiedValues.switch\' | translate }}">' +
-                          '{{ \'properties.unspecifiedValues.switch\' | translate }} ({{ getNumberOfUnspecifiedProperties(iterableProperties) }})' +
+                          '{{ \'properties.unspecifiedValues.switch\' | translate }} ({{ getNumberOfUnspecifiedProperties() }})' +
                           '</md-switch>',
         controller : ['$scope', function ($scope){
-            $scope.getNumberOfUnspecifiedProperties = function (tab) {
+            $scope.getNumberOfUnspecifiedProperties = function () {
                 var count = 0;
 
-                if (tab) {
-                    _(tab).each(function (item){
+                if ($scope.iterableProperties) {
+                    _($scope.iterableProperties).each(function (item){
                         //is the group in model
                         if (item.inModel){
                             _(item.iterable_valorisation_items).each(function (valorisation){
@@ -1727,16 +1729,17 @@ propertiesModule.directive('toggleDeletedProperties', function () {
         template: '<md-switch class="md-primary md-block" ' +
             'ng-model="toggle"' +
             'ng-init="toggle=false" ' +
+            'ng-disabled="(getNumberOfDeletedProperties() <= 0)" ' +
             'aria-label="{{ \'properties.deletedOnes.switch\' | translate }}">' +
-            '{{ \'properties.deletedOnes.switch\' | translate }} ({{ getNumberOfDeletedProperties(keyValueProperties) }})          ' +
+            '{{ \'properties.deletedOnes.switch\' | translate }} ({{ getNumberOfDeletedProperties() }})          ' +
             '</md-switch>',
         link: function (scope) {
-            scope.getNumberOfDeletedProperties = function (tab) {
+            scope.getNumberOfDeletedProperties = function () {
                 var count = 0;
 
-                if (tab) {
-                    for (var index = 0; index < tab.length; index++) {
-                        if (!tab[index].inModel) {
+                if (scope.keyValueProperties) {
+                    for (var index = 0; index < scope.keyValueProperties.length; index++) {
+                        if (!scope.keyValueProperties[index].inModel) {
                             count++;
                         }
                     }
@@ -2373,6 +2376,7 @@ propertiesModule.directive('toggleUnspecifiedProperties', function ($filter) {
         template: '<md-switch class="md-primary md-block" ' +
                   'ng-model="toggle"' +
                   'ng-init="toggle=false" ' +
+                  'ng-disabled="(getNumberOfUnspecifiedProperties(keyValueProperties) <= 0)" ' +
                   'aria-label="{{ \'properties.unspecifiedValues.switch\' | translate }}">' +
                   '{{ \'properties.unspecifiedValues.switch\' | translate }} ({{ getNumberOfUnspecifiedProperties(keyValueProperties) }})' +
                   '</md-switch>',

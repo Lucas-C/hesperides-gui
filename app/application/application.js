@@ -270,8 +270,9 @@ applicationModule.factory('ApplicationService', ['$hesperidesHttp', 'Application
                 throw error;
             });
         },
-        get_platform_name_of_application: function(application_name){
-            return $http.post('rest/applications/platforms/perform_search?name=' + encodeURIComponent(application_name)).then(function (response) {
+        get_platform_name_of_application: function(application_name, platform_name){
+            return $http.post('rest/applications/platforms/perform_search?applicationName=' + encodeURIComponent(application_name) +
+                   "&platformName="+ encodeURIComponent(platform_name)).then(function (response) {
                 return response.data;
             }, function (error) {
                 $.notify(error.data.message, "error");

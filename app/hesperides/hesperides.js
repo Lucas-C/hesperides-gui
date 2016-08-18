@@ -444,14 +444,23 @@ hesperidesModule.directive('hesperidesCompareDateTime', function (){
 
             // Private function for date validation
             var validate = function (){
-                scope.isValid = Date.parse(scope.ngModel) < (new Date()).getTime();
+                scope.isValid = false;
+                if (scope.ngModel && scope.ngModel.length > 0)
+                    scope.isValid = +moment(scope.ngModel, "YYYY-MM-DD HH:mm:ss Z") < (new Date()).getTime();
             };
 
             //Watch the model
             scope.$watch('ngModel', function (newVal, oldVal){
                 validate();
             });
-        }
+        },
+        controller: ['$scope', function ($scope){
+
+                $scope.isInFutur = function () {
+                    return !$scope.isValid && $scope.ngModel && $scope.ngModel.length > 0;
+                }
+            }
+        ]
     }
 });
 

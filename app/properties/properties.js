@@ -729,6 +729,9 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         $scope.save_platform_from_box($scope.mainBox);
     };
 
+    /**
+     * That function saves the instance properties
+     */
     $scope.save_platform_from_box = function (box, copyPropertiesOfUpdatedModules) {
         $scope.platform.modules = box.to_modules();
         return ApplicationService.save_platform($scope.platform, copyPropertiesOfUpdatedModules).then(function (platform) {
@@ -760,6 +763,11 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         $scope.update_main_box(platform);
     };
 
+    /**
+     * An ungly copy for properties
+     */
+    $scope.oldProperites = undefined;
+
     $scope.edit_properties = function (platform, module) {
         ApplicationService.get_properties($routeParams.application, platform.name, module.properties_path).then(function (properties) {
             ModuleService.get_model(module).then(function (model) {
@@ -768,6 +776,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
                 //Merge with global properties
                 $scope.properties = properties.mergeWithGlobalProperties($scope.platform.global_properties);
+                $scope.oldProperites = angular.copy($scope.properties);
 
                 $scope.selected_module = module;
                 $scope.instance = undefined; //hide the instance panel if opened
@@ -845,7 +854,14 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
             valueEl.val("");
         }
 
-        // Save the properties
+        if ( _.isEqual(properties, $scope.oldGolbalProperties) ){
+            $translate('properties-not-changed.message').then(function(label) {
+                $.notify(label, "warn");
+            });
+            return;
+        }
+
+        // Save the global properties
         HesperidesModalFactory.displaySavePropertiesModal($scope, function ( comment ){
             ApplicationService.save_properties($routeParams.application, $scope.platform, properties, '#', comment ).then(function (properties) {
                 if (!_.isUndefined($scope.properties)) {
@@ -855,6 +871,9 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
                 //Increase platform number
                 $scope.platform.version_id = $scope.platform.version_id + 1;
                 $scope.refreshGlobalPropertiesData();
+
+                // Key the saved as old
+                $scope.oldGolbalProperties = angular.copy( properties );
             });
         });
 
@@ -862,12 +881,22 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
     $scope.save_properties = function (properties, module) {
 
+        if( _.isEqual(properties, $scope.oldProperites) ){
+            $translate('properties-not-changed.message').then(function(label) {
+                $.notify(label, "warn");
+            });
+            return;
+        }
+
         // Save properties
         HesperidesModalFactory.displaySavePropertiesModal($scope, function ( comment ){
             ApplicationService.save_properties($routeParams.application, $scope.platform, properties, module.properties_path, comment).then(function (properties) {
                 //Merge properties with model
                 ModuleService.get_model(module).then(function (model) {
                     $scope.properties = properties.mergeWithModel(model);
+
+                    // Keep the saved properties as old
+                    $scope.oldProperites = angular.copy($scope.properties);
                 });
 
                 //Merge with global properties
@@ -911,6 +940,9 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
             throw error;
         }).then(function (response) {
             platform.global_properties = response;
+
+            // making a copy, for changes detection
+            $scope.oldGolbalProperties = angular.copy($scope.platform.global_properties);
         });
 
         var url = 'rest/applications/' + encodeURIComponent(platform.application_name) + '/platforms/' + encodeURIComponent(platform.name) + '/global_propeties_usage';
@@ -924,6 +956,11 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
             platform.global_properties_usage = response;
         });
     }
+
+    /**
+     * A ungly copy of global properties
+     */
+    $scope.oldGolbalProperties = undefined;
 
     $scope.showGlobalPropertiesDisplay = function () {
         // --- Testing retrive on demand
@@ -1337,6 +1374,16 @@ propertiesModule.controller('DiffCtrl', ['$filter', '$scope', '$routeParams', '$
         }).map(function (diff_container) {
             return diff_container.property_to_modify;
         }).value();
+
+        // Is some diff item selected ?
+        var hasSomeDiffSelected = _.some($scope.diff_containers, {selected : true});
+
+        if ( !hasSomeDiffSelected ){
+            $translate('properties-not-changed.message').then(function(label) {
+                $.notify(label, "warn");
+            });
+            return;
+        }
 
         $scope.properties_to_modify.key_value_properties = key_value_properties;
 

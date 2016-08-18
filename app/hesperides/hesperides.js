@@ -523,6 +523,7 @@ angular.module ('hesperides.modals', [])
 
 .factory('HesperidesModalFactory', ['$mdDialog', function ($mdDialog){
     return {
+    
         displaySavePropertiesModal: function (scope, validationCallback){
             //
             // Show the modal

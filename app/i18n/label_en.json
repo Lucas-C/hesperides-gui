@@ -1,5 +1,6 @@
 {
   "hesperides.date" : "{{  timestamp | date : 'MMMM d yyyy h:mm a' }}",
+  "wellcome.apps.title" : "Preferred applications",
   "menu.template.title": "Regroup templates",
   "menu.techno.title": "By techno",
   "menu.techno.create": "Create a working copy",

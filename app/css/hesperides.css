@@ -1275,6 +1275,9 @@ repeated-item
     margin: 12px;
 }
 
+
+/* Welcome apps displaying style */
+
   @media (max-width: 599px) {
 .whiteframeBasicClassUsage md-whiteframe {
       margin: 7px;
@@ -1290,7 +1293,7 @@ repeated-item
 .whiteframeBasicClassUsage md-whiteframe {
       margin: 20px;
       height: 75px;
-      background-color: #FDFDB9; }
+      background-color: #b9f6ca; }
 .whiteframeBasicClassUsage md-whiteframe > button {
        background-color: Transparent;
        background-repeat:no-repeat;
@@ -1301,7 +1304,7 @@ repeated-item
 .whiteframeBasicClassUsage md-whiteframe {
       margin: 20px;
       height: 90px;
-      background-color: #FDFDB9; }
+      background-color: #b9f6ca; }
 .whiteframeBasicClassUsage md-whiteframe > button {
        background-color: Transparent;
        background-repeat:no-repeat;
@@ -1312,14 +1315,17 @@ repeated-item
 .whiteframeBasicClassUsage md-whiteframe {
       margin: 25px;
       height: 100px;
-      background-color: #FDFDB9; }
-.whiteframeBasicClassUsage md-whiteframe > button {
-       background-color: Transparent;
-       background-repeat:no-repeat;
-       border: none;
-       outline:none;
-       font-size: 2.0em; }}
+      background-color: #b9f6ca; }
+
 
 .center {
     text-align: center;
+}
+
+md-whiteframe:hover{
+    box-shadow: 5px 5px 3px #888888;
+}
+
+#apps-container {
+    margin-top: 20%;
 }

@@ -345,6 +345,12 @@ menuModule.controller('MenuHelpCtrl', ['$scope', '$mdDialog', '$hesperidesHttp',
 
     };
 
+    /**
+     * That is the user settings modal.
+     * It's used to customize user relative settings on hesperides.
+     *
+     * Added by Sahar CHAILLOU
+     */
     $scope.display_settings = function(){
         $scope.settings_copy = store.get('copy_properties');
         $scope.settings_color = store.get('color_active');
@@ -358,20 +364,21 @@ menuModule.controller('MenuHelpCtrl', ['$scope', '$mdDialog', '$hesperidesHttp',
         }
         $scope.color = {};
         if(!store.get('color_red')){
-            $scope.color.red = 0;
+            $scope.color.red = 220;
         }else{
             $scope.color.red = store.get('color_red');
         }
         if(!store.get('color_green')){
-             $scope.color.green = 0;
+             $scope.color.green = 220;
         }else{
              $scope.color.green = store.get('color_green');
         }
         if(!store.get('color_blue')){
-             $scope.color.blue = 0;
+             $scope.color.blue = 220;
         }else{
              $scope.color.blue = store.get('color_blue');
         }
+
         $scope.backgroundColor = function(item) {
             return PlatformColorService.calculateColor(item.name, $scope.color);
         }

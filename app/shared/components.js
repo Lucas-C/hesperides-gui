@@ -56,11 +56,7 @@ components.directive('listOfItems', ['$parse', 'PlatformColorService', function 
             }
 
             scope.backgroundColor = function(item) {
-                if(store.get('color_active')== false){
-                    return PlatformColorService.removeColor();
-                }else{
-                    return PlatformColorService.calculateColor(item.name);
-                }
+                return PlatformColorService.calculateColor(item.name);
             }
 
             scope.selfLabel = function (item) {

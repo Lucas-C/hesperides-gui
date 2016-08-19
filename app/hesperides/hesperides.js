@@ -473,23 +473,30 @@ hesperidesModule.service ('PlatformColorService', function (){
              */
             pastelColour = function(name) {
 
-                var baseRed = 0;
-                var baseGreen = 0;
-                var baseBlue = 0;
+                // These are the default colors
+                var baseRed = 220;
+                var baseGreen = 220;
+                var baseBlue = 220;
 
                if(color != null){
                     baseRed = color.red;
                     baseGreen = color.green;
                     baseBlue = color.blue;
                 }else{
-                    if(store.get('color_red')){
-                        baseRed = store.get('color_red');
-                    }if(store.get('color_green')){
-                        baseGreen = store.get('color_green');
-                    }if(store.get('color_blue')){
-                        baseBlue = store.get('color_blue');
+
+                    var isColorSettingActive = store.get('color_active');
+
+                    if ( isColorSettingActive === true ){
+
+                            baseRed = store.get('color_red') || baseRed;
+                            baseGreen = store.get('color_green') || baseGreen;
+                            baseBlue = store.get('color_blue') || baseGreen;
+                    }else{
+                        return { red: 255, green: 255, blue: 255 };
                     }
+
                 }
+
                 //lazy seeded random hack to get values from 0 - 256
                 //for seed just take bitwise XOR of first two chars
                 var seed = name.charCodeAt(0) ^ name.charCodeAt(1) ^ name.charCodeAt(2);
@@ -510,10 +517,6 @@ hesperidesModule.service ('PlatformColorService', function (){
             var rgb_pastel = pastelColour(name);
             bgColor = "rgb("+rgb_pastel.red+", "+rgb_pastel.green+", "+rgb_pastel.blue+")";
             return bgColor;
-        },
-        removeColor: function (){
-            // get the final color in rgb
-            return "rgb(255, 255, 255)";
         }
     };
 });

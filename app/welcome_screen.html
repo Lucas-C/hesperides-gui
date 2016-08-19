@@ -1,10 +1,13 @@
 <div id="welcome"><konami name="evolution-simpson.jpg"></konami></div>
 
-<div layout="row" layout-padding="" layout-wrap="" layout-fill="" style="padding-bottom: 32px;" ng-cloak="" class="whiteframeBasicClassUsage" ng-app="hesperides" layout-align="center center">
-
-    <md-whiteframe ng-repeat="app in applications" class="md-whiteframe-1dp" flex="10" layout="" layout-align="center center">
-        <button ng-click="openApplication(app)">
-            {{app}}
-        </button>
-    </md-whiteframe>
+<div class="center" id="apps-container">
+    <h2>{{'wellcome.apps.title' | translate}}</h2>
 </div>
+<div layout="row" class="whiteframeBasicClassUsage" layout-align="center center" >
+
+    <md-whiteframe ng-repeat="app in applications" class="md-whiteframe-1dp" flex="10" layout="" layout-align="center center" ng-click="openApplication(app)">
+       <h3>{{app}}</h3>
+    </md-whiteframe>
+
+</div>
+

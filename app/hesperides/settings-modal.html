@@ -78,28 +78,28 @@
                     </div>
                     <p><strong>{{ 'settings.access' | translate }} :</strong> </p>
                     <div layout="row" flex="100">
-                    <md-autocomplete
-                            flex="50"
-                            required
-                            ng-trim="true"
-                            ng-model="app"
-                            md-no-cache="true"
-                            md-selected-item="selectedItem"
-                            md-search-text="searchText"
-                            md-items="application in find_applications_by_name(searchText)"
-                            md-selected-item-change="(application) ? app = application.name : false"
-                            md-item-text="application.name"
-                            md-min-length="0"                            md-autoselect="true"
-                            placeholder="Nom de l'application">
-                        <span md-highlight-text="searchText">{{application.name}}</span>
-                    </md-autocomplete>
-                    <span ng-click="addApplication()" class="property-sign">+</span>
+                        <md-autocomplete
+                                flex="50"
+                                required
+                                ng-trim="true"
+                                ng-model="app"
+                                md-no-cache="true"
+                                md-selected-item="selectedItem"
+                                md-search-text="searchText"
+                                md-items="application in find_applications_by_name(searchText)"
+                                md-selected-item-change="(application) ? app = application.name : false"
+                                md-item-text="application.name"
+                                md-min-length="0"                            md-autoselect="true"
+                                placeholder="Nom de l'application">
+                            <span md-highlight-text="searchText">{{application.name}}</span>
+                        </md-autocomplete>
+                        <span ng-click="addApplication()" class="property-sign">+</span>
                     </div>
-                    <ul class="custom-list">
-                        <li ng-repeat="app in applications">
-                            <strong>{{app}}</strong> <span ng-click="removeApplication()" class="property-sign">-</span>
-                        </li>
-                    </ul>
+
+                    <br/>
+
+                    <md-chips ng-model="applications" readonly="false"></md-chips>
+
                 </div>
             </md-content>
         </div>

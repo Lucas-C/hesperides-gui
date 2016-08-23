@@ -533,7 +533,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         };
 
         if (!_.isUndefined(from.date)) {
-            urlParams.timestamp = Date.parse(from.date);
+            urlParams.timestamp = +moment(from.date, "YYYY-MM-DD HH:mm:ss Z");
         }
 
         $window.open('/#/diff?' + $.param(urlParams), '_blank');
@@ -1043,11 +1043,11 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         $scope.loading_compare_platform = true;
         if (lookPast) {
             if (_.isUndefined(date)) {
-                date = new Date();
+                date = (new Date().getTime());
             }else{
-                date = new Date(date);
+                date = +moment(date, "YYYY-MM-DD HH:mm:ss Z");
             }
-            var platform_promise = ApplicationService.get_platform(application, platform, date.getTime());
+            var platform_promise = ApplicationService.get_platform(application, platform, date);
         } else {
             var platform_promise = ApplicationService.get_platform(application, platform);
         }

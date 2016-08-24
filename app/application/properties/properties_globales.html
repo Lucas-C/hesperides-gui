@@ -19,13 +19,13 @@
     <div layout="row" flex="auto">
         <md-input-container class="md-block" flex="36">
             <label>{{ 'properties.filter.byKey' | translate }}</label>
-            <input type="text" ng-trim="true" ng-model="globalPropertiesKeyFilter"
+            <input id="properties-global_key-filter-input" type="text" ng-trim="true" ng-model="globalPropertiesKeyFilter"
                    aria-label="{{ 'properties.filter.byKey' | translate }}"/>
         </md-input-container>
 
         <md-input-container class="md-block" flex="60">
             <label>{{ 'properties.filter.byValue' | translate }}</label>
-            <input type="text" ng-trim="true" ng-model="globalPropertiesValueFilter"
+            <input id="properties-global_value-filter-input" type="text" ng-trim="true" ng-model="globalPropertiesValueFilter"
                    aria-label="{{ 'properties.filter.byValue' | translate }}"/>
         </md-input-container>
     </div>
@@ -40,7 +40,7 @@
                     <div flex="40">
                         <div layout="row" flex="auto">
                             <div flex="5">
-                                <span class="fa fa-trash delete-property-icon"
+                                <span id="properties-globales_trash-{{key_value_property.name}}" class="fa fa-trash delete-property-icon"
                                       ng-really-message="{{ 'properties.platform.globalProperties.delete' | translate : {name:key_value_property.name} }}"
                                       aria-label="Supprimer"
                                       ng-really-click="platform.global_properties.deleteKeyValue(key_value_property)"
@@ -50,7 +50,7 @@
                             </div>
                             <div flex="5" ng-init="zoomInGlobalProperties = false">
                                 <div layout="column" layout-wrap>
-                                    <span flex class="ng-scope zoom-in-property-icon"
+                                    <span id="properties-globales_zoom-{{key_value_property.name}}" flex class="ng-scope zoom-in-property-icon"
                                           ng-class="zoomInGlobalProperties ? 'fa fa-eye-slash' : 'fa fa-eye'"
                                           ng-click="zoomInGlobalProperties = !zoomInGlobalProperties"
                                           ng-show="(platform.global_properties_usage[key_value_property.name] | filter : {inModel:'true'}).length">
@@ -59,7 +59,7 @@
                             </div>
                             <div flex="90">
                                 <div class="truncate-ellipsis">
-                                    <label class="property-label"
+                                    <label id="properties-globales_key-property-label-{{key_value_property.name}}" class="property-label"
                                            ng-class="{'text-stroke': hover}" >{{key_value_property.name}}</label>
                                     <md-tooltip md-direction="top">
                                         {{key_value_property.name}}
@@ -71,7 +71,7 @@
                     </div>
 
                     <div flex="60">
-                            <input ng-model="key_value_property.value"
+                            <input id="properties-globales_value-property-input-{{key_value_property.name}}" ng-model="key_value_property.value"
                                    ng-trim="true"
                                    ng-focus="focusthis = true"
                                    ng-blur="focusthis = false"
@@ -85,7 +85,7 @@
                             <!--<md-list-item ng-repeat="usage in platform.global_properties_usage[key_value_property.name] track by $index">-->
                             <md-list-item ng-repeat="usage in (platform.global_properties_usage[key_value_property.name] | filter : {inModel:'true'}) track by $index">
                                 <div class="truncate-ellipsis">
-                                    <label class="global-property-usage-label">{{platform.prettify_path(usage.path)}}</label>
+                                    <label id="properties-globales_platform-prettyfy-path-label-{{key_value_property.name}}" class="global-property-usage-label">{{platform.prettify_path(usage.path)}}</label>
                                 </div>
                             </md-list-item>
                     </md-list>

@@ -4,17 +4,17 @@
             <a id="title" href="/" onclick="window.location.reload()">{{ Page.title() }}</a>
             <span class="menu-header"> / {{ 'menu.template.title' | translate }} <i class="fa fa-arrow-right"></i></span>
             <md-menu ng-controller="MenuTechnoCtrl">
-                <button ng-click="$mdOpenMenu()" class="menu">
+                <button id="menu_techno-menu" ng-click="$mdOpenMenu()" class="menu">
                     {{ 'menu.techno.title' | translate }} <i class="fa fa-caret-down"></i>
                 </button>
                 <md-menu-content class="menu-item">
                     <md-menu-item>
-                        <md-button ng-click="open_create_techno_dialog()">
+                        <md-button id="menu_techno-create-menu" ng-click="open_create_techno_dialog()">
                             {{ 'menu.techno.create' | translate }}
                         </md-button>
                     </md-menu-item>
                     <md-menu-item>
-                        <md-button ng-click="open_create_techno_from_dialog()">
+                        <md-button id="menu_techno-create-from-menu" ng-click="open_create_techno_from_dialog()">
                             {{ 'menu.techno.createFrom' | translate }}
                         </md-button>
                     </md-menu-item>
@@ -24,6 +24,7 @@
                             fake
                         </md-button>
                         <md-autocomplete
+                                id="menu_techno-autocomplete"
                                 md-no-cache="true"
                                 md-selected-item="ctrl.selectedItem"
                                 md-search-text="ctrl.searchText"
@@ -40,17 +41,17 @@
                 </md-menu-content>
             </md-menu>
             <md-menu ng-controller="MenuModuleCtrl">
-                <button ng-click="$mdOpenMenu()" class="menu">
+                <button id="menu_module-menu" ng-click="$mdOpenMenu()" class="menu">
                     {{ 'menu.module.title' | translate }} <i class="fa fa-caret-down"></i>
                 </button>
                 <md-menu-content class="menu-item">
                     <md-menu-item>
-                        <md-button ng-click="open_create_module_dialog()">
+                        <md-button id="menu_module-create-menu" ng-click="open_create_module_dialog()">
                             {{ 'menu.module.create' | translate }}
                         </md-button>
                     </md-menu-item>
                     <md-menu-item>
-                        <md-button ng-click="open_create_module_from_dialog()">
+                        <md-button id="menu_module-create-from-menu" ng-click="open_create_module_from_dialog()">
                             {{ 'menu.module.createFrom' | translate }}
                         </md-button>
                     </md-menu-item>
@@ -60,6 +61,7 @@
                             fake
                         </md-button>
                         <md-autocomplete
+                                id="menu_module-autocomplete"
                                 md-no-cache="true"
                                 md-selected-item="ctrl.selectedItem"
                                 md-search-text="ctrl.searchText"
@@ -77,17 +79,17 @@
             </md-menu>
             <span class="menu-header">{{ 'menu.properties.title' | translate }} <i class="fa fa-arrow-right"></i></span>
             <md-menu ng-controller="MenuPropertiesCtrl">
-                <button ng-click="$mdOpenMenu()" class="menu">
+                <button id="menu_application-menu" ng-click="$mdOpenMenu()" class="menu">
                     {{ 'menu.platform.title' | translate }} <i class="fa fa-caret-down"></i>
                 </button>
                 <md-menu-content class="menu-item">
                     <md-menu-item>
-                        <md-button ng-click="open_create_platform_dialog()">
+                        <md-button id="menu_application-create-menu" ng-click="open_create_platform_dialog()">
                             {{ 'menu.platform.create' | translate }}
                         </md-button>
                     </md-menu-item>
                     <md-menu-item>
-                        <md-button ng-click="open_create_platform_from_dialog()">
+                        <md-button id="menu_application-create-from-menu" ng-click="open_create_platform_from_dialog()">
                             {{ 'menu.platform.createFrom' | translate }}
                         </md-button>
                     </md-menu-item>
@@ -98,6 +100,7 @@
                         </md-button>
                         <form ng-submit="open_properties_page(ctrl.searchText, null, '#fakeButtonSearchProperties', false)">
                         <md-autocomplete
+                                id="menu_application-autocomplete"
                                 md-no-cache="true"
                                 md-selected-item="ctrl.selectedItem"
                                 md-search-text="ctrl.searchText"
@@ -116,33 +119,33 @@
 
 
             <div class="menu-language" ng-controller="MenuHelpCtrl">
-                <md-button ng-click="change_language('fr')" class="menu-language--fr" aria-label="{{ 'menu.language.fr.aria' | translate }}">
+                <md-button id="menu_language-fr-flag" ng-click="change_language('fr')" class="menu-language--fr" aria-label="{{ 'menu.language.fr.aria' | translate }}">
                     fr
                 </md-button>
 
-                <md-button ng-click="change_language('en')" class="menu-language--en" aria-label="{{ 'menu.language.en.aria' | translate }}">
+                <md-button id="menu_language-en-flag" ng-click="change_language('en')" class="menu-language--en" aria-label="{{ 'menu.language.en.aria' | translate }}">
                     en
                 </md-button>
             </div>
             <md-menu class="menu-help" ng-controller="MenuHelpCtrl">
-                <button ng-click="$mdOpenMenu()" class="menu">
+                <button id="menu_help-menu" ng-click="$mdOpenMenu()" class="menu">
                     {{ 'menu.help.title' | translate}} <i class="fa fa-question"></i>
                 </button>
                 <md-menu-content class="menu-item">
                     <md-menu-item>
-                        <md-button ng-click="display_swagger()">
+                        <md-button id="menu_help-swagger-menu" ng-click="display_swagger()">
                             {{ 'menu.help.swagger' | translate}}
                         </md-button>
                     </md-menu-item>
                     <md-menu-item>
-                        <md-button ng-click="display_hesperides_informations()">
+                        <md-button id="menu_help-about-menu" ng-click="display_hesperides_informations()">
                             {{ 'menu.help.about' | translate}}
                         </md-button>
                     </md-menu-item>
                 </md-menu-content>
             </md-menu>
             <div class="menu-user" ng-controller="MenuHelpCtrl">
-                <md-button ng-click="display_settings()">
+                <md-button id="menu_settings-menu" ng-click="display_settings()">
                     <i class="fa fa-cog" aria-label="{{ 'menu.help.settings' | translate }}"></i>
                 </md-button>
             </div>

@@ -4,15 +4,15 @@
         <span class="padding-right-10px" >{{ 'properties.boxMode.title' | translate }}</span>
     </h3>
     <div layout="row" >
-        <md-button ng-click="showGlobalPropertiesDisplay()"
+        <md-button id="box-properties_display-global-properties-button" ng-click="showGlobalPropertiesDisplay()"
                    class="md-fab md-primary md-mini" aria-label="Deplier/Plier le menu">
             <i class="fa" ng-class="{'fa-eye': !showButtonAndEye, 'fa-eye-slash': showButtonAndEye}"></i>
         </md-button>
 
-        <md-button class="md-raised md-mini"
+        <md-button id="box-properties_compare-global-properties-button" class="md-raised md-mini"
                    ng-click="diff_global_properties(platform)"><i class="fa fa-exchange"></i> {{ 'properties.platform.globalProperties.compare' | translate }}</md-button>
 
-        <md-button class="md-raised md-primary md-mini"  ng-show="showButtonAndEye"
+        <md-button id="box-properties_save-global-properties-button" class="md-raised md-primary md-mini"  ng-show="showButtonAndEye"
                    ng-click="save_global_properties(platform.global_properties)"><i class="fa fa-check"></i> {{ 'properties.platform.globalProperties.save' | translate }}</md-button>
 
         <toggle-sort-properties sort-order="order"></toggle-sort-properties>
@@ -30,7 +30,7 @@
 
 <div layout="row" layout-wrap>
     <div flex="5">
-        <md-button ng-click="open_add_box_dialog(mainBox)" class="md-fab properties-add-logical-group"
+        <md-button id="box-properties_add-first-box-dialog-button" ng-click="open_add_box_dialog(mainBox)" class="md-fab properties-add-logical-group"
                    aria-label="{{ 'properties.logicGroup.add' | translate }}">
             <span class="fa fa-inbox"></span>
             <md-tooltip>
@@ -61,13 +61,13 @@
     </div>
     <div flex="50">
         <div id="propertiesButtonsContainer" layout="row" layout-align="space-around">
-            <md-button id="cleanPropertiesButton" class="md-raised"
+            <md-button id="box-properties_clean-module-properties-button" id="cleanPropertiesButton" class="md-raised"
                        ng-really-click="clean_properties(properties)"
                        ng-really-message="{{ 'properties.module.editProperties.cleanUselessValuesConfirmation' | translate }}">
                 <span class="fa fa-trash"></span>
                 <span>{{ 'properties.module.editProperties.cleanUselessValues' | translate }}</span>
             </md-button>
-            <md-button ng-click="save_properties(properties, selected_module)"
+            <md-button id="box-properties_save-module-properties-button" ng-click="save_properties(properties, selected_module)"
                        ng-disabled="technoForm.$invalid"
                        class="md-raised md-primary">
                 <span class="fa fa-check"></span>
@@ -88,14 +88,14 @@
                 <span class="margin-right-30px">{{ 'properties.module.instance.editProperties.title' | translate }} <strong><a href="" editable-text="instance.name" onbeforesave="update_instance_name(instance, $data)">{{instance.name}}</a></strong></span>
             </h3>
 
-            <md-button id="cleanPropertiesButton" class="md-raised"
+            <md-button id="box-properties_clean-instance-properties-button" class="md-raised"
                        ng-really-message="{{ 'properties.module.editProperties.cleanUselessValuesConfirmation' | translate }}"
                        ng-really-click="clean_instance_properties(instance)">
                 <span class="fa fa-trash"></span>
                 <span>{{ 'properties.module.editProperties.cleanUselessValues' | translate }}</span>
             </md-button>
 
-            <md-button ng-click="save_platform_from_box(mainBox)"
+            <md-button id="box-properties_save-instance-properties-button" ng-click="save_platform_from_box(mainBox)"
                        ng-disabled="technoForm.$invalid"
                        class="md-raised md-primary">
                 <i class="fa fa-check"></i>

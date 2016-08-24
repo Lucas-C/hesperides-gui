@@ -29,7 +29,7 @@
                      class="margin-1pc">
                     <div layout="column" flex="50">
                         <div class="truncate-ellipsis">
-                            <label class="property-label"
+                            <label id="instance-properties_key-property-label-{{key_value_property.name}}" class="property-label"
                                    ng-class="{'text-stroke':!key_value_property.inModel, 'default-value-color': key_value_property.defaultValue && !key_value_property.value}"
                             >{{key_value_property.name}}</label><span ng-show="key_value_property.required"class="property-required">*</span>
                             <md-tooltip md-direction="top">
@@ -38,7 +38,8 @@
                         </div>
                     </div>
                     <div layout="column" flex>
-                        <input ng-model="key_value_property.value"
+                        <input id="instances-properties_value-property-input-{{key_value_property.name}}"
+                               ng-model="key_value_property.value"
                                ng-trim="true"
                                ng-readonly="!key_value_property.inModel"
                                ng-focus="focusthis = true"

@@ -16,9 +16,9 @@
             </md-content>
         </div>
         <md-dialog-actions>
-            <md-button ng-really-message="{{ 'module.release.modal.message' | translate  : {version:release_version} }}"
+            <md-button id="create_release_create-button" ng-really-message="{{ 'module.release.modal.message' | translate  : {version:release_version} }}"
                        ng-really-click="$save(release_version)" class="md-raised md-primary" ng-disabled="createReleaseForm.$invalid">{{ 'button.modal.create' | translate }}</md-button>
-            <md-button ng-click="$closeDialog()" class="md-raised md-warn">{{ 'button.modal.cancel' | translate }}</md-button>
+            <md-button id="create_release_cancel-button" ng-click="$closeDialog()" class="md-raised md-warn">{{ 'button.modal.cancel' | translate }}</md-button>
         </md-dialog-actions>
     </md-dialog-content>
 </md-dialog>

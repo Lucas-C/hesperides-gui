@@ -4,11 +4,11 @@
         <div class="bg-light">
             <h3><span> Module <strong><u>{{module.name}}</u></strong>, Version <strong><u>{{module.version}}</u></strong></span>
                 <span ng-show="is_workingcopy"> (Working Copy)</span></span>
-                <md-button class="md-raised md-primary"
+                <md-button id="module_create-release-button" class="md-raised md-primary"
                            ng-show="is_workingcopy"
                            ng-click="open_create_release_dialog(module)">
                     <i class="fa fa-code-fork"></i> {{ 'button.release.create' | translate }}</md-button>
-                <md-button class="md-raised md-warn"
+                <md-button id="module_associated-properties-button" class="md-raised md-warn"
                            ng-click="open_associated_properties_dialog(module)">
                     <i class="fa fa-list"></i> {{ 'button.associateProperties' | translate }}</md-button>
             </h3>

@@ -13,19 +13,19 @@
         <div id="header" layout="row">
             <div flex="none" layout="row" layout-align="none center"><h3>{{ 'properties.treeMode.platform.title' | translate }}</h3></div>
             <div flex="grow" layout="row" layout-align="none center">
-                <md-button ng-click="open_add_box_dialog(mainBox)" class="md-xs" aria-label="Ajouter un groupe logique" tooltip="">
+                <md-button id="tree-properties_add-first-box-dialog-button" ng-click="open_add_box_dialog(mainBox)" class="md-xs" aria-label="Ajouter un groupe logique" tooltip="">
                     <md-tooltip>{{ 'properties.logicGroup.add' | translate }}</md-tooltip>
                     <i class="fa fa-inbox"></i>
                 </md-button>
-                <md-button class="md-xs" aria-label="{{ 'properties.platform.globalProperties.edit' | translate }}" ng-click="showGlobalPropertiesDisplay();movePropertiesDivHolderToCursorPosition($event);">
+                <md-button id="tree-properties_display-global-properties-button" class="md-xs" aria-label="{{ 'properties.platform.globalProperties.edit' | translate }}" ng-click="showGlobalPropertiesDisplay();movePropertiesDivHolderToCursorPosition($event);">
                     <md-tooltip>{{ 'properties.platform.globalProperties.edit' | translate }}</md-tooltip>
                     <i class="fa fa-list"></i>
                 </md-button>
-                <md-button class="md-xs" aria-label="{{ 'properties.platform.globalProperties.compare' | translate }}" ng-click="diff_global_properties(platform)">
+                <md-button id="tree-properties_compare-global-properties-button" class="md-xs" aria-label="{{ 'properties.platform.globalProperties.compare' | translate }}" ng-click="diff_global_properties(platform)">
                     <md-tooltip>{{ 'properties.platform.globalProperties.compare' | translate }}</md-tooltip>
                     <i class="fa fa-exchange"></i>
                 </md-button>
-                <md-button class="md-xs" aria-label="{{ 'properties.platform.quickDisplay' | translate }}" ng-click="quickDisplayInstance()">
+                <md-button id="tree-properties_quick-display-button" class="md-xs" aria-label="{{ 'properties.platform.quickDisplay' | translate }}" ng-click="quickDisplayInstance()">
                     <md-tooltip>{{ 'properties.platform.quickDisplay' | translate }}</md-tooltip>
                     <i class="fa fa-bolt" ng-class="{'fa-rotate-270': quickOpen}"></i>
                 </md-button>
@@ -45,7 +45,7 @@
     <div id="propertiesDivHolder">
         <!-- Bouton sauvegarder -->
         <div layout="row" layout-align="end start" ng-show="showGlobalProperties">
-            <md-button class="md-raised md-primary"
+            <md-button id="tree-properties_save-global-properties-button" class="md-raised md-primary"
                        ng-click="save_global_properties(platform.global_properties)">
                 <i class="fa fa-check"></i>
                 {{ 'properties.platform.globalProperties.save' | translate }}
@@ -69,13 +69,13 @@
         </div>
         <div class="margin-top-5px" layout="row" ng-show="properties">
             <div>
-                <md-button id="cleanPropertiesButton"class="md-raised"
+                <md-button id="tree-properties_clean-module-properties-button" class="md-raised"
                            ng-really-click="clean_properties(properties)"
                            ng-really-message="{{ 'properties.module.editProperties.cleanUselessValuesConfirmation' | translate }}">
                     <i class="fa fa-trash"></i>
                     <span>{{ 'properties.module.editProperties.cleanUselessValues' | translate }}</span>
                 </md-button>
-                <md-button id="savedPropertiesButton"
+                <md-button id="tree-properties_save-module-properties-button"
                            ng-click="save_properties(properties, selected_module)"
                            class="md-raised md-primary">
                     <i class="fa fa-check"></i>
@@ -100,14 +100,14 @@
                     </span>
                 </h3>
 
-                <md-button id="cleanPropertiesButton" class="md-raised"
+                <md-button id="tree-properties_clean-instance-properties-button" class="md-raised"
                            ng-really-message="{{ 'properties.module.editProperties.cleanUselessValuesConfirmation' | translate }}"
                            ng-really-click="clean_instance_properties(instance)">
                     <i class="fa fa-trash"></i>
                     <span>{{ 'properties.module.editProperties.cleanUselessValues' | translate }}</span>
                 </md-button>
 
-                <md-button ng-click="save_platform_from_box(mainBox)" class="md-raised md-primary">
+                <md-button id="tree-properties_save-instance-properties-button" ng-click="save_platform_from_box(mainBox)" class="md-raised md-primary">
                     <i class="fa fa-check"></i>
                     <span>{{ 'properties.module.editProperties.save' | translate }}</span>
                 </md-button>

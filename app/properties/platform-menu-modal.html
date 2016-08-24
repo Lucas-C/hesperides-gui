@@ -32,7 +32,7 @@
                                id="platformApplicationVersion"
                                placeholder="{{ 'platform.modal.applicationVersion.placeholder' | translate }}"/>
                     </md-input-container>
-                    <md-switch class="md-primary" ng-model="new_platform.production" ng-disabled="!isProductionUser()" aria-label="{{ 'platform.modal.isProduction' | translate }}" class="md-block">
+                    <md-switch id="platform-menu-modal_is-production-switch" class="md-primary" ng-model="new_platform.production" ng-disabled="!isProductionUser()" aria-label="{{ 'platform.modal.isProduction' | translate }}" class="md-block">
                         <strong>{{ 'platform.modal.isProduction' | translate }}</strong>
                     </md-switch>
                     <input type="submit" id="submit" value="Submit" ng-hide="true"/>
@@ -40,8 +40,8 @@
             </md-content>
         </div>
         <md-dialog-actions>
-            <md-button ng-click="create_platform(new_platform.application_name, new_platform.platform_name, new_platform.production, new_platform.application_version)" class="md-raised md-primary" ng-disabled="platformForm.$invalid" class="md-raised md-primary">{{ 'button.modal.create' | translate }}</md-button>
-            <md-button ng-click="closeDialog()" class="md-raised md-warn">{{ 'button.modal.cancel' | translate }}</md-button>
+            <md-button id="platform-menu-modal_create-button" ng-click="create_platform(new_platform.application_name, new_platform.platform_name, new_platform.production, new_platform.application_version)" class="md-raised md-primary" ng-disabled="platformForm.$invalid" class="md-raised md-primary">{{ 'button.modal.create' | translate }}</md-button>
+            <md-button id="platform-menu-modal_cancel-button" ng-click="closeDialog()" class="md-raised md-warn">{{ 'button.modal.cancel' | translate }}</md-button>
         </md-dialog-actions>
     </md-dialog-content>
 </md-dialog>

@@ -359,7 +359,7 @@ templateModule.directive('fileRights', function () {
             model: '=',
             label: '@'
         },
-        template: '{{label}} <md-button ng-repeat="item in fileRightsOption" class="md-xxs" ng-class="{\'md-raised\': getValue(item) !== null, \'md-warn\': getValue(item) === true, \'md-strike\': getValue(item) === false}" ng-click="doClick(item)">' +
+        template: '{{label}} <md-button id="template_right-button-{{item.text}}-{{label}}" ng-repeat="item in fileRightsOption" class="md-xxs" ng-class="{\'md-raised\': getValue(item) !== null, \'md-warn\': getValue(item) === true, \'md-strike\': getValue(item) === false}" ng-click="doClick(item)">' +
                   '{{item.text}}' +
                   '<md-tooltip>{{getHelp(item)}}</md-tooltip>' +
                   '</md-button>',

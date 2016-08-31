@@ -410,10 +410,32 @@ applicationModule.factory('ModuleService', [
         with_name_like: function (name) {
             if (!_.isUndefined(name)){
                 if(name.length > 2) { //prevent search with too few characters
-                    return $http.post('rest/modules/perform_search?terms=' + encodeURIComponent(name.replace(' ', '#').replace('-', '#'))).then(function (response) {
-                        return _.map(response.data, function (module) {
+                    return $http.post('rest/modules/perform_search?terms=' + encodeURIComponent(name)).then(function (response) {
+
+                        items = _.map(response.data, function (module) {
                             return new Module(module);
                         });
+
+                        var swaping = true;
+
+                        // Preserving order version descending sort grouped by name
+                        while (swaping) {
+                            swaping = false;
+                            for (x in items) {
+                                if (x > 0) {
+                                    if (items[x].name === items[x-1].name) {
+                                        if (items[x].version > items[x-1].version) {
+                                            swaping = true;
+                                            var temp = items[x];
+                                            items[x] = items[x-1];
+                                            items[x-1] = temp;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+
+                        return items;
                     });
                 } else {
                     var deferred = $q.defer();

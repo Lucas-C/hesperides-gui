@@ -60,7 +60,7 @@
 
             <div flex="noshrink" layout="row" layout-align="none center">
                 <property-tool-button-over></property-tool-button-over>
-                <a href="" class="module-link has_model_{{is_module_has_model(module)}}" ng-click="edit_properties(platform, module);movePropertiesDivHolderToCursorPosition($event);">
+                <a href="" id="tree-renderer_edit-properties-module-button" class="module-link has_model_{{is_module_has_model(module)}}" ng-click="edit_properties(platform, module);movePropertiesDivHolderToCursorPosition($event);">
                     {{module.title}}
                     <md-tooltip>{{ 'properties.module.editProperties.tooltip' | translate }}</md-tooltip>
                 </a>

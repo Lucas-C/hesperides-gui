@@ -16,18 +16,18 @@
         </a>
     </div>
     <div flex ng-show="componentButtonsVisible" layout="row" layout-align="none center">
-        <md-button ng-click="search_module(box)"aria-label="{{ 'properties.module.add' | translate }}"
+        <md-button id="tree-renderer_add-module-button-{{box.name}}" ng-click="search_module(box)" aria-label="{{ 'properties.module.add' | translate }}"
                    class="md-xs">
             <span class="fa fa-plus"></span>
             <md-tooltip>{{ 'properties.module.add' | translate }}</md-tooltip>
         </md-button>
-        <md-button ng-click="open_add_box_dialog(box)"
+        <md-button id="tree-renderer_add-logic-group-button-{{box.name}}" ng-click="open_add_box_dialog(box)"
                    aria-label="{{ 'properties.logicGroup.add' | translate }}"
                    class="md-xs">
             <span class="fa fa-inbox"></span>
             <md-tooltip>{{ 'properties.logicGroup.add' | translate }}</md-tooltip>
         </md-button>
-        <md-button ng-really-message="{{ 'properties.logicGroup.delete' | translate : {name:box.name} }}"
+        <md-button id="tree-renderer_remove-box-button-{{box.name}}" ng-really-message="{{ 'properties.logicGroup.delete' | translate : {name:box.name} }}"
                    aria-label="{{ 'properties.logicGroup.delete' | translate }}"
                    ng-really-click="remove_box(box.name, box)" ng-if="box.isEmpty()"
                    class="md-xs md-warn">

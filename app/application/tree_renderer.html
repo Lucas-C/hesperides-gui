@@ -8,7 +8,7 @@
     <div flex="none"
          ng-mouseenter="componentButtonsVisible=true"
          layout="row" layout-align="none center">
-        <a href="" buttons="no" editable-text="box.name"
+        <a href="" id="tree-renderer_edit-logic-group-{{box.name}}" buttons="no" editable-text="box.name"
            onbeforesave="update_box_name(box, box.name, $data)"
            class="{{contain_empty_module(box)}}">
            {{box.name}}

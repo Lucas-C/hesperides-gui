@@ -1,6 +1,6 @@
 <div layout="row">
     <div class="text-left" flex="50">
-        <a href="" editable-text="box.name" class="{{contain_empty_module(box)}}"
+        <a href="" id="box-renderer_edit-logic-group-{{box.name}}" editable-text="box.name" class="{{contain_empty_module(box)}}"
            onbeforesave="update_box_name(box, box.name, $data)">
            {{box.name}}
            <md-tooltip>{{ 'properties.logicGroup.update' | translate }}</md-tooltip>

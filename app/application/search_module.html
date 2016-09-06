@@ -10,6 +10,8 @@
                         <br/>
                         <md-autocomplete
                                 required
+                                id="search-module_module-autocomplete"
+                                md-input-id="search-module_input-module-autocomplete"
                                 ng-model="newVersion"
                                 md-no-cache="true"
                                 md-selected-item="ctrl.selectedItem"
@@ -30,9 +32,9 @@
             </md-content>
         </div>
         <md-dialog-actions>
-            <md-button class="md-raised md-primary" ng-disabled="addComponentForm.$invalid"
+            <md-button id="search-module_add-module-button" class="md-raised md-primary" ng-disabled="addComponentForm.$invalid"
                        ng-click="$add(moduleSearched)" ng-hide="isReadOnly">{{ 'button.modal.add' | translate }}</md-button>
-            <md-button ng-click="$closeDialog()" class="md-raised md-warn">{{ 'button.modal.cancel' | translate }}</md-button>
+            <md-button id="search-module_cancel-button" ng-click="$closeDialog()" class="md-raised md-warn">{{ 'button.modal.cancel' | translate }}</md-button>
         </md-dialog-actions>
     </md-dialog-content>
 </md-dialog>

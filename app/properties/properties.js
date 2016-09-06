@@ -1629,7 +1629,7 @@ propertiesModule.directive('toggleDeletedIterableProperties', function () {
             iterableProperties: '=',
             toggle: '='
         },
-        template: '<md-switch class="md-primary md-block" style="margin-right:2%"' +
+        template: '<md-switch id="toggle-deleted-iterable-properties_switch" class="md-primary md-block" style="margin-right:2%"' +
                     'ng-model="toggle"' +
                     'ng-init="toggle=false" ' +
                     'ng-disabled="(getNumberOfDeletedProperties() <= 0)" ' +
@@ -1675,7 +1675,7 @@ propertiesModule.directive('toggleUnspecifiedIterableProperties', function () {
             iterableProperties: '=',
             toggle: '='
         },
-        template: '<md-switch class="md-primary md-block"' +
+        template: '<md-switch id="toggle-unspecified-iterable-properties_switch" class="md-primary md-block"' +
                           'ng-model="toggle"' +
                           'ng-init="toggle=false" ' +
                           'ng-disabled="(getNumberOfUnspecifiedProperties() <= 0)" ' +
@@ -1773,7 +1773,7 @@ propertiesModule.directive('toggleDeletedProperties', function () {
             keyValueProperties: '=',
             toggle: '='
         },
-        template: '<md-switch class="md-primary md-block" ' +
+        template: '<md-switch id="toggle-deleted-properties_switch" class="md-primary md-block" ' +
             'ng-model="toggle"' +
             'ng-init="toggle=false" ' +
             'ng-disabled="(getNumberOfDeletedProperties() <= 0)" ' +
@@ -2420,7 +2420,7 @@ propertiesModule.directive('toggleUnspecifiedProperties', function ($filter) {
             keyValueProperties: '=',
             toggle: '='
         },
-        template: '<md-switch class="md-primary md-block" ' +
+        template: '<md-switch id="toggle-unspecified-properties_switch" class="md-primary md-block" ' +
                   'ng-model="toggle"' +
                   'ng-init="toggle=false" ' +
                   'ng-disabled="(getNumberOfUnspecifiedProperties(keyValueProperties) <= 0)" ' +

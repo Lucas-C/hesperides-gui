@@ -7,7 +7,7 @@
                     <section class="file-header">
                         <div layout="row" flex="100">
                             <div flex="5">
-                                <a class="md-button md-xs btn-download-alert-file" href="{{item.url}}" ng-if ="item.on_error == false" download="{{item.name}}">
+                                <a id="file-modal_download-file-{{item.name}}-button" class="md-button md-xs btn-download-alert-file" href="{{item.url}}" ng-if ="item.on_error == false" download="{{item.name}}">
                                     <md-icon class="fa fa-download"></md-icon>
                                 </a>
                                 <a class="md-button md-xs btn-download-alert-file" href="" ng-if="item.on_error == true" ng-click="open(index)">
@@ -50,8 +50,8 @@
             </md-content>
         </div>
         <md-dialog-actions>
-            <md-button ng-click="download_all_instance_files()" class="md-raised md-primary" ng-disabled="moduleForm.$invalid">{{ 'button.modal.download' | translate }}</md-button>
-            <md-button ng-click="$closeDialog()" class="md-raised md-warn">{{ 'button.modal.cancel' | translate }}</md-button>
+            <md-button id="file-modal_download-all-files-button" ng-click="download_all_instance_files()" class="md-raised md-primary" ng-disabled="moduleForm.$invalid">{{ 'button.modal.download' | translate }}</md-button>
+            <md-button id="file-modal_download-cancel-button" ng-click="$closeDialog()" class="md-raised md-warn">{{ 'button.modal.cancel' | translate }}</md-button>
         </md-dialog-actions>
     </md-dialog-content>
 </md-dialog>

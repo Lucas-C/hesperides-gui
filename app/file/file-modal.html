@@ -15,7 +15,7 @@
                                 </a>
                             </div>
                             <div flex="95">
-                                <md-button ng-click="open(index)" class="file-title">{{item.name}} ( {{item.rights}} )</md-button>
+                                <md-button id="file-modal_preview-{{item.name}}-button" ng-click="open(index)" class="file-title">{{item.name}} ( {{item.rights}} )</md-button>
                             </div>
                             <!-- Error tooltip text -->
                             <md-tooltip ng-if="item.on_error == true">{{ 'file.modal.error' | translate }}</md-tooltip>

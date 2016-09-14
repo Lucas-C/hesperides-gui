@@ -12,7 +12,7 @@
                     <md-input-container flex="100">
                         <label><strong>{{ 'save-properties.modal.message.label' | translate }}</strong></label>
                         <br/>
-                        <input ng-model="comment" placeholder="{{ 'save-properties.modal.message.placeholder' | translate}}" md-autofocus="true">
+                        <input id="save-properties-modal_comment-input" ng-model="comment" placeholder="{{ 'save-properties.modal.message.placeholder' | translate}}" md-autofocus="true">
                     </md-input-container>
 
                 </div>
@@ -21,10 +21,10 @@
             </md-content>
         </div>
         <md-dialog-actions>
-            <md-button ng-disabled="!isCommentValid()" ng-click="saveAction()" class="md-raised md-primary">
+            <md-button id="save-properties-modal_save-comment-button" ng-disabled="!isCommentValid()" ng-click="saveAction()" class="md-raised md-primary">
                 {{ 'button.modal.validate' | translate }}
             </md-button>
-            <md-button ng-click="$closeDialog()" class="md-raised md-warn">{{ 'button.modal.cancel' | translate }}</md-button>
+            <md-button id="save-properties-modal_cancel-button" ng-click="$closeDialog()" class="md-raised md-warn">{{ 'button.modal.cancel' | translate }}</md-button>
         </md-dialog-actions>
     </md-dialog-content>
 </md-dialog>

@@ -30,7 +30,7 @@
   "module.event.updatedByUser": "a modifié le module",
   "module.event.updated.details": "Module mis à jour : {{name}}",
   "module.template.event.createdByUser": "a créé le template",
-  "module.template.event.deletedByUser": "a supprimé la plateforme",
+  "module.template.event.deletedByUser": "a supprimé le template ",
   "module.template.event.updatedByUser": "a modifié le template",
   "module.template.event.error": "Opération impossible. On ne peut modifier les templates que dans une working copy",
   "module.workingCopy.event.updatedByUser": "a modifié la working copy du module",

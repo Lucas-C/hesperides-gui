@@ -988,6 +988,10 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
     $scope.edit_instance = function (instance, properties_path) {
         ApplicationService.get_instance_model($routeParams.application, $scope.platform, properties_path).then(function (model) {
             $scope.instance = instance.mergeWithModel(model);
+            $scope.instance.key_values.forEach(function (elem) {
+                if (elem.value.length)
+                    elem.filtrable_value = elem.value;
+            })
             $scope.properties = undefined; //hide the properties panel if opened
             $scope.showGlobalProperties = undefined;
         });
@@ -2439,7 +2443,7 @@ propertiesModule.directive('toggleUnspecifiedProperties', function ($filter) {
                 if (tab) {
                     for (var index = 0; index < tab.length; index++) {
                         // if default value is present, so the prop is not counted as unspecified
-                        if (_.isEmpty(tab[index].value) && _.isEmpty(tab[index].defaultValue)) {
+                        if (!tab[index].filtrable_value || (_.isEmpty(tab[index].value) && _.isEmpty(tab[index].defaultValue))) {
                             count++;
                         }
                     }
@@ -2480,8 +2484,7 @@ propertiesModule.directive('toggleSortProperties', function (){
 propertiesModule.filter('displayUnspecifiedProperties', function () {
     return function (items, display) {
         return _.filter(items, function(item) {
-            // item.filtrable_value don't work with instances
-            return _.isUndefined(display) || !display || _.isEmpty(item.defaultValue) && _.isEmpty(item.value);
+            return _.isUndefined(display) || !display || !item.filtrable_value || _.isEmpty(item.defaultValue) && _.isEmpty(item.value);
         });
     };
 });

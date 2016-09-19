@@ -903,7 +903,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
     $scope.new_kv_name = '';
     $scope.new_kv_value = '';
 
-    $scope.save_global_properties = function (properties) {
+    $scope.save_global_properties = function (properties, save) {
         // Getting information with querySelector, this is because there is
         // a scope problem
         var nameEl = angular.element(document.querySelector('#new_kv_name'));
@@ -925,6 +925,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
             return;
         }
 
+        if (save) {
         // Save the global properties
         HesperidesModalFactory.displaySavePropertiesModal($scope, function ( comment ){
             ApplicationService.save_properties($routeParams.application, $scope.platform, properties, '#', comment ).then(function (properties) {
@@ -940,6 +941,10 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
                 $scope.oldGolbalProperties = angular.copy( properties );
             });
         });
+        } else {
+            // Triggrer event to refresh instantly the virtual container of global properties, instead of waiting really long time
+            $scope.$broadcast('$md-resize');
+        }
 
     };
 
@@ -1810,7 +1815,7 @@ propertiesModule.directive('focusSaveGlobalProperties', function () {
     return function (scope, element) {
         element.bind("keydown keypress", function (event) {
             if(event.which === 13) {
-                scope.$parent.save_global_properties(scope.$parent.platform.global_properties);
+                scope.$parent.save_global_properties(scope.$parent.platform.global_properties, false);
                 event.preventDefault();
             }
         });

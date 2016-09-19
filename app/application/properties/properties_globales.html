@@ -41,9 +41,8 @@
                         <div layout="row" flex="auto">
                             <div flex="5">
                                 <span id="properties-globales_trash-{{key_value_property.name}}" class="fa fa-trash delete-property-icon"
-                                      ng-really-message="{{ 'properties.platform.globalProperties.delete' | translate : {name:key_value_property.name} }}"
                                       aria-label="Supprimer"
-                                      ng-really-click="platform.global_properties.deleteKeyValue(key_value_property)"
+                                      ng-click="platform.global_properties.deleteKeyValue(key_value_property)"
                                       ng-mouseenter="hover = true"
                                       ng-mouseleave="hover = false">
                                 </span>

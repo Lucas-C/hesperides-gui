@@ -2443,7 +2443,7 @@ propertiesModule.directive('toggleUnspecifiedProperties', function ($filter) {
                 if (tab) {
                     for (var index = 0; index < tab.length; index++) {
                         // if default value is present, so the prop is not counted as unspecified
-                        if (!tab[index].filtrable_value || (_.isEmpty(tab[index].value) && _.isEmpty(tab[index].defaultValue))) {
+                        if ((!tab[index].filtrable_value && _.isEmpty(tab[index].defaultValue))|| (_.isEmpty(tab[index].value) && _.isEmpty(tab[index].defaultValue))) {
                             count++;
                         }
                     }
@@ -2484,7 +2484,7 @@ propertiesModule.directive('toggleSortProperties', function (){
 propertiesModule.filter('displayUnspecifiedProperties', function () {
     return function (items, display) {
         return _.filter(items, function(item) {
-            return _.isUndefined(display) || !display || !item.filtrable_value || _.isEmpty(item.defaultValue) && _.isEmpty(item.value);
+            return _.isUndefined(display) || !display || !item.filtrable_value && _.isEmpty(item.defaultValue) || _.isEmpty(item.defaultValue) && _.isEmpty(item.value);
         });
     };
 });

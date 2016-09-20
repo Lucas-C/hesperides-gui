@@ -34,7 +34,7 @@
                         <div class="truncate-ellipsis">
                             <label id="simple-properties-list_key-property-isnotglobale-input-{{key_value_property.name}}" class="property-label"
                                    ng-class="{'text-stroke':!key_value_property.inModel, 'default-value-color': key_value_property.defaultValue && !key_value_property.value}"
-                            >{{key_value_property.name}}</label><span ng-show="key_value_property.required" class="property-required">*</span>
+                                    >{{key_value_property.name}} <span ng-show="key_value_property.required" class="property-required">*</span></label>
                             <md-tooltip md-direction="top">
                                 {{key_value_property.name}}
                             </md-tooltip>
@@ -47,10 +47,11 @@
                                ng-readonly="!key_value_property.inModel"
                                ng-focus="focusthis = true"
                                ng-blur="focusthis = false"
-                               ng-class="{'text-stroke':!key_value_property.inModel, 'default-value-color': key_value_property.defaultValue && !key_value_property.value, 'default-value-color-focus': focusthis}"
-                               placeholder="{{key_value_property.defaultValue ? '[default=' + key_value_property.defaultValue + '] ' : ''}} {{key_value_property.comment}}"
+                               ng-class="{'text-stroke':!key_value_property.inModel, 'default-value-color': (key_value_property.defaultValue || key_value_property.pattern) && !key_value_property.value, 'default-value-color-focus': focusthis}"
+                               placeholder="{{key_value_property.defaultValue ? '[default=' + key_value_property.defaultValue + '] ' : ''}} {{key_value_property.pattern ? '[pattern=' + key_value_property.pattern + '] ' : ''}} {{key_value_property.comment}}"
                                ng-pattern="key_value_property.pattern"
                                class="property-value">
+                            <md-tooltip ng-show="key_value_property.defaultValue || key_value_property.pattern || key_value_property.comment" md-direction="top">{{key_value_property.defaultValue ? '[default=' + key_value_property.defaultValue + '] ' : ''}} {{key_value_property.pattern ? '[pattern=' + key_value_property.pattern + '] ' : ''}} {{key_value_property.comment}}</md-tooltip>
                     </div>
                 </div>
 

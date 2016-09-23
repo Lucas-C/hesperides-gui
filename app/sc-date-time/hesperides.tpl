@@ -1,4 +1,3 @@
-
 <div ng-class="modeClass()" class="time-date">
   <div ng-click="modeSwitch()" aria-label="{{modeSwitchText()}}" class="display">
     <div class="title">{{display.title()}}</div>

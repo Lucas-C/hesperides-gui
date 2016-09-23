@@ -85,6 +85,17 @@ hesperidesModule.run(function (editableOptions, editableThemes, $rootScope) {
 
         return calendarOffsetMagin + 'px';
     };
+
+    $.ajax({
+        url: "hesperides.json",
+        success: function (data) {
+            $rootScope.hesperidesConfiguration = JSON.parse(data);
+
+            if ($rootScope.hesperidesConfiguration.nexusMode == undefined) {
+                $rootScope.hesperidesConfiguration.nexusMode = false;
+            }
+        }
+    });
 });
 
 hesperidesModule.factory('Page', ['hesperidesGlobals', function (hesperidesGlobals) {

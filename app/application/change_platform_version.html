@@ -8,7 +8,7 @@
                       ng-submit="platformVersionForm.$valid && $change({new_version: newVersion, use_ndl: useNdl, copy_properties: copyProperties})">
 
 
-                    <md-switch class="md-primary md-block" aria-label="Utiliser la note de livraison json de la version" ng-model="useNdl">
+                    <md-switch class="md-primary md-block" aria-label="Utiliser la note de livraison json de la version" ng-model="useNdl" ng-show="hesperidesConfiguration.nexusMode">
                         <span>
                             <strong>Utiliser la note de livraison json de la version {{newVersion}}</strong>
                         </span>

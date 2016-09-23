@@ -42,7 +42,7 @@
                             <div flex="5">
                                 <span id="properties-globales_trash-{{key_value_property.name}}" class="fa fa-trash delete-property-icon"
                                       aria-label="Supprimer"
-                                      ng-click="platform.global_properties.deleteKeyValue(key_value_property)"
+                                      ng-click="platform.global_properties.deleteKeyValue(key_value_property); hover = false;"
                                       ng-mouseenter="hover = true"
                                       ng-mouseleave="hover = false">
                                 </span>

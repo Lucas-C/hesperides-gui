@@ -6,7 +6,7 @@ var propertiesModule = angular.module('hesperides.properties', ['hesperides.nexu
 propertiesModule.controller('PlatformVersionModule', ['$scope', '$mdDialog', 'NexusService', 'ApplicationService', 'TechnoService', '$translate',
     function ($scope, $mdDialog, NexusService, ApplicationService, TechnoService, $translate) {
     $scope.$change = function (modal_data) {
-        if (modal_data.use_ndl === true) {
+        if (modal_data.use_ndl === true && $scope.hesperidesConfiguration.nexusMode === true) {
             // on met à jour les modules de l'application à partir des infos de la ndl
             NexusService.getNdl($scope.platform.application_name, modal_data.new_version)
                 .then(function (ndl) {
@@ -324,9 +324,14 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
             });
         };
 
-        // récupération des versions des ndl de l'application
-        NexusService.getNdlVersions(platform.application_name)
-            .then(dialogNdl, dialogNdl);
+        if ($scope.hesperidesConfiguration.nexusMode) {
+            // récupération des versions des ndl de l'application
+            NexusService.getNdlVersions(platform.application_name)
+                .then(dialogNdl, dialogNdl);
+        } else {
+            dialogNdl();
+        }
+
     };
 
     $scope.search_module = function (box) {
@@ -1146,6 +1151,9 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
     }, function (error) {
         $.notify(error.data.message, "error");
     });
+
+
+
 
 }]);
 

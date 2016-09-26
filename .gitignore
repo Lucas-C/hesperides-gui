@@ -9,5 +9,5 @@ tmp
 target/
 pom.xml.releaseBackup
 release.properties
-target/
 .gitignore
+app/config.json

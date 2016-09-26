@@ -1,26 +1,12 @@
-/*
- * This file is part of the Hesperides distribution.
- * (https://github.com/voyages-sncf-technologies/hesperides)
- * Copyright (c) 2016 VSCT.
- *
- * Hesperides is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as
- * published by the Free Software Foundation, version 3.
- *
- * Hesperides is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
+/**
+ * Created by william_montaz on 17/10/2014 .
  */
 var propertiesModule = angular.module('hesperides.properties', ['hesperides.nexus', 'hesperides.modals']);
 
 propertiesModule.controller('PlatformVersionModule', ['$scope', '$mdDialog', 'NexusService', 'ApplicationService', 'TechnoService', '$translate',
     function ($scope, $mdDialog, NexusService, ApplicationService, TechnoService, $translate) {
     $scope.$change = function (modal_data) {
-        if (modal_data.use_ndl === true) {
+        if (modal_data.use_ndl === true && $scope.hesperidesConfiguration.nexusMode === true) {
             // on met à jour les modules de l'application à partir des infos de la ndl
             NexusService.getNdl($scope.platform.application_name, modal_data.new_version)
                 .then(function (ndl) {
@@ -338,9 +324,14 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
             });
         };
 
-        // récupération des versions des ndl de l'application
-        NexusService.getNdlVersions(platform.application_name)
-            .then(dialogNdl, dialogNdl);
+        if ($scope.hesperidesConfiguration.nexusMode) {
+            // récupération des versions des ndl de l'application
+            NexusService.getNdlVersions(platform.application_name)
+                .then(dialogNdl, dialogNdl);
+        } else {
+            dialogNdl();
+        }
+
     };
 
     $scope.search_module = function (box) {
@@ -1160,6 +1151,9 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
     }, function (error) {
         $.notify(error.data.message, "error");
     });
+
+
+
 
 }]);
 

@@ -1,19 +1,5 @@
-/*
- * This file is part of the Hesperides distribution.
- * (https://github.com/voyages-sncf-technologies/hesperides)
- * Copyright (c) 2016 VSCT.
- *
- * Hesperides is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as
- * published by the Free Software Foundation, version 3.
- *
- * Hesperides is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
+/**
+ * Created by william_montaz on 17/10/2014.
  */
 var templateModule = angular.module('hesperides.template', []);
 
@@ -319,7 +305,17 @@ templateModule.factory('TemplateService', ['$hesperidesHttp', 'Template', 'Templ
 }]);
 
 templateModule.directive('fileRights', function () {
-    var controller = ['$scope', function ($scope) {
+    var controller = ['$scope', '$translate', function ($scope, $translate) {
+
+
+            $scope.defaultRightStr = "";
+            $scope.appliedRightStr = "";
+            $scope.removedRightStr = "";
+
+            $translate('template.rights.default').then(function (label) { $scope.defaultRightStr = label; });
+            $translate('template.rights.applied').then(function (label) { $scope.appliedRightStr = label; });
+            $translate('template.rights.removed').then(function (label) { $scope.removedRightStr = label; });
+
             var setValue = function(item, value) {
                 if (_.isUndefined($scope.model)) {
                     $scope.model = {};
@@ -344,14 +340,12 @@ templateModule.directive('fileRights', function () {
                 var value = getValue(item);
 
                 if (_.isNull(value)) {
-                    str = "Droit par défaut";
+                    return $scope.defaultRightStr;
                 } else if (value === true) {
-                    str = "Droit positionné";
+                    return $scope.appliedRightStr;
                 } else {
-                    str = "Droit supprimé";
+                    return $scope.removedRightStr;
                 }
-
-                return str;
             };
 
             $scope.doClick = function(item) {

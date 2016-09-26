@@ -1,21 +1,8 @@
-/*
- * This file is part of the Hesperides distribution.
- * (https://github.com/voyages-sncf-technologies/hesperides)
- * Copyright (c) 2016 VSCT.
- *
- * Hesperides is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as
- * published by the Free Software Foundation, version 3.
- *
- * Hesperides is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
+/**
+ * Created by tidiane_sidibe on 18/01/2015.
  */
-var fileModule = angular.module('hesperides.file', []);
+
+var fileModule = angular.module('hesperides.file', ['pascalprecht.translate']);
 
 fileModule.factory('FileEntry', ['$hesperidesHttp', function ($http) {
     var FileEntry = function (data) {
@@ -41,7 +28,7 @@ fileModule.factory('FileEntry', ['$hesperidesHttp', function ($http) {
     return FileEntry;
 }]);
 
-fileModule.factory('FileService', ['$hesperidesHttp', 'Application', 'Platform', 'Properties', 'InstanceModel', 'FileEntry', function ($http, Application, Platform, Properties, InstanceModel, FileEntry) {
+fileModule.factory('FileService', ['$hesperidesHttp', 'Application', 'Platform', 'Properties', 'InstanceModel', 'FileEntry', '$translate', function ($http, Application, Platform, Properties, InstanceModel, FileEntry, $translate) {
     // Convert file right to string
     var files_rights_to_string = function(filesRights) {
         var clearRight = function(right) {
@@ -84,11 +71,11 @@ fileModule.factory('FileService', ['$hesperidesHttp', 'Application', 'Platform',
             newRights = 'user: ' + user + ' group:' + group;
 
             if (user == "" && group == "") {
-                newRights = 'Aucun droit positionné';
+                newRights = -1;
             }
         } else {
             // cas pour valeur filesRights null
-            newRights = 'Aucun droit positionné';
+            newRights = -1;
         }
 
         return newRights;
@@ -109,6 +96,9 @@ fileModule.factory('FileService', ['$hesperidesHttp', 'Application', 'Platform',
                 return response.data.map(function (data) {
                     var entry = new FileEntry(data);
                     entry.rights = files_rights_to_string(data.rights);
+
+                    if (entry.rights < 0)
+                        $translate('template.rights.none').then(function (label) { entry.rights = label; });
 
                     entry.getContent().then(function(output) {
 

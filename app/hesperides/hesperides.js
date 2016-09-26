@@ -1,20 +1,4 @@
-/*
- * This file is part of the Hesperides distribution.
- * (https://github.com/voyages-sncf-technologies/hesperides)
- * Copyright (c) 2016 VSCT.
- *
- * Hesperides is free software: you can redistribute it and/or modify
- * it under the terms of the GNU General Public License as
- * published by the Free Software Foundation, version 3.
- *
- * Hesperides is distributed in the hope that it will be useful, but
- * WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU
- * General Public License for more details.
- *
- * You should have received a copy of the GNU General Public License
- * along with this program. If not, see <http://www.gnu.org/licenses/>.
- */
+
 if ( typeof String.prototype.startsWith != 'function' ) {
     String.prototype.startsWith = function( str ) {
         return str.length > 0 && this.substring( 0, str.length ) === str;
@@ -101,6 +85,17 @@ hesperidesModule.run(function (editableOptions, editableThemes, $rootScope) {
 
         return calendarOffsetMagin + 'px';
     };
+
+    $.ajax({
+        url: "config.json",
+        success: function (data) {
+            $rootScope.hesperidesConfiguration = JSON.parse(data);
+
+            if ($rootScope.hesperidesConfiguration.nexusMode == undefined) {
+                $rootScope.hesperidesConfiguration.nexusMode = false;
+            }
+        }
+    });
 });
 
 hesperidesModule.factory('Page', ['hesperidesGlobals', function (hesperidesGlobals) {

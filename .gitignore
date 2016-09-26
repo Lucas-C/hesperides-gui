@@ -10,5 +10,9 @@ target/
 pom.xml.releaseBackup
 release.properties
 .gitignore
+<<<<<<< 4c551d1a306f471990901a4f9f830847d0e1ac4e
 app/config.json
 
+=======
+app/config.json
+>>>>>>> changing conf path

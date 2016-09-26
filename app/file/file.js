@@ -2,7 +2,7 @@
  * Created by tidiane_sidibe on 18/01/2015.
  */
 
-var fileModule = angular.module('hesperides.file', []);
+var fileModule = angular.module('hesperides.file', ['pascalprecht.translate']);
 
 fileModule.factory('FileEntry', ['$hesperidesHttp', function ($http) {
     var FileEntry = function (data) {
@@ -28,7 +28,7 @@ fileModule.factory('FileEntry', ['$hesperidesHttp', function ($http) {
     return FileEntry;
 }]);
 
-fileModule.factory('FileService', ['$hesperidesHttp', 'Application', 'Platform', 'Properties', 'InstanceModel', 'FileEntry', function ($http, Application, Platform, Properties, InstanceModel, FileEntry) {
+fileModule.factory('FileService', ['$hesperidesHttp', 'Application', 'Platform', 'Properties', 'InstanceModel', 'FileEntry', '$translate', function ($http, Application, Platform, Properties, InstanceModel, FileEntry, $translate) {
     // Convert file right to string
     var files_rights_to_string = function(filesRights) {
         var clearRight = function(right) {
@@ -71,11 +71,11 @@ fileModule.factory('FileService', ['$hesperidesHttp', 'Application', 'Platform',
             newRights = 'user: ' + user + ' group:' + group;
 
             if (user == "" && group == "") {
-                newRights = 'Aucun droit positionné';
+                newRights = -1;
             }
         } else {
             // cas pour valeur filesRights null
-            newRights = 'Aucun droit positionné';
+            newRights = -1;
         }
 
         return newRights;
@@ -96,6 +96,9 @@ fileModule.factory('FileService', ['$hesperidesHttp', 'Application', 'Platform',
                 return response.data.map(function (data) {
                     var entry = new FileEntry(data);
                     entry.rights = files_rights_to_string(data.rights);
+
+                    if (entry.rights < 0)
+                        $translate('template.rights.none').then(function (label) { entry.rights = label; });
 
                     entry.getContent().then(function(output) {
 

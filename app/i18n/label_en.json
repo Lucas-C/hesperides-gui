@@ -1,6 +1,6 @@
 {
   "hesperides.date" : "{{  timestamp | date : 'MMMM d yyyy h:mm a' }}",
-  "wellcome.apps.title" : "Preferred applications",
+  "welcome.apps.title" : "Preferred applications",
   "menu.template.title": "Regroup templates",
   "menu.techno.title": "By techno",
   "menu.techno.create": "Create a working copy",
@@ -95,6 +95,10 @@
   "template.button.saveAndClose": "Save and close",
   "template.message.delete": "Do you want to delete the template {{name}} ?",
   "template.rights": "(Rights : {{list}} )",
+  "template.rights.none": "No rights configured",
+  "template.rights.default": "Default right",
+  "template.rights.applied": "Applied right",
+  "template.rights.removed": "Removed right",
   "model.modal.title": "Properties attached to the module {{name}}",
   "model.modal.empty": "None property to display",
   "model.modal.simpleProperties.title": "Simple properties :",

@@ -305,7 +305,17 @@ templateModule.factory('TemplateService', ['$hesperidesHttp', 'Template', 'Templ
 }]);
 
 templateModule.directive('fileRights', function () {
-    var controller = ['$scope', function ($scope) {
+    var controller = ['$scope', '$translate', function ($scope, $translate) {
+
+
+            $scope.defaultRightStr = "";
+            $scope.appliedRightStr = "";
+            $scope.removedRightStr = "";
+
+            $translate('template.rights.default').then(function (label) { $scope.defaultRightStr = label; });
+            $translate('template.rights.applied').then(function (label) { $scope.appliedRightStr = label; });
+            $translate('template.rights.removed').then(function (label) { $scope.removedRightStr = label; });
+
             var setValue = function(item, value) {
                 if (_.isUndefined($scope.model)) {
                     $scope.model = {};
@@ -330,14 +340,12 @@ templateModule.directive('fileRights', function () {
                 var value = getValue(item);
 
                 if (_.isNull(value)) {
-                    str = "Droit par défaut";
+                    return $scope.defaultRightStr;
                 } else if (value === true) {
-                    str = "Droit positionné";
+                    return $scope.appliedRightStr;
                 } else {
-                    str = "Droit supprimé";
+                    return $scope.removedRightStr;
                 }
-
-                return str;
             };
 
             $scope.doClick = function(item) {

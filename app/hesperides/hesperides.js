@@ -87,7 +87,7 @@ hesperidesModule.run(function (editableOptions, editableThemes, $rootScope) {
     };
 
     $.ajax({
-        url: "hesperides.json",
+        url: "config.json",
         success: function (data) {
             $rootScope.hesperidesConfiguration = JSON.parse(data);
 

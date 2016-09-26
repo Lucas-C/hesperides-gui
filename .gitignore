@@ -10,4 +10,4 @@ target/
 pom.xml.releaseBackup
 release.properties
 .gitignore
-app/hesperides.json
+app/config.json

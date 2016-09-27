@@ -219,9 +219,10 @@ menuModule.controller('MenuPropertiesCtrl', ['$hesperidesHttp', '$scope', '$mdDi
             platform = new Platform({name: platform_name, application_name: application_name, application_version: application_version, production: production});
             ApplicationService.create_platform_from(platform, from_application, from_platform).then(function(platform){
                 $scope.open_properties_page(platform.application_name,  platform.name);
+                reload(application_name, platform_name);
+            }).catch(function(e) {
             });
 
-            reload(application_name, platform_name);
 
         } else {
             //Get the existing platform

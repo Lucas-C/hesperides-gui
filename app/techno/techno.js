@@ -18,8 +18,8 @@
 var technoModule = angular.module('hesperides.techno', ['hesperides.template', 'hesperides.properties', 'hesperides.model']);
 
 technoModule.controller('TechnoCtrl',
-    ['$scope', '$location', '$mdDialog', '$routeParams', 'Techno', 'Page', 'TechnoService', 'HesperidesTemplateModal', 'Template', 'TemplateEntry', 'FileService',
-        function ($scope, $location, $mdDialog, $routeParams, Techno, Page, TechnoService, HesperidesTemplateModal, Template, TemplateEntry, FileService) {
+    ['$scope', '$location', '$mdDialog', '$routeParams', 'Techno', 'Page', 'TechnoService', 'HesperidesTemplateModal', 'Template', 'TemplateEntry', 'FileService', '$translate',
+        function ($scope, $location, $mdDialog, $routeParams, Techno, Page, TechnoService, HesperidesTemplateModal, Template, TemplateEntry, FileService, $translate) {
     Page.setTitle("Technos");
 
     $scope.isWorkingCopy = $routeParams.type === "workingcopy";
@@ -97,12 +97,19 @@ technoModule.controller('TechnoCtrl',
                 entry.filename = savedTemplate.filename;
 
                 entry.rights = FileService.files_rights_to_string(savedTemplate.rights);
+                if (entry.rights < 0)
+                    $translate('template.rights.none').then(function (label) { entry.rights = label; });
+
             } else {
+                right = FileService.files_rights_to_string(savedTemplate.rights);
                 var new_entry = new TemplateEntry({
                     name: savedTemplate.name,
                     location: savedTemplate.location,
-                    filename: savedTemplate.filename
+                    filename: savedTemplate.filename,
+                    rights: right
                 });
+                if (right < 0)
+                    $translate('template.rights.none').then(function (label) { new_entry.rights = label; });
                 $scope.templateEntries.push(new_entry);
             }
             $scope.refreshModel();
@@ -220,6 +227,8 @@ technoModule.factory('TechnoService',
 
                     entry.getRights(url).then (function (template){
                         entry.rights = FileService.files_rights_to_string(template.rights);
+                        if (entry.rights < 0)
+                            $translate('template.rights.none').then(function (label) { entry.rights = label; });
                     });
 
                     return entry;
@@ -240,6 +249,8 @@ technoModule.factory('TechnoService',
                     var url ='rest/templates/packages/' + encodeURIComponent(r_name) + '/' + encodeURIComponent(r_version) + '/release/templates/' + encodeURIComponent(entry.name);
                     entry.getRights(url).then (function (template){
                         entry.rights = FileService.files_rights_to_string(template.rights);
+                        if (entry.rights < 0)
+                            $translate('template.rights.none').then(function (label) { entry.rights = label; });
                     });
                     return entry;
                 }, function (error) {

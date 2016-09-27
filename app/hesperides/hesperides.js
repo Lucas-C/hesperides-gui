@@ -103,17 +103,33 @@ hesperidesModule.run(function (editableOptions, editableThemes, $rootScope) {
         return calendarOffsetMagin + 'px';
     };
 
+    $rootScope.setHesperidesConfiguration = function () {
+
+        if ($rootScope.hesperidesConfiguration == undefined) {
+            console.warn("[Hesperides] Config file not found or empty, applying default configuration");
+            $rootScope.hesperidesConfiguration = {};
+        }
+
+        if ($rootScope.hesperidesConfiguration.nexusMode == undefined) {
+            $rootScope.hesperidesConfiguration.nexusMode = false;
+        }
+    }
+
     $.ajax({
         url: "config.json",
         success: function (data) {
-            $rootScope.hesperidesConfiguration = JSON.parse(data);
-
-            if ($rootScope.hesperidesConfiguration.nexusMode == undefined) {
-                $rootScope.hesperidesConfiguration.nexusMode = false;
+            if (data) {
+                $rootScope.hesperidesConfiguration = JSON.parse(data);
             }
+
+            $rootScope.setHesperidesConfiguration();
+        },
+        error: function (data) {
+            $rootScope.setHesperidesConfiguration();
         }
-    });
+     });
 });
+
 
 hesperidesModule.factory('Page', ['hesperidesGlobals', function (hesperidesGlobals) {
     var base  = 'Hesperides'
@@ -150,6 +166,8 @@ hesperidesModule.controller("WelcomeCtrl", ['$scope','$location', function ($sco
 hesperidesModule.config(['$routeProvider', '$mdThemingProvider', '$ariaProvider', '$mdIconProvider', '$translateProvider',
     function ($routeProvider, $mdThemingProvider, $ariaProvider, $mdIconProvider, $translateProvider) {
     $mdIconProvider.fontSet('fa', 'fontawesome');
+
+    $translateProvider.useSanitizeValueStrategy('escaped');
 
     var configureTranslation = function(){
         $translateProvider.useStaticFilesLoader({

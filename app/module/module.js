@@ -20,9 +20,9 @@ var applicationModule = angular.module('hesperides.module', ['hesperides.applica
 
 applicationModule.controller('ModuleCtrl', [
     '$scope', '$routeParams', '$location', '$mdDialog', 'TechnoService', 'ModuleService', 'HesperidesTemplateModal', 'Template', 'Page',
-    'FileService', 'Platform',
+    'FileService', 'Platform', '$translate',
     function ($scope, $routeParams, $location, $mdDialog, TechnoService, ModuleService, HesperidesTemplateModal, Template, Page,
-              FileService, Platform) {
+              FileService, Platform, $translate) {
 
     Page.setTitle('Module');
 
@@ -82,14 +82,20 @@ applicationModule.controller('ModuleCtrl', [
                 entry.name = savedTemplate.name;
                 entry.location = savedTemplate.location;
                 entry.filename = savedTemplate.filename;
-
                 entry.rights = FileService.files_rights_to_string(savedTemplate.rights);
+                if (entry.rights < 0)
+                    $translate('template.rights.none').then(function (label) { entry.rights = label; });
+
             } else {
+                right = FileService.files_rights_to_string(savedTemplate.rights);
                 var new_entry = {
                     name: savedTemplate.name,
                     location: savedTemplate.location,
-                    filename: savedTemplate.filename
+                    filename: savedTemplate.filename,
+                    rights: right
                 };
+                if (right < 0)
+                    $translate('template.rights.none').then(function (label) { new_entry.rights = label; });
                 $scope.templateEntries.push(new_entry);
             }
             $scope.refreshModel();
@@ -324,6 +330,8 @@ applicationModule.factory('ModuleService', [
 
                     entry.getRights(url).then (function (template){
                         entry.rights = FileService.files_rights_to_string(template.rights);
+                        if (entry.rights < 0)
+                            $translate('template.rights.none').then(function (label) { entry.rights = label; });
                     });
                     return entry;
                 }, function (error) {

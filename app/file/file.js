@@ -150,5 +150,4 @@ fileModule.factory('FileService', ['$hesperidesHttp', 'Application', 'Platform',
         },
         files_rights_to_string: files_rights_to_string
     };
-
 }]);

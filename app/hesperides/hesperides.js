@@ -119,7 +119,11 @@ hesperidesModule.run(function (editableOptions, editableThemes, $rootScope) {
         url: "config.json",
         success: function (data) {
             if (data) {
-                $rootScope.hesperidesConfiguration = JSON.parse(data);
+                try {
+                    $rootScope.hesperidesConfiguration = JSON.parse(data);
+                } catch (e) {
+                    console.warn("[Hesperides] Error : " + e.message);
+                }
             }
 
             $rootScope.setHesperidesConfiguration();

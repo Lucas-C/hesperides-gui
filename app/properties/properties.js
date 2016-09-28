@@ -1686,6 +1686,9 @@ propertiesModule.directive('toggleDeletedIterableProperties', function () {
                         }
                     });
                 }
+                if (count <= 0) {
+                    $scope.toggle = false;
+                }
                 return count;
             };
         }],
@@ -1822,6 +1825,9 @@ propertiesModule.directive('toggleDeletedProperties', function () {
                             count++;
                         }
                     }
+                }
+                if (count <= 0) {
+                    scope.toggle = false;
                 }
                 return count;
             };

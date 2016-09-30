@@ -334,7 +334,14 @@ menuModule.controller('MenuHelpCtrl', ['$scope', '$mdDialog', '$hesperidesHttp',
 
      //Refactoring TO DO
      $scope.find_applications_by_name = function (name) {
-        return ApplicationService.with_name_like(name);
+        return ApplicationService.with_name_like(name).then(function (apps){
+            // Already loved apps shouldn't be displayed
+            return _.filter(apps, function (item){
+                return !_.some($scope.applications, function (love){
+                    return love === item.name
+                })
+            });
+        });
      };
 
     $scope.display_hesperides_informations = function(){
@@ -397,15 +404,18 @@ menuModule.controller('MenuHelpCtrl', ['$scope', '$mdDialog', '$hesperidesHttp',
         $scope.backgroundColor = function(item) {
             return PlatformColorService.calculateColor(item.name, $scope.color);
         }
-        $scope.addApplication = function() {
-               if($scope.applications.indexOf($scope.app) == -1){
-                $scope.applications.push($scope.app);
-               }
+
+        $scope.addApplication = function(application) {
+           if($scope.applications.indexOf(application.name) == -1){
+                $scope.applications.push(application.name);
+           }
         }
+
         $scope.removeApplication = function() {
                var index = $scope.applications.indexOf($scope.app);
                $scope.applications.splice(index-1, 1);
         }
+
         $scope.saveSettings = function() {
                store.set('display_mode',$scope.settings_display);
                store.set('language',$scope.settings_language);

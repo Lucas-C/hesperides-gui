@@ -250,6 +250,7 @@
   "message.delete": "Do you want to delete {{name}} ?",
   "message.emptyResult": "None result found",
   "placeholder.search": "Search...",
+  "placeholder.application.name": "Application name ...",
   "modalFrom.origin": "From...",
   "button.modal.create": "Create",
   "button.modal.add": "Add",

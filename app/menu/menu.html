@@ -22,7 +22,7 @@
 <div id="header">
     <md-toolbar class="md-menu-toolbar">
         <md-menu-bar class="menu">
-            <a id="title" href="/" onclick="window.location.reload()">{{ Page.title() }}</a>
+            <a id="title" href="/">{{ Page.title() }}</a>
             <span class="menu-header"> / {{ 'menu.template.title' | translate }} <i class="fa fa-arrow-right"></i></span>
             <md-menu ng-controller="MenuTechnoCtrl">
                 <button id="menu_techno-menu" ng-click="$mdOpenMenu()" class="menu">

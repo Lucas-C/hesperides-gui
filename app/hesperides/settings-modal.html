@@ -108,17 +108,15 @@
                                 md-selected-item="selectedItem"
                                 md-search-text="searchText"
                                 md-items="application in find_applications_by_name(searchText)"
-                                md-selected-item-change="(application) ? app = application.name : false"
                                 md-item-text="application.name"
-                                md-min-length="0"                            md-autoselect="true"
-                                placeholder="Nom de l'application">
+                                md-selected-item-change="addApplication(application)"
+                                md-min-length="0"
+                                md-autoselect="true"
+                                placeholder="{{'placeholder.application.name' | translate}}">
                             <span md-highlight-text="searchText">{{application.name}}</span>
                         </md-autocomplete>
-                        <span ng-click="addApplication()" class="property-sign">+</span>
                     </div>
-
                     <br/>
-
                     <md-chips ng-model="applications" readonly="false"></md-chips>
 
                 </div>

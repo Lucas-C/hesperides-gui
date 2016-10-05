@@ -36,10 +36,10 @@ Tests:
 
 Run the webdriver-manager :
 ```shell
-$ npm webdriver-start
+$ npm run webdriver-start
 ```
 
-Run the protractor tests :
+Run the protractor tests in other window :
 ```shell
-$ npm protractor
+$ npm run protractor
 ```

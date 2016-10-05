@@ -100,7 +100,7 @@
                     <p><strong>{{ 'settings.access' | translate }} :</strong> </p>
                     <div layout="row" flex="100">
                         <md-autocomplete
-                                flex="50"
+                                flex="75"
                                 required
                                 ng-trim="true"
                                 ng-model="app"
@@ -117,7 +117,7 @@
                         </md-autocomplete>
                     </div>
                     <br/>
-                    <md-chips ng-model="applications" readonly="true"></md-chips>
+                    <md-chips ng-model="applications" readonly="false" disable-editing></md-chips>
 
                 </div>
             </md-content>

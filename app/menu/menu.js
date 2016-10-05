@@ -315,6 +315,15 @@ menuModule.controller('MenuPropertiesCtrl', ['$hesperidesHttp', '$scope', '$mdDi
     };
 }]);
 
+menuModule.directive('disableEditing', function(){
+   return {
+       link:function(scope, element){
+           element.on('cut copy paste keypress', function (event) {
+             event.preventDefault();
+           });
+       }
+   };
+});
 
 menuModule.controller('MenuHelpCtrl', ['$scope', '$mdDialog', '$hesperidesHttp', 'hesperidesGlobals', '$translate', 'PlatformColorService', '$parse', 'ApplicationService', function($scope, $mdDialog, $http, hesperidesGlobals, $translate, PlatformColorService, $parse, ApplicationService){
     $scope.closeDialog = function() {

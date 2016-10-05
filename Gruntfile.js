@@ -55,7 +55,7 @@ module.exports = function (grunt) {
         connect: {
             options: {
                 hostname: 'localhost',
-                port: 8000,
+                port: 80,
                 base: 'app'
             },
             proxies: [

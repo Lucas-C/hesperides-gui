@@ -34,7 +34,7 @@ exports.config = {
   onPrepare: function() {
     jasmine.getEnv().addReporter(
       new Jasmine2HtmlReporter({
-        savePath: 'greports/'
+        savePath: 'reports/'
       })
     );
     // load data from json and display for info

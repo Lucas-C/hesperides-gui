@@ -31,6 +31,8 @@ Run the server :
 $ npm start
 ```
 
+It should launch a server available at http://localhost:80 using back on http://localhost:8080
+
 Tests:
 =====
 

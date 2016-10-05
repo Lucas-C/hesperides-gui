@@ -40,7 +40,8 @@ module.exports = function (grunt) {
                 files: [
                     'app/**/*.js',
                     'app/**/*.html',
-                    'app/**/*.css'
+                    'app/**/*.css',
+                    '!app/bower_components/**/*.js'
                 ],
                 options: {
                     livereload: true

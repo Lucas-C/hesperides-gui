@@ -7,6 +7,8 @@ It lets you easily generate content from a template file (using mustache) in a g
 
 See the [Release Notes](RELEASE.md) for the latest version information.
 
+Go to https://github.com/voyages-sncf-technologies/hesperides to handle hesperides back.
+
 Build:
 =====
 

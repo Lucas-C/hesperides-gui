@@ -1746,6 +1746,9 @@ propertiesModule.directive('toggleUnspecifiedIterableProperties', function () {
                         }
                     })
                 }
+                if (count == 0) {
+                    $scope.toggle = false;
+                }
                 return count;
             };
         }],
@@ -2494,6 +2497,9 @@ propertiesModule.directive('toggleUnspecifiedProperties', function ($filter) {
                     }
                 }
 
+                if (count == 0) {
+                    $scope.toggle = false;
+                }
                 return count;
             };
         }]

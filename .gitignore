@@ -11,3 +11,5 @@ pom.xml.releaseBackup
 release.properties
 .gitignore
 app/config.json
+reports/
+npm-debug.log

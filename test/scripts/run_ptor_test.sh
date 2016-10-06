@@ -1,11 +1,11 @@
 #!/bin/bash
 
 echo "$0 take 2 arguments :"
-echo "1 --> environment (ex: localhost hesperides-dev tidiane)"
+echo "1 --> environment (ex: hesperides)"
 echo "2 --> suite name (if not specified, default value is 'all')"
 echo
 
-environment=${1:-localhost}
+environment=${1:-hesperides}
 mysuite=${2:-all}
 
 

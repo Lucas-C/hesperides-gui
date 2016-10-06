@@ -106,7 +106,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
         }, data);
     };
 
-    $scope.contain_empty_module_status = false;
+    $scope.contain_empty_module_status = {};
 
     $scope.cached_empty_module = [];
 
@@ -132,6 +132,17 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
     $scope.is_module_has_model = function (module) {
         return _.some($scope.cached_empty_module, {"name": module.name, "version": module.version, "working_copy": module.working_copy, "has_model": true});
+    }
+
+    $scope.empty_module_status = function () {
+        var return_value = false;
+
+        Object.keys($scope.contain_empty_module_status).forEach(function (key) {
+            if ($scope.contain_empty_module_status[key]) {
+                return_value = true;
+            }
+        });
+        return return_value;
     }
 
     $scope.contain_empty_module = function (box) {
@@ -160,7 +171,7 @@ propertiesModule.controller('PropertiesCtrl', ['$scope', '$routeParams', '$mdDia
 
         }
 
-        $scope.contain_empty_module_status = return_value.length ? true : false;
+        $scope.contain_empty_module_status[box ? box.name : "empty_key"] = return_value.length ? true : false;
 
         return return_value;
 

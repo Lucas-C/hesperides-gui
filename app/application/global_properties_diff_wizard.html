@@ -31,12 +31,12 @@
                         <md-input-container md-no-float class="md-block" flex="50">
                             <label><strong>{{ 'properties.compare.modal.applicationName' | translate }}</strong></label>
                             <input type="text" required ng-trim="true" ng-model="from.application" ng-change="get_target_platforms(from.application)"
-                                   placeholder="WDI, PAO, STF, ..." />
+                                   placeholder="{{ 'platform.modal.applicationName.placeholder' | translate }}" />
                         </md-input-container>
                         <md-input-container md-no-float class="md-block" flex="50">
                             <label><strong>{{ 'properties.compare.modal.platformName' | translate }}</strong></label>
                             <input type="text" required ng-trim="true" ng-model="from.platform" md-autofocus="true"
-                                   placeholder="CUR1, USN1, ..."/>
+                                   placeholder="{{ 'platform.modal.platformName.placeholder' | translate }}"/>
                         </md-input-container>
                     </div>
 

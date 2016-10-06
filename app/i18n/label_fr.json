@@ -149,7 +149,7 @@
   "properties.deletedOnes.switch": "Afficher les propriétés supprimées",
   "properties.logicGroup.add": "Ajouter un groupe logique",
   "properties.logicGroup.add.name": "Nom",
-  "properties.logicGroup.add.name.placeholder": "Exemple WDIGST,...",
+  "properties.logicGroup.add.name.placeholder": "Exemple LEVEL1,WEBSITE,...",
   "properties.logicGroup.update": "Modifier le nom du groupe logique",
   "properties.logicGroup.delete": "Supprimer le groupe logique {{name}} ?",
   "properties.module.add": "Ajouter un module",

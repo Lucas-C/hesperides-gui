@@ -13,7 +13,7 @@ exports.config = {
   allScriptsTimeout: 400000,
   getPageTimeout: 400000,
   params: {
-    data_json: "data/data_localhost.json"
+    data_json: "data/data_hesperides.json"
   },
   // dans le cas d'une plateforme hesperides avec authentification, j'ai pas trouvé mieux que de mettre
   // le test menus dans create_plateforme et create_modules sinon ça ne marche pas pour une raison que j'ignore...

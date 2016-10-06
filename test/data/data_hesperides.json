@@ -1,9 +1,9 @@
 {
-  "hesperides_SA_username": "rundeck_usl",
-  "hesperides_SA_password": "b!@F6y4V",
-  "hesperides_token_auth": "Basic cnVuZGVja191c2w6YiFARjZ5NFY=",
+  "hesperides_SA_username": "my_login",
+  "hesperides_SA_password": "my_password",
+  "hesperides_token_auth": "my_token",
   "hesperides_protocol": "http",
-  "hesperides_host": "192.168.10.24",
+  "hesperides_host": "localhost",
   "hesperides_port": "80",
   "new_application": "TEST_AUTO",
   "new_platform": "TEST_AUTO",

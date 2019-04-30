@@ -40,7 +40,7 @@ pipeline {
                     sh 'cat vsct-hesperides/Dockerfile.append >> hesperides/Dockerfile && rm vsct-hesperides/Dockerfile.append'
                     sh 'cp -r vsct-hesperides/* hesperides/'
                     // On définit les labels et on passe les variables d'environnement des proxys HTTP
-                    def proxyBuildArgs = "--build-arg http_proxy --build-arg https_proxy --build-arg BUILD_TIME=${BUILD_TIME}"
+                    def proxyBuildArgs = "--build-arg http_proxy --build-arg https_proxy"
                     def hesperidesGitCommit = sh(returnStdout: true, script: 'cd hesperides && git rev-parse --short HEAD').trim()
                     def labelArgs = "--label git_commit=${hesperidesGitCommit} --label tuyauterie_git_commit=${GIT_COMMIT} --label build_time=${BUILD_TIME}"
                     // On build l'image Docker :

@@ -38,7 +38,7 @@ pipeline {
                         sh "docker login --username ${USERNAME} --password '${PASSWORD}' hesperides-docker-all.artifact.cloud.socrate.vsct.fr"
                         sh "cat vsct-hesperides-gui/Dockerfile.append >> hesperides-gui/Dockerfile && rm vsct-hesperides-gui/Dockerfile.append"
                         sh "cp -r vsct-hesperides-gui/* hesperides-gui/"
-                        def proxyBuildArgs = "--build-arg http_proxy --build-arg https_proxy --build-arg BUILD_TIME"
+                        def proxyBuildArgs = "--build-arg http_proxy --build-arg https_proxy"
                         def hesperidesGuiGitCommit = sh(returnStdout: true, script: 'cd hesperides-gui && git rev-parse --short HEAD').trim()
                         def labelArgs = "--label git_commit=${hesperidesGuiGitCommit} --label tuyauterie_git_commit=${GIT_COMMIT} --label build_time=${BUILD_TIME}"
                         sh "docker build --no-cache --pull ${labelArgs} ${proxyBuildArgs} ./hesperides-gui -t $DOCKER_IMAGE_NAME:testing"

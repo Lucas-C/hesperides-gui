@@ -25,6 +25,7 @@ pipeline {
             steps {
                 withCredentials([usernamePassword(credentialsId: 'artifact_admin', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                     sh "docker login --username ${USERNAME} --password '${PASSWORD}' hesperides-docker-all.artifact.cloud.socrate.vsct.fr"
+                    sh "docker pull ${params.DOCKER_IMAGE_NAME}:${params.FROM_TAG}"
                     sh "docker tag ${params.DOCKER_IMAGE_NAME}:${params.FROM_TAG} ${params.DOCKER_IMAGE_NAME}:${params.NEW_TAG}"
                     sh "docker push ${params.DOCKER_IMAGE_NAME}:${params.NEW_TAG}"
                 }

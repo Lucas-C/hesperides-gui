@@ -74,12 +74,14 @@ pipeline {
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'github-hesperides-adm', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                        // Le tag peut déjà exister, on essaie donc de le supprimer au préalable
-                        sh "git config user.name 'Jenkins pipeline'"
-                        sh "git tag -d $DATE || true"
-                        sh "git push https://${USERNAME}:${PASSWORD}@github.com/voyages-sncf-technologies/hesperides.git --delete $DATE || true"
-                        sh "git tag $DATE"
-                        sh "git push https://${USERNAME}:${PASSWORD}@github.com/voyages-sncf-technologies/hesperides.git --tags"
+                        dir ('hesperides-gui') {
+                            // Le tag peut déjà exister, on essaie donc de le supprimer au préalable
+                            sh "git config user.name 'Jenkins pipeline'"
+                            sh "git tag -d $DATE || true"
+                            sh "git push https://${USERNAME}:${PASSWORD}@github.com/voyages-sncf-technologies/hesperides.git --delete $DATE || true"
+                            sh "git tag $DATE"
+                            sh "git push https://${USERNAME}:${PASSWORD}@github.com/voyages-sncf-technologies/hesperides.git --tags"
+                        }
                     }
                 }
             }

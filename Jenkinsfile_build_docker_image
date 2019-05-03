@@ -74,7 +74,7 @@ pipeline {
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'github-hesperides-adm', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                        dir ('hesperides-gui') {
+                        dir ('hesperides') {
                             // Le tag peut déjà exister, on essaie donc de le supprimer au préalable
                             sh "git config user.name 'Jenkins pipeline'"
                             sh "git tag -d $DATE || true"

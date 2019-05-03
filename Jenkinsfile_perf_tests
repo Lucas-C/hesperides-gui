@@ -11,6 +11,9 @@ pipeline {
             label 'maven3'
         }
     }
+    triggers {
+        cron('0 8 * * 1-5')
+    }
     options {
         buildDiscarder(logRotator(numToKeepStr: '10'))
         disableConcurrentBuilds()
@@ -29,7 +32,7 @@ pipeline {
             steps {
                 script {
                     git(url: 'https://github.com/voyages-sncf-technologies/hesperides.git',
-                        branch: 'develop')
+                        branch: 'master')
 
                     platformContainers = readJSON(text: horsprodtoolbox.yPath("/HES/${params.platform}/DOCKER").toString()).result  // http://toolbox-server.socrate.vsct.fr/horsprod/api/toolbox?function=ypath&args=/HES/REL1/DOCKER
                     host = platformContainers.find { it.IMAGE.contains('/vsct-hesperides:') }.HOSTS[0]

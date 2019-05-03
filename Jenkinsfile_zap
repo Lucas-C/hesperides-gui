@@ -20,7 +20,7 @@ pipeline {
                 script {
                     git(url: 'https://github.com/voyages-sncf-technologies/hesperides.git',
                         credentialsId: 'github-hesperides-adm',
-                        branch: 'develop')
+                        branch: 'master')
                 }
             }
         }

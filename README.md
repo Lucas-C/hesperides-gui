@@ -30,6 +30,9 @@ tag une image Docker avec une nouvelle version
 - `Jenkinsfile_deploy@PROD` ([job jenkins](https://usl.jenkins.cloud.socrate.vsct.fr/job/A_USL@PROD/job/Hesperides/job/deploy_PROD/)):
 identique à `Jenkinsfile_deploy` mais sur `PRD1`, et se déclenchant toutes les nuits
 
+- `Jenkinsfile_batch_hes2els` ([job jenkins](https://usl.jenkins.cloud.socrate.vsct.fr/job/A_USL@PROD/job/Hesperides/job/batch_hes2els/)):
+cf. https://wiki.vsct.fr/pages/viewpage.action?pageId=217943778
+
 ### Autres pipelines
 
 - `Jenkinsfile_perf_tests` : lance les stress tests Gatling sur une plateforme

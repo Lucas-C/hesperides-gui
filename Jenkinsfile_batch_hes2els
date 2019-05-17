@@ -1,0 +1,39 @@
+#!groovy
+
+pipeline {
+    agent {
+        node {
+            label 'default||master'
+        }
+    }
+    options {
+        buildDiscarder(logRotator(numToKeepStr: '10'))
+        disableConcurrentBuilds()
+    }
+    parameters {
+        choice(name: 'ELS_URL', default: 'http://elasticsearch-log-master-assemblage-lille-s1.socrate.vsct.fr:52300/')
+        choice(name: 'URL_HES', default: 'http://bogogno.socrate.vsct.fr:52700')
+    }
+    stages {
+        stage("Pull Project") {
+            steps {
+                script {
+                    git(url: 'git@gitlab.socrate.vsct.fr:hesperides/search_hesperides.git',
+                        branch: 'master')
+                }
+            }
+        }
+        stage('Exécution du batch') {
+            steps {
+                script {
+                    sh "ELS_URL=${ELS_URL} URL_HES=${URL_HES} scripts/recup_hesperide2els.sh"
+                }
+            }
+        }
+    }
+    post {
+        always {
+            deleteDir()
+        }
+    }
+}

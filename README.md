@@ -31,7 +31,7 @@ tag une image Docker avec une nouvelle version
 identique à `Jenkinsfile_deploy` mais sur `PRD1`, et se déclenchant toutes les nuits
 
 - `Jenkinsfile_batch_hes2els` ([job jenkins](https://usl.jenkins.cloud.socrate.vsct.fr/job/A_USL@PROD/job/Hesperides/job/batch_hes2els/)):
-cf. https://wiki.vsct.fr/pages/viewpage.action?pageId=217943778
+cf. https://wiki.vsct.fr/pages/viewpage.action?pageId=217943778 & https://jira.vsct.fr/browse/USL-1073 pour le contexte
 
 ### Autres pipelines
 

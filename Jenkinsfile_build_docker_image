@@ -67,7 +67,14 @@ pipeline {
         }
         stage("Tests d'intégration et de non-regression") {
             steps {
-                echo('TODO')
+                script {
+                    withCredentials([usernamePassword(credentialsId: 'hesperides', usernameVariable: 'REGRESSIONTEST_USERNAME', passwordVariable: 'REGRESSIONTEST_PASSWORD')]) {
+                        sh 'docker run --rm'
+                            + ' -e REGRESSIONTEST_LATEST_URL=http://dare.socrate.vsct.fr:52700'
+                            + ' -e REGRESSIONTEST_TESTING_URL=http://ciaobaby.socrate.vsct.fr:52700'
+                            + ' -e LOG_LEVEL=INFO "mvn test -pl tests/regression"'
+                    }
+                }
             }
         }
         stage('Création/mise à jour du tag sur repo GitHub') {
@@ -91,6 +98,12 @@ pipeline {
                 build job: "promote", parameters: [string(name: 'DOCKER_IMAGE_NAME', value: env.DOCKER_IMAGE_NAME),
                                                    string(name: 'FROM_TAG', value: 'testing'),
                                                    string(name: 'NEW_TAG', value: 'latest')]
+            }
+        }
+        stage('Déploiement de "latest" sur INT1') {
+            steps {
+                build job: "deploy", parameters: [string(name: 'DOCKER_TAG', value: "latest"),
+                                                  string(name: 'PLATFORM', value: "INT1")]
             }
         }
     }

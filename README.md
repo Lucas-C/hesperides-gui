@@ -13,6 +13,9 @@ Pipeline de création de l'image d'[Hesperides](https://github.com/voyages-sncf-
 récupère l'image Docker du [Dockerhub public](https://hub.docker.com/r/hesperides/hesperides/) pour la surcharger avec le certificat de l'Active Directory, et la pusher vers Artifactory.
 _cf._ [vsct-hesperides/Dockerfile](vsct-hesperides/Dockerfile)
 
+Les commits contenant `#RT` dans leur message déclenchent l'exécution de `tests/regression` entre plateformes REL1 (en version `testing` contenant le dernier commit)
+et INT1 (en version `latest` ne contenant pas ce dernier commit).
+
 - `Jenkinsfile_build_docker_image_for_gui` ([job jenkins](https://usl.jenkins.cloud.socrate.vsct.fr/job/A_USL/job/Hesperides/job/build_docker_image_for_gui/)):
 Pipeline de création de l'image d'[hesperides-gui](https://github.com/voyages-sncf-technologies/hesperides-gui) pour publication sur le dépôt Docker interne :
 récupère l'image Docker du [Dockerhub public](https://hub.docker.com/r/hesperides/hesperides-gui/) pour la surcharger avec le certificat de l'Active Directory, et la pusher vers Artifactory.

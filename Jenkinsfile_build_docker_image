@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat
 pipeline {
     agent {
         node {
-            label 'docker'
+            label 'maven'
         }
     }
     options {
@@ -20,6 +20,8 @@ pipeline {
     }
     environment {
         DOCKER_IMAGE_NAME = 'hesperides-docker-all.artifact.cloud.socrate.vsct.fr/hesperides/vsct-hesperides'
+        REGRESSIONTEST_LATEST_URL = 'http://dare.socrate.vsct.fr:52700'
+        REGRESSIONTEST_TESTING_URL = 'http://ciaobaby.socrate.vsct.fr:52700'
         DATE = (new SimpleDateFormat("yyyy-MM-dd")).format(new Date())
         BUILD_TIME = (new SimpleDateFormat("yyyy:MM:dd-HH-mm-ss")).format(new Date())
     }
@@ -68,11 +70,16 @@ pipeline {
         stage("Tests d'intégration et de non-regression") {
             steps {
                 script {
-                    withCredentials([usernamePassword(credentialsId: 'hesperides', usernameVariable: 'REGRESSIONTEST_USERNAME', passwordVariable: 'REGRESSIONTEST_PASSWORD')]) {
-                        sh 'docker run --rm'
-                            + ' -e REGRESSIONTEST_LATEST_URL=http://dare.socrate.vsct.fr:52700'
-                            + ' -e REGRESSIONTEST_TESTING_URL=http://ciaobaby.socrate.vsct.fr:52700'
-                            + ' -e LOG_LEVEL=INFO "mvn test -pl tests/regression"'
+                    dir ('hesperides') {
+                        git(url: 'https://github.com/voyages-sncf-technologies/hesperides',
+                            branch: params.GIT_BRANCH)
+                        if (sh (script: "git log -1 | grep -i '.*#RT.*'", returnStatus: true) == 0) {
+                            withMaven(globalMavenSettingsConfig: 'global_maven_settings', mavenSettingsConfig: 'local_maven_settings') { // use https://artifact.socrate.vsct.fr/artifactory/all-mvn as a mirror
+                                withCredentials([usernamePassword(credentialsId: 'hesperides', usernameVariable: 'REGRESSIONTEST_USERNAME', passwordVariable: 'REGRESSIONTEST_PASSWORD')]) {
+                                    sh "LOG_LEVEL=INFO mvn test -pl tests/regression"
+                                }
+                            }
+                        }
                     }
                 }
             }

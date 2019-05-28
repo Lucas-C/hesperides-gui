@@ -28,10 +28,17 @@ pipeline {
                 }
             }
         }
-        stage('Exécution du batch') {
+        stage("Scrapping d'Hesperides") {
             steps {
                 script {
-                    sh "ELS_URL=${ELS_URL} URL_HES=${URL_HES} scripts/recup_hesperide2els.sh"
+                    sh "ELS_URL=${ELS_URL} URL_HES=${URL_HES} scripts/search_all_wrapper.sh"
+                }
+            }
+        }
+        stage('Upload dans Elasticsearch') {
+            steps {
+                script {
+                    sh "ELS_URL=${ELS_URL} scripts/els_upload.sh"
                 }
             }
         }

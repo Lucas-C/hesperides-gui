@@ -19,6 +19,9 @@ pipeline {
         string(name: 'ELS_URL', defaultValue: 'http://elasticsearch-log-master-assemblage-lille-s1.socrate.vsct.fr:52300')
         string(name: 'URL_HES', defaultValue: 'http://bogogno.socrate.vsct.fr:52700')
     }
+    environment {
+        PYTHONUNBUFFERED = 1
+    }
     stages {
         stage("Pull Project") {
             steps {
@@ -32,6 +35,7 @@ pipeline {
             steps {
                 script {
                     sh "ELS_URL=${ELS_URL} URL_HES=${URL_HES} scripts/search_all_wrapper.sh"
+                    sh 'ls -l cache/'
                 }
             }
         }

@@ -42,7 +42,7 @@ pipeline {
         stage('Upload dans Elasticsearch') {
             steps {
                 script {
-                    sh "ELS_URL=${ELS_URL} scripts/els_upload.sh"
+                    sh "ELS_URL=${ELS_URL} http_proxy= scripts/els_upload.sh"
                 }
             }
         }

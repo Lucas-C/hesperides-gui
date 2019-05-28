@@ -19,6 +19,7 @@ pipeline {
         disableConcurrentBuilds()
     }
     parameters {
+        // TODO: deploy sur 2 PRDs, avec https://github.com/jenkinsci/parameterized-scheduler-plugin#declarative-pipeline-configuration-example ?
         // Le premier choix est utilisé comme valeur par défaut, y compris lors de l'exécution cronnée :
         choice(choices: platformsList, name: "PLATFORM", description: "OBLIGATOIRE : Plateforme sur laquelle sera fait le déploiement")
     }

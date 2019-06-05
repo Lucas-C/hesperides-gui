@@ -13,7 +13,7 @@ pipeline {
         disableConcurrentBuilds()
     }
     parameters {
-        choice(name: 'PLATFORM', choices: ['REL1'], description: 'OBLIGATOIRE : Plateforme sur laquelle sera fait le déploiement')
+        choice(name: 'PLATFORM', choices: ['REL1', 'INT1'], description: 'OBLIGATOIRE : Plateforme sur laquelle sera fait le déploiement')
     }
     stages {
         stage('Initialisation des Paramètres') {

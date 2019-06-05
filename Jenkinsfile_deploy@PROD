@@ -12,7 +12,10 @@ pipeline {
         }
     }
     triggers {
-        cron('0 3 * * 1-5')
+        parameterizedCron('''
+ 0 3 * * 1-5 %PLATFORM=PRD1
+30 3 * * 1-5 %PLATFORM=PRD6
+        ''')
     }
     options {
         buildDiscarder(logRotator(numToKeepStr: '10'))

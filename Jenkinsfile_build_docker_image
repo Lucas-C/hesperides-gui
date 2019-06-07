@@ -66,6 +66,8 @@ pipeline {
             }
         }
         stage("Integ/NR: BDDs ActiveDirectory") {
+            // Lucas 2019/06/07: je désactive temporairement cette appel en préfixant par "echo" tant le code de la branche access-control n'est par mergé
+            when { expression { params.GIT_BRANCH == 'access-control' } }
             environment {
                 LAMBDA_USER_GROUP_DN = 'CN=DL_REST_HESPERIDES,OU=Distribution_List,OU=ARCHITECTURE,DC=groupevsc,DC=com'
                 LDAP_URL = 'ldaps://ad-ldap-access.socrate.vsct.fr:636'
@@ -83,8 +85,7 @@ pipeline {
                         withMaven(globalMavenSettingsConfig: 'global_maven_settings', mavenSettingsConfig: 'local_maven_settings') { // use https://artifact.socrate.vsct.fr/artifactory/all-mvn as a mirror
                             withCredentials([usernamePassword(credentialsId: 'hesperides', usernameVariable: 'LAMBDA_USERNAME', passwordVariable: 'LAMBDA_PASSWORD')]) {
                                 withCredentials([usernamePassword(credentialsId: 'a_prod_user', usernameVariable: 'PROD_USERNAME', passwordVariable: 'PROD_PASSWORD')]) {
-                                    // Lucas 2019/06/07: je désactive temporairement cette appel en préfixant par "echo" tant le code de la branche access-control n'est par mergé
-                                    sh "echo mvn verify -pl tests/activedirectory-integration -Dauth.lambdaUserName=$LAMBDA_USERNAME -Dauth.lambdaUserPassword=$LAMBDA_PASSWORD -Dauth.lambdaUserParentGroupDN=$LAMBDA_USER_GROUP_DN -Dauth.prodUserName=$PROD_USERNAME -Dauth.prodUserPassword=$PROD_PASSWORD -Djavax.net.ssl.trustStore=vsct-hesperides/certificates/trustore"
+                                    sh "mvn verify -pl tests/activedirectory-integration -Dauth.lambdaUserName=$LAMBDA_USERNAME -Dauth.lambdaUserPassword=$LAMBDA_PASSWORD -Dauth.lambdaUserParentGroupDN=$LAMBDA_USER_GROUP_DN -Dauth.prodUserName=$PROD_USERNAME -Dauth.prodUserPassword=$PROD_PASSWORD -Djavax.net.ssl.trustStore=vsct-hesperides/certificates/trustore"
                                 }
                             }
                         }

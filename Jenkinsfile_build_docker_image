@@ -93,27 +93,6 @@ pipeline {
                 }
             }
         }
-        stage("Integ/NR: test des retours HTTP de la version 'testing' avec même BdD") {
-            environment {
-                REGRESSIONTEST_LATEST_URL = 'http://dare.socrate.vsct.fr:52700'
-                REGRESSIONTEST_TESTING_URL = 'http://ciaobaby.socrate.vsct.fr:52700'
-            }
-            steps {
-                script {
-                    dir ('hesperides') {
-                        git(url: 'https://github.com/voyages-sncf-technologies/hesperides',
-                            branch: params.GIT_BRANCH)
-                        if (sh (script: "git log -1 | grep -i '.*#RT.*'", returnStatus: true) == 0) {
-                            withMaven(globalMavenSettingsConfig: 'global_maven_settings', mavenSettingsConfig: 'local_maven_settings') { // use https://artifact.socrate.vsct.fr/artifactory/all-mvn as a mirror
-                                withCredentials([usernamePassword(credentialsId: 'hesperides', usernameVariable: 'REGRESSIONTEST_USERNAME', passwordVariable: 'REGRESSIONTEST_PASSWORD')]) {
-                                    sh "LOG_LEVEL=INFO mvn test -pl tests/regression"
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        }
         stage('Création/mise à jour du tag sur repo GitHub') {
             steps {
                 script {

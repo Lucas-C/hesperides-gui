@@ -20,8 +20,6 @@ pipeline {
     }
     environment {
         DOCKER_IMAGE_NAME = 'hesperides-docker-all.artifact.cloud.socrate.vsct.fr/hesperides/vsct-hesperides'
-        REGRESSIONTEST_LATEST_URL = 'http://dare.socrate.vsct.fr:52700'
-        REGRESSIONTEST_TESTING_URL = 'http://ciaobaby.socrate.vsct.fr:52700'
         DATE = (new SimpleDateFormat("yyyy-MM-dd")).format(new Date())
         BUILD_TIME = (new SimpleDateFormat("yyyy:MM:dd-HH-mm-ss")).format(new Date())
     }
@@ -67,7 +65,38 @@ pipeline {
                                                   string(name: 'PLATFORM', value: "REL1")]
             }
         }
-        stage("Tests d'intégration et de non-regression") {
+        stage("Integ/NR: BDDs ActiveDirectory") {
+            environment {
+                LAMBDA_USER_GROUP_DN = 'CN=DL_REST_HESPERIDES,OU=Distribution_List,OU=ARCHITECTURE,DC=groupevsc,DC=com'
+                LDAP_URL = 'ldaps://ad-ldap-access.socrate.vsct.fr:636'
+                LDAP_DOMAIN = 'groupevsc'
+                LDAP_USER_SEARCH_BASE = 'dc=groupevsc,dc=com'
+                LDAP_ROLE_SEARCH_BASE = 'ou=ARCHITECTURE,dc=groupevsc,dc=com'
+                LDAP_PROD_GROUP_DN = 'CN=GG_A_HESPERIDES_PROD,OU=Groups,OU=ARCHITECTURE,DC=groupevsc,DC=com'
+                LDAP_TECH_GROUP_DN = 'CN=DL_VSCT_Avengers,OU=Distribution_List,OU=ARCHITECTURE,DC=groupevsc,DC=com'
+            }
+            steps {
+                script {
+                    dir ('hesperides') {
+                        git(url: 'https://github.com/voyages-sncf-technologies/hesperides',
+                            branch: params.GIT_BRANCH)
+                        withMaven(globalMavenSettingsConfig: 'global_maven_settings', mavenSettingsConfig: 'local_maven_settings') { // use https://artifact.socrate.vsct.fr/artifactory/all-mvn as a mirror
+                            withCredentials([usernamePassword(credentialsId: 'hesperides', usernameVariable: 'LAMBDA_USERNAME', passwordVariable: 'LAMBDA_PASSWORD')]) {
+                                withCredentials([usernamePassword(credentialsId: 'a_prod_user', usernameVariable: 'PROD_USERNAME', passwordVariable: 'PROD_PASSWORD')]) {
+                                    // Lucas 2019/06/07: je désactive temporairement cette appel en préfixant par "echo" tant le code de la branche access-control n'est par mergé
+                                    sh "echo mvn verify -pl tests/activedirectory-integration -Dauth.lambdaUserName=$LAMBDA_USERNAME -Dauth.lambdaUserPassword=$LAMBDA_PASSWORD -Dauth.lambdaUserParentGroupDN=$LAMBDA_USER_GROUP_DN -Dauth.prodUserName=$PROD_USERNAME -Dauth.prodUserPassword=$PROD_PASSWORD -Djavax.net.ssl.trustStore=vsct-hesperides/certificates/trustore"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        stage("Integ/NR: test des retours HTTP de la version 'testing' avec même BdD") {
+            environment {
+                REGRESSIONTEST_LATEST_URL = 'http://dare.socrate.vsct.fr:52700'
+                REGRESSIONTEST_TESTING_URL = 'http://ciaobaby.socrate.vsct.fr:52700'
+            }
             steps {
                 script {
                     dir ('hesperides') {

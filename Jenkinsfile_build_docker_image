@@ -25,6 +25,8 @@ pipeline {
     }
     parameters {
         string(name: 'GIT_BRANCH', defaultValue: 'master', description: 'identify source code version')
+        // TODO(amélioration): plutôt que ce param, trouver un moyen de faire du multi-branches (limite du pipeline MultiBranches: ne supporte pas de Jenkinsfile hors-repo cible)
+        // cf. https://stackoverflow.com/questions/39041342/jenkins-multibranch-pipeline-with-jenkinsfile-from-different-repository
     }
     stages {
         stage("Docker build 'testing' image") {
@@ -85,7 +87,7 @@ pipeline {
                         withMaven(globalMavenSettingsConfig: 'global_maven_settings', mavenSettingsConfig: 'local_maven_settings') { // use https://artifact.socrate.vsct.fr/artifactory/all-mvn as a mirror
                             withCredentials([usernamePassword(credentialsId: 'hesperides', usernameVariable: 'LAMBDA_USERNAME', passwordVariable: 'LAMBDA_PASSWORD')]) {
                                 withCredentials([usernamePassword(credentialsId: 'a_prod_user', usernameVariable: 'PROD_USERNAME', passwordVariable: 'PROD_PASSWORD')]) {
-                                    sh "mvn verify -pl tests/activedirectory-integration -Dauth.lambdaUserName=$LAMBDA_USERNAME -Dauth.lambdaUserPassword=$LAMBDA_PASSWORD -Dauth.lambdaUserParentGroupDN=$LAMBDA_USER_GROUP_DN -Dauth.prodUserName=$PROD_USERNAME -Dauth.prodUserPassword=$PROD_PASSWORD -Djavax.net.ssl.trustStore=vsct-hesperides/certificates/trustore"
+                                    sh "mvn -pl tests/activedirectory-integration verify -Dauth.lambdaUserName=$LAMBDA_USERNAME -Dauth.lambdaUserPassword=$LAMBDA_PASSWORD -Dauth.lambdaUserParentGroupDN=$LAMBDA_USER_GROUP_DN -Dauth.prodUserName=$PROD_USERNAME -Dauth.prodUserPassword=$PROD_PASSWORD -Djavax.net.ssl.trustStore=../vsct-hesperides/certificates/trustore"
                                 }
                             }
                         }

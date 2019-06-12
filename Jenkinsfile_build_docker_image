@@ -96,6 +96,7 @@ pipeline {
             }
         }
         stage('Création/mise à jour du tag sur repo GitHub') {
+            when { expression { params.GIT_BRANCH == 'master' } }
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'github-hesperides-adm', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
@@ -112,6 +113,7 @@ pipeline {
             }
         }
         stage("Promotion de l'image Docker 'testing' en 'latest'") {
+            when { expression { params.GIT_BRANCH == 'master' } }
             steps {
                 build job: "promote", parameters: [string(name: 'DOCKER_IMAGE_NAME', value: env.DOCKER_IMAGE_NAME),
                                                    string(name: 'FROM_TAG', value: 'testing'),
@@ -119,6 +121,7 @@ pipeline {
             }
         }
         stage('Déploiement de "latest" sur INT1') {
+            when { expression { params.GIT_BRANCH == 'master' } }
             steps {
                 build job: "deploy", parameters: [string(name: 'DOCKER_TAG', value: "latest"),
                                                   string(name: 'PLATFORM', value: "INT1")]

@@ -42,9 +42,10 @@ pipeline {
                     sh 'cat vsct-hesperides/Dockerfile.append >> hesperides/Dockerfile && rm vsct-hesperides/Dockerfile.append'
                     sh 'cp -r vsct-hesperides/* hesperides/'
                     // On définit les labels et on passe les variables d'environnement des proxys HTTP
-                    def proxyBuildArgs = "--build-arg http_proxy --build-arg https_proxy"
-                    def hesperidesGitCommit = sh(returnStdout: true, script: 'cd hesperides && git rev-parse --short HEAD').trim()
-                    def labelArgs = "--label git_commit=${hesperidesGitCommit} --label tuyauterie_git_commit=${GIT_COMMIT} --label build_time=${BUILD_TIME}"
+                    def hesGitCommit = sh(returnStdout: true, script: 'cd hesperides && git rev-parse --short HEAD').trim()
+                    def hesGitCommitMsg = sh(returnStdout: true, script: 'cd hesperides && git log -1 --pretty=%B').trim()
+                    def proxyBuildArgs = "--build-arg http_proxy --build-arg https_proxy --build-arg GIT_TAG=${env.DATE} --build-arg GIT_BRANCH=${params.GIT_BRANCH} --build-arg GIT_COMMIT=${hesGitCommit} --build-arg GIT_COMMIT_MSG=${hesGitCommitMsg}"
+                    def labelArgs = "--label git_commit=${hesGitCommit} --label tuyauterie_git_commit=${GIT_COMMIT} --label build_time=${BUILD_TIME}"
                     // On build l'image Docker :
                     withMaven(globalMavenSettingsConfig: 'global_maven_settings', mavenSettingsConfig: 'local_maven_settings') { // use https://artifact.socrate.vsct.fr/artifactory/all-mvn as a mirror
                         sh 'cp $MVN_SETTINGS hesperides/settings.xml'

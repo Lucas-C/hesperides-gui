@@ -17,7 +17,7 @@ pipeline {
     }
     parameters {
         string(name: 'ELS_URL', defaultValue: 'http://elasticsearch-log-master-assemblage-lille-s1.socrate.vsct.fr:52300')
-        string(name: 'URL_HES', defaultValue: 'http://bogogno.socrate.vsct.fr:52700')
+        string(name: 'URL_HES', defaultValue: 'https://hesperides.socrate.vsct.fr')
     }
     environment {
         PYTHONUNBUFFERED = 1

@@ -15,7 +15,7 @@ pipeline {
     parameters {
         string(name: 'DOCKER_IMAGE_NAME', defaultValue: 'hesperides-docker-all.artifact.cloud.socrate.vsct.fr/hesperides/vsct-hesperides')
         string(name: 'FROM_TAG', defaultValue: 'testing', description: 'testing ou yyyy-MM-dd')
-        choice(name: 'NEW_TAG', choices: ['latest', 'testing'])
+        choice(name: 'NEW_TAG', choices: ['latest', 'testing', 'integration'])
     }
     environment {
         DATE = (new SimpleDateFormat("yyyy-MM-dd")).format(new Date())

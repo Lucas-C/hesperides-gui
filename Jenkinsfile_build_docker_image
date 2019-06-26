@@ -61,14 +61,28 @@ pipeline {
                 }
             }
         }
-        stage('Déploiement de "testing" sur REL1') {
+        stage('Redéploiement de REL1') {
+            when { expression { params.GIT_BRANCH == 'master' } }
             steps {
-                build job: "deploy", parameters: [string(name: 'DOCKER_TAG', value: "testing"),
-                                                  string(name: 'PLATFORM', value: "REL1")]
+                build job: "deploy", parameters: [string(name: 'PLATFORM', value: "REL1")]
+            }
+        }
+        stage("Promotion de l'image Docker 'testing' en 'integration'") {
+            when { expression { params.GIT_BRANCH != 'master' } }
+            steps {
+                build job: "promote", parameters: [string(name: 'DOCKER_IMAGE_NAME', value: env.DOCKER_IMAGE_NAME),
+                                                   string(name: 'FROM_TAG', value: 'testing'),
+                                                   string(name: 'NEW_TAG', value: 'integration')]
+            }
+        }
+        stage('Redéploiement de INT1') {
+            when { expression { params.GIT_BRANCH != 'master' } }
+            steps {
+                build job: "deploy", parameters: [string(name: 'PLATFORM', value: "INT1")]
             }
         }
         stage("Integ/NR: BDDs ActiveDirectory") {
-            // Lucas 2019/06/07: je désactive temporairement cette appel en préfixant par "echo" tant le code de la branche access-control n'est par mergé
+            // Lucas 2019/06/07: je limite temporairement ce stage à la branche 'access-control' tant qu'elle n'est pas mergée
             when { expression { params.GIT_BRANCH == 'access-control' } }
             environment {
                 LAMBDA_USER_GROUP_DN = 'CN=DL_REST_HESPERIDES,OU=Distribution_List,OU=ARCHITECTURE,DC=groupevsc,DC=com'
@@ -118,13 +132,6 @@ pipeline {
                 build job: "promote", parameters: [string(name: 'DOCKER_IMAGE_NAME', value: env.DOCKER_IMAGE_NAME),
                                                    string(name: 'FROM_TAG', value: 'testing'),
                                                    string(name: 'NEW_TAG', value: 'latest')]
-            }
-        }
-        stage('Déploiement de "latest" sur INT1') {
-            when { expression { params.GIT_BRANCH == 'master' } }
-            steps {
-                build job: "deploy", parameters: [string(name: 'DOCKER_TAG', value: "latest"),
-                                                  string(name: 'PLATFORM', value: "INT1")]
             }
         }
     }

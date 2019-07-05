@@ -1,6 +1,6 @@
 COPY certificates/trustore /etc/ssl/certs/java/
 # On complète la CMD originale avec le trustore : https://github.com/voyages-sncf-technologies/hesperides/blob/develop/Dockerfile#L30
-CMD ["/usr/bin/java", \
+CMD ["/usr/bin/java", "$JAVA_OPTS", \
      "-XX:+ExitOnOutOfMemoryError", "-XX:+HeapDumpOnOutOfMemoryError", "-XX:HeapDumpPath=/tmp/dumps", "-XX:-OmitStackTraceInFastThrow", \
      "-Xms2g", "-Xmx4g", \
      "-Djavax.net.ssl.trustStore=/etc/ssl/certs/java/trustore", \

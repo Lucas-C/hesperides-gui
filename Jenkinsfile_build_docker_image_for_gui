@@ -36,10 +36,10 @@ pipeline {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'artifact_admin', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                         sh "docker login --username ${USERNAME} --password '${PASSWORD}' hesperides-docker-all.artifact.cloud.socrate.vsct.fr"
-                        def proxyBuildArgs = "--build-arg http_proxy --build-arg https_proxy"
-                        def hesperidesGuiGitCommit = sh(returnStdout: true, script: 'cd hesperides-gui && git rev-parse --short HEAD').trim()
-                        def labelArgs = "--label git_commit=${hesperidesGuiGitCommit} --label tuyauterie_git_commit=${GIT_COMMIT} --label build_time=${BUILD_TIME}"
-                        sh "docker build --no-cache --pull ${labelArgs} ${proxyBuildArgs} ./hesperides-gui -t $DOCKER_IMAGE_NAME:testing"
+                        def guiGitCommit = sh(returnStdout: true, script: 'cd hesperides-gui && git rev-parse --short HEAD').trim()
+                        def buildArgs = "--build-arg http_proxy --build-arg https_proxy --build-arg BUILD_TIME=${env.BUILD_TIME} --build-arg GIT_TAG=${env.DATE} --build-arg GIT_BRANCH=${params.GIT_BRANCH} --build-arg GIT_COMMIT=${guiGitCommit}"
+                        def labelArgs = "--label git_commit=${guiGitCommit} --label tuyauterie_git_commit=${GIT_COMMIT} --label build_time=${BUILD_TIME}"
+                        sh "docker build --no-cache --pull ${labelArgs} ${buildArgs} ./hesperides-gui -t $DOCKER_IMAGE_NAME:testing"
                         // Displaying all the labels of the image:
                         sh "docker inspect --format '{{.ContainerConfig.Labels}}' $DOCKER_IMAGE_NAME:testing"
                         sh "docker push $DOCKER_IMAGE_NAME:testing"

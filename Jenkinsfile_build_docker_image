@@ -86,13 +86,18 @@ pipeline {
             // Lucas 2019/06/07: je limite temporairement ce stage à la branche 'access-control' tant qu'elle n'est pas mergée
             when { expression { params.GIT_BRANCH == 'access-control' } }
             environment {
-                LAMBDA_USER_GROUP_DN = 'CN=DL_REST_HESPERIDES,OU=Distribution_List,OU=ARCHITECTURE,DC=groupevsc,DC=com'
                 LDAP_URL = 'ldaps://ad-ldap-access.socrate.vsct.fr:636'
                 LDAP_DOMAIN = 'groupevsc'
                 LDAP_USER_SEARCH_BASE = 'dc=groupevsc,dc=com'
                 LDAP_ROLE_SEARCH_BASE = 'ou=ARCHITECTURE,dc=groupevsc,dc=com'
+
+                // Les 3 variables suivantes sont-elles toujours utiles ?
+                LAMBDA_USER_GROUP_DN = 'CN=DL_REST_HESPERIDES,OU=Distribution_List,OU=ARCHITECTURE,DC=groupevsc,DC=com'
                 LDAP_PROD_GROUP_DN = 'CN=GG_A_HESPERIDES_PROD,OU=Groups,OU=ARCHITECTURE,DC=groupevsc,DC=com'
                 LDAP_TECH_GROUP_DN = 'CN=DL_VSCT_Avengers,OU=Distribution_List,OU=ARCHITECTURE,DC=groupevsc,DC=com'
+
+                PROD_GROUP_CN = 'GG_A_HESPERIDES_PROD'
+                OTHER_GROUP_CN = 'DL_REST_HESPERIDES'
             }
             steps {
                 script {
@@ -102,7 +107,18 @@ pipeline {
                         withMaven(globalMavenSettingsConfig: 'global_maven_settings', mavenSettingsConfig: 'local_maven_settings') { // use https://artifact.socrate.vsct.fr/artifactory/all-mvn as a mirror
                             withCredentials([usernamePassword(credentialsId: 'hesperides', usernameVariable: 'LAMBDA_USERNAME', passwordVariable: 'LAMBDA_PASSWORD')]) {
                                 withCredentials([usernamePassword(credentialsId: 'a_prod_user', usernameVariable: 'PROD_USERNAME', passwordVariable: 'PROD_PASSWORD')]) {
-                                    sh "mvn -pl tests/activedirectory-integration verify -Dauth.lambdaUsername=$LAMBDA_USERNAME -Dauth.lambdaPassword=$LAMBDA_PASSWORD -Dauth.lambdaParentGroupDN=$LAMBDA_GROUP_DN -Dauth.prodUsername=$PROD_USERNAME -Dauth.prodPassword=$PROD_PASSWORD -Djavax.net.ssl.trustStore=../vsct-hesperides/certificates/trustore"
+                                    withCredentials([usernamePassword(credentialsId: 'nogroup_user', usernameVariable: 'NOGROUP_USERNAME', passwordVariable: 'NOGROUP_PASSWORD')]) {
+                                        sh "mvn -pl tests/activedirectory-integration verify " +
+                                                "-Dauth.lambdaUsername=$LAMBDA_USERNAME " +
+                                                "-Dauth.lambdaPassword=$LAMBDA_PASSWORD " +
+                                                "-Dauth.prodUsername=$PROD_USDERNAME " +
+                                                "-Dauth.prodPassword=$PROD_PASSWORD " +
+                                                "-Dauth.nogroupUsername=$NOGROUP_USERNAME " +
+                                                "-Dauth.nogroupPassword=$NOGROUP_PASSWORD " +
+                                                "-Dauth.prodGroupCn=$PROD_GROUP_CN " +
+                                                "-Dauth.otherGroupCn=$OTHER_GROUP_CN " +
+                                                "-Djavax.net.ssl.trustStore=../vsct-hesperides/certificates/trustore"
+                                    }
                                 }
                             }
                         }

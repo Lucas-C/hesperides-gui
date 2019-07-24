@@ -111,7 +111,7 @@ pipeline {
                                         sh "mvn -pl tests/activedirectory-integration verify " +
                                                 "-Dauth.lambdaUsername=$LAMBDA_USERNAME " +
                                                 "-Dauth.lambdaPassword=$LAMBDA_PASSWORD " +
-                                                "-Dauth.prodUsername=$PROD_USDERNAME " +
+                                                "-Dauth.prodUsername=$PROD_USERNAME " +
                                                 "-Dauth.prodPassword=$PROD_PASSWORD " +
                                                 "-Dauth.nogroupUsername=$NOGROUP_USERNAME " +
                                                 "-Dauth.nogroupPassword=$NOGROUP_PASSWORD " +

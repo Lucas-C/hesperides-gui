@@ -43,11 +43,13 @@ pipeline {
                     sh 'cp -r vsct-hesperides/* hesperides/'
                     // On définit les labels et on passe les variables d'environnement des proxys HTTP
                     def hesGitCommit = sh(returnStdout: true, script: 'cd hesperides && git rev-parse --short HEAD').trim()
-                    def hesGitCommitMsg = sh(returnStdout: true, script: 'cd hesperides && git log -1 --pretty=%s').trim()
+                    def hesGitCommitMsg = sh(returnStdout: true, script: 'cd hesperides && git log -1 --pretty=%s').trim().replaceAll("\"","\\\\\\\\\"").replaceAll("'","\\\\\\\\'")
                     // Attention : les messages de commit contenant des quotes font planter la pipeline
                     def buildArgs = "--build-arg http_proxy --build-arg https_proxy --build-arg BUILD_TIME=${env.BUILD_TIME} --build-arg GIT_TAG=${env.DATE} --build-arg GIT_BRANCH=${params.GIT_BRANCH} --build-arg GIT_COMMIT=${hesGitCommit} --build-arg GIT_COMMIT_MSG='${hesGitCommitMsg}'"
                     def labelArgs = "--label git_commit=${hesGitCommit} --label tuyauterie_git_commit=${env.GIT_COMMIT} --label build_time=${env.BUILD_TIME}"
                     // On build l'image Docker :
+                    sh 'ls -l /root/.m2/ || true'
+                    sh 'ls -l ~/.m2/ || true'
                     withMaven(globalMavenSettingsConfig: 'global_maven_settings', mavenSettingsConfig: 'local_maven_settings') { // use https://artifact.socrate.vsct.fr/artifactory/all-mvn as a mirror
                         sh 'cp $MVN_SETTINGS hesperides/settings.xml'
                         sh 'cp $GLOBAL_MVN_SETTINGS hesperides/globalSettings.xml'
@@ -109,7 +111,6 @@ pipeline {
                             withCredentials([usernamePassword(credentialsId: 'hesperides', usernameVariable: 'LAMBDA_USERNAME', passwordVariable: 'LAMBDA_PASSWORD')]) {
                                 withCredentials([usernamePassword(credentialsId: 'a_prod_user', usernameVariable: 'PROD_USERNAME', passwordVariable: 'PROD_PASSWORD')]) {
                                     withCredentials([usernamePassword(credentialsId: 'rundeck_usl', usernameVariable: 'NOGROUP_USERNAME', passwordVariable: 'NOGROUP_PASSWORD')]) {
-                                        sh "mvn clean package -Dmaven.test.skip=true"
                                         sh "MAVEN_OPTS=-Djavax.net.ssl.trustStore=vsct-hesperides/certificates/trustore mvn -pl tests/activedirectory-integration verify " +
                                                 "-Dauth.lambdaUsername=$LAMBDA_USERNAME " +
                                                 "-Dauth.lambdaPassword=$LAMBDA_PASSWORD " +

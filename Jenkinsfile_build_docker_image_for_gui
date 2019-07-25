@@ -49,8 +49,7 @@ pipeline {
         }
         stage('Déploiement de "testing" sur REL1') {
             steps {
-                build job: "deploy", parameters: [string(name: 'DOCKER_TAG', value: "testing"),
-                                                  string(name: 'PLATFORM', value: "REL1")]
+                build job: "deploy", parameters: [string(name: 'PLATFORM', value: "REL1")]
             }
         }
         stage("Tests d'intégration et de non-regression") {
@@ -83,11 +82,18 @@ pipeline {
                                                    string(name: 'NEW_TAG', value: 'latest')]
             }
         }
-        stage('Déploiement de "latest" sur INT1') {
-            when { expression { params.GIT_BRANCH == 'master' } }
+        stage("Promotion de l'image Docker 'testing' en 'integration'") {
+            when { expression { params.GIT_BRANCH != 'master' } }
             steps {
-                build job: "deploy", parameters: [string(name: 'DOCKER_TAG', value: "latest"),
-                                                  string(name: 'PLATFORM', value: "INT1")]
+                build job: "promote", parameters: [string(name: 'DOCKER_IMAGE_NAME', value: env.DOCKER_IMAGE_NAME),
+                                                   string(name: 'FROM_TAG', value: 'testing'),
+                                                   string(name: 'NEW_TAG', value: 'integration')]
+            }
+        }
+        stage('Déploiement de "latest" sur INT1') {
+            when { expression { params.GIT_BRANCH != 'master' } }
+            steps {
+                build job: "deploy", parameters: [string(name: 'PLATFORM', value: "INT1")]
             }
         }
     }

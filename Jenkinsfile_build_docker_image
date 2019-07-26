@@ -118,7 +118,8 @@ pipeline {
                                                 "-Dauth.nogroupUsername=$NOGROUP_USERNAME " +
                                                 "-Dauth.nogroupPassword=$NOGROUP_PASSWORD " +
                                                 "-Dauth.prodGroupCn=$PROD_GROUP_CN " +
-                                                "-Dauth.otherGroupCn=$OTHER_GROUP_CN "
+                                                "-Dauth.otherGroupCn=$OTHER_GROUP_CN " +
+                                                "-Djavax.net.ssl.trustStore=\$PWD/vsct-hesperides/certificates/trustore mvn"
                                     }
                                 }
                             }

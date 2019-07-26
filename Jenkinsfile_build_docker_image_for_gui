@@ -48,6 +48,7 @@ pipeline {
             }
         }
         stage('Déploiement de "testing" sur REL1') {
+            when { expression { params.GIT_BRANCH == 'master' } }
             steps {
                 build job: "deploy", parameters: [string(name: 'PLATFORM', value: "REL1")]
             }

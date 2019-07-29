@@ -110,7 +110,7 @@ pipeline {
                             withCredentials([usernamePassword(credentialsId: 'hesperides', usernameVariable: 'LAMBDA_USERNAME', passwordVariable: 'LAMBDA_PASSWORD')]) {
                                 withCredentials([usernamePassword(credentialsId: 'a_prod_user', usernameVariable: 'PROD_USERNAME', passwordVariable: 'PROD_PASSWORD')]) {
                                     withCredentials([usernamePassword(credentialsId: 'rundeck_usl', usernameVariable: 'NOGROUP_USERNAME', passwordVariable: 'NOGROUP_PASSWORD')]) {
-                                        sh "MAVEN_OPTS=-Djavax.net.ssl.trustStore=\$PWD/vsct-hesperides/certificates/trustore mvn -pl tests/activedirectory-integration verify " +
+                                        sh "mvn -pl tests/activedirectory-integration verify " +
                                                 "-Dauth.lambdaUsername=$LAMBDA_USERNAME " +
                                                 "-Dauth.lambdaPassword=$LAMBDA_PASSWORD " +
                                                 "-Dauth.prodUsername=$PROD_USERNAME " +
@@ -119,7 +119,7 @@ pipeline {
                                                 "-Dauth.nogroupPassword=$NOGROUP_PASSWORD " +
                                                 "-Dauth.prodGroupCn=$PROD_GROUP_CN " +
                                                 "-Dauth.otherGroupCn=$OTHER_GROUP_CN " +
-                                                "-Djavax.net.ssl.trustStore=\$PWD/vsct-hesperides/certificates/trustore"
+                                                "-Djavax.net.ssl.trustStore=\$PWD/../vsct-hesperides/certificates/trustore"
                                     }
                                 }
                             }

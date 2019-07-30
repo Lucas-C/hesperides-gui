@@ -85,8 +85,6 @@ pipeline {
             }
         }
         stage("Integ/NR: BDDs ActiveDirectory") {
-            // Lucas 2019/06/07: je limite temporairement ce stage à la branche 'access-control' tant qu'elle n'est pas mergée
-            when { expression { params.GIT_BRANCH == 'access-control' } }
             environment {
                 LDAP_URL = 'ldaps://ad-ldap-access.socrate.vsct.fr:636'
                 LDAP_DOMAIN = 'groupevsc'

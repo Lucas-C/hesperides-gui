@@ -17,7 +17,7 @@ pipeline {
     }
     parameters {
         string(name: 'auth', defaultValue: 'hesperides', description: """user:password (ex: "tech:password") ou simplement un credentialsId d'où tirer le user/password""")
-        choice(name: "host", default: 'http://ciaobaby.socrate.vsct.fr/rest/versions', description: 'Plateforme sur laquelle se fera le test de charge')
+        choice(name: "host", defaultValue: 'http://ciaobaby.socrate.vsct.fr', description: 'Plateforme sur laquelle se fera le test de charge')
         string(name: 'warmUpDuration', defaultValue: '30s')
         string(name: 'duration', defaultValue: '5min')
         string(name: 'usersPerSecond', defaultValue: '4')

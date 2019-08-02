@@ -64,7 +64,9 @@ pipeline {
                 script {
                     for (dockerContainer in platformContainers) {
                         for (host in dockerContainer.HOSTS) {
+                            echo host.NAME
                             for (instance in host.INSTANCES) {
+                                echo instance.NAME
                                 Map optionsRundeck = [
                                         composant  : "DOCKER-${dockerContainer.IMAGE}",
                                         instances  : instance.NAME,

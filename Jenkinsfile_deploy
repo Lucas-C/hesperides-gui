@@ -52,7 +52,6 @@ pipeline {
             steps {
                 script {
                     for (dockerContainer in platformContainers) {
-                        echo host.NAME
                         for (host in dockerContainer.HOSTS) {
                             echo host.NAME
                             for (instance in host.INSTANCES) {

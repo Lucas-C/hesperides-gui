@@ -2,6 +2,8 @@
 
 @Library(["rundeck", "toolbox-yaml"]) _
 
+import groovy.json.JsonSlurperClassic
+
 node('prod') {
     platformsList = prodtoolbox.getEnvironments('HES').join('\n')
 }
@@ -64,10 +66,10 @@ pipeline {
                 script {
                     for (dockerContainer in platformContainers) {
                         for (host in dockerContainer.HOSTS) {
-                            echo host.NAME
+                            echo "Restarting Docker instances on ${host.NAME}"
                             for (instance in host.INSTANCES) {
-                                echo instance.NAME
-                                Map optionsRundeck = [
+                                echo "Restarting Docker instance ${instance.NAME}"
+                                rundeck.startAndWaitWithAutofill("HES", "Outils/restart_docker", [
                                         composant  : "DOCKER-${dockerContainer.IMAGE}",
                                         instances  : instance.NAME,
                                         trigramme  : 'HES',
@@ -75,8 +77,28 @@ pipeline {
                                         TargetNodes: "HES${params.PLATFORM}DOCKER${dockerContainer.IMAGE}-${host.NAME}",
                                         plateforme : params.PLATFORM,
                                         serveur    : host.NAME.toLowerCase(),
-                                ]
-                                rundeck.startAndWaitWithAutofill("HES", "Outils/restart_docker", optionsRundeck)
+                                ])
+                            }
+                            // On attend que les conteneurs front & back aient redémarrés avant de passer au suivant sur le même DC :
+                            timeout(2) { // MINUTES
+                                waitUntil {
+                                    script {
+                                        def endpoint = params.PLATFORM == 'PRD1' ? 'hesperides-dc1' : 'hesperides-dc2'
+                                        def cookieValue = 'hes' + host.NAME.toLowerCase()[0..2] + (params.PLATFORM == 'PRD1' ? 'p1' : 'p6') + '1back'
+                                        def cmd = "curl -skv -H 'Cookie: HES${params.PLATFORM}=${cookieValue}' https://${endpoint}.socrate.vsct.fr/rest/versions"
+                                        echo cmd
+                                        def output = sh(script:cmd, returnStdout:true)
+                                        echo output
+                                        try {
+                                            def hostname = new JsonSlurperClassic().parseText(output.trim()).HOSTNAME
+                                            return hostname.toLowerCase() == host.NAME.toLowerCase()
+                                        } catch (JsonException) {
+                                            return false
+                                        } catch (IllegalArgumentException) {
+                                            return false
+                                        }
+                                    }
+                                }
                             }
                         }
                     }

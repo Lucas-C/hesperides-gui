@@ -31,9 +31,9 @@ pipeline {
     stages {
         stage("Docker build 'testing' image") {
             steps {
-                dir ('hesperides') {
+                dir('hesperides') {
                     git(url: 'https://github.com/voyages-sncf-technologies/hesperides',
-                        branch: params.GIT_BRANCH)
+                            branch: params.GIT_BRANCH)
                 }
                 script {
                     // On complète le Dockerfile pour inclure les fichiers settings.xml & globalSettings.xml durant le build Maven,
@@ -43,12 +43,13 @@ pipeline {
                     sh 'cp -r vsct-hesperides/* hesperides/'
                     // On définit les labels et on passe les variables d'environnement des proxys HTTP
                     def hesGitCommit = sh(returnStdout: true, script: 'cd hesperides && git rev-parse --short HEAD').trim()
-                    def hesGitCommitMsg = sh(returnStdout: true, script: 'cd hesperides && git log -1 --pretty=%s').trim().replaceAll("\"","\\\\\"")
+                    def hesGitCommitMsg = sh(returnStdout: true, script: 'cd hesperides && git log -1 --pretty=%s').trim().replaceAll("\"", "\\\\\"")
                     // Attention : les messages de commit contenant des quotes font planter la pipeline
                     def buildArgs = "--build-arg http_proxy --build-arg https_proxy --build-arg BUILD_TIME=${env.BUILD_TIME} --build-arg GIT_TAG=${env.DATE} --build-arg GIT_BRANCH=${params.GIT_BRANCH} --build-arg GIT_COMMIT=${hesGitCommit} --build-arg GIT_COMMIT_MSG=\"${hesGitCommitMsg}\""
                     def labelArgs = "--label git_commit=${hesGitCommit} --label tuyauterie_git_commit=${env.GIT_COMMIT} --label build_time=${env.BUILD_TIME}"
                     // On build l'image Docker :
-                    withMaven(globalMavenSettingsConfig: 'global_maven_settings', mavenSettingsConfig: 'local_maven_settings') { // use https://artifact.socrate.vsct.fr/artifactory/all-mvn as a mirror
+                    // use https://artifact.socrate.vsct.fr/artifactory/all-mvn as a mirror
+                    withMaven(globalMavenSettingsConfig: 'global_maven_settings', mavenSettingsConfig: 'local_maven_settings') {
                         sh 'cp $MVN_SETTINGS hesperides/settings.xml'
                         sh 'cp $GLOBAL_MVN_SETTINGS hesperides/globalSettings.xml'
                         echo "docker build --no-cache --pull ${labelArgs} ${buildArgs} ./hesperides -t $DOCKER_IMAGE_NAME:testing"
@@ -68,6 +69,35 @@ pipeline {
             when { expression { params.GIT_BRANCH == 'master' } }
             steps {
                 build job: "deploy", parameters: [string(name: 'PLATFORM', value: "REL1")]
+            }
+        }
+        stage("Tests de performances Gatling") {
+            when { expression { params.GIT_BRANCH == 'master' } }
+            steps {
+                script {
+                    dir('hesperides') {
+                        git(url: 'https://github.com/voyages-sncf-technologies/hesperides',
+                                branch: params.GIT_BRANCH)
+                        // use https://artifact.socrate.vsct.fr/artifactory/all-mvn as a mirror
+                        withMaven(globalMavenSettingsConfig: 'global_maven_settings', mavenSettingsConfig: 'local_maven_settings') {
+                            withCredentials([usernamePassword(credentialsId: 'hesperides', usernameVariable: 'LAMBDA_USERNAME', passwordVariable: 'LAMBDA_PASSWORD')]) {
+                                // Warm up :
+                                sh "mvn -pl tests/perfs gatling:test -Pgatling -Dgatling.simulationClass=HesperidesApi " +
+                                        "-DbaseUrl=https://hesperides-dev.socrate.vsct.fr:56789/rest " +
+                                        "-Dauth=$LAMBDA_USERNAME:$LAMBDA_PASSWORD " +
+                                        "-Dduration=5s >/dev/null 2>&1 || true"
+                                sh "mvn -pl tests/perfs gatling:test -Pgatling -Dgatling.simulationClass=HesperidesApi " +
+                                        "-DbaseUrl=https://hesperides-dev.socrate.vsct.fr:56789/rest " +
+                                        "-Dauth=$LAMBDA_USERNAME:$LAMBDA_PASSWORD " +
+                                        "-DusersPerSecond=5 " + // 5 utilisateurs par seconde
+                                        "-Dduration=60seconds " + // Pendant 1 minute
+                                        "-DpercentOkMin=99 " + // On attend 99% de requêtes OK
+                                        "-Dpercentile99ResponseTimeMax=5000 " + // 99% des requêtes doivent prendre moins de 5 secondes
+                                        "-Dverbose=true"
+                            }
+                        }
+                    }
+                }
             }
         }
         stage("Promotion de l'image Docker 'testing' en 'integration'") {
@@ -101,10 +131,11 @@ pipeline {
             }
             steps {
                 script {
-                    dir ('hesperides') {
+                    dir('hesperides') {
                         git(url: 'https://github.com/voyages-sncf-technologies/hesperides',
-                            branch: params.GIT_BRANCH)
-                        withMaven(globalMavenSettingsConfig: 'global_maven_settings', mavenSettingsConfig: 'local_maven_settings') { // use https://artifact.socrate.vsct.fr/artifactory/all-mvn as a mirror
+                                branch: params.GIT_BRANCH)
+                        withMaven(globalMavenSettingsConfig: 'global_maven_settings', mavenSettingsConfig: 'local_maven_settings') {
+                            // use https://artifact.socrate.vsct.fr/artifactory/all-mvn as a mirror
                             withCredentials([usernamePassword(credentialsId: 'hesperides', usernameVariable: 'LAMBDA_USERNAME', passwordVariable: 'LAMBDA_PASSWORD')]) {
                                 withCredentials([usernamePassword(credentialsId: 'a_prod_user', usernameVariable: 'PROD_USERNAME', passwordVariable: 'PROD_PASSWORD')]) {
                                     withCredentials([usernamePassword(credentialsId: 'rundeck_usl', usernameVariable: 'NOGROUP_USERNAME', passwordVariable: 'NOGROUP_PASSWORD')]) {
@@ -132,7 +163,7 @@ pipeline {
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'github-hesperides-adm', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                        dir ('hesperides') {
+                        dir('hesperides') {
                             // Le tag peut déjà exister, on essaie donc de le supprimer au préalable
                             sh "git config user.name 'Jenkins pipeline'"
                             sh "git tag -d $DATE || true"

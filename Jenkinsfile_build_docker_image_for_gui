@@ -2,6 +2,8 @@
 
 import java.text.SimpleDateFormat
 
+def enablePromotionToLatest = true
+
 pipeline {
     agent {
         node {
@@ -92,7 +94,7 @@ pipeline {
             }
         }
         stage('Déploiement de "latest" sur INT1') {
-            when { expression { params.GIT_BRANCH != 'master' } }
+            when { expression { params.GIT_BRANCH != 'master' && enablePromotionToLatest } }
             steps {
                 build job: "deploy", parameters: [string(name: 'PLATFORM', value: "INT1")]
             }

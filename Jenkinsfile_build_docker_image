@@ -2,6 +2,8 @@
 
 import java.text.SimpleDateFormat
 
+def enablePromotionToLatest = true
+
 pipeline {
     agent {
         node {
@@ -176,7 +178,7 @@ pipeline {
             }
         }
         stage("Promotion de l'image Docker 'testing' en 'latest'") {
-            when { expression { params.GIT_BRANCH == 'master' } }
+            when { expression { params.GIT_BRANCH == 'master' && enablePromotionToLatest } }
             steps {
                 build job: "promote", parameters: [string(name: 'DOCKER_IMAGE_NAME', value: env.DOCKER_IMAGE_NAME),
                                                    string(name: 'FROM_TAG', value: 'testing'),

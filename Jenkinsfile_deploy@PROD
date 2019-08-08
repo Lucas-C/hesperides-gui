@@ -4,6 +4,8 @@
 
 import groovy.json.JsonSlurperClassic
 
+def newVersionPublished = false
+
 node('prod') {
     platformsList = prodtoolbox.getEnvironments('HES').join('\n')
 }
@@ -27,9 +29,36 @@ pipeline {
         // TODO: deploy sur 2 PRDs, avec https://github.com/jenkinsci/parameterized-scheduler-plugin#declarative-pipeline-configuration-example ?
         // Le premier choix est utilisé comme valeur par défaut, y compris lors de l'exécution cronnée :
         choice(choices: platformsList, name: "PLATFORM", description: "OBLIGATOIRE : Plateforme sur laquelle sera fait le déploiement")
+        booleanParam(name: 'IGNORE_NEW_VERSION_CHECK', defaultValue: false)
     }
     stages {
+        stage('Détection de nouvelle version') {
+            steps {
+                script {
+                    if (params.IGNORE_NEW_VERSION_CHECK) {
+                        newVersionPublished = true
+                    } else {
+                        sh 'apt update -y && apt install -y jq'
+                        newVersionPublished = (getLastVersionFromArtifact('hesperides/vsct-hesperides') != getCurrentBackendProdVersion()
+                                            || getLastVersionFromArtifact('hesperides/vsct-hesperides-gui') != getCurrentFrontendProdVersion())
+                    }
+                }
+            }
+        }
+        stage('Insertion en fresque OCC') {
+            when { expression { newVersionPublished } }
+            steps {
+                script {
+                    git(url: 'git@gitlab.socrate.vsct.fr:avengers/hesperides-tools.git', branch: 'master')
+                    def resume = "Déploiement de la version backend=" + getLastVersionFromArtifact('hesperides/vsct-hesperides') + " frontend=" + getLastVersionFromArtifact('hesperides/vsct-hesperides-gui')
+                    withCredentials([usernamePassword(credentialsId: 'usl_ci', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                        sh "hesperides-tools/occ_create.py --username ${env.USERNAME} --password ${env.PASSWORD} --type intervention --title "[Hesperides] Déploiement applicatif automatisé" --resume "${resume}" --estimated-length-in-min 5 --status 1 --tag 10 --risk 3"
+                    }
+                }
+            }
+        }
         stage('Initialisation des Paramètres') {
+            when { expression { newVersionPublished } }
             steps {
                 script {
                     // Set params as they will be used later
@@ -49,6 +78,7 @@ pipeline {
             }
         }
         stage('Puppet refresh') {
+            when { expression { newVersionPublished } }
             steps {
                 script {
                     dockerHosts.each { host ->
@@ -62,6 +92,7 @@ pipeline {
             }
         }
         stage('Restart Docker image') {
+            when { expression { newVersionPublished } }
             steps {
                 script {
                     for (dockerContainer in platformContainers) {
@@ -112,4 +143,24 @@ pipeline {
             deleteDir()
         }
     }
+}
+
+def getLastVersionFromArtifact(String imageName) {
+    withCredentials([usernamePassword(credentialsId: 'hesperides', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+        String version = sh(returnStdout: true, script: "curl -su $USERNAME:$PASSWORD https://hesperides-docker-all-local.artifact.cloud.socrate.vsct.fr/v2/${imageName}/tags/list | jq -r .tags[] | grep ^20 | tail -n 1").trim()
+        println "Latest Artifact version for $imageName : $version"
+        return version
+    }
+}
+
+def getCurrentBackendProdVersion() {
+    String version = sh(returnStdout: true, script: "curl -sk https://hesperides.socrate.vsct.fr/rest/versions | jq -r .GIT_TAG").trim()
+    println "Current backend prod version : $version"
+    return version
+}
+
+def getCurrentFrontendProdVersion() {
+    String version = sh(returnStdout: true, script: "curl -sk https://hesperides.socrate.vsct.fr/index.html | grep -F ' GIT_TAG ' | sed 's/.*\\(20[0-9-]\\+\\).*/\\1/'").trim()
+    println "Current frontend prod version : $version"
+    return version
 }

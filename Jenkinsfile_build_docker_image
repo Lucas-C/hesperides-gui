@@ -152,6 +152,7 @@ pipeline {
                                                 "-Dauth.prodGroupCn=$PROD_GROUP_CN " +
                                                 "-Dauth.otherGroupCn=$OTHER_GROUP_CN " +
                                                 "-Djavax.net.ssl.trustStore=\$PWD/../vsct-hesperides/certificates/trustore"
+                                        gatlingArchive()
                                     }
                                 }
                             }

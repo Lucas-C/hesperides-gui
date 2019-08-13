@@ -52,7 +52,7 @@ pipeline {
                     git(url: 'git@gitlab.socrate.vsct.fr:avengers/hesperides-tools.git', branch: 'master')
                     def resume = "Déploiement de la version backend=" + getLastVersionFromArtifact('hesperides/vsct-hesperides') + " frontend=" + getLastVersionFromArtifact('hesperides/vsct-hesperides-gui')
                     withCredentials([usernamePassword(credentialsId: 'usl_ci', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                        sh "hesperides-tools/occ_create.py --username ${env.USERNAME} --password ${env.PASSWORD} --type intervention --title '[Hesperides] Déploiement applicatif automatisé' --resume '${resume}' --estimated-length-in-min 5 --status 1 --tag 10 --risk 3"
+                        sh "./occ_create.py --username ${env.USERNAME} --password ${env.PASSWORD} --type intervention --title '[Hesperides] Déploiement applicatif automatisé' --resume '${resume}' --estimated-length-in-min 5 --status 1 --tag 10 --risk 3"
                     }
                 }
             }

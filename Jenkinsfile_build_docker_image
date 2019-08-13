@@ -94,7 +94,7 @@ pipeline {
                                         "-DusersPerSecond=5 " + // 5 utilisateurs par seconde
                                         "-Dduration=60seconds " + // Pendant 1 minute
                                         "-DpercentOkMin=99 " + // On attend 99% de requêtes OK
-                                        "-Dpercentile99ResponseTimeMax=5000 " + // 99% des requêtes doivent prendre moins de 5 secondes
+                                        "-Dpercentile99ResponseTimeMax=10000 " + // 99% des requêtes doivent prendre moins de 10 secondes
                                         "-Dverbose=true"
                             }
                         }

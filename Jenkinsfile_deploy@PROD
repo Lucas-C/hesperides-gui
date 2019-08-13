@@ -3,6 +3,8 @@
 @Library(["rundeck", "toolbox-yaml"]) _
 
 import groovy.json.JsonSlurperClassic
+import java.text.SimpleDateFormat
+import java.util.Calendar
 
 def newVersionPublished = false
 
@@ -26,7 +28,6 @@ pipeline {
         disableConcurrentBuilds()
     }
     parameters {
-        // TODO: deploy sur 2 PRDs, avec https://github.com/jenkinsci/parameterized-scheduler-plugin#declarative-pipeline-configuration-example ?
         // Le premier choix est utilisé comme valeur par défaut, y compris lors de l'exécution cronnée :
         choice(choices: platformsList, name: "PLATFORM", description: "OBLIGATOIRE : Plateforme sur laquelle sera fait le déploiement")
         booleanParam(name: 'IGNORE_NEW_VERSION_CHECK', defaultValue: false)
@@ -38,9 +39,8 @@ pipeline {
                     if (params.IGNORE_NEW_VERSION_CHECK) {
                         newVersionPublished = true
                     } else {
-                        sh 'apt update -y && apt install -y jq'
-                        newVersionPublished = (getLastVersionFromArtifact('hesperides/vsct-hesperides') != getCurrentBackendProdVersion()
-                                            || getLastVersionFromArtifact('hesperides/vsct-hesperides-gui') != getCurrentFrontendProdVersion())
+                        newVersionPublished = (getLastVersionFromArtifact('hesperides/vsct-hesperides') != getCurrentBackendProdVersion(params.PLATFORM)
+                                            || getLastVersionFromArtifact('hesperides/vsct-hesperides-gui') != getCurrentFrontendProdVersion(params.PLATFORM))
                     }
                 }
             }
@@ -50,9 +50,14 @@ pipeline {
             steps {
                 script {
                     git(url: 'git@gitlab.socrate.vsct.fr:avengers/hesperides-tools.git', branch: 'master')
-                    def resume = "Déploiement de la version backend=" + getLastVersionFromArtifact('hesperides/vsct-hesperides') + " frontend=" + getLastVersionFromArtifact('hesperides/vsct-hesperides-gui')
+                    String startTime = (new SimpleDateFormat("yyyy-MM-dd HH:mm")).format(new Date())
+                    String endTime = (new SimpleDateFormat("yyyy-MM-dd HH:mm")).format(new Date(Calendar.getInstance().getTimeInMillis() + 10*60*1000))
+                    String resume = "Déploiement de la version backend=" + getLastVersionFromArtifact('hesperides/vsct-hesperides') + " frontend=" + getLastVersionFromArtifact('hesperides/vsct-hesperides-gui')
                     withCredentials([usernamePassword(credentialsId: 'usl_ci', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                        sh "./occ_create.py --username ${env.USERNAME} --password ${env.PASSWORD} --type intervention --title '[Hesperides] Déploiement applicatif automatisé' --resume '${resume}' --estimated-length-in-min 5 --status 1 --tag 10 --risk 3"
+                        sh 'apt update -y && apt install -y python3 python3-pip'
+                        sh 'python3 -m pip install requests'
+                        // Note : ce script prend en compte la variable $https_proxy définie dans l'environnement
+                        sh "python3 occ_create.py --username ${env.USERNAME} --password ${env.PASSWORD} --type intervention --title '[Hesperides] Déploiement applicatif automatisé' --resume '${resume}' --start-date '${startTime}' --end-date '${endTime}' --status 1 --tag 10 --risk 3"
                     }
                 }
             }
@@ -114,14 +119,14 @@ pipeline {
                             timeout(2) { // MINUTES
                                 waitUntil {
                                     script {
-                                        def endpoint = params.PLATFORM == 'PRD1' ? 'hesperides-dc1' : 'hesperides-dc2'
-                                        def cookieValue = 'hes' + host.NAME.toLowerCase()[0..2] + (params.PLATFORM == 'PRD1' ? 'p1' : 'p6') + '1back'
-                                        def cmd = "curl -skv -H 'Cookie: HES${params.PLATFORM}=${cookieValue}' https://${endpoint}.socrate.vsct.fr/rest/versions"
+                                        String endpoint = params.PLATFORM == 'PRD1' ? 'hesperides-dc1' : 'hesperides-dc2'
+                                        String cookieValue = 'hes' + host.NAME.toLowerCase()[0..2] + (params.PLATFORM == 'PRD1' ? 'p1' : 'p6') + '1back'
+                                        String cmd = "curl -skv -H 'Cookie: HES${params.PLATFORM}=${cookieValue}' https://${endpoint}.socrate.vsct.fr/rest/versions"
                                         echo cmd
-                                        def output = sh(script:cmd, returnStdout:true)
+                                        String output = sh(script:cmd, returnStdout:true).trim()
                                         echo output
                                         try {
-                                            def hostname = new JsonSlurperClassic().parseText(output.trim()).HOSTNAME
+                                            String hostname = new JsonSlurperClassic().parseText(output).HOSTNAME
                                             return hostname.toLowerCase() == host.NAME.toLowerCase()
                                         } catch (JsonException) {
                                             return false
@@ -147,20 +152,24 @@ pipeline {
 
 def getLastVersionFromArtifact(String imageName) {
     withCredentials([usernamePassword(credentialsId: 'hesperides', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-        String version = sh(returnStdout: true, script: "curl -su $USERNAME:$PASSWORD https://hesperides-docker-all-local.artifact.cloud.socrate.vsct.fr/v2/${imageName}/tags/list | jq -r .tags[] | grep ^20 | tail -n 1").trim()
+        String tags = sh(returnStdout: true, script: "curl --fail -su $USERNAME:$PASSWORD https://hesperides-docker-all-local.artifact.cloud.socrate.vsct.fr/v2/${imageName}/tags/list").trim()
+        String version = new JsonSlurperClassic().parseText(tags).tags.findAll{ it.startsWith('20') }.last()
         println "Latest Artifact version for $imageName : $version"
         return version
     }
 }
 
-def getCurrentBackendProdVersion() {
-    String version = sh(returnStdout: true, script: "curl -sk https://hesperides.socrate.vsct.fr/rest/versions | jq -r .GIT_TAG").trim()
-    println "Current backend prod version : $version"
-    return version
+def getCurrentBackendProdVersion(String platform) {
+    String endpoint = platform == 'PRD1' ? 'hesperides-dc1' : 'hesperides-dc2'
+    String versions = sh(returnStdout: true, script: "curl --fail -sk https://${endpoint}.socrate.vsct.fr/rest/versions").trim()
+    String gitTag = new JsonSlurperClassic().parseText(versions).GIT_TAG
+    println "Current backend prod version on platform $platform : $gitTag"
+    return gitTag
 }
 
-def getCurrentFrontendProdVersion() {
-    String version = sh(returnStdout: true, script: "curl -sk https://hesperides.socrate.vsct.fr/index.html | grep -F ' GIT_TAG ' | sed 's/.*\\(20[0-9-]\\+\\).*/\\1/'").trim()
-    println "Current frontend prod version : $version"
+def getCurrentFrontendProdVersion(String platform) {
+    String endpoint = platform == 'PRD1' ? 'hesperides-dc1' : 'hesperides-dc2'
+    String version = sh(returnStdout: true, script: "curl --fail -sk https://${endpoint}.socrate.vsct.fr/index.html | grep -F ' GIT_TAG ' | sed 's/.*\\(20[0-9-]\\+\\).*/\\1/'").trim()
+    println "Current frontend prod version on platform $platform : $version"
     return version
 }

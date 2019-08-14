@@ -72,7 +72,7 @@ pipeline {
                 script {
                     // Set params as they will be used later
                     platformContainers = readJSON(text: prodtoolbox.yPath("/HES/${params.PLATFORM}/DOCKER").toString()).result  // http://toolbox-server.socrate.vsct.fr/prod/api/toolbox?function=ypath&args=/HES/PRD1/DOCKER
-                    dockerHosts = platformContainers.HOSTS.collect { it.NAME } as Set
+                    dockerHosts = (platformContainers.HOSTS.collect { it.NAME } as List)[0]
 
                     // Set user
                     wrap([$class: 'BuildUser']) {
@@ -90,10 +90,11 @@ pipeline {
             when { expression { newVersionPublished } }
             steps {
                 script {
-                    dockerHosts.each { host ->
+                    dockerHosts.each { hostname ->
+                        echo "Refresh Puppet agent on ${hostname}"
                         Map optionsRundeck = [
                                 refresh_puppet_agent: "complet",
-                                serveur             : [host[0].toLowerCase()]
+                                serveur             : [hostname.toLowerCase()]
                         ]
                         rundeck.startAndWaitWithAutofill("HES", "Outils/refresh_puppet_agent", optionsRundeck)
                     }

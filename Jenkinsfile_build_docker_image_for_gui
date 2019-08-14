@@ -23,7 +23,7 @@ pipeline {
     environment {
         DOCKER_IMAGE_NAME = 'hesperides-docker-all.artifact.cloud.socrate.vsct.fr/hesperides/vsct-hesperides-gui'
         DATE = (new SimpleDateFormat("yyyy-MM-dd")).format(new Date())
-        BUILD_TIME = (new SimpleDateFormat("yyyy:MM:dd-HH-mm-ss")).format(new Date())
+        BUILD_TIME = (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(new Date())
     }
     parameters {
         string(name: 'GIT_BRANCH', defaultValue: 'master', description: 'identify source code version')

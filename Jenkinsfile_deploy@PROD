@@ -30,6 +30,7 @@ pipeline {
     parameters {
         // Le premier choix est utilisé comme valeur par défaut, y compris lors de l'exécution cronnée :
         choice(choices: platformsList, name: "PLATFORM", description: "OBLIGATOIRE : Plateforme sur laquelle sera fait le déploiement")
+        choice(choices: ['BOTH', 'BACK', 'FRONT'], name: "RESTART_COMPONENT")
         booleanParam(name: 'IGNORE_NEW_VERSION_CHECK', defaultValue: false)
     }
     stages {
@@ -104,6 +105,9 @@ pipeline {
                         for (host in dockerContainer.HOSTS) {
                             echo "Restarting Docker instances on ${host.NAME}"
                             for (instance in host.INSTANCES) {
+                                if (params.RESTART_COMPONENT != 'BOTH' && !instance.NAME.endsWith('params.RESTART_COMPONENT')) {
+                                    continue
+                                }
                                 echo "Restarting Docker instance ${instance.NAME}"
                                 rundeck.startAndWaitWithAutofill("HES", "Outils/restart_docker", [
                                         composant  : "DOCKER-${dockerContainer.IMAGE}",

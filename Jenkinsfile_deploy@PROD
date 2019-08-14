@@ -107,12 +107,11 @@ pipeline {
                 script {
                     for (dockerContainer in platformContainers) {
                         for (host in dockerContainer.HOSTS) {
-                            echo "Restarting Docker instances on ${host.NAME}"
                             for (instance in host.INSTANCES) {
-                                if (params.RESTART_COMPONENT != 'BOTH' && !instance.NAME.endsWith('params.RESTART_COMPONENT')) {
+                                if (params.RESTART_COMPONENT != 'BOTH' && !instance.NAME.endsWith(params.RESTART_COMPONENT)) {
                                     continue
                                 }
-                                echo "Restarting Docker instance ${instance.NAME}"
+                                echo "Restarting Docker instance ${instance.NAME} on ${host.NAME}"
                                 rundeck.startAndWaitWithAutofill("HES", "Outils/restart_docker", [
                                         composant  : "DOCKER-${dockerContainer.IMAGE}",
                                         instances  : instance.NAME,

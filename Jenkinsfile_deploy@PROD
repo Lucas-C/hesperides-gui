@@ -51,6 +51,9 @@ pipeline {
             steps {
                 script {
                     git(url: 'git@gitlab.socrate.vsct.fr:avengers/hesperides-tools.git', branch: 'master')
+                    sh 'apt update -y && apt install -y python3 python3-pip'
+                    sh 'python3 -m pip install requests'
+
                     String startTime = (new SimpleDateFormat("yyyy-MM-dd HH:mm")).format(new Date())
                     String endTime = (new SimpleDateFormat("yyyy-MM-dd HH:mm")).format(new Date(Calendar.getInstance().getTimeInMillis() + 10*60*1000))
                     String resume = "Déploiement de la version backend=" + getLastVersionFromArtifact('hesperides/vsct-hesperides') + " frontend=" + getLastVersionFromArtifact('hesperides/vsct-hesperides-gui')
@@ -58,8 +61,6 @@ pipeline {
                         resume += ' avec redémarrage du composant ' + params.RESTART_COMPONENT + ' uniquement'
                     }
                     withCredentials([usernamePassword(credentialsId: 'usl_ci', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                        sh 'apt update -y && apt install -y python3 python3-pip'
-                        sh 'python3 -m pip install requests'
                         // Note : ce script prend en compte la variable $https_proxy définie dans l'environnement
                         sh "python3 occ_create.py --username ${env.USERNAME} --password ${env.PASSWORD} --type intervention --title '[Hesperides] Déploiement applicatif automatisé' --resume '${resume}' --start-date '${startTime}' --end-date '${endTime}' --status 1 --tag 10 --risk 3"
                     }

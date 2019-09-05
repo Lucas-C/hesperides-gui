@@ -56,7 +56,7 @@ pipeline {
 
                     String startTime = (new SimpleDateFormat("yyyy-MM-dd HH:mm")).format(new Date())
                     String endTime = (new SimpleDateFormat("yyyy-MM-dd HH:mm")).format(new Date(Calendar.getInstance().getTimeInMillis() + 10*60*1000))
-                    String resume = "Déploiement de la version backend=" + getLastVersionFromArtifact('hesperides/vsct-hesperides') + " frontend=" + getLastVersionFromArtifact('hesperides/vsct-hesperides-gui')
+                    String resume = "Déploiement sur ${params.PLATFORM} de la version backend=" + getLastVersionFromArtifact('hesperides/vsct-hesperides') + " frontend=" + getLastVersionFromArtifact('hesperides/vsct-hesperides-gui')
                     if (params.RESTART_COMPONENT != 'BOTH') {
                         resume += ' avec redémarrage du composant ' + params.RESTART_COMPONENT + ' uniquement'
                     }

@@ -1,8 +1,6 @@
-# Hespérides Pipeline
+# Hesperides Pipeline
 
-![alt text](CICD-resource.png)
-
-**Continous Delivery** ==> manual deployment
+![](CI_partners.png)
 
 ## Description des pipelines
 
@@ -27,11 +25,17 @@ _cf._ [vsct-hesperides-gui/Dockerfile](vsct-hesperides-gui/Dockerfile)
 tag une image Docker avec une nouvelle version
 
 - `Jenkinsfile_deploy` ([job jenkins](https://usl.jenkins.cloud.socrate.vsct.fr/job/A_USL/job/Hesperides/job/deploy/)):
-  * déclenche un Puppet refresh (_cf._ [Environments.md](Environments.md)) via [le job pprundeck HES/Outils/refresh_puppet_agent](https://pprundeck.socrate.vsct.fr/rundeck/project/HES/job/show/03662b77-5169-4828-96e8-8ba855d6c441)
+  * est déclenché par les pipelines de build
+  * déclenche un Puppet refresh via [le job pprundeck HES/Outils/refresh_puppet_agent](https://pprundeck.socrate.vsct.fr/rundeck/project/HES/job/show/03662b77-5169-4828-96e8-8ba855d6c441)
   * redémarre les instances pour tirer la dernière version en exécutant [le job pprundeck HES/Outils/RESTART](https://pprundeck.socrate.vsct.fr/rundeck/project/HES/job/show/c9f92ce5-2d20-4a57-9cb8-8e88aae5412f) qui effectue un `./SHUT && ./BOOT`
 
 - `Jenkinsfile_deploy@PROD` ([job jenkins](https://usl.jenkins.cloud.socrate.vsct.fr/job/A_USL@PROD/job/Hesperides/job/deploy_PROD/)):
-identique à `Jenkinsfile_deploy` mais sur `PRD1`, et se déclenchant toutes les nuits
+  * se déclenche toutes les nuits, 1 fois pour `PRD6` puis 30min plus tard pour `PRD1`
+  * détecte si une nouvelle image Docker _frontend_ ou _backend_ a été publiée, et s'interrompt immédiatement si ce n'est pas le cas
+  * insère l'événement en fresque OCC
+  * déclenche un Puppet refresh via [le job rundeck HES/Outils/refresh_puppet_agent](https://rundeck.socrate.vsct.fr/rundeck/project/HES/job/show/658f4899-7bba-4bb4-b14c-f8e18261247d)
+  * redémarre les instances pour tirer la dernière version en exécutant [le job pprundeck HES/Outils/restart_docker](https://rundeck.socrate.vsct.fr/rundeck/project/HES/job/show/a42fe40a-48a4-4d0c-bba4-9abc097b591b) qui effectue un `./SHUT && ./BOOT`.
+  La pipeline attend que chaque instance ait redémarrée avant de passer à la suivante.
 
 - `Jenkinsfile_batch_hes2els` ([job jenkins](https://usl.jenkins.cloud.socrate.vsct.fr/job/A_USL@PROD/job/Hesperides/job/batch_hes2els/)):
 cf. https://wiki.vsct.fr/pages/viewpage.action?pageId=217943778 & https://jira.vsct.fr/browse/USL-1073 pour le contexte

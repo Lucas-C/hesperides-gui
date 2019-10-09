@@ -104,5 +104,9 @@ pipeline {
         always {
             deleteDir()
         }
+        failure {
+            // Notification vers room Teams Avengers > Hefpérides
+            office365ConnectorSend  status: currentBuild.currentResult, webhookUrl: 'https://outlook.office.com/webhook/838cfd20-344e-4053-97eb-5fa1f7fb25f9@85eca096-674d-4fd9-9a9e-ae1178e2ee56/IncomingWebhook/1999a50228794e95a1c17374a131da2e/56ceab7b-fee5-4173-882e-6504575c0bc8'
+        }
     }
 }

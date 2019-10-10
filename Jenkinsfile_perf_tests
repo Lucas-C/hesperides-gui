@@ -22,7 +22,7 @@ pipeline {
         string(name: 'duration', defaultValue: '5min')
         string(name: 'usersPerSecond', defaultValue: '4')
         string(name: 'percentOkMin', defaultValue: '99', description: "% d'appels qui doivent être OK pour que le test soit un succès")
-        string(name: 'percentile99ResponseTimeMax', defaultValue: '100', description: "temps de réponse max acceptable (en ms) pour l'ensemble des 1% des requêtes les plus lentes")
+        string(name: 'percentile99ResponseTimeMax', defaultValue: '15000', description: "temps de réponse max acceptable (en ms) pour l'ensemble des 1% des requêtes les plus lentes")
     }
     stages {
         stage('Pull Project') {

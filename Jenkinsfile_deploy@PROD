@@ -63,7 +63,7 @@ pipeline {
                     }
                     withCredentials([usernamePassword(credentialsId: 'usl_ci', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                         // Note : ce script prend en compte la variable $https_proxy définie dans l'environnement
-                        sh "python3 occ_create.py --username ${env.USERNAME} --password ${env.PASSWORD} --type intervention --title '[Hesperides] Déploiement applicatif automatisé' --resume '${resume}' --start-date '${startTime}' --end-date '${endTime}' --status 1 --tag 10 --risk 3"
+                        sh "python3 occ_create.py --username ${env.USERNAME} --password ${env.PASSWORD} --type intervention --title '[Hesperides] Déploiement applicatif automatisé' --resume '${resume}' --start-date '${startTime}' --end-date '${endTime}' --status 1 --tag 10 --risk 3 --action_type auto "
                     }
                 }
             }

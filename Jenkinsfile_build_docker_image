@@ -2,7 +2,7 @@
 
 import java.text.SimpleDateFormat
 
-def enablePromotionToLatest = true
+def enablePromotionToLatest = false
 
 pipeline {
     agent {

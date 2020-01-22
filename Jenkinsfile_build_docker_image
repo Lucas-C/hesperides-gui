@@ -7,7 +7,7 @@ def enablePromotionToLatest = true
 pipeline {
     agent {
         node {
-            label 'maven'
+            label 'corretto11-maven'
         }
     }
     options {

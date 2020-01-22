@@ -141,7 +141,7 @@ pipeline {
                             withCredentials([usernamePassword(credentialsId: 'hesperides', usernameVariable: 'LAMBDA_USERNAME', passwordVariable: 'LAMBDA_PASSWORD')]) {
                                 withCredentials([usernamePassword(credentialsId: 'a_prod_user', usernameVariable: 'PROD_USERNAME', passwordVariable: 'PROD_PASSWORD')]) {
                                     withCredentials([usernamePassword(credentialsId: 'rundeck_usl', usernameVariable: 'NOGROUP_USERNAME', passwordVariable: 'NOGROUP_PASSWORD')]) {
-                                        sh "mvn install -Dmaven.test.skip=true"
+                                        sh "mvn install -Dmaven.test.skip=true -Dmaven.javadoc.skip=true"
                                         sh "mvn -pl tests/activedirectory-integration verify " +
                                                 "-Dauth.lambdaUsername=$LAMBDA_USERNAME " +
                                                 "-Dauth.lambdaPassword=$LAMBDA_PASSWORD " +

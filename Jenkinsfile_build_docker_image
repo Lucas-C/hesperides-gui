@@ -26,7 +26,7 @@ pipeline {
         BUILD_TIME = (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(new Date())
     }
     parameters {
-        string(name: 'GIT_BRANCH', defaultValue: 'master', description: 'identify source code version')
+        string(name: 'DOCKER_TAG', defaultValue: 'latest', description: 'identify Docker hub image')
         // TODO(amélioration): plutôt que ce param, trouver un moyen de faire du multi-branches (limite du pipeline MultiBranches: ne supporte pas de Jenkinsfile hors-repo cible)
         // cf. https://stackoverflow.com/questions/39041342/jenkins-multibranch-pipeline-with-jenkinsfile-from-different-repository
     }
@@ -35,8 +35,8 @@ pipeline {
             steps {
                 script {
                     def labelArgs = "--label tuyauterie-git-commit=${env.GIT_COMMIT} --label 'tuyauterie-build-time=${env.BUILD_TIME}'"
-                    echo "docker build --no-cache --pull ${labelArgs} ./vsct-hesperides -t $DOCKER_IMAGE_NAME:testing"
-                    sh "docker build --no-cache --pull ${labelArgs} ./vsct-hesperides -t $DOCKER_IMAGE_NAME:testing"
+                    echo "docker build --no-cache --pull --build-arg FROM_VERSION=${params.DOCKER_TAG} ${labelArgs} ./vsct-hesperides -t $DOCKER_IMAGE_NAME:testing"
+                    sh "docker build --no-cache --pull --build-arg FROM_VERSION=${params.DOCKER_TAG} ${labelArgs} ./vsct-hesperides -t $DOCKER_IMAGE_NAME:testing"
                     // On affiche tous les labels de l'image générée :
                     sh "docker inspect --format '{{.ContainerConfig.Labels}}' $DOCKER_IMAGE_NAME:testing"
                     // On publie l'image sur artifactory :
@@ -48,18 +48,18 @@ pipeline {
             }
         }
         stage('Redéploiement de REL1') {
-            when { expression { params.GIT_BRANCH == 'master' } }
+            when { expression { params.DOCKER_TAG == 'latest' } }
             steps {
                 build job: "deploy", parameters: [string(name: 'PLATFORM', value: "REL1")]
             }
         }
         stage("Tests de performances Gatling") {
-            when { expression { params.GIT_BRANCH == 'master' } }
+            when { expression { params.DOCKER_TAG == 'latest' } }
             steps {
                 script {
                     dir('hesperides') {
                         git(url: 'https://github.com/voyages-sncf-technologies/hesperides',
-                                branch: params.GIT_BRANCH)
+                            branch: 'master')
                         // use https://artifact.socrate.vsct.fr/artifactory/all-mvn as a mirror
                         withMaven(globalMavenSettingsConfig: 'global_maven_settings', mavenSettingsConfig: 'local_maven_settings') {
                             withCredentials([usernamePassword(credentialsId: 'hesperides', usernameVariable: 'LAMBDA_USERNAME', passwordVariable: 'LAMBDA_PASSWORD')]) {
@@ -83,7 +83,7 @@ pipeline {
             }
         }
         stage("Promotion de l'image Docker 'testing' en 'integration'") {
-            when { expression { params.GIT_BRANCH != 'master' } }
+            when { expression { params.DOCKER_TAG != 'latest' } }
             steps {
                 build job: "promote", parameters: [string(name: 'DOCKER_IMAGE_NAME', value: env.DOCKER_IMAGE_NAME),
                                                    string(name: 'FROM_TAG', value: 'testing'),
@@ -91,7 +91,7 @@ pipeline {
             }
         }
         stage('Redéploiement de INT1') {
-            when { expression { params.GIT_BRANCH != 'master' } }
+            when { expression { params.DOCKER_TAG != 'latest' } }
             steps {
                 build job: "deploy", parameters: [string(name: 'PLATFORM', value: "INT1")]
             }
@@ -115,7 +115,7 @@ pipeline {
                 script {
                     dir('hesperides') {
                         git(url: 'https://github.com/voyages-sncf-technologies/hesperides',
-                                branch: params.GIT_BRANCH)
+                            branch: 'master')
                         withMaven(globalMavenSettingsConfig: 'global_maven_settings', mavenSettingsConfig: 'local_maven_settings') {
                             // use https://artifact.socrate.vsct.fr/artifactory/all-mvn as a mirror
                             withCredentials([usernamePassword(credentialsId: 'hesperides', usernameVariable: 'LAMBDA_USERNAME', passwordVariable: 'LAMBDA_PASSWORD')]) {
@@ -142,7 +142,7 @@ pipeline {
             }
         }
         stage('Création/mise à jour du tag sur repo GitHub') {
-            when { expression { params.GIT_BRANCH == 'master' } }
+            when { expression { params.DOCKER_TAG == 'latest' } }
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'github-hesperides-adm', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
@@ -159,7 +159,7 @@ pipeline {
             }
         }
         stage("Promotion de l'image Docker 'testing' en 'latest'") {
-            when { expression { params.GIT_BRANCH == 'master' && enablePromotionToLatest } }
+            when { expression { params.DOCKER_TAG == 'latest' && enablePromotionToLatest } }
             steps {
                 build job: "promote", parameters: [string(name: 'DOCKER_IMAGE_NAME', value: env.DOCKER_IMAGE_NAME),
                                                    string(name: 'FROM_TAG', value: 'testing'),

@@ -43,7 +43,7 @@ pipeline {
                         if (params.IGNORE_NEW_VERSION_CHECK) {
                             newDockerImagePublished = true
                         } else {
-                            withCredentials([usernamePassword(credentialsId: 'github-hesperides-adm', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                            withCredentials([usernamePassword(credentialsId: 'hesperides-dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                                 newDockerImagePublished = getREL1gitCommit() != getDockerHubLatestImageGitCommit(env.USERNAME, env.PASSWORD)
                             }
                         }

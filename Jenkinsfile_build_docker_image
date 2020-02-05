@@ -221,7 +221,7 @@ def getDockerHubLatestImageGitCommit(String username, String password) {
     final IMAGE = 'hesperides/hesperides'
     final TAG = 'latest'
     final AUTH_SCOPE = "repository:${IMAGE}:pull"
-    sh 'curl -v https://auth.docker.io/token'
+    sh "curl -v -u ${username}:${password} 'https://${AUTH_DOMAIN}/token?service=${AUTH_SERVICE}&scope=${AUTH_SCOPE}'"
     final tokenResponse = sh(returnStdout: true, script: "curl --fail --silent -u ${username}:${password} 'https://${AUTH_DOMAIN}/token?service=${AUTH_SERVICE}&scope=${AUTH_SCOPE}'").trim()
     println "tokenResponse=$tokenResponse"
     final token = new JsonSlurperClassic().parseText(tokenResponse).token

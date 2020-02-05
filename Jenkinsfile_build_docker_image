@@ -190,18 +190,24 @@ pipeline {
         always {
             deleteDir()
         }
-        failure {
+        /*failure {
             // Notification vers room Teams Avengers > Hefpérides
             office365ConnectorSend  status: currentBuild.currentResult, webhookUrl: 'https://outlook.office.com/webhook/838cfd20-344e-4053-97eb-5fa1f7fb25f9@85eca096-674d-4fd9-9a9e-ae1178e2ee56/IncomingWebhook/1999a50228794e95a1c17374a131da2e/56ceab7b-fee5-4173-882e-6504575c0bc8'
-        }
+        }*/
     }
 }
 
 def getREL1gitCommit() {
-    String versions = sh(returnStdout: true, script: "curl --fail -sk https://hesperides-dev.socrate.vsct.fr:56789/rest/versions").trim()
-    String gitCommit = new JsonSlurperClassic().parseText(versions).GIT_COMMIT
-    println "Current backend REL1 version is git commit: $gitCommit"
-    return gitCommit
+    println "TEST"
+    try {
+        String versions = sh(returnStdout: true, script: "curl --fail -sk https://hesperides-dev.socrate.vsct.fr:56789/rest/versions").trim()
+        String gitCommit = new JsonSlurperClassic().parseText(versions).GIT_COMMIT
+        println "Current backend REL1 version is git commit: $gitCommit"
+        return gitCommit
+    } catch(Exception ex) {
+        println "Exception: $ex"
+        return 0
+    }
 }
 
 // API doc: https://docs.docker.com/registry/spec/api/#manifest
@@ -214,17 +220,11 @@ def getDockerHubLatestImageGitCommit(String username, String password) {
     String TAG = 'latest'
     String AUTH_SCOPE = "repository:${IMAGE}:pull"
     def jsonParser = new JsonSlurperClassic()
-    println "TEST"
-    try {
-        String tokenResponse = sh(returnStdout: true, script: "curl --fail --silent -u ${DOCKER_HUB_USER}:${DOCKER_HUB_PASSWORD} 'https://${AUTH_DOMAIN}/token?service=${AUTH_SERVICE}&scope=${AUTH_SCOPE}'").trim()
-        String token = jsonParser.parseText(tokenResponse).token
-        String manifestResponse = sh(returnStdout: true, script: "curl --fail --silent -H 'Authorization: Bearer ${TOKEN}' https://${API_DOMAIN}/v2/${IMAGE}/manifests/${TAG}").trim()
-        String topLayer = jsonParser.parseText(manifestResponse).history[0].v1Compatibility
-        String gitCommit = jsonParser.parseText(topLayer).config.Labels.git_commit[0..7]
-        println "Docker hub latest hesperides/hesperides image has label git_commit=$gitCommit"
-        return gitCommit
-    } catch(Exception ex) {
-        println "Exception: $ex"
-        return 0
-    }
+    String tokenResponse = sh(returnStdout: true, script: "curl --fail --silent -u ${DOCKER_HUB_USER}:${DOCKER_HUB_PASSWORD} 'https://${AUTH_DOMAIN}/token?service=${AUTH_SERVICE}&scope=${AUTH_SCOPE}'").trim()
+    String token = jsonParser.parseText(tokenResponse).token
+    String manifestResponse = sh(returnStdout: true, script: "curl --fail --silent -H 'Authorization: Bearer ${TOKEN}' https://${API_DOMAIN}/v2/${IMAGE}/manifests/${TAG}").trim()
+    String topLayer = jsonParser.parseText(manifestResponse).history[0].v1Compatibility
+    String gitCommit = jsonParser.parseText(topLayer).config.Labels.git_commit[0..7]
+    println "Docker hub latest hesperides/hesperides image has label git_commit=$gitCommit"
+    return gitCommit
 }

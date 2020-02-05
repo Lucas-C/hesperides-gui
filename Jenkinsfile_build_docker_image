@@ -193,10 +193,10 @@ pipeline {
         always {
             deleteDir()
         }
-        /*failure {
+        failure {
             // Notification vers room Teams Avengers > Hefpérides
             office365ConnectorSend  status: currentBuild.currentResult, webhookUrl: 'https://outlook.office.com/webhook/838cfd20-344e-4053-97eb-5fa1f7fb25f9@85eca096-674d-4fd9-9a9e-ae1178e2ee56/IncomingWebhook/1999a50228794e95a1c17374a131da2e/56ceab7b-fee5-4173-882e-6504575c0bc8'
-        }*/
+        }
     }
 }
 
@@ -208,6 +208,7 @@ def getREL1gitCommit() {
         return gitCommit
     } catch(Exception exception) {
         println "Exception: $exception"
+        println "As backend on REL1 platform cannot be reached, we trigger a build & redeploy"
         return 'UNREACHABLE'
     }
 }
@@ -221,7 +222,6 @@ def getDockerHubLatestImageGitCommit(String username, String password) {
     final IMAGE = 'hesperides/hesperides'
     final TAG = 'latest'
     final AUTH_SCOPE = "repository:${IMAGE}:pull"
-    sh "curl -v -u ${username}:${password} 'https://${AUTH_DOMAIN}/token?service=${AUTH_SERVICE}&scope=${AUTH_SCOPE}'"
     final tokenResponse = sh(returnStdout: true, script: "curl --fail --silent -u ${username}:${password} 'https://${AUTH_DOMAIN}/token?service=${AUTH_SERVICE}&scope=${AUTH_SCOPE}'").trim()
     final token = new JsonSlurperClassic().parseText(tokenResponse).token
     final manifestResponse = sh(returnStdout: true, script: "curl --fail --silent -H 'Authorization: Bearer ${token}' https://${API_DOMAIN}/v2/${IMAGE}/manifests/${TAG}").trim()

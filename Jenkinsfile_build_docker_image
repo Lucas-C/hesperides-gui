@@ -223,9 +223,13 @@ def getDockerHubLatestImageGitCommit(String username, String password) {
     String AUTH_SCOPE = "repository:${IMAGE}:pull"
     def jsonParser = new JsonSlurperClassic()
     String tokenResponse = sh(returnStdout: true, script: "curl --fail --silent -u ${username}:${password} 'https://${AUTH_DOMAIN}/token?service=${AUTH_SERVICE}&scope=${AUTH_SCOPE}'").trim()
+    println "tokenResponse=$tokenResponse"
     String token = jsonParser.parseText(tokenResponse).token
+    println "token=$token"
     String manifestResponse = sh(returnStdout: true, script: "curl --fail --silent -H 'Authorization: Bearer ${TOKEN}' https://${API_DOMAIN}/v2/${IMAGE}/manifests/${TAG}").trim()
+    println "manifestResponse=$manifestResponse"
     String topLayer = jsonParser.parseText(manifestResponse).history[0].v1Compatibility
+    println "topLayer=$topLayer"
     String gitCommit = jsonParser.parseText(topLayer).config.Labels.git_commit[0..7]
     println "Docker hub latest hesperides/hesperides image has label git_commit=$gitCommit"
     return gitCommit

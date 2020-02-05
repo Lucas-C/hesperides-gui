@@ -33,30 +33,10 @@ pipeline {
     stages {
         stage("Docker build 'testing' image") {
             steps {
-                dir('hesperides') {
-                    git(url: 'https://github.com/voyages-sncf-technologies/hesperides',
-                            branch: params.GIT_BRANCH)
-                }
                 script {
-                    // On complète le Dockerfile pour inclure les fichiers settings.xml & globalSettings.xml durant le build Maven,
-                    // ainsi que les certifcats dans l'image finale :
-                    sh 'sed -i "1 r vsct-hesperides/Dockerfile.prepend" hesperides/Dockerfile && rm vsct-hesperides/Dockerfile.prepend'
-                    sh 'cat vsct-hesperides/Dockerfile.append >> hesperides/Dockerfile && rm vsct-hesperides/Dockerfile.append'
-                    sh 'cp -r vsct-hesperides/* hesperides/'
-                    // On définit les labels et on passe les variables d'environnement des proxys HTTP
-                    def hesGitCommit = sh(returnStdout: true, script: 'cd hesperides && git rev-parse --short HEAD').trim()
-                    def hesGitCommitMsg = sh(returnStdout: true, script: 'cd hesperides && git log -1 --pretty=%s').trim().replaceAll("\"", "\\\\\"")
-                    // Attention : les messages de commit contenant des quotes font planter la pipeline
-                    def buildArgs = "--build-arg http_proxy --build-arg https_proxy --build-arg 'BUILD_TIME=${env.BUILD_TIME}' --build-arg GIT_TAG=${env.DATE} --build-arg GIT_BRANCH=${params.GIT_BRANCH} --build-arg GIT_COMMIT=${hesGitCommit} --build-arg GIT_COMMIT_MSG=\"${hesGitCommitMsg}\""
-                    def labelArgs = "--label git_commit=${hesGitCommit} --label tuyauterie_git_commit=${env.GIT_COMMIT} --label 'build_time=${env.BUILD_TIME}'"
-                    // On build l'image Docker :
-                    // use https://artifact.socrate.vsct.fr/artifactory/all-mvn as a mirror
-                    withMaven(globalMavenSettingsConfig: 'global_maven_settings', mavenSettingsConfig: 'local_maven_settings') {
-                        sh 'cp $MVN_SETTINGS hesperides/settings.xml'
-                        sh 'cp $GLOBAL_MVN_SETTINGS hesperides/globalSettings.xml'
-                        echo "docker build --no-cache --pull ${labelArgs} ${buildArgs} ./hesperides -t $DOCKER_IMAGE_NAME:testing"
-                        sh "docker build --no-cache --pull ${labelArgs} ${buildArgs} ./hesperides -t $DOCKER_IMAGE_NAME:testing"
-                    }
+                    def labelArgs = "--label tuyauterie-git-commit=${env.GIT_COMMIT} --label 'tuyauterie-build-time=${env.BUILD_TIME}'"
+                    echo "docker build --no-cache --pull ${labelArgs} ./vsct-hesperides -t $DOCKER_IMAGE_NAME:testing"
+                    sh "docker build --no-cache --pull ${labelArgs} ./vsct-hesperides -t $DOCKER_IMAGE_NAME:testing"
                     // On affiche tous les labels de l'image générée :
                     sh "docker inspect --format '{{.ContainerConfig.Labels}}' $DOCKER_IMAGE_NAME:testing"
                     // On publie l'image sur artifactory :

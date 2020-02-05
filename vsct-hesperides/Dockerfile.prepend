@@ -1,6 +1,0 @@
-
-RUN mkdir /root/.m2/
-COPY globalSettings.xml /root/.m2/
-COPY settings.xml /root/.m2/
-RUN ls -l /root/.m2/
-

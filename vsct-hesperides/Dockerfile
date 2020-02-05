@@ -1,3 +1,6 @@
+ARG FROM_VERSION=latest
+FROM hesperides/hesperides:$FROM_VERSION
+
 COPY certificates/trustore /etc/ssl/certs/java/
 # On complète la CMD originale avec le trustore : https://github.com/voyages-sncf-technologies/hesperides/blob/develop/Dockerfile#L30
 CMD /usr/local/bin/java $JAVA_OPTS \
@@ -5,6 +8,3 @@ CMD /usr/local/bin/java $JAVA_OPTS \
      -Xms2g -Xmx4g \
      -Djavax.net.ssl.trustStore=/etc/ssl/certs/java/trustore \
      -jar /hesperides.jar
-
-RUN touch /var/log/hesperides.log
-RUN chmod 777 -R /var/log

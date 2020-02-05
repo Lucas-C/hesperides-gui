@@ -198,15 +198,14 @@ pipeline {
 }
 
 def getREL1gitCommit() {
-    println "TEST"
     try {
         String versions = sh(returnStdout: true, script: "curl --fail -sk https://hesperides-dev.socrate.vsct.fr:56789/rest/versions").trim()
         String gitCommit = new JsonSlurperClassic().parseText(versions).GIT_COMMIT
         println "Current backend REL1 version is git commit: $gitCommit"
         return gitCommit
-    } catch(Exception ex) {
-        println "Exception: $ex"
-        return 0
+    } catch(Exception exception) {
+        println "Exception: $exception"
+        return 'UNREACHABLE'
     }
 }
 
@@ -220,7 +219,7 @@ def getDockerHubLatestImageGitCommit(String username, String password) {
     String TAG = 'latest'
     String AUTH_SCOPE = "repository:${IMAGE}:pull"
     def jsonParser = new JsonSlurperClassic()
-    String tokenResponse = sh(returnStdout: true, script: "curl --fail --silent -u ${DOCKER_HUB_USER}:${DOCKER_HUB_PASSWORD} 'https://${AUTH_DOMAIN}/token?service=${AUTH_SERVICE}&scope=${AUTH_SCOPE}'").trim()
+    String tokenResponse = sh(returnStdout: true, script: "curl --fail --silent -u ${username}:${password} 'https://${AUTH_DOMAIN}/token?service=${AUTH_SERVICE}&scope=${AUTH_SCOPE}'").trim()
     String token = jsonParser.parseText(tokenResponse).token
     String manifestResponse = sh(returnStdout: true, script: "curl --fail --silent -H 'Authorization: Bearer ${TOKEN}' https://${API_DOMAIN}/v2/${IMAGE}/manifests/${TAG}").trim()
     String topLayer = jsonParser.parseText(manifestResponse).history[0].v1Compatibility

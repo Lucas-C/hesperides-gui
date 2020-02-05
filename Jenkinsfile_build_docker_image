@@ -202,8 +202,8 @@ pipeline {
 
 def getREL1gitCommit() {
     try {
-        String versions = sh(returnStdout: true, script: "curl --fail -sk https://hesperides-dev.socrate.vsct.fr:56789/rest/versions").trim()
-        String gitCommit = new JsonSlurperClassic().parseText(versions).GIT_COMMIT
+        final versions = sh(returnStdout: true, script: "curl --fail -sk https://hesperides-dev.socrate.vsct.fr:56789/rest/versions").trim()
+        final gitCommit = new JsonSlurperClassic().parseText(versions).GIT_COMMIT
         println "Current backend REL1 version is git commit: $gitCommit"
         return gitCommit
     } catch(Exception exception) {
@@ -215,22 +215,24 @@ def getREL1gitCommit() {
 // API doc: https://docs.docker.com/registry/spec/api/#manifest
 // Code inspired by: https://gist.github.com/alexanderilyin/8cf68f85b922a7f1757ae3a74640d48a
 def getDockerHubLatestImageGitCommit(String username, String password) {
-    String AUTH_DOMAIN = 'auth.docker.io'
-    String AUTH_SERVICE = 'registry.docker.io'
-    String API_DOMAIN = 'registry-1.docker.io'
-    String IMAGE = 'hesperides/hesperides'
-    String TAG = 'latest'
-    String AUTH_SCOPE = "repository:${IMAGE}:pull"
-    JsonSlurperClassic jsonParser = new JsonSlurperClassic()
-    String tokenResponse = sh(returnStdout: true, script: "curl --fail --silent -u ${username}:${password} 'https://${AUTH_DOMAIN}/token?service=${AUTH_SERVICE}&scope=${AUTH_SCOPE}'").trim()
+    final AUTH_DOMAIN = 'auth.docker.io'
+    final AUTH_SERVICE = 'registry.docker.io'
+    final API_DOMAIN = 'registry-1.docker.io'
+    final IMAGE = 'hesperides/hesperides'
+    final TAG = 'latest'
+    final AUTH_SCOPE = "repository:${IMAGE}:pull"
+    println "OK1"
+    final jsonParser = new JsonSlurperClassic()
+    println "OK2"
+    final tokenResponse = sh(returnStdout: true, script: "curl --fail --silent -u ${username}:${password} 'https://${AUTH_DOMAIN}/token?service=${AUTH_SERVICE}&scope=${AUTH_SCOPE}'").trim()
     println "tokenResponse=$tokenResponse"
-    String token = jsonParser.parseText(tokenResponse).token
+    final token = jsonParser.parseText(tokenResponse).token
     println "token=$token"
-    String manifestResponse = sh(returnStdout: true, script: "curl --fail --silent -H 'Authorization: Bearer ${TOKEN}' https://${API_DOMAIN}/v2/${IMAGE}/manifests/${TAG}").trim()
+    final manifestResponse = sh(returnStdout: true, script: "curl --fail --silent -H 'Authorization: Bearer ${TOKEN}' https://${API_DOMAIN}/v2/${IMAGE}/manifests/${TAG}").trim()
     println "manifestResponse=$manifestResponse"
-    String topLayer = jsonParser.parseText(manifestResponse).history[0].v1Compatibility
+    final topLayer = jsonParser.parseText(manifestResponse).history[0].v1Compatibility
     println "topLayer=$topLayer"
-    String gitCommit = jsonParser.parseText(topLayer).config.Labels.git_commit[0..7]
+    final gitCommit = jsonParser.parseText(topLayer).config.Labels.git_commit[0..7]
     println "Docker hub latest hesperides/hesperides image has label git_commit=$gitCommit"
     return gitCommit
 }

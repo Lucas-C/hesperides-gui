@@ -2,6 +2,8 @@
 
 import java.text.SimpleDateFormat
 
+import groovy.json.JsonSlurperClassic
+
 def newDockerImagePublished = false
 def enablePromotionToLatest = true
 
@@ -202,6 +204,8 @@ def getREL1gitCommit() {
     return gitCommit
 }
 
+// API doc: https://docs.docker.com/registry/spec/api/#manifest
+// Code inspired by: https://gist.github.com/alexanderilyin/8cf68f85b922a7f1757ae3a74640d48a
 def getDockerHubLatestImageGitCommit(String username, String password) {
     String AUTH_DOMAIN = 'auth.docker.io'
     String AUTH_SERVICE = 'registry.docker.io'

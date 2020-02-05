@@ -221,7 +221,7 @@ def getDockerHubLatestImageGitCommit(String username, String password) {
     String IMAGE = 'hesperides/hesperides'
     String TAG = 'latest'
     String AUTH_SCOPE = "repository:${IMAGE}:pull"
-    def jsonParser = new JsonSlurperClassic()
+    JsonSlurperClassic jsonParser = new JsonSlurperClassic()
     String tokenResponse = sh(returnStdout: true, script: "curl --fail --silent -u ${username}:${password} 'https://${AUTH_DOMAIN}/token?service=${AUTH_SERVICE}&scope=${AUTH_SCOPE}'").trim()
     println "tokenResponse=$tokenResponse"
     String token = jsonParser.parseText(tokenResponse).token

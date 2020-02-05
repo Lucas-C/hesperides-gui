@@ -37,12 +37,15 @@ pipeline {
     stages {
         stage("Detect if a new image has been published on Docker hub") {
             steps {
-                script {
-                    if (params.IGNORE_NEW_VERSION_CHECK) {
-                        newDockerImagePublished = true
-                    } else {
-                        withCredentials([usernamePassword(credentialsId: 'github-hesperides-adm', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                            newDockerImagePublished = getREL1gitCommit() != getDockerHubLatestImageGitCommit(env.USERNAME, env.PASSWORD)
+                retry(3) {
+                    script {
+
+                        if (params.IGNORE_NEW_VERSION_CHECK) {
+                            newDockerImagePublished = true
+                        } else {
+                            withCredentials([usernamePassword(credentialsId: 'github-hesperides-adm', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+                                newDockerImagePublished = getREL1gitCommit() != getDockerHubLatestImageGitCommit(env.USERNAME, env.PASSWORD)
+                            }
                         }
                     }
                 }

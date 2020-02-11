@@ -48,7 +48,7 @@ pipeline {
             steps {
                 script {
                     def labelArgs = "--label tuyauterie-git-commit=${GIT_COMMIT} --label 'tuyauterie-build-time=${env.BUILD_TIME}'"
-                    sh "echo 'FROM hesperides/hesperides-gui' | docker build --no-cache --pull ${labelArgs} -t $DOCKER_IMAGE_NAME:testing"
+                    sh "echo 'FROM hesperides/hesperides-gui' | docker build --no-cache --pull ${labelArgs} -t $DOCKER_IMAGE_NAME:testing -"
                     // On affiche tous les labels de l'image générée :
                     sh "docker inspect --format '{{.ContainerConfig.Labels}}' $DOCKER_IMAGE_NAME:testing"
                     // On publie l'image sur artifactory :

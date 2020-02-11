@@ -5,7 +5,7 @@ import java.text.SimpleDateFormat
 import groovy.json.JsonSlurperClassic
 
 def newDockerImagePublished = false
-def enablePromotionToLatest = false // disabled temporarily while we ensure removal of hesperides.log works fine on REL1
+def enablePromotionToLatest = true
 
 pipeline {
     agent {

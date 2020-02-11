@@ -17,12 +17,7 @@ pipeline {
         buildDiscarder(logRotator(numToKeepStr: '10'))
         disableConcurrentBuilds()
     }
-    triggers {
-        // Le repo GitHub est bien surveillé, et non celui contenant ce Jenkinsfile
-        // -> c'est documenté ici: https://github.com/jenkinsci/workflow-scm-step-plugin/blob/master/README.md#changelogs
-        // "Jenkins will automatically remember the SCMs run in the last build of the project"
-        pollSCM('H/5 * * * 1-5')
-    }
+    triggers{ cron('H/5 * * * 1-5') }
     environment {
         DOCKER_IMAGE_NAME = 'hesperides-docker-all.artifact.cloud.socrate.vsct.fr/hesperides/vsct-hesperides'
         DATE = (new SimpleDateFormat("yyyy-MM-dd")).format(new Date())
@@ -35,16 +30,15 @@ pipeline {
         // cf. https://stackoverflow.com/questions/39041342/jenkins-multibranch-pipeline-with-jenkinsfile-from-different-repository
     }
     stages {
-        stage("Detect if a new image has been published on Docker hub") {
+        stage("New DockerHub image detection") {
             steps {
                 retry(3) {
                     script {
-
                         if (params.IGNORE_NEW_VERSION_CHECK) {
                             newDockerImagePublished = true
                         } else {
                             withCredentials([usernamePassword(credentialsId: 'hesperides-dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                                newDockerImagePublished = getREL1gitCommit() != getDockerHubLatestImageGitCommit(env.USERNAME, env.PASSWORD)
+                                newDockerImagePublished = getREL1backendGitCommit() != getDockerHubLatestImageGitCommit('hesperides/hesperides', env.USERNAME, env.PASSWORD)
                             }
                         }
                     }
@@ -56,7 +50,6 @@ pipeline {
             steps {
                 script {
                     def labelArgs = "--label tuyauterie-git-commit=${env.GIT_COMMIT} --label 'tuyauterie-build-time=${env.BUILD_TIME}'"
-                    echo "docker build --no-cache --pull --build-arg FROM_VERSION=${params.DOCKER_TAG} ${labelArgs} ./vsct-hesperides -t $DOCKER_IMAGE_NAME:testing"
                     sh "docker build --no-cache --pull --build-arg FROM_VERSION=${params.DOCKER_TAG} ${labelArgs} ./vsct-hesperides -t $DOCKER_IMAGE_NAME:testing"
                     // On affiche tous les labels de l'image générée :
                     sh "docker inspect --format '{{.ContainerConfig.Labels}}' $DOCKER_IMAGE_NAME:testing"
@@ -200,7 +193,7 @@ pipeline {
     }
 }
 
-def getREL1gitCommit() {
+def getREL1backendGitCommit() {
     try {
         final versions = sh(returnStdout: true, script: "curl --fail -sk https://hesperides-dev.socrate.vsct.fr:56789/rest/versions").trim()
         final gitCommit = new JsonSlurperClassic().parseText(versions).GIT_COMMIT
@@ -215,16 +208,15 @@ def getREL1gitCommit() {
 
 // API doc: https://docs.docker.com/registry/spec/api/#manifest
 // Code inspired by: https://gist.github.com/alexanderilyin/8cf68f85b922a7f1757ae3a74640d48a
-def getDockerHubLatestImageGitCommit(String username, String password) {
+def getDockerHubLatestImageGitCommit(String image, String username, String password) {
     final AUTH_DOMAIN = 'auth.docker.io'
     final AUTH_SERVICE = 'registry.docker.io'
     final API_DOMAIN = 'registry-1.docker.io'
-    final IMAGE = 'hesperides/hesperides'
     final TAG = 'latest'
-    final AUTH_SCOPE = "repository:${IMAGE}:pull"
+    final AUTH_SCOPE = "repository:${image}:pull"
     final tokenResponse = sh(returnStdout: true, script: "curl --fail --silent -u ${username}:${password} 'https://${AUTH_DOMAIN}/token?service=${AUTH_SERVICE}&scope=${AUTH_SCOPE}'").trim()
     final token = new JsonSlurperClassic().parseText(tokenResponse).token
-    final manifestResponse = sh(returnStdout: true, script: "curl --fail --silent -H 'Authorization: Bearer ${token}' https://${API_DOMAIN}/v2/${IMAGE}/manifests/${TAG}").trim()
+    final manifestResponse = sh(returnStdout: true, script: "curl --fail --silent -H 'Authorization: Bearer ${token}' https://${API_DOMAIN}/v2/${image}/manifests/${TAG}").trim()
     final topLayer = new JsonSlurperClassic().parseText(manifestResponse).history[0].v1Compatibility
     final gitCommit = new JsonSlurperClassic().parseText(topLayer).config.Labels.git_commit[0..7]
     println "Docker hub latest hesperides/hesperides image has label git_commit=$gitCommit"

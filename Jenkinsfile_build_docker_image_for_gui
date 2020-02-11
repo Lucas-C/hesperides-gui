@@ -124,7 +124,7 @@ pipeline {
 
 def getREL1frontendGitCommit() {
     try {
-        String gitCommit = sh(returnStdout: true, script: """curl --fail -sk https://hesperides-dev.socrate.vsct.fr:56789/index.html | grep -F ' GIT_COMMIT ' | sed "s/.*'\\([^ ]\\+\\)".*/\\1/'""").trim()
+        String gitCommit = sh(returnStdout: true, script: """curl --fail -sk https://hesperides-dev.socrate.vsct.fr:56789/index.html | grep -F ' GIT_COMMIT ' | sed "s/.*'\\([^ ]\\+\\)'.*/\\1/" """).trim()
         println "Current frontend REL1 version is git commit: $gitCommit"
         return gitCommit
     } catch(Exception exception) {

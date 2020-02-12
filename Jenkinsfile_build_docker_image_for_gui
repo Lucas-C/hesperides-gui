@@ -37,7 +37,7 @@ pipeline {
                         } else {
                             withCredentials([usernamePassword(credentialsId: 'hesperides-dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                                 //newDockerImagePublished = getREL1frontendGitCommit() != getDockerHubLatestImageGitCommit('hesperides/hesperides-gui', env.USERNAME, env.PASSWORD)
-                                newDockerImagePublished = getDockerImageGitCommitLabelFromArtifact('vsct-hesperides/hesperides-gui', 'testing') != getDockerHubLatestImageGitCommit('hesperides/hesperides-gui', params.DOCKER_TAG, env.USERNAME, env.PASSWORD)
+                                newDockerImagePublished = getDockerImageGitCommitLabelFromArtifact('hesperides/vsct-hesperides-gui', 'testing') != getDockerHubLatestImageGitCommit('hesperides/hesperides-gui', params.DOCKER_TAG, env.USERNAME, env.PASSWORD)
                             }
                         }
                     }

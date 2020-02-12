@@ -211,7 +211,7 @@ def getDockerImageGitCommitLabelFromArtifact(String image, String tag) {
     withCredentials([usernamePassword(credentialsId: 'hesperides', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
         final manifestResponse = sh(returnStdout: true, script: "curl --fail -su $USERNAME:$PASSWORD https://hesperides-docker-all-local.artifact.cloud.socrate.vsct.fr/v2/${image}/manifests/${tag}").trim()
         final topLayer = new JsonSlurperClassic().parseText(manifestResponse).history[0].v1Compatibility
-        final gitCommit = new JsonSlurperClassic().parseText(topLayer).config.Labels
+        final gitCommit = new JsonSlurperClassic().parseText(topLayer).config.Labels.git_commit
         println "Artifact ${image}:${tag} has label git_commit=$gitCommit"
         return gitCommit
     }

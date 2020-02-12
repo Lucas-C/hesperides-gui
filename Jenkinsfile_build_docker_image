@@ -38,7 +38,8 @@ pipeline {
                             newDockerImagePublished = true
                         } else {
                             withCredentials([usernamePassword(credentialsId: 'hesperides-dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                                newDockerImagePublished = getREL1backendGitCommit() != getDockerHubLatestImageGitCommit('hesperides/hesperides', env.USERNAME, env.PASSWORD)
+                                // newDockerImagePublished = getREL1backendGitCommit() != getDockerHubLatestImageGitCommit('hesperides/hesperides', env.USERNAME, env.PASSWORD)
+                                newDockerImagePublished = getDockerImageGitCommitLabelFromArtifact('hesperides/hesperides', 'testing') != getDockerHubLatestImageGitCommit('hesperides/hesperides-gui', env.USERNAME, env.PASSWORD)
                             }
                         }
                     }
@@ -206,6 +207,16 @@ def getREL1backendGitCommit() {
     }
 }
 
+def getDockerImageGitCommitLabelFromArtifact(String image, String tag) {
+    withCredentials([usernamePassword(credentialsId: 'hesperides', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
+        final manifestResponse = sh(returnStdout: true, script: "curl --fail -su $USERNAME:$PASSWORD https://hesperides-docker-all-local.artifact.cloud.socrate.vsct.fr/v2/${image}/manifests/${tag}").trim()
+        final topLayer = new JsonSlurperClassic().parseText(manifestResponse).history[0].v1Compatibility
+        final gitCommit = new JsonSlurperClassic().parseText(topLayer).config.Labels
+        println "Artifact ${image}:${tag} has label git_commit=$gitCommit"
+        return gitCommit
+    }
+}
+
 // API doc: https://docs.docker.com/registry/spec/api/#manifest
 // Code inspired by: https://gist.github.com/alexanderilyin/8cf68f85b922a7f1757ae3a74640d48a
 def getDockerHubLatestImageGitCommit(String image, String username, String password) {
@@ -219,6 +230,6 @@ def getDockerHubLatestImageGitCommit(String image, String username, String passw
     final manifestResponse = sh(returnStdout: true, script: "curl --fail --silent -H 'Authorization: Bearer ${token}' https://${API_DOMAIN}/v2/${image}/manifests/${TAG}").trim()
     final topLayer = new JsonSlurperClassic().parseText(manifestResponse).history[0].v1Compatibility
     final gitCommit = new JsonSlurperClassic().parseText(topLayer).config.Labels.git_commit
-    println "Docker hub latest hesperides/hesperides image has label git_commit=$gitCommit"
+    println "Docker hub ${image}:${TAG} image has label git_commit=$gitCommit"
     return gitCommit
 }

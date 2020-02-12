@@ -39,7 +39,7 @@ pipeline {
                         } else {
                             withCredentials([usernamePassword(credentialsId: 'hesperides-dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
                                 // newDockerImagePublished = getREL1backendGitCommit() != getDockerHubLatestImageGitCommit('hesperides/hesperides', env.USERNAME, env.PASSWORD)
-                                newDockerImagePublished = getDockerImageGitCommitLabelFromArtifact('hesperides/hesperides', 'testing') != getDockerHubLatestImageGitCommit('hesperides/hesperides-gui', env.USERNAME, env.PASSWORD)
+                                newDockerImagePublished = getDockerImageGitCommitLabelFromArtifact('vsct-hesperides/hesperides', 'testing') != getDockerHubLatestImageGitCommit('hesperides/hesperides', params.DOCKER_TAG, env.USERNAME, env.PASSWORD)
                             }
                         }
                     }
@@ -219,17 +219,16 @@ def getDockerImageGitCommitLabelFromArtifact(String image, String tag) {
 
 // API doc: https://docs.docker.com/registry/spec/api/#manifest
 // Code inspired by: https://gist.github.com/alexanderilyin/8cf68f85b922a7f1757ae3a74640d48a
-def getDockerHubLatestImageGitCommit(String image, String username, String password) {
+def getDockerHubLatestImageGitCommit(String image, String tag, String username, String password) {
     final AUTH_DOMAIN = 'auth.docker.io'
     final AUTH_SERVICE = 'registry.docker.io'
     final API_DOMAIN = 'registry-1.docker.io'
-    final TAG = 'latest'
     final AUTH_SCOPE = "repository:${image}:pull"
     final tokenResponse = sh(returnStdout: true, script: "curl --fail --silent -u ${username}:${password} 'https://${AUTH_DOMAIN}/token?service=${AUTH_SERVICE}&scope=${AUTH_SCOPE}'").trim()
     final token = new JsonSlurperClassic().parseText(tokenResponse).token
-    final manifestResponse = sh(returnStdout: true, script: "curl --fail --silent -H 'Authorization: Bearer ${token}' https://${API_DOMAIN}/v2/${image}/manifests/${TAG}").trim()
+    final manifestResponse = sh(returnStdout: true, script: "curl --fail --silent -H 'Authorization: Bearer ${token}' https://${API_DOMAIN}/v2/${image}/manifests/${tag}").trim()
     final topLayer = new JsonSlurperClassic().parseText(manifestResponse).history[0].v1Compatibility
     final gitCommit = new JsonSlurperClassic().parseText(topLayer).config.Labels.git_commit
-    println "Docker hub ${image}:${TAG} image has label git_commit=$gitCommit"
+    println "Docker hub ${image}:${tag} image has label git_commit=$gitCommit"
     return gitCommit
 }

@@ -2,6 +2,10 @@
 
 ![](CI_partners.png)
 
+**Note**: ces pipelines font suites aux pipelines Travis CI :
+- https://travis-ci.org/voyages-sncf-technologies/hesperides
+- https://travis-ci.org/voyages-sncf-technologies/hesperides-gui
+
 ## Description des pipelines
 
 ### Pipelines de build

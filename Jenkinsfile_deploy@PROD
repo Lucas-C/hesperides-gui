@@ -20,8 +20,8 @@ pipeline {
     triggers {
         // On évite 3h30 car c'est le créneau de lancement du script système dupdisk.sh - cf. https://jira.vsct.fr/browse/USL-1201
         parameterizedCron('''
+ 0 2 * * 1-5 %PLATFORM=PRD1
 30 2 * * 1-5 %PLATFORM=PRD6
- 0 3 * * 1-5 %PLATFORM=PRD1
         ''')
     }
     options {

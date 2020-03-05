@@ -52,7 +52,7 @@ pipeline {
             steps {
                 script {
                     git(url: 'git@gitlab.socrate.vsct.fr:avengers/hesperides-tools.git', branch: 'master')
-                    sh 'apt update -y && apt install -y python3 python3-pip'
+                    sh 'apt-get update -y && apt install -y python3 python3-pip'
                     sh 'python3 -m pip install requests'
 
                     String startTime = (new SimpleDateFormat("yyyy-MM-dd HH:mm")).format(new Date())

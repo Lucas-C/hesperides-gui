@@ -72,6 +72,7 @@ def getDockerHubLatestImageGitCommit(String image, String tag, String username, 
     final AUTH_SERVICE = 'registry.docker.io'
     final API_DOMAIN = 'registry-1.docker.io'
     final AUTH_SCOPE = "repository:${image}:pull"
+    sh "curl --verbose -u ${username}:${password} 'https://${AUTH_DOMAIN}/token?service=${AUTH_SERVICE}&scope=${AUTH_SCOPE}'"
     final tokenResponse = sh(returnStdout: true, script: "curl --fail --silent -u ${username}:${password} 'https://${AUTH_DOMAIN}/token?service=${AUTH_SERVICE}&scope=${AUTH_SCOPE}'").trim()
     final token = new JsonSlurperClassic().parseText(tokenResponse).token
     final manifestResponse = sh(returnStdout: true, script: "curl --fail --silent -H 'Authorization: Bearer ${token}' https://${API_DOMAIN}/v2/${image}/manifests/${tag}").trim()

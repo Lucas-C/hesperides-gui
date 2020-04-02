@@ -8,12 +8,19 @@
 
 ## Description des pipelines
 
+### Pipelines de détection de nouvelle version
+
+- `Jenkinsfile_detect_new_docker_hub_backend_image` ([job jenkins](https://usl.jenkins.cloud.socrate.vsct.fr/job/A_USL/job/Hesperides/job/detect_new_docker_hub_backend_image/)):
+_poll_ Docker hub jusqu'à ce qu'une nouvelle version `latest` publiée soit détecté
+
+- `Jenkinsfile_detect_new_docker_hub_frontend_image` ([job jenkins](https://usl.jenkins.cloud.socrate.vsct.fr/job/A_USL/job/Hesperides/job/detect_new_docker_hub_frontend_image/)):
+_poll_ Docker hub jusqu'à ce qu'une nouvelle version `latest` publiée soit détecté
+
 ### Pipelines de build
 
 - `Jenkinsfile_build_docker_image` ([job jenkins](https://usl.jenkins.cloud.socrate.vsct.fr/job/A_USL/job/Hesperides/job/build_docker_image/)):
 Pipeline de création de l'image d'[Hesperides](https://github.com/voyages-sncf-technologies/hesperides) pour publication sur le dépôt Docker interne :
-_poll_ Docker hub jusqu'à ce qu'une nouvelle version `latest` publiée soit détecté,
-puis récupère l'image Docker du [Dockerhub public](https://hub.docker.com/r/hesperides/hesperides/) pour la surcharger avec le certificat de l'Active Directory, et la pusher vers Artifactory.
+récupère l'image Docker du [Dockerhub public](https://hub.docker.com/r/hesperides/hesperides/) pour la surcharger avec le certificat de l'Active Directory, et la pusher vers Artifactory.
 _cf._ [vsct-hesperides/Dockerfile](vsct-hesperides/Dockerfile)
 
 Les commits contenant `#RT` dans leur message déclenchent l'exécution de `tests/regression` entre plateformes REL1 (en version `testing` contenant le dernier commit)

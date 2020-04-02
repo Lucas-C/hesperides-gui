@@ -2,9 +2,6 @@
 
 import java.text.SimpleDateFormat
 
-import groovy.json.JsonSlurperClassic
-
-def newDockerImagePublished = false
 def enablePromotionToLatest = true
 
 pipeline {
@@ -17,37 +14,18 @@ pipeline {
         buildDiscarder(logRotator(numToKeepStr: '10'))
         disableConcurrentBuilds()
     }
-    triggers{ cron('H/5 * * * 1-5') }
     environment {
         DOCKER_IMAGE_NAME = 'hesperides-docker-all.artifact.cloud.socrate.vsct.fr/hesperides/vsct-hesperides'
         DATE = (new SimpleDateFormat("yyyy-MM-dd")).format(new Date())
         BUILD_TIME = (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(new Date())
     }
     parameters {
-        booleanParam(name: 'IGNORE_NEW_VERSION_CHECK', defaultValue: false)
         string(name: 'DOCKER_TAG', defaultValue: 'latest', description: 'identify Docker hub image')
         // TODO(amélioration): plutôt que ce param, trouver un moyen de faire du multi-branches (limite du pipeline MultiBranches: ne supporte pas de Jenkinsfile hors-repo cible)
         // cf. https://stackoverflow.com/questions/39041342/jenkins-multibranch-pipeline-with-jenkinsfile-from-different-repository
     }
     stages {
-        stage("New DockerHub image detection") {
-            steps {
-                retry(3) {
-                    script {
-                        if (params.IGNORE_NEW_VERSION_CHECK) {
-                            newDockerImagePublished = true
-                        } else {
-                            withCredentials([usernamePassword(credentialsId: 'hesperides-dockerhub', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-                                // newDockerImagePublished = getREL1backendGitCommit() != getDockerHubLatestImageGitCommit('hesperides/hesperides', env.USERNAME, env.PASSWORD)
-                                newDockerImagePublished = getDockerImageGitCommitLabelFromArtifact('hesperides/vsct-hesperides', 'testing') != getDockerHubLatestImageGitCommit('hesperides/hesperides', params.DOCKER_TAG, env.USERNAME, env.PASSWORD)
-                            }
-                        }
-                    }
-                }
-            }
-        }
         stage("Docker build 'testing' image") {
-            when { expression { newDockerImagePublished } }
             steps {
                 script {
                     def labelArgs = "--label tuyauterie-git-commit=${env.GIT_COMMIT} --label 'tuyauterie-build-time=${env.BUILD_TIME}'"
@@ -63,13 +41,13 @@ pipeline {
             }
         }
         stage('Redéploiement de REL1') {
-            when { expression { newDockerImagePublished && params.DOCKER_TAG == 'latest' } }
+            when { expression { params.DOCKER_TAG == 'latest' } }
             steps {
                 build job: "deploy", parameters: [string(name: 'PLATFORM', value: "REL1")]
             }
         }
         stage("Tests de performances Gatling") {
-            when { expression { newDockerImagePublished && params.DOCKER_TAG == 'latest' } }
+            when { expression { params.DOCKER_TAG == 'latest' } }
             steps {
                 script {
                     dir('hesperides') {
@@ -98,7 +76,7 @@ pipeline {
             }
         }
         stage("Promotion de l'image Docker 'testing' en 'integration'") {
-            when { expression { newDockerImagePublished && params.DOCKER_TAG != 'latest' } }
+            when { expression { params.DOCKER_TAG != 'latest' } }
             steps {
                 build job: "promote", parameters: [string(name: 'DOCKER_IMAGE_NAME', value: env.DOCKER_IMAGE_NAME),
                                                    string(name: 'FROM_TAG', value: 'testing'),
@@ -106,13 +84,12 @@ pipeline {
             }
         }
         stage('Redéploiement de INT1') {
-            when { expression { newDockerImagePublished && params.DOCKER_TAG != 'latest' } }
+            when { expression { params.DOCKER_TAG != 'latest' } }
             steps {
                 build job: "deploy", parameters: [string(name: 'PLATFORM', value: "INT1")]
             }
         }
         stage("Integ/NR: BDDs ActiveDirectory") {
-            when { expression { newDockerImagePublished } }
             environment {
                 LDAP_URL = 'ldaps://ad-ldap-access.socrate.vsct.fr:636'
                 LDAP_DOMAIN = 'groupevsc'
@@ -158,7 +135,7 @@ pipeline {
             }
         }
         stage('Création/mise à jour du tag sur repo GitHub') {
-            when { expression { newDockerImagePublished && params.DOCKER_TAG == 'latest' } }
+            when { expression { params.DOCKER_TAG == 'latest' } }
             steps {
                 script {
                     withCredentials([usernamePassword(credentialsId: 'github-hesperides-adm', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
@@ -175,7 +152,7 @@ pipeline {
             }
         }
         stage("Promotion de l'image Docker 'testing' en 'latest'") {
-            when { expression { newDockerImagePublished && params.DOCKER_TAG == 'latest' && enablePromotionToLatest } }
+            when { expression { params.DOCKER_TAG == 'latest' && enablePromotionToLatest } }
             steps {
                 build job: "promote", parameters: [string(name: 'DOCKER_IMAGE_NAME', value: env.DOCKER_IMAGE_NAME),
                                                    string(name: 'FROM_TAG', value: 'testing'),
@@ -192,43 +169,4 @@ pipeline {
             office365ConnectorSend  status: currentBuild.currentResult, webhookUrl: 'https://outlook.office.com/webhook/838cfd20-344e-4053-97eb-5fa1f7fb25f9@85eca096-674d-4fd9-9a9e-ae1178e2ee56/IncomingWebhook/1999a50228794e95a1c17374a131da2e/56ceab7b-fee5-4173-882e-6504575c0bc8'
         }
     }
-}
-
-def getREL1backendGitCommit() {
-    try {
-        final versions = sh(returnStdout: true, script: "curl --fail -sk https://hesperides-dev.socrate.vsct.fr:56789/rest/versions").trim()
-        final gitCommit = new JsonSlurperClassic().parseText(versions).GIT_COMMIT
-        println "Current backend REL1 version is git commit: $gitCommit"
-        return gitCommit
-    } catch(Exception exception) {
-        println "Exception: $exception"
-        println "As backend on REL1 platform cannot be reached, we trigger a build & redeploy"
-        return 'UNREACHABLE'
-    }
-}
-
-def getDockerImageGitCommitLabelFromArtifact(String image, String tag) {
-    withCredentials([usernamePassword(credentialsId: 'hesperides', usernameVariable: 'USERNAME', passwordVariable: 'PASSWORD')]) {
-        final manifestResponse = sh(returnStdout: true, script: "curl --fail -su $USERNAME:$PASSWORD https://hesperides-docker-all-local.artifact.cloud.socrate.vsct.fr/v2/${image}/manifests/${tag}").trim()
-        final topLayer = new JsonSlurperClassic().parseText(manifestResponse).history[0].v1Compatibility
-        final gitCommit = new JsonSlurperClassic().parseText(topLayer).config.Labels.git_commit
-        println "Artifact ${image}:${tag} has label git_commit=$gitCommit"
-        return gitCommit
-    }
-}
-
-// API doc: https://docs.docker.com/registry/spec/api/#manifest
-// Code inspired by: https://gist.github.com/alexanderilyin/8cf68f85b922a7f1757ae3a74640d48a
-def getDockerHubLatestImageGitCommit(String image, String tag, String username, String password) {
-    final AUTH_DOMAIN = 'auth.docker.io'
-    final AUTH_SERVICE = 'registry.docker.io'
-    final API_DOMAIN = 'registry-1.docker.io'
-    final AUTH_SCOPE = "repository:${image}:pull"
-    final tokenResponse = sh(returnStdout: true, script: "curl --fail --silent -u ${username}:${password} 'https://${AUTH_DOMAIN}/token?service=${AUTH_SERVICE}&scope=${AUTH_SCOPE}'").trim()
-    final token = new JsonSlurperClassic().parseText(tokenResponse).token
-    final manifestResponse = sh(returnStdout: true, script: "curl --fail --silent -H 'Authorization: Bearer ${token}' https://${API_DOMAIN}/v2/${image}/manifests/${tag}").trim()
-    final topLayer = new JsonSlurperClassic().parseText(manifestResponse).history[0].v1Compatibility
-    final gitCommit = new JsonSlurperClassic().parseText(topLayer).config.Labels.git_commit
-    println "Docker hub ${image}:${tag} image has label git_commit=$gitCommit"
-    return gitCommit
 }

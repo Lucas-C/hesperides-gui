@@ -28,11 +28,10 @@ pipeline {
                 }
             }
         }
-        stage("Docker build 'testing' image") {
+        stage("Trigger Docker frontend image build & deploy") {
             when { expression { newDockerImagePublished } }
             steps {
                 build './build_docker_image'
-            }
             }
         }
     }
